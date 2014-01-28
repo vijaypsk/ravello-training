@@ -13,10 +13,10 @@
                     templateUrl: 'app/pages/labs/labs.html'
                 }).state('labs.single-session', {
                     url: '/single-session?mode&sessionId',
-                    templateUrl: 'app/pages/sessions/single-session.html'
+                    templateUrl: 'app/pages/sessions/single-session/single-session.html'
                 }).state('labs.single-student', {
                     url: '/single-student?sessionId&studentId',
-                    templateUrl: 'app/pages/sessions/single-student.html'
+                    templateUrl: 'app/pages/single-student/single-student.html'
                 });
         }]);
 })(angular);

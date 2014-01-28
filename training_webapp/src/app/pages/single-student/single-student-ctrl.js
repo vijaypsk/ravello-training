@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('trng.labs.sessions').controller('singleStudentController', [
+angular.module('trng.students').controller('singleStudentController', [
     '$scope',
     '$state',
     '$stateParams',
@@ -85,7 +85,7 @@ angular.module('trng.labs.sessions').controller('singleStudentController', [
             });
 
             var modalInstance = $modal.open({
-                templateUrl: 'app/pages/sessions/bp-permissions.html',
+                templateUrl: 'app/pages/single-student/bp-permissions.html',
                 controller: 'bpPermissionsController',
                 resolve: {
                     bpPermissions: function() {
@@ -95,11 +95,7 @@ angular.module('trng.labs.sessions').controller('singleStudentController', [
             });
 
             modalInstance.result.then(function(result) {
-//                bpPermissions = result;
                 _.assign(bpPermissions, result);
-//                bpPermissions.startVms = result.startVms;
-//                bpPermissions.stopVms = result.stopVms;
-//                bpPermissions.console = result.console;
             });
         };
 
