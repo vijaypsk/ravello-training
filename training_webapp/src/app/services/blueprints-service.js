@@ -10,12 +10,13 @@ angular.module('trng.services').factory('trng.services.BlueprintsService', [
 				var promise = bpProxy.getAllBlueprints();
 				
 				var bpEntities = [];
-				return promise.then(function(result) {
-					for (var i = 0; i < result.data.length; i++) {
-						var currentBpEntity = bpTransformer.dtoToEntity(result.data[i]);
+
+                return promise.then(function(result) {
+                    _.forEach(result.data, function(currentBpDto) {
+						var currentBpEntity = bpTransformer.dtoToEntity(currentBpDto);
                         bpEntities.push(currentBpEntity);
-					}
-					return bpEntities;
+                    });
+                    return bpEntities;
 				});
 			}
 		};

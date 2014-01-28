@@ -10,12 +10,13 @@ angular.module('trng.services').factory('trng.services.LabsService', [
 				var promise = labProxy.getAllLabs();
 				
 				var labEntities = [];
-				return promise.then(function(result) {
-					for (var i = 0; i < result.data.length; i++) {
-						var currentLabEntity = labTransformer.dtoToEntity(result.data[i]);
+
+                return promise.then(function(result) {
+                    _.forEach(result.data, function(currentLabDto) {
+						var currentLabEntity = labTransformer.dtoToEntity(currentLabDto);
                         labEntities.push(currentLabEntity);
-					}
-					return labEntities;
+                    });
+                    return labEntities;
 				});
 			}
 		};
