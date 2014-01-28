@@ -4,42 +4,79 @@
 	<meta charset="UTF-8">
 	<title>Ravello Training</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 3rd party styles -->
+
+	<link rel="stylesheet" type="text/css" href="libraries/ngQuickDate/dist/ng-quick-date.css" />
+	<link rel="stylesheet" type="text/css" href="libraries/ngQuickDate/dist/ng-quick-date-default-theme.css" />
+
 	<link rel="stylesheet" type="text/css" href="libraries/ng-grid/ng-grid.css" />
-	
-	<link href="libraries/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-	<link href="libraries/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet">
-	
-<!-- 	<script data-main="js/main" src="libraries/requirejs/require.js"></script> -->
+
+	<link rel="stylesheet" type="text/css" href="libraries/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="libraries/bootstrap/dist/css/bootstrap-theme.css">
+
+    <!-- App styles -->
+
+    <link rel="stylesheet" type="text/css" href="assets/styles/training.css" />
+
+    <!-- 3rd party scripts -->
 
 	<script src='libraries/jquery/jquery.js'></script>
     <script src='libraries/angular/angular.js'></script>
     <script src='libraries/bootstrap/dist/js/bootstrap.js'></script>
     <script src='libraries/angular-ui-router/release/angular-ui-router.js'></script>
     <script src='libraries/ng-grid/build/ng-grid.js'></script>
-    
+    <script src='libraries/angular-bootstrap/ui-bootstrap-tpls.js'></script>
+    <script src='libraries/datejs/build/date-he-IL.js'></script>
+    <script src='libraries/lodash/dist/lodash.js'></script>
+    <script src='libraries/ngQuickDate/dist/ng-quick-date.js'></script>
+
+    <!-- App scripts -->
+
     <script src='app/training-app.js'></script>
     
-    <script src='app/common/entities/sessions-model.js'></script>
     <script src='app/common/entities/session.js'></script>
+    <script src='app/common/entities/lab.js'></script>
+    <script src='app/common/entities/student.js'></script>
+    <script src='app/common/entities/blueprint.js'></script>
+    <script src='app/common/entities/blueprint-permission.js'></script>
 
-    <script src='app/common/util/utils.js'></script>
+    <script src='app/common/util/util.js'></script>
+    <script src='app/common/util/cloner.js'></script>
+    <script src='app/common/util/date-util.js'></script>
 
     <script src='app/proxies/proxies.js'></script>
     <script src='app/proxies/sessions-proxy.js'></script>
+    <script src='app/proxies/labs-proxy.js'></script>
+    <script src='app/proxies/blueprints-proxy.js'></script>
 
-    <script src='app/transformations/transformations.js'></script>
-    <script src='app/transformations/general-trans.js'></script>
-    <script src='app/transformations/sessions-trans.js'></script>
+    <script src='app/transformers/transformers.js'></script>
+    <script src='app/transformers/general-trans.js'></script>
+    <script src='app/transformers/sessions-trans.js'></script>
+    <script src='app/transformers/labs-trans.js'></script>
+    <script src='app/transformers/student-trans.js'></script>
+    <script src='app/transformers/blueprints-trans.js'></script>
+    <script src='app/transformers/blueprint-permissions-trans.js'></script>
 
     <script src='app/services/services.js'></script>
     <script src='app/services/sessions-service.js'></script>
-    
+    <script src='app/services/labs-service.js'></script>
+
     <script src='app/pages/labs-main/labs-main.js'></script>
     <script src='app/pages/labs-main/labs-main-ctrl.js'></script>
 
+    <script src='app/pages/labs/labs.js'></script>
+    <script src='app/pages/labs/lab-model.js'></script>
+    <script src='app/pages/labs/blueprint-model.js'></script>
+
     <script src='app/pages/sessions/sessions.js'></script>
     <script src='app/pages/sessions/sessions-ctrl.js'></script>
-    
+    <script src='app/pages/sessions/sessions-model.js'></script>
+    <script src='app/pages/sessions/single-session-ctrl.js'></script>
+    <script src='app/pages/sessions/single-student-ctrl.js'></script>
+    <script src='app/pages/sessions/bp-permissions-ctrl.js'></script>
+
 </head>
 
 <body>
@@ -52,8 +89,10 @@
 			
 			</div>
 		</div>
-		
-		<div ui-view></div>
+
+        <div id="mainPanelDiv">
+            <div ui-view></div>
+        </div>
 	</div>
 	
 	<script>

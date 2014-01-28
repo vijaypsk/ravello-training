@@ -1,0 +1,33 @@
+
+<div id="bpPermissionsDiv">
+    <h3>Permissions</h3>
+    <div class="container">
+        <div class="row">
+            <label for="startVmsInput">Start VMs</label>
+            <input id="startVmsInput" type="checkbox" ng-model="viewModel.bpPermissions.startVms">
+        </div>
+
+        <br>
+
+        <div class="row">
+            <label for="stopVmsInput">Stop VMs</label>
+            <input id="stopVmsInput" type="checkbox" ng-model="viewModel.bpPermissions.stopVms">
+        </div>
+
+        <br>
+
+        <div class="row">
+            <label for="consoleInput">Start VMs</label>
+            <input id="consoleInput" type="checkbox" ng-model="viewModel.bpPermissions.console">
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <button ng-click="ok()">OK</button>
+            </div>
+            <div class="col-md-2">
+                <button ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

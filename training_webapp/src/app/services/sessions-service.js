@@ -2,10 +2,10 @@
 
 angular.module('trng.services').factory('trng.services.SessionsService', [
 	'trng.proxies.SessionsProxy',
-	'trng.transformations.SessionsTransformation',
+	'trng.transformers.SessionsTransformer',
 	function(sessionsProxy, sessionTrans) {
 		
-		var sessionService = {
+		var service = {
 			getAllSessions: function() {
 				var promise = sessionsProxy.getAllSessions();
 				
@@ -13,12 +13,12 @@ angular.module('trng.services').factory('trng.services.SessionsService', [
 				return promise.then(function(result) {
 					for (var i = 0; i < result.data.length; i++) {
 						var currentSessionEntity = sessionTrans.dtoToEntity(result.data[i]);
-						sessionEntities.push(currentSessionEntity);
+                        sessionEntities.push(currentSessionEntity);
 					}
 					return sessionEntities;
 				});
 			}
 		};
 		
-		return sessionService;
+		return service;
 }]);

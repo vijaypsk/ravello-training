@@ -1,0 +1,42 @@
+<div id="singleStudentDiv" ng-controller="singleStudentController">
+    <form name="studentForm">
+        <div class="container">
+            <h3>{{currentStudent.firstName}} {{currentStudent.surname}}</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Student login</label>
+
+                    <div>
+                        <label>Email:</label>
+                        <input type="text" ng-model="currentStudent.username">
+
+                        <label>Password:</label>
+                        <input type="text" ng-model="currentStudent.password">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Ravello credentials</label>
+
+                    <div>
+                        <label>Email:</label>
+                        <input type="text" ng-model="currentStudent.ravelloUsername">
+
+                        <label>Password:</label>
+                        <input type="text" ng-model="currentStudent.ravelloPassword">
+
+                        <input type="checkbox" ng-model="currentStudent.useDefaultRavelloUser"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class=""row>
+                <button id="configurePermissionsBtn" ng-click="configurePermissions()">Configure permissions</button>
+                <div id="bpPermissionsGrid">
+                    <div class="bpPermissionsGrid" ng-grid="bpPermissionsDataGrid"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

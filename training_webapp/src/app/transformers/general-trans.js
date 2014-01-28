@@ -1,11 +1,10 @@
 'use strict';
 
-angular.module('trng.transformations').factory(
-	'trng.transformations.GeneralTransformation', [
+angular.module('trng.transformers').factory('trng.transformers.GeneralTransformer', [
 		'trng.common.utils.Cloner',
 		function(cloner) {
-			var transfomService = {
-				transDtoToEntity: function(dto, entity) {
+			var service = {
+				dtoToEntity: function(dto, entity) {
 					angular.forEach(dto, function(value, key) {
 						if (!(key in entity)) {
 							console.warn('Unexpected field ' + key
@@ -18,10 +17,10 @@ angular.module('trng.transformations').factory(
 					return entity;
 				},
 
-				transEntityToDto: function(entity, dto) {
+				entityToDto: function(entity, dto) {
 					return cloner.cloneObject(entity, dto);
 				}
 			};
 			
-			return transfomService;
+			return service;
 }]);

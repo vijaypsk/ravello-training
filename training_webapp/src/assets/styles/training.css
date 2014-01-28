@@ -1,0 +1,35 @@
+
+#mainAppDiv {
+    height: 100%;
+    width: 100%;
+}
+
+#mainPanelDiv {
+    height: 100%;
+    width: 100%;
+}
+
+#sessionsDiv {
+    height: 100%;
+    width: 100%;
+}
+
+#sessionsGrid {
+    height: 800px;
+    width: 400px;
+}
+
+.sessionsGrid {
+    height: 300px;
+    width: 800px;
+}
+
+.studentsGrid {
+    height: 300px;
+    width: 800px;
+}
+
+.bpPermissionsGrid {
+    height: 300px;
+    width: 800px;
+}
