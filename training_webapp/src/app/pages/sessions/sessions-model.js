@@ -18,9 +18,7 @@
             };
 
             var service = {
-                sessions: function() {
-                    return sessions;
-                },
+                sessions: sessions,
 
                 getSessionById: function(sessionId) {
                     if (sessionsLoaded) {

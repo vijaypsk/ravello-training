@@ -12,15 +12,13 @@ angular.module('trng.labs.sessions').controller('singleSessionController', [
     'trng.common.utils.DateUtil',
     function ($scope, $state, $stateParams, $log, sessionModel, sessionsService, labsModel, dateUtil) {
 
-        var mode = undefined;
         var sessionId = undefined;
 
         $scope.init = function () {
-            mode = $stateParams['mode'];
             sessionId = $stateParams['sessionId'];
 
             $scope.initStudent();
-            $scope.initLabOptions();
+//            $scope.initLabOptions();
             $scope.initDates();
             $scope.initBpPermissionsColumns();
             $scope.initStudentsDataGrid();
@@ -30,9 +28,11 @@ angular.module('trng.labs.sessions').controller('singleSessionController', [
             if (sessionId) {
                 sessionModel.getSessionById(sessionId).then(function(result) {
                     $scope.currentSession = result;
+                    $scope.initLabOptions();
                 });
             } else {
                 $scope.currentSession = {};
+                $scope.initLabOptions();
             }
 
             $scope.selectedStudents = [];
@@ -42,8 +42,13 @@ angular.module('trng.labs.sessions').controller('singleSessionController', [
             $scope.labs = labsModel.labs();
             labsModel.getAllLabs().then(function(result) {
                 $scope.currentSession.lab = _.find($scope.labs, function(currentLab) {
-                   return currentLab.hasOwnProperty('id') && currentLab['id'] === $scope.currentSession.lab['id'];
+                   return currentLab.hasOwnProperty('id') && $scope.currentSession.hasOwnProperty('lab') &&
+                       currentLab['id'] === $scope.currentSession.lab['id'];
                 });
+
+                if (_.isUndefined($scope.currentSession.lab)) {
+                    $scope.currentSession.lab = _.first($scope.labs);
+                }
             });
         };
 

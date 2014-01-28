@@ -7,4 +7,5 @@ function TrainingSession() {
 	this.startDate = null;
 	this.endDate = null;
     this.students = [];
+    this.apps = [];
 };

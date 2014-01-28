@@ -10,7 +10,7 @@ angular.module('trng.labs.sessions').controller('labsSessionsController', [
     function ($scope, $state, $log, sessionModel, sessionsService) {
 
         $scope.init = function () {
-            $scope.sessions = sessionModel.sessions();
+            $scope.sessions = sessionModel.sessions;
             $scope.selectedSessions = [];
             $scope.sessionsAvailable = false;
 

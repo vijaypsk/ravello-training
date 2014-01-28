@@ -1,0 +1,39 @@
+<form name="sessionForm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="nameInput">Name:</label>
+                <input id="nameInput" type="text" ng-model="currentSession.name">
+            </div>
+            <div class="col-md-6">
+                <label for="labSelect">Lab:</label>
+                <select id="labSelect" ng-options="l.name for l in labs" ng-model="currentSession.lab"></select>
+            </div>
+        </div>
+
+        <div class="row">
+            <label for="descriptionInput">Description for students:</label>
+            <input id="descriptionInput" type="text" ng-model="currentSession.description">
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label>Start date:</label>
+                <div ng-date ng-model="currentSession.startDate"></div>
+            </div>
+
+            <div class="col-md-6">
+                <label>End date:</label>
+                <div ng-date ng-model="currentSession.endDate"></div>
+            </div>
+        </div>
+
+        <div>
+            <button id="addStudentBtn" ng-click="addStudent()">Add</button>
+            <button id="deleteStudentBtn" ng-click="deleteStudents()">Delete</button>
+            <div id="studentsGrid">
+                <div class="studentsGrid" ng-grid="studentsDataGrid"></div>
+            </div>
+        </div>
+    </div>
+</form>
