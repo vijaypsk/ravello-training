@@ -1,53 +1,53 @@
 'use strict';
 
 
-angular.module('trng.labs.sessions').controller('singleSessionController', [
+angular.module('trng.courses.classes').controller('singleClassController', [
     '$scope',
     '$state',
     '$stateParams',
     '$log',
-    'trng.labs.sessions.SessionModel',
-    'trng.services.SessionsService',
-    'trng.labs.labs.LabModel',
+    'trng.courses.classes.ClassModel',
+    'trng.services.ClassesService',
+    'trng.courses.courses.CourseModel',
     'trng.common.utils.DateUtil',
-    function ($scope, $state, $stateParams, $log, sessionModel, sessionsService, labsModel, dateUtil) {
+    function ($scope, $state, $stateParams, $log, classModel, classesService, courseModel, dateUtil) {
 
-        var sessionId = undefined;
+        var classId = undefined;
 
         $scope.init = function () {
-            sessionId = $stateParams['sessionId'];
+            classId = $stateParams['classId'];
 
             $scope.initStudent();
-//            $scope.initLabOptions();
+//            $scope.initCourseOptions();
             $scope.initDates();
             $scope.initBpPermissionsColumns();
             $scope.initStudentsDataGrid();
         };
 
         $scope.initStudent = function() {
-            if (sessionId) {
-                sessionModel.getSessionById(sessionId).then(function(result) {
-                    $scope.currentSession = result;
-                    $scope.initLabOptions();
+            if (classId) {
+                classModel.getClassesById(classId).then(function(result) {
+                    $scope.currentClass = result;
+                    $scope.initCourseOptions();
                 });
             } else {
-                $scope.currentSession = {};
-                $scope.initLabOptions();
+                $scope.currentClass = {};
+                $scope.initCourseOptions();
             }
 
             $scope.selectedStudents = [];
         };
 
-        $scope.initLabOptions = function() {
-            $scope.labs = labsModel.labs();
-            labsModel.getAllLabs().then(function(result) {
-                $scope.currentSession.lab = _.find($scope.labs, function(currentLab) {
-                   return currentLab.hasOwnProperty('id') && $scope.currentSession.hasOwnProperty('lab') &&
-                       currentLab['id'] === $scope.currentSession.lab['id'];
+        $scope.initCourseOptions = function() {
+            $scope.courses = courseModel.courses;
+            courseModel.getAllCourses().then(function(result) {
+                $scope.currentClass.course = _.find($scope.courses, function(currentCourse) {
+                   return currentCourse.hasOwnProperty('id') && $scope.currentClass.hasOwnProperty('course') &&
+                       currentCourse['id'] === $scope.currentClass.course['id'];
                 });
 
-                if (_.isUndefined($scope.currentSession.lab)) {
-                    $scope.currentSession.lab = _.first($scope.labs);
+                if (_.isUndefined($scope.currentClass.course)) {
+                    $scope.currentClass.course = _.first($scope.courses);
                 }
             });
         };
@@ -81,7 +81,7 @@ angular.module('trng.labs.sessions').controller('singleSessionController', [
         $scope.initStudentsDataGrid = function () {
             $scope.initBpPermissionsColumns();
             $scope.studentsDataGrid = {
-                data: 'currentSession.students',
+                data: 'currentClass.students',
                 columnDefs: $scope.bpPermissionsColumns,
                 selectedItems: $scope.selectedStudents,
                 showSelectionCheckbox: true,
@@ -90,21 +90,21 @@ angular.module('trng.labs.sessions').controller('singleSessionController', [
         };
 
         $scope.addStudent = function() {
-            $state.go('^.single-student', {sessionId: $scope.currentSession['id']});
+            $state.go('^.single-student', {classId: $scope.currentClass['id']});
         };
 
         $scope.editStudent = function(studentToEdit) {
             var studentId = studentToEdit.getProperty('id');
-            $state.go('^.single-student', {sessionId: $scope.currentSession['id'], studentId: studentId});
+            $state.go('^.single-student', {classId: $scope.currentClass['id'], studentId: studentId});
         };
 
         $scope.deleteStudents = function() {
-            sessionModel.deleteStudents($scope.currentSession, $scope.studentsDataGrid.selectedItems);
+            classModel.deleteStudents($scope.currentClass, $scope.studentsDataGrid.selectedItems);
         };
 
         $scope.deleteStudent = function(studentToDelete) {
             var studentId = studentToDelete.getProperty('id');
-            sessionModel.deleteStudent($scope.currentSession, studentId);
+            classModel.deleteStudent($scope.currentClass, studentId);
         };
 
         $scope.init();

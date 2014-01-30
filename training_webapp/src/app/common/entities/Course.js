@@ -1,6 +1,6 @@
 'use strict';
 
-function TrainingLab() {
+function Course() {
     this.id = null;
 	this.name = null;
 	this.description = null;

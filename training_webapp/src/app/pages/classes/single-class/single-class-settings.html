@@ -1,30 +1,30 @@
-<form name="sessionForm">
+<form name="classForm">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
                 <label for="nameInput">Name:</label>
-                <input id="nameInput" type="text" ng-model="currentSession.name">
+                <input id="nameInput" type="text" ng-model="currentClass.name">
             </div>
             <div class="col-md-6">
-                <label for="labSelect">Lab:</label>
-                <select id="labSelect" ng-options="l.name for l in labs" ng-model="currentSession.lab"></select>
+                <label for="courseSelect">Course:</label>
+                <select id="courseSelect" ng-options="c.name for c in courses" ng-model="currentClass.course"></select>
             </div>
         </div>
 
         <div class="row">
             <label for="descriptionInput">Description for students:</label>
-            <input id="descriptionInput" type="text" ng-model="currentSession.description">
+            <input id="descriptionInput" type="text" ng-model="currentClass.description">
         </div>
 
         <div class="row">
             <div class="col-md-6">
                 <label>Start date:</label>
-                <div ng-date ng-model="currentSession.startDate"></div>
+                <div ng-date ng-model="currentClass.startDate"></div>
             </div>
 
             <div class="col-md-6">
                 <label>End date:</label>
-                <div ng-date ng-model="currentSession.endDate"></div>
+                <div ng-date ng-model="currentClass.endDate"></div>
             </div>
         </div>
 

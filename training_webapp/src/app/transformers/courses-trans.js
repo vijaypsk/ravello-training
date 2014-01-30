@@ -5,7 +5,7 @@ angular.module('trng.transformers').factory('trng.transformers.LabsTransformer',
 	function(generalTrans) {
 		var service = {
 			dtoToEntity: function(dto) {
-		        var entity = new TrainingLab();
+		        var entity = new Course();
 		        generalTrans.dtoToEntity(dto, entity);
                 return entity;
 			},

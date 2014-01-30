@@ -9,17 +9,17 @@
     width: 100%;
 }
 
-#sessionsDiv {
+#classesDiv {
     height: 100%;
     width: 100%;
 }
 
-#sessionsGrid {
+#classesGrid {
     height: 800px;
     width: 400px;
 }
 
-.sessionsGrid {
+.classesGrid {
     height: 300px;
     width: 800px;
 }

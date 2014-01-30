@@ -7,16 +7,16 @@ angular.module('trng.students').controller('singleStudentController', [
     '$stateParams',
     '$log',
     '$modal',
-    'trng.labs.sessions.SessionModel',
-    'trng.services.SessionsService',
+    'trng.courses.classes.ClassModel',
+    'trng.services.ClassesService',
     'trng.common.utils.DateUtil',
-    function ($scope, $state, $stateParams, $log, $modal, sessionModel, sessionsService, dateUtil) {
+    function ($scope, $state, $stateParams, $log, $modal, classModel, classesService, dateUtil) {
 
-        var sessionId = undefined;
+        var classId = undefined;
         var studentId = undefined;
 
         $scope.init = function () {
-            sessionId = $stateParams['sessionId'];
+            classId = $stateParams['classId'];
             studentId = $stateParams['studentId'];
 
             $scope.initStudent();
@@ -25,8 +25,8 @@ angular.module('trng.students').controller('singleStudentController', [
         };
 
         $scope.initStudent = function() {
-            if (sessionId && studentId) {
-                sessionModel.getSessionById(sessionId).then(function(result) {
+            if (classId && studentId) {
+                classModel.getClassesById(classId).then(function(result) {
                     $scope.currentStudent = _.find(result.students, function(currentStudent) {
                         return (currentStudent && currentStudent.hasOwnProperty('id') && currentStudent['id'] === studentId);
                     });

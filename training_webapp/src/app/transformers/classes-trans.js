@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('trng.transformers').factory('trng.transformers.SessionsTransformer', [
+angular.module('trng.transformers').factory('trng.transformers.ClassesTransformer', [
 	'trng.transformers.GeneralTransformer',
-	'trng.transformers.LabsTransformer',
+	'trng.transformers.CoursesTransformer',
     'trng.transformers.StudentsTransformer',
 	'trng.common.utils.DateUtil',
-	function(generalTrans, labTrans, studentsTrans, dateUtil) {
+	function(generalTrans, courseTrans, studentsTrans, dateUtil) {
 
         var toStudentEntities = function(dto, entity) {
             entity['students'] = [];
@@ -25,10 +25,9 @@ angular.module('trng.transformers').factory('trng.transformers.SessionsTransform
 
         var service = {
 			dtoToEntity: function(dto) {
-		        var entity = new TrainingSession();
+		        var entity = new TrainingClass();
 		        generalTrans.dtoToEntity(dto, entity);
 
-                entity['lab'] = labTrans.dtoToEntity(dto['lab']);
                 entity['startDate'] = Date.parse(entity['startDate']);
                 entity['endDate'] = Date.parse(entity['endDate']);
 
@@ -40,7 +39,6 @@ angular.module('trng.transformers').factory('trng.transformers.SessionsTransform
 			entityToDto: function(entity) {
 		        var dto = generalTrans.entityToDto(entity);
 
-                dto['lab'] = labTrans.entityToDto(entity['lab']);
                 dto['startDate'] = dto['startDate'].toString(dateUtil.dateFormat);
                 dto['endDate'] = dto['endDate'].toString(dateUtil.dateFormat);
 

@@ -2,24 +2,18 @@
 
 (function (angular) {
     angular.module('trng.app', [
-            'trng.labs.main',
+            'trng.courses.main',
             'ui.router'
         ]).config(['$urlRouterProvider', '$stateProvider', function ($urlRouterProvider, $stateProvider) {
-            $urlRouterProvider.when('', 'labs/sessions');
-            $urlRouterProvider.when('/labs', 'labs/sessions');
+            $urlRouterProvider.when('', 'courses/classes');
+            $urlRouterProvider.when('/courses', 'courses/classes');
 
             $stateProvider.
-                state('labs', {
-                    url: '/labs',
-                    templateUrl: 'app/pages/labs-main/labs-main.html',
+                state('courses', {
+                    url: '/courses',
+                    templateUrl: 'app/pages/courses-main/courses-main.html',
                     abstract: true
                 });
-
-            var sessionsResolve = {
-                'sessions': function () {
-                    return sessionsService.getService();
-                }
-            };
         }]);
 
 })(angular);

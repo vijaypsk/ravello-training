@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.labs.labs').factory('trng.labs.labs.BlueprintModel', [
+    angular.module('trng.courses.courses').factory('trng.courses.courses.BlueprintModel', [
         '$q', '$log',
         function ($q, $log) {
 
