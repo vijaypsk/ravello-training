@@ -26,7 +26,7 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
         $scope.initStudent = function() {
             if (classId) {
-                classModel.getClassesById(classId).then(function(result) {
+                classModel.getClassById(classId).then(function(result) {
                     $scope.currentClass = result;
                     $scope.initCourseOptions();
                 });
@@ -40,16 +40,6 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
         $scope.initCourseOptions = function() {
             $scope.courses = courseModel.courses;
-            courseModel.getAllCourses().then(function(result) {
-                $scope.currentClass.course = _.find($scope.courses, function(currentCourse) {
-                   return currentCourse.hasOwnProperty('id') && $scope.currentClass.hasOwnProperty('course') &&
-                       currentCourse['id'] === $scope.currentClass.course['id'];
-                });
-
-                if (_.isUndefined($scope.currentClass.course)) {
-                    $scope.currentClass.course = _.first($scope.courses);
-                }
-            });
         };
 
         $scope.initDates = function() {
@@ -68,7 +58,7 @@ angular.module('trng.courses.classes').controller('singleClassController', [
                     displayName: 'Student email'
                 },
                 {
-                    field: 'ravelloUsername',
+                    field: 'ravelloCredentials.username',
                     displayName: 'Ravello user'
                 },
                 {

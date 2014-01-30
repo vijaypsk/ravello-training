@@ -7,10 +7,8 @@ angular.module('trng.students').controller('singleStudentController', [
     '$stateParams',
     '$log',
     '$modal',
-    'trng.courses.classes.ClassModel',
-    'trng.services.ClassesService',
-    'trng.common.utils.DateUtil',
-    function ($scope, $state, $stateParams, $log, $modal, classModel, classesService, dateUtil) {
+    'trng.students.StudentModel',
+    function ($scope, $state, $stateParams, $log, $modal, studentModel) {
 
         var classId = undefined;
         var studentId = undefined;
@@ -26,10 +24,8 @@ angular.module('trng.students').controller('singleStudentController', [
 
         $scope.initStudent = function() {
             if (classId && studentId) {
-                classModel.getClassesById(classId).then(function(result) {
-                    $scope.currentStudent = _.find(result.students, function(currentStudent) {
-                        return (currentStudent && currentStudent.hasOwnProperty('id') && currentStudent['id'] === studentId);
-                    });
+                studentModel.getStudentById(classId, studentId).then(function(result) {
+                    $scope.currentStudent = result;
                 });
             } else {
                 $scope.currentStudent = {};
@@ -41,7 +37,7 @@ angular.module('trng.students').controller('singleStudentController', [
         $scope.initBpPermissionsColumns = function () {
             $scope.bpPermissionsColumns = [
                 {
-                    field: 'blueprint.name',
+                    field: 'name',
                     displayName: 'Blueprint'
                 },
                 {
@@ -78,10 +74,10 @@ angular.module('trng.students').controller('singleStudentController', [
         };
 
         $scope.configureBpPermission = function(bpToConfigure) {
-            var bpId = bpToConfigure.getProperty('blueprint')['id'];
+            var bpId = bpToConfigure.getProperty('id');
 
             var bpPermissions = _.find($scope.currentStudent.blueprintPermissions, function(currentBp) {
-                return (currentBp.hasOwnProperty('blueprint') && currentBp['blueprint']['id'] === bpId);
+                return (currentBp.hasOwnProperty('id') && currentBp['id'] === bpId);
             });
 
             var modalInstance = $modal.open({

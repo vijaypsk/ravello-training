@@ -1,15 +1,14 @@
 'use strict';
 
-angular.module('trng.transformers').factory('trng.transformers.CoursesTransformer', [
-	'trng.transformers.GeneralTransformer',
-	function(generalTrans) {
-		var service = {
+angular.module('trng.transformers').factory('trng.transformers.StudentsTransformer', [
+	function() {
+
+        var service = {
 			dtoToEntity: function(dto) {
 		        var entity = _.cloneDeep(dto);
-//		        generalTrans.dtoToEntity(dto, entity);
                 return entity;
 			},
-			
+
 			entityToDto: function(entity) {
 		        var dto = _.cloneDeep(entity);
                 return dto;

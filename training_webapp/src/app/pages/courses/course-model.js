@@ -9,9 +9,28 @@
 
             var courses = [];
 
+            var getCourseById = function(courseId) {
+                return _.find(courses, function(currentCourse) {
+                    return currentCourse && currentCourse.hasOwnProperty('id') && currentCourse['id'] === courseId;
+                });
+            };
+
             var service = {
 
                 courses: courses,
+
+                getCourseById: function(courseId) {
+                    if (coursesLoaded) {
+                        var deferred = $q.defer();
+                        var promise = deferred.promise;
+                        deferred.resolve(getCourseById(courseId));
+                        return promise;
+                    }
+
+                    return service.getAllCourses().then(function(result) {
+                        return getCourseById(courseId);
+                    });
+                },
 
                 getAllCourses: function () {
                     if (coursesLoaded) {

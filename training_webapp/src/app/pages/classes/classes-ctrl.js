@@ -7,7 +7,8 @@ angular.module('trng.courses.classes').controller('classesController', [
     '$log',
     'trng.courses.classes.ClassModel',
     'trng.services.ClassesService',
-    function ($scope, $state, $log, classModel, classesService) {
+    'trng.courses.courses.CourseModel',
+    function ($scope, $state, $log, classModel, classesService, courseModel) {
 
         $scope.init = function () {
             $scope.classes = classModel.classes;
@@ -20,6 +21,8 @@ angular.module('trng.courses.classes').controller('classesController', [
 
         $scope.getAllClasses = function () {
             var promise = classModel.getAllClasses();
+
+            // First get the classes.
             promise.then(function (result) {
                 $scope.classesAvailable = true;
             });
