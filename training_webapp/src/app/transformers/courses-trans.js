@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('trng.transformers').factory('trng.transformers.LabsTransformer', [
+angular.module('trng.transformers').factory('trng.transformers.CoursesTransformer', [
 	'trng.transformers.GeneralTransformer',
 	function(generalTrans) {
 		var service = {

@@ -22,8 +22,8 @@
                     }
 
                     return coursesService.getAllCourses().then(function(result) {
-                        for (var i = 0; i < result.data.length; i++) {
-                            courses.push(result.data[i]);
+                        for (var i = 0; i < result.length; i++) {
+                            courses.push(result[i]);
                         }
 
                         coursesLoaded = true;
