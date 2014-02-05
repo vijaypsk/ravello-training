@@ -10,6 +10,14 @@ angular.module('trng.proxies').factory('trng.proxies.ClassesProxy', ['$http', '$
 			});
 			
 			return promise;
-		}
+		},
+
+        add: function(classToSave) {
+            return $http.post('/rest/classes', classToSave);
+        },
+
+        update: function(classToSave) {
+            return $http.put('/rest/classes/' + classToSave['id'], classToSave);
+        }
 	};
 }]);

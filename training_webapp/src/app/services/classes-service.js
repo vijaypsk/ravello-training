@@ -19,7 +19,17 @@ angular.module('trng.services').factory('trng.services.ClassesService', [
                     });
 					return classEntities;
 				});
-			}
+            },
+
+            add: function(entity) {
+                var dto = classesTrans.entityToDto(entity);
+                classesProxy.add(dto);
+            },
+
+            update: function(entity) {
+                var dto = classesTrans.entityToDto(entity);
+                classesProxy.update(dto);
+            }
 		};
 		
 		return service;

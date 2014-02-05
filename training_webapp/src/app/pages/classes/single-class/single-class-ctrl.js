@@ -18,28 +18,35 @@ angular.module('trng.courses.classes').controller('singleClassController', [
             classId = $stateParams['classId'];
 
             $scope.initStudent();
-//            $scope.initCourseOptions();
             $scope.initDates();
             $scope.initBpPermissionsColumns();
             $scope.initStudentsDataGrid();
         };
 
         $scope.initStudent = function() {
-            if (classId) {
-                classModel.getClassById(classId).then(function(result) {
-                    $scope.currentClass = result;
-                    $scope.initCourseOptions();
-                });
-            } else {
-                $scope.currentClass = {};
-                $scope.initCourseOptions();
+            if (!classId) {
+                classModel.setCurrentClass({});
             }
+
+            classModel.getCurrentClass(classId).then(function(result) {
+                $scope.currentClass = result;
+                $scope.matchCourses();
+            });
 
             $scope.selectedStudents = [];
         };
 
-        $scope.initCourseOptions = function() {
+        $scope.matchCourses = function() {
             $scope.courses = courseModel.courses;
+
+            // It's important to make sure the courses are really loaded, since if the user refreshes this
+            // view without visiting the previous view first, the course might not be loaded.
+            courseModel.getAllCourses().
+                then(function(result) {
+                    $scope.currentClass['course'] = _.find($scope.courses, function(course) {
+                        return (course && course.hasOwnProperty('id') && course['id'] === $scope.currentClass['courseId']);
+                    });
+                });
         };
 
         $scope.initDates = function() {
@@ -95,6 +102,15 @@ angular.module('trng.courses.classes').controller('singleClassController', [
         $scope.deleteStudent = function(studentToDelete) {
             var studentId = studentToDelete.getProperty('id');
             classModel.deleteStudent($scope.currentClass, studentId);
+        };
+
+        $scope.save = function() {
+            classModel.save($scope.currentClass);
+            $state.go('^.classes');
+        };
+
+        $scope.cancel = function() {
+            $state.go('^.classes');
         };
 
         $scope.init();

@@ -11,7 +11,7 @@ angular.module('trng.courses.classes').controller('classesController', [
     function ($scope, $state, $log, classModel, classesService, courseModel) {
 
         $scope.init = function () {
-            $scope.classes = classModel.classes;
+            $scope.classes = [];
             $scope.selectedClasses = [];
             $scope.classesAvailable = false;
 
@@ -20,12 +20,13 @@ angular.module('trng.courses.classes').controller('classesController', [
         };
 
         $scope.getAllClasses = function () {
-            var promise = classModel.getAllClasses();
-
-            // First get the classes.
-            promise.then(function (result) {
-                $scope.classesAvailable = true;
-            });
+            classModel.getAllClasses().
+                then(function (result) {
+                    _.forEach(result, function(currentClass) {
+                        $scope.classes.push(_.cloneDeep(currentClass));
+                    });
+                    $scope.classesAvailable = true;
+                });
         };
 
         $scope.initClassesColumns = function () {
@@ -67,12 +68,17 @@ angular.module('trng.courses.classes').controller('classesController', [
         };
 
         $scope.addClass = function () {
+            classModel.setCurrentClass({});
             $state.go('^.single-class');
         };
 
         $scope.editClass = function (classToEdit) {
             var classId = classToEdit.getProperty('id');
-            $state.go('^.single-class', {classId: classId});
+
+            classModel.getClassById(classId).then(function(result) {
+                classModel.setCurrentClass(result);
+                $state.go('^.single-class', {classId: classId});
+            });
         };
 
         $scope.deleteClasses = function () {

@@ -7,8 +7,8 @@
 
             var service = {
                 getStudentById: function(classId, studentId) {
-                    return classModel.getClassById(classId).then(function(theClass) {
-                        if (theClass && theClass.hasOwnProperty('students') && theClass.hasOwnProperty('course')) {
+                    return classModel.getCurrentClass(classId).
+                        then(function(theClass) {
                             var student = _.find(theClass['students'], function(currentStudent) {
                                 return (currentStudent && currentStudent.hasOwnProperty('id') && currentStudent['id'] === studentId);
                             });
@@ -27,8 +27,21 @@
                             }
 
                             return student;
-                        }
-                    });
+                        });
+                },
+
+                setStudent: function(classId, student) {
+                    return classModel.getCurrentClass(classId).
+                        then(function(theClass) {
+                            var students = _.map(theClass['students'], function(currentStudent) {
+                                if (currentStudent['id'] === student['id']) {
+                                    return student;
+                                }
+                                return currentStudent;
+                            });
+
+                            theClass['students'] = students;
+                        });
                 }
             };
 

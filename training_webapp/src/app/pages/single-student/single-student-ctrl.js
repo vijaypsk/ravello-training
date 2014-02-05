@@ -25,7 +25,7 @@ angular.module('trng.students').controller('singleStudentController', [
         $scope.initStudent = function() {
             if (classId && studentId) {
                 studentModel.getStudentById(classId, studentId).then(function(result) {
-                    $scope.currentStudent = result;
+                    $scope.currentStudent = _.cloneDeep(result);
                 });
             } else {
                 $scope.currentStudent = {};
@@ -93,6 +93,15 @@ angular.module('trng.students').controller('singleStudentController', [
             modalInstance.result.then(function(result) {
                 _.assign(bpPermissions, result);
             });
+        };
+
+        $scope.approve = function() {
+            studentModel.setStudent(classId, $scope.currentStudent);
+            $state.go('^.single-class', {classId: classId});
+        };
+
+        $scope.cancel = function() {
+            $state.go('^.single-class', {classId: classId});
         };
 
         $scope.init();

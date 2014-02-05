@@ -10,9 +10,11 @@
             var courses = [];
 
             var getCourseById = function(courseId) {
-                return _.find(courses, function(currentCourse) {
-                    return currentCourse && currentCourse.hasOwnProperty('id') && currentCourse['id'] === courseId;
-                });
+                var matchingCourses = _.where(courses, {id: courseId});
+                if (matchingCourses && matchingCourses.length > 0) {
+                    return matchingCourses[0];
+                }
+                return null;
             };
 
             var service = {
@@ -40,15 +42,16 @@
                         return promise;
                     }
 
-                    return coursesService.getAllCourses().then(function(result) {
-                        for (var i = 0; i < result.length; i++) {
-                            courses.push(result[i]);
-                        }
+                    return coursesService.getAllCourses().
+                        then(function(result) {
+                            for (var i = 0; i < result.length; i++) {
+                                courses.push(result[i]);
+                            }
 
-                        coursesLoaded = true;
+                            coursesLoaded = true;
 
-                        return courses;
-                    });
+                            return courses;
+                        });
                 }
             };
 
