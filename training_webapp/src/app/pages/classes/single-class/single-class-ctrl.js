@@ -52,11 +52,6 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
         $scope.initDates = function() {
             $scope.dateFormat = dateUtil.dateFormat;
-
-            $scope.dateOptions = {
-                dateFormat: $scope.dateFormat,
-                showOn: 'button'
-            };
         };
 
         $scope.initBpPermissionsColumns = function () {
