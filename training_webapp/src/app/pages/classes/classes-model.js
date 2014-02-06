@@ -31,7 +31,11 @@
                 classes: classes,
 
                 setCurrentClass: function(theClass) {
-                    currentClass = _.cloneDeep(theClass);
+                    if (theClass == null) {
+                        currentClass = null;
+                    } else {
+                        currentClass = _.cloneDeep(theClass);
+                    }
                 },
 
                 setCurrentClassById: function(classId) {
