@@ -8,7 +8,6 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
         var service = {
 			dtoToEntity: function(dto) {
 		        var entity = _.cloneDeep(dto);
-//		        generalTrans.dtoToEntity(dto, entity);
 
                 entity['startDate'] = Date.parse(entity['startDate']);
                 entity['endDate'] = Date.parse(entity['endDate']);
@@ -17,7 +16,6 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
 			},
 			
 			entityToDto: function(entity) {
-//		        var dto = generalTrans.entityToDto(entity);
                 var dto = _.cloneDeep(entity);
 
                 dto['startDate'] = dto['startDate'].toString(dateUtil.dateFormat);
