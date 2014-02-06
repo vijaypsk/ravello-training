@@ -28,10 +28,11 @@ angular.module('trng.courses.classes').controller('singleClassController', [
                 classModel.setCurrentClass({});
             }
 
-            classModel.getCurrentClass(classId).then(function(result) {
-                $scope.currentClass = result;
-                $scope.matchCourses();
-            });
+            classModel.getCurrentClass(classId).
+                then(function(result) {
+                    $scope.currentClass = result;
+                    $scope.matchCourses();
+                });
 
             $scope.selectedStudents = [];
         };
@@ -96,7 +97,7 @@ angular.module('trng.courses.classes').controller('singleClassController', [
         };
 
         $scope.deleteStudents = function() {
-            classModel.deleteStudents($scope.currentClass, $scope.studentsDataGrid.selectedItems);
+            classModel.deleteStudents($scope.currentClass, $scope.selectedStudents);
         };
 
         $scope.deleteStudent = function(studentToDelete) {

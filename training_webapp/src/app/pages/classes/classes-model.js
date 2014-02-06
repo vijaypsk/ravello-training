@@ -2,9 +2,11 @@
 
 (function (angular) {
     angular.module('trng.courses.classes').factory('trng.courses.classes.ClassModel', [
-        '$q', '$log', 'trng.services.ClassesService', 'trng.courses.courses.CourseModel',
-        'trng.services.StudentsService',
-        function ($q, $log, classesService, courseModel, studentsService) {
+        '$q',
+        '$log',
+        'trng.services.ClassesService',
+        'trng.courses.courses.CourseModel',
+        function ($q, $log, classesService, courseModel) {
 
             var classesLoaded = false;
 
@@ -18,6 +20,11 @@
                     return foundClasses[0];
                 }
                 return null;
+            };
+
+            var viewModelToDomainModel = function(theClass) {
+                theClass = _.omit(theClass, 'course');
+                return theClass;
             };
 
             var model = {
@@ -92,55 +99,22 @@
                                 });
                             });
                         }).then(function(result) {
-                            // Get all of the students.
-                            return studentsService.getAllStudents().then(function(allStudents) {
-                                // Now go over all of the classes in the model, and try to match the students of each
-                                // class with the list of all students.
-                                _.forEach(classes, function(currentClass) {
-                                    if (currentClass && currentClass.hasOwnProperty('students')) {
-
-                                        // The students of the class are held in a map, of studentId to studentClassInfo -
-                                        // information that's specific to the student in this class.
-                                        // The idea is the convert this map into an array that will hold both the info
-                                        // of the student from the general student list, and the additional info of
-                                        // that student in the class.
-                                        var studentsArray = _.map(currentClass['students'], function(studentClassInfo, studentId) {
-                                            var matchingStudents = _.where(allStudents, {id: studentId});
-                                            if (matchingStudents && matchingStudents.length > 0) {
-                                                var student = matchingStudents[0];
-                                                _.assign(studentClassInfo, student);
-                                                return studentClassInfo;
-                                            }
-                                        });
-                                        currentClass['students'] = studentsArray;
-                                    }
-                                });
-                            });
-                        }).then(function(result) {
                             // Only once the whole classes-courses-students mix is complete, mark the classes as loaded.
                             classesLoaded = true;
                             return classes;
                         });
                 },
 
-                deleteClasses: function(classesToDelete) {
-                    for (var i = 0; i < classesToDelete.length; i++) {
-                        var currentId = classesToDelete[i]['id'];
-                        _.pull(classes, classesToDelete[i]);
-                    }
-                },
-
-                deleteClassById: function(classId) {
-                    _.remove(classes, function(currentClass) {
+                deleteClassById: function(classesList, classId) {
+                    _.remove(classesList, function(currentClass) {
                         return currentClass.hasOwnProperty('id') && currentClass['id'] === classId;
                     });
                 },
 
-                deleteStudents: function(theClass, classesToDelete) {
-                    for (var i = 0; i < classesToDelete.length; i++) {
-                        var currentId = classesToDelete[i]['id'];
-                        _.pull(theClass['students'], classesToDelete[i]);
-                    }
+                deleteStudents: function(theClass, studentsToDelete) {
+                    _.forEach(studentsToDelete, function(currentStudent) {
+                        _.pull(theClass['students'], currentStudent);
+                    });
                 },
 
                 deleteStudent: function(theClass, studentId) {
@@ -161,7 +135,7 @@
                             }
                             return currentClass;
                         });
-                        classesService.update(classToSave);
+                        classesService.update(viewModelToDomainModel(classToSave));
                     } else {
                         classes.push(classToSave);
                         classesService.add(classToSave);

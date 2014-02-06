@@ -82,12 +82,14 @@ angular.module('trng.courses.classes').controller('classesController', [
         };
 
         $scope.deleteClasses = function () {
-            classModel.deleteClasses($scope.classesDataGrid.selectedItems);
+            _.forEach($scope.selectedClasses, function(currentClass) {
+                classModel.deleteClassById($scope.classes, currentClass['id']);
+            });
         };
 
         $scope.deleteClass = function(classToDelete) {
             var classId = classToDelete.getProperty('id');
-            classModel.deleteClassById(classId);
+            classModel.deleteClassById($scope.classes, classId);
         };
 
         $scope.init();
