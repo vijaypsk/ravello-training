@@ -55,11 +55,17 @@ angular.module('trng.courses.classes').controller('singleClassController', [
         };
 
         $scope.matchApps = function() {
+            // Eventually the data grid of apps is a mix between a few entities: the students, their apps,
+            // and every app's blueprint.
+            // At first, we have to make sure that there's a course loaded, to match the apps against bps.
             return courseModel.getCourseById($scope.currentClass['courseId']).
                 then(function(course) {
+                    // Then we go over the students.
                     _.forEach($scope.currentClass['students'], function(currentStudent) {
+                        // We then go over every student's map of apps.
                         _.forIn(currentStudent['apps'], function(currentApp, appId) {
 
+                            // We match the single app with its blueprint, from the courses\s list of bps.
                             var matchingBp = _.find(course['blueprints'], function(currentBp) {
                                 return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == currentApp['blueprintId']);
                             });
