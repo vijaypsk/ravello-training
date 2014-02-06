@@ -18,7 +18,7 @@ angular.module('trng.students').controller('singleStudentController', [
             studentId = $stateParams['studentId'];
 
             $scope.initStudent();
-            $scope.initBpPermissionsColumns();
+            $scope.initStudentsColumns();
             $scope.initBpPermissionsDataGrid();
         };
 
@@ -34,8 +34,8 @@ angular.module('trng.students').controller('singleStudentController', [
             $scope.selectedBps = [];
         };
 
-        $scope.initBpPermissionsColumns = function () {
-            $scope.bpPermissionsColumns = [
+        $scope.initStudentsColumns = function () {
+            $scope.studentsColumns = [
                 {
                     field: 'name',
                     displayName: 'Blueprint'
@@ -62,7 +62,7 @@ angular.module('trng.students').controller('singleStudentController', [
         $scope.initBpPermissionsDataGrid = function () {
             $scope.bpPermissionsDataGrid = {
                 data: 'currentStudent.blueprintPermissions',
-                columnDefs: $scope.bpPermissionsColumns,
+                columnDefs: $scope.studentsColumns,
                 selectedItems: $scope.selectedBps,
                 showSelectionCheckbox: true,
                 selectWithCheckboxOnly: true

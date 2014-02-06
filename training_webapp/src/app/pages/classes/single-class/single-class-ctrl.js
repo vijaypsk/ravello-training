@@ -17,10 +17,12 @@ angular.module('trng.courses.classes').controller('singleClassController', [
         $scope.init = function () {
             classId = $stateParams['classId'];
 
+            $scope.apps = [];
+
             $scope.initStudent();
             $scope.initDates();
-            $scope.initBpPermissionsColumns();
             $scope.initStudentsDataGrid();
+            $scope.initAppsDataGrid();
         };
 
         $scope.initStudent = function() {
@@ -32,6 +34,24 @@ angular.module('trng.courses.classes').controller('singleClassController', [
                 then(function(result) {
                     $scope.currentClass = result;
                     $scope.matchCourses();
+                }).then(function(result) {
+                    return courseModel.getCourseById($scope.currentClass['courseId']).
+                        then(function(course) {
+                            _.forEach($scope.currentClass['students'], function(currentStudent) {
+                                _.forIn(currentStudent['apps'], function(currentApp, appId) {
+
+                                    var matchingBp = _.find(course['blueprints'], function(currentBp) {
+                                        return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == currentApp['blueprintId']);
+                                    });
+
+                                    var appViewModel = _.assign(currentApp);
+                                    appViewModel['blueprint'] = matchingBp;
+                                    appViewModel['student'] = currentStudent;
+
+                                    $scope.apps.push(appViewModel);
+                                });
+                            });
+                        });
                 });
 
             $scope.selectedStudents = [];
@@ -54,8 +74,8 @@ angular.module('trng.courses.classes').controller('singleClassController', [
             $scope.dateFormat = dateUtil.dateFormat;
         };
 
-        $scope.initBpPermissionsColumns = function () {
-            $scope.bpPermissionsColumns = [
+        $scope.initStudentsColumns = function () {
+            $scope.studentsColumns = [
                 {
                     field: 'username',
                     displayName: 'Student email'
@@ -71,11 +91,40 @@ angular.module('trng.courses.classes').controller('singleClassController', [
             ];
         };
 
+        $scope.initAppsColumns = function() {
+            $scope.appsColumns = [
+                {
+                    field: 'student.username',
+                    displayName: 'Student'
+                },
+                {
+                    field: 'blueprint.name',
+                    displayName: 'Blueprint'
+                },
+                {
+                    field: 'creationTime',
+                    displayName: 'Creation Time'
+                },
+                {
+                    field: 'numOfRunningVms',
+                    displayName: '# of running VMs'
+                }
+            ];
+        };
+
+        $scope.initAppsDataGrid = function() {
+            $scope.initAppsColumns();
+            $scope.appsDataGrid = {
+                data: 'apps',
+                columnDefs: $scope.appsColumns
+            };
+        };
+
         $scope.initStudentsDataGrid = function () {
-            $scope.initBpPermissionsColumns();
+            $scope.initStudentsColumns();
             $scope.studentsDataGrid = {
                 data: 'currentClass.students',
-                columnDefs: $scope.bpPermissionsColumns,
+                columnDefs: $scope.studentsColumns,
                 selectedItems: $scope.selectedStudents,
                 showSelectionCheckbox: true,
                 selectWithCheckboxOnly: true
