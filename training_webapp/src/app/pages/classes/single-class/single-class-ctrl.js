@@ -19,13 +19,13 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
             $scope.apps = [];
 
-            $scope.initStudent();
+            $scope.initCourse();
             $scope.initDates();
             $scope.initStudentsDataGrid();
             $scope.initAppsDataGrid();
         };
 
-        $scope.initStudent = function() {
+        $scope.initCourse = function() {
             if (!classId) {
                 classModel.setCurrentClass({});
             }
@@ -161,10 +161,12 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
         $scope.save = function() {
             classModel.save($scope.currentClass);
+            classModel.setCurrentClass(null);
             $state.go('^.classes');
         };
 
         $scope.cancel = function() {
+            classModel.setCurrentClass(null);
             $state.go('^.classes');
         };
 
