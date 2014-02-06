@@ -109,6 +109,10 @@
                     _.remove(classesList, function(currentClass) {
                         return currentClass.hasOwnProperty('id') && currentClass['id'] === classId;
                     });
+
+                    classes = classesList;
+
+                    classesService.deleteById(classId);
                 },
 
                 deleteStudents: function(theClass, studentsToDelete) {

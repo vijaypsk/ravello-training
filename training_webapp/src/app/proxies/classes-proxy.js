@@ -18,6 +18,14 @@ angular.module('trng.proxies').factory('trng.proxies.ClassesProxy', ['$http', '$
 
         update: function(classToSave) {
             return $http.put('/rest/classes/' + classToSave['id'], classToSave);
+        },
+
+        delete: function(classToDelete) {
+            return $http.delete('/rest/classes/' + classToDelete['id']);
+        },
+
+        deleteById: function(classId) {
+            return $http.delete('/rest/classes/' + classId);
         }
 	};
 }]);

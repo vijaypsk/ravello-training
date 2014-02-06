@@ -29,6 +29,15 @@ angular.module('trng.services').factory('trng.services.ClassesService', [
             update: function(entity) {
                 var dto = classesTrans.entityToDto(entity);
                 classesProxy.update(dto);
+            },
+
+            delete: function(entity) {
+                var dto = classesTrans.entityToDto(entity);
+                classesProxy.delete(dto);
+            },
+
+            deleteById: function(entityId) {
+                classesProxy.deleteById(entityId);
             }
 		};
 		
