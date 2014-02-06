@@ -1,0 +1,43 @@
+
+<div id="coursesDiv" class="container">
+    <div ng-controller="singleCourseController">
+        <form name="coursesForm">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="nameInput">Name:</label>
+                        </div>
+                        <div class="col-lg-6">
+                            <input id="nameInput" type="text" ng-model="currentCourse.name" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="descriptionInput">Description:</label>
+                        </div>
+                        <div class="col-lg-6">
+                            <input id="descriptionInput" type="text" ng-model="currentCourse.description" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button id="addBlueprintBtn" ng-click="addBlueprint()">Add</button>
+                <button id="deleteBlueprinttBtn" ng-click="deleteBlueprints()">Delete</button>
+                <div id="blueprintsGrid">
+                    <div class="blueprintsGrid" ng-grid="blueprintsDataGrid"></div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <div class="col-lg-3">
+                <button ng-click="save()">Save</button>
+            </div>
+            <div class="col-lg-3">
+                <button ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

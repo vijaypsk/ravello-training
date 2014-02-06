@@ -24,6 +24,16 @@
     width: 800px;
 }
 
+#coursesGrid {
+    height: 800px;
+    width: 400px;
+}
+
+.coursesGrid {
+    height: 300px;
+    width: 800px;
+}
+
 .studentsGrid {
     height: 300px;
     width: 800px;
@@ -35,6 +45,11 @@
 }
 
 .appsGrid {
+    height: 300px;
+    width: 800px;
+}
+
+.blueprintsGrid {
     height: 300px;
     width: 800px;
 }

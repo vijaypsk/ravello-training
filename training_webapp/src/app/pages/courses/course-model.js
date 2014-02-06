@@ -9,6 +9,8 @@
 
             var courses = [];
 
+            var currentCourse = null;
+
             var getCourseById = function(courseId) {
                 var matchingCourses = _.where(courses, {id: courseId});
                 if (matchingCourses && matchingCourses.length > 0) {
@@ -17,7 +19,7 @@
                 return null;
             };
 
-            var service = {
+            var model = {
 
                 courses: courses,
 
@@ -29,7 +31,7 @@
                         return promise;
                     }
 
-                    return service.getAllCourses().then(function(result) {
+                    return model.getAllCourses().then(function(result) {
                         return getCourseById(courseId);
                     });
                 },
@@ -52,9 +54,70 @@
 
                             return courses;
                         });
+                },
+
+                setCurrentCourse: function(course) {
+                    if (course == null) {
+                        currentCourse = null;
+                    } else {
+                        currentCourse = _.cloneDeep(course);
+                    }
+                },
+
+                setCurrentCourseById: function(courseId) {
+                    model.setCurrentCourse(getCourseById(courseId));
+                },
+
+                getCurrentCourse: function(courseId) {
+                    if (currentCourse) {
+                        var deferred = $q.defer();
+                        deferred.resolve(currentCourse);
+                        return deferred.promise;
+                    }
+
+                    return model.getCourseById(courseId).
+                        then(function(result) {
+                            model.setCurrentCourse(result);
+                            return currentCourse;
+                        });
+                },
+
+                deleteCourseById: function(coursesList, courseId) {
+                    _.remove(coursesList, function(currentCourse) {
+                        return currentCourse.hasOwnProperty('id') && currentCourse['id'] === courseId;
+                    });
+
+                    courses = coursesList;
+
+                    coursesService.deleteById(courseId);
+                },
+
+                save: function(courseToSave) {
+                    var exists = false;
+                    var matchingCourses = _.where(courses, {id: courseToSave['id']});
+                    exists = matchingCourses && matchingCourses.length > 0;
+
+                    if (exists) {
+                        courses = _.map(courses, function(currentCourse) {
+                            if (currentCourse['id'] == courseToSave['id']) {
+                                return courseToSave;
+                            }
+                            return currentCourse;
+                        });
+                        coursesService.update(courseToSave);
+                    } else {
+                        courses.push(courseToSave);
+                        coursesService.add(courseToSave);
+                    }
+                },
+
+                deleteBlueprintById: function(course, bpId) {
+                    _.remove(course['blueprints'], function(currentBp) {
+                        return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == bpId);
+                    });
                 }
             };
 
-            return service;
+            return model;
         }]);
 })(angular);

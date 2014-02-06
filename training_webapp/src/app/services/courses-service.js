@@ -18,8 +18,27 @@ angular.module('trng.services').factory('trng.services.CoursesService', [
                     });
                     return courseEntities;
 				});
-			}
-		};
+			},
+
+            add: function(entity) {
+                var dto = coursesTrans.entityToDto(entity);
+                coursesProxy.add(dto);
+            },
+
+            update: function(entity) {
+                var dto = coursesTrans.entityToDto(entity);
+                coursesProxy.update(dto);
+            },
+
+            delete: function(entity) {
+                var dto = coursesTrans.entityToDto(entity);
+                coursesProxy.delete(dto);
+            },
+
+            deleteById: function(entityId) {
+                coursesProxy.deleteById(entityId);
+            }
+        };
 		
 		return service;
 }]);

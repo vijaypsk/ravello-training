@@ -1,5 +1,5 @@
 'use strict';
 
 (function(angular) {
-	angular.module('trng.courses.courses', []);
+	angular.module('trng.courses.courses', ['ngGrid', 'ui.bootstrap', 'trng.services']);
 })(angular);

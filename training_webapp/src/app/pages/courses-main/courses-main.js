@@ -17,6 +17,9 @@
                 }).state('courses.single-student', {
                     url: '/single-student?classId&studentId',
                     templateUrl: 'app/pages/single-student/single-student.html'
+                }).state('courses.single-course', {
+                    url: '/single-course?courseId',
+                    templateUrl: 'app/pages/courses/single-course/single-course.html'
                 });
         }]);
 })(angular);

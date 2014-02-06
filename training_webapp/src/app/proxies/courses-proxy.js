@@ -3,14 +3,25 @@
 angular.module('trng.proxies').factory('trng.proxies.CoursesProxy', ['$http', '$q', function($http, $q) {
 	var service = {
 		getAllCourses: function() {
-			var promise = $http.get('/rest/courses');
+			return $http.get('/rest/courses');
+		},
 
-			promise.then(function(result) {
-				return result;
-			});
+        add: function(courseToSave) {
+            return $http.post('/rest/courses', courseToSave);
+        },
 
-			return promise;
-		}
+        update: function(courseToSave) {
+            return $http.put('/rest/courses/' + courseToSave['id'], courseToSave);
+        },
+
+        delete: function(courseToDelete) {
+            return $http.delete('/rest/courses/' + courseToDelete['id']);
+        },
+
+        deleteById: function(courseId) {
+            return $http.delete('/rest/courses/' + courseId);
+        }
+
     };
 
     return service;
