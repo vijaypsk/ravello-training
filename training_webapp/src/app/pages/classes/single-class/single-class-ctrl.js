@@ -48,7 +48,7 @@ angular.module('trng.courses.classes').controller('singleClassController', [
             // view without visiting the previous view first, the course might not be loaded.
             return courseModel.getAllCourses().
                 then(function(result) {
-                    $scope.currentClass['course'] = _.find($scope.courses, function(course) {
+                    $scope.currentClass['course'] = _.find(result, function(course) {
                         return (course && course.hasOwnProperty('id') && course['id'] === $scope.currentClass['courseId']);
                     });
                 });

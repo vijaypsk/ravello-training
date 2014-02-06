@@ -28,7 +28,10 @@ angular.module('trng.students').controller('singleStudentController', [
                     $scope.currentStudent = _.cloneDeep(result);
                 });
             } else {
-                $scope.currentStudent = {};
+                studentModel.createNewStudent(classId).
+                    then(function(student) {
+                        $scope.currentStudent = student;
+                    });
             }
 
             $scope.selectedBps = [];

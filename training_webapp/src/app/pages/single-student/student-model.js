@@ -26,6 +26,24 @@
                 return student;
             };
 
+            var assignBlueprintsToStudent = function(theClass, student) {
+                var blueprints = _.map(theClass['course']['blueprints'], function(currentBp) {
+                    var bpId = currentBp['id'];
+                    var bpPermissions = student['blueprintPermissions'] ? student['blueprintPermissions'][bpId] : null;
+                    if (bpPermissions) {
+                        return _.assign(currentBp, bpPermissions);
+                    } else {
+                        return _.assign(currentBp, {
+                            'startVms': true,
+                            'stopVms': true,
+                            'console': true
+                        });
+                    }
+                });
+
+                student['blueprintPermissions'] = blueprints;
+            };
+
             var service = {
                 getStudentById: function(classId, studentId) {
                     return classModel.getCurrentClass(classId).
@@ -34,19 +52,17 @@
                                 return (currentStudent && currentStudent.hasOwnProperty('id') && currentStudent['id'] === studentId);
                             });
 
-                            if (student && student.hasOwnProperty('blueprintPermissions')) {
-                                var bpsArray = _.map(student['blueprintPermissions'], function(bpPermissions, bpId) {
-                                    var bp = _.find(theClass['course']['blueprints'], function(currentBp) {
-                                        return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] === bpId);
-                                    });
+                            assignBlueprintsToStudent(theClass, student);
 
-                                    _.assign(bpPermissions, bp);
-                                    return bpPermissions;
-                                });
+                            return student;
+                        });
+                },
 
-                                student['blueprintPermissions'] = bpsArray;
-                            }
-
+                createNewStudent: function(classId) {
+                    var student = {};
+                    return classModel.getClassById(classId).
+                        then(function(theClass) {
+                            assignBlueprintsToStudent(theClass, student);
                             return student;
                         });
                 },
