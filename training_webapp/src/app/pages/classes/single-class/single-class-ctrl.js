@@ -33,25 +33,9 @@ angular.module('trng.courses.classes').controller('singleClassController', [
             classModel.getCurrentClass(classId).
                 then(function(result) {
                     $scope.currentClass = result;
-                    $scope.matchCourses();
+                    return $scope.matchCourses();
                 }).then(function(result) {
-                    return courseModel.getCourseById($scope.currentClass['courseId']).
-                        then(function(course) {
-                            _.forEach($scope.currentClass['students'], function(currentStudent) {
-                                _.forIn(currentStudent['apps'], function(currentApp, appId) {
-
-                                    var matchingBp = _.find(course['blueprints'], function(currentBp) {
-                                        return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == currentApp['blueprintId']);
-                                    });
-
-                                    var appViewModel = _.assign(currentApp);
-                                    appViewModel['blueprint'] = matchingBp;
-                                    appViewModel['student'] = currentStudent;
-
-                                    $scope.apps.push(appViewModel);
-                                });
-                            });
-                        });
+                    return $scope.matchApps();
                 });
 
             $scope.selectedStudents = [];
@@ -62,10 +46,30 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
             // It's important to make sure the courses are really loaded, since if the user refreshes this
             // view without visiting the previous view first, the course might not be loaded.
-            courseModel.getAllCourses().
+            return courseModel.getAllCourses().
                 then(function(result) {
                     $scope.currentClass['course'] = _.find($scope.courses, function(course) {
                         return (course && course.hasOwnProperty('id') && course['id'] === $scope.currentClass['courseId']);
+                    });
+                });
+        };
+
+        $scope.matchApps = function() {
+            return courseModel.getCourseById($scope.currentClass['courseId']).
+                then(function(course) {
+                    _.forEach($scope.currentClass['students'], function(currentStudent) {
+                        _.forIn(currentStudent['apps'], function(currentApp, appId) {
+
+                            var matchingBp = _.find(course['blueprints'], function(currentBp) {
+                                return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == currentApp['blueprintId']);
+                            });
+
+                            var appViewModel = _.assign(currentApp);
+                            appViewModel['blueprint'] = matchingBp;
+                            appViewModel['student'] = currentStudent;
+
+                            $scope.apps.push(appViewModel);
+                        });
                     });
                 });
         };
@@ -112,14 +116,6 @@ angular.module('trng.courses.classes').controller('singleClassController', [
             ];
         };
 
-        $scope.initAppsDataGrid = function() {
-            $scope.initAppsColumns();
-            $scope.appsDataGrid = {
-                data: 'apps',
-                columnDefs: $scope.appsColumns
-            };
-        };
-
         $scope.initStudentsDataGrid = function () {
             $scope.initStudentsColumns();
             $scope.studentsDataGrid = {
@@ -128,6 +124,14 @@ angular.module('trng.courses.classes').controller('singleClassController', [
                 selectedItems: $scope.selectedStudents,
                 showSelectionCheckbox: true,
                 selectWithCheckboxOnly: true
+            };
+        };
+
+        $scope.initAppsDataGrid = function() {
+            $scope.initAppsColumns();
+            $scope.appsDataGrid = {
+                data: 'apps',
+                columnDefs: $scope.appsColumns
             };
         };
 
