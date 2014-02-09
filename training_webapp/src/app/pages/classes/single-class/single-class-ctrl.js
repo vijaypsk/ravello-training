@@ -21,13 +21,13 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
             $scope.apps = [];
 
-            $scope.initCourse();
+            $scope.initClass();
             $scope.initDates();
             $scope.initStudentsDataGrid();
             $scope.initAppsDataGrid();
         };
 
-        $scope.initCourse = function() {
+        $scope.initClass = function() {
             if (!classId) {
                 classModel.setCurrentClass({});
             }
