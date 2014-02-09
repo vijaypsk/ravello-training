@@ -14,7 +14,8 @@ angular.module('trng.courses.classes').controller('singleClassController', [
     'trng.common.utils.DateUtil',
     'currentClass',
     'courses',
-    function ($scope, $rootScope, $state, $stateParams, $log, $window, classModel, classesService, courseModel, dateUtil, currentClass, courses) {
+    function ($scope, $rootScope, $state, $stateParams, $log, $window, classModel, classesService,
+              courseModel, dateUtil, currentClass, courses) {
 
         $scope.init = function () {
             $scope.apps = [];
@@ -29,8 +30,6 @@ angular.module('trng.courses.classes').controller('singleClassController', [
             $scope.currentClass = currentClass;
             $scope.matchCourses();
             $scope.matchApps();
-
-            $scope.selectedStudents = [];
         };
 
         $scope.matchCourses = function() {
@@ -114,6 +113,8 @@ angular.module('trng.courses.classes').controller('singleClassController', [
         };
 
         $scope.initStudentsDataGrid = function () {
+            $scope.selectedStudents = [];
+
             $scope.initStudentsColumns();
             $scope.studentsDataGrid = {
                 data: 'currentClass.students',
