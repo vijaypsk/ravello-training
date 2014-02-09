@@ -63,6 +63,7 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
                     var appViewModel = _.cloneDeep(_.assign(currentApp));
                     appViewModel['blueprint'] = matchingBp;
+                    appViewModel['name'] = appId;
                     appViewModel['student'] = currentStudent;
 
                     $scope.apps.push(appViewModel);
@@ -98,8 +99,8 @@ angular.module('trng.courses.classes').controller('singleClassController', [
                     displayName: 'Student'
                 },
                 {
-                    field: 'blueprint.name',
-                    displayName: 'Blueprint'
+                    field: 'name',
+                    displayName: 'Name'
                 },
                 {
                     field: 'creationTime',
