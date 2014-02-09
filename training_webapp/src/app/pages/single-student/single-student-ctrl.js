@@ -69,8 +69,34 @@ angular.module('trng.students').controller('singleStudentController', [
             };
         };
 
-        $scope.configureBpPermissions = function() {
+        $scope.configurBpPermissions = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/pages/single-student/bp-permissions.html',
+                controller: 'bpPermissionsController',
+                resolve: {
+                    bpPermissions: function() {
+                        return {
+                            startVms: true,
+                            stopVms: true,
+                            console: true
+                        };
+                    }
+                }
+            });
 
+            modalInstance.result.then(function(result) {
+                $scope.currentStudent['blueprints'] = _.map($scope.currentStudent['blueprints'], function(currentBp) {
+                    var selectedBp = _.find($scope.selectedBps, function(currentSelectedBp) {
+                        return (currentBp['id'] === currentSelectedBp['id']);
+                    });
+
+                    if (selectedBp) {
+                        return _.assign(currentBp, result);
+                    }
+
+                    return currentBp;
+                });
+            });
         };
 
         $scope.configureBpPermission = function(bpToConfigure) {
