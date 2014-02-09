@@ -15,6 +15,8 @@ angular.module('trng.courses.classes').controller('classesController', [
             $scope.selectedClasses = [];
             $scope.classesAvailable = false;
 
+            classModel.setCurrentClass(null);
+
             $scope.initClassesDataGrid();
             $scope.getAllClasses();
         };
@@ -69,7 +71,7 @@ angular.module('trng.courses.classes').controller('classesController', [
 
         $scope.addClass = function () {
             classModel.setCurrentClass({});
-            $state.go('^.single-class');
+            $state.go('^.single-class.add-class');
         };
 
         $scope.editClass = function (classToEdit) {
@@ -77,7 +79,7 @@ angular.module('trng.courses.classes').controller('classesController', [
 
             classModel.getClassById(classId).then(function(result) {
                 classModel.setCurrentClass(result);
-                $state.go('^.single-class', {classId: classId});
+                $state.go('^.single-class.edit-class', {classId: classId});
             });
         };
 
@@ -91,6 +93,15 @@ angular.module('trng.courses.classes').controller('classesController', [
             var classId = classToDelete.getProperty('id');
             classModel.deleteClassById($scope.classes, classId);
         };
+
+
+//        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+//            if (toState['name'] === 'courses.single-class.add-class') {
+//                $rootScope.isAdd = true;
+//            } else {
+//                $rootScope.isAdd = false;
+//            }
+//        });
 
         $scope.init();
     }]);

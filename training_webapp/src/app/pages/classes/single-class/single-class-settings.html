@@ -6,8 +6,8 @@
                 <input id="nameInput" type="text" ng-model="currentClass.name">
             </div>
             <div class="col-md-6">
-                <label for="courseSelect">Course:</label>
-                <select id="courseSelect" ng-options="c.name for c in courses" ng-model="currentClass.course"></select>
+                <label>Name:</label>
+                {{currentClass.course.name}}
             </div>
         </div>
 

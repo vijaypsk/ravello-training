@@ -7,8 +7,9 @@ angular.module('trng.students').controller('singleStudentController', [
     '$stateParams',
     '$log',
     '$modal',
+    '$window',
     'trng.students.StudentModel',
-    function ($scope, $state, $stateParams, $log, $modal, studentModel) {
+    function ($scope, $state, $stateParams, $log, $modal, $window, studentModel) {
 
         var classId = undefined;
         var studentId = undefined;
@@ -96,15 +97,6 @@ angular.module('trng.students').controller('singleStudentController', [
             modalInstance.result.then(function(result) {
                 _.assign(bpPermissions, result);
             });
-        };
-
-        $scope.approve = function() {
-            studentModel.setStudent(classId, $scope.currentStudent);
-            $state.go('^.single-class', {classId: classId});
-        };
-
-        $scope.cancel = function() {
-            $state.go('^.single-class', {classId: classId});
         };
 
         $scope.init();

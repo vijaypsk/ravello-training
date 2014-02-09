@@ -3,14 +3,16 @@
 
 angular.module('trng.courses.classes').controller('singleClassController', [
     '$scope',
+    '$rootScope',
     '$state',
     '$stateParams',
     '$log',
+    '$window',
     'trng.courses.classes.ClassModel',
     'trng.services.ClassesService',
     'trng.courses.courses.CourseModel',
     'trng.common.utils.DateUtil',
-    function ($scope, $state, $stateParams, $log, classModel, classesService, courseModel, dateUtil) {
+    function ($scope, $rootScope, $state, $stateParams, $log, $window, classModel, classesService, courseModel, dateUtil) {
 
         var classId = undefined;
 
@@ -70,7 +72,7 @@ angular.module('trng.courses.classes').controller('singleClassController', [
                                 return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == currentApp['blueprintId']);
                             });
 
-                            var appViewModel = _.assign(currentApp);
+                            var appViewModel = _.cloneDeep(_.assign(currentApp));
                             appViewModel['blueprint'] = matchingBp;
                             appViewModel['student'] = currentStudent;
 
@@ -161,14 +163,23 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
         $scope.save = function() {
             classModel.save($scope.currentClass);
-            classModel.setCurrentClass(null);
-            $state.go('^.classes');
         };
 
-        $scope.cancel = function() {
-            classModel.setCurrentClass(null);
-            $state.go('^.classes');
+        $scope.back = function() {
+            $window.history.back();
         };
+
+        $scope.addToEdit = function() {
+            $state.go('^.edit-class');
+        };
+
+        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+            if (toState['name'] === 'courses.single-class.add-class') {
+                $rootScope.isAdd = true;
+            } else {
+                $rootScope.isAdd = false;
+            }
+        });
 
         $scope.init();
     }

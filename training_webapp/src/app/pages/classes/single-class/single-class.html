@@ -1,20 +1,30 @@
 
 <div id="singleClassDiv" ng-controller="singleClassController">
-    <tabset>
-        <tab heading="Class settings">
-            <div ng-include="'app/pages/classes/single-class/single-class-settings.html'"></div>
-        </tab>
-        <tab heading="Running applications">
-            <div ng-include="'app/pages/classes/single-class/single-class-apps.html'"></div>
-        </tab>
-    </tabset>
+    <div class="container">
 
-    <div class="row">
-        <div class="col-lg-3">
-            <button ng-click="save()">Save</button>
+        <div ui-view></div>
+
+        <!--
+        There are slightly different navigation buttons for the different states.
+        It's a problem putting these views inside the corresponding states themselves,
+        because some states share the very same buttons, so we still want them to be here, in the super-state.
+        -->
+        <div class="row" ng-if="isAdd">
+            <div class="col-lg-3">
+                <button ng-click="addToEdit()">Next</button>
+            </div>
+            <div class="col-lg-3">
+                <button ng-click="back()">Back</button>
+            </div>
         </div>
-        <div class="col-lg-3">
-            <button ng-click="cancel()">Cancel</button>
+
+        <div class="row" ng-if="!isAdd">
+            <div class="col-lg-3">
+                <button ng-click="save()">Save</button>
+            </div>
+            <div class="col-lg-3">
+                <button ng-click="back()">Back</button>
+            </div>
         </div>
     </div>
 </div>
