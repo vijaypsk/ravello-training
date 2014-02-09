@@ -9,7 +9,8 @@ angular.module('trng.students').controller('singleStudentController', [
     '$modal',
     '$window',
     'trng.students.StudentModel',
-    function ($scope, $state, $stateParams, $log, $modal, $window, studentModel) {
+    'currentClass',
+    function ($scope, $state, $stateParams, $log, $modal, $window, studentModel, currentClass) {
 
         var classId = undefined;
         var studentId = undefined;
@@ -24,15 +25,10 @@ angular.module('trng.students').controller('singleStudentController', [
         };
 
         $scope.initStudent = function() {
-            if (classId && studentId) {
-                studentModel.getStudentById(classId, studentId).then(function(result) {
-                    $scope.currentStudent = _.cloneDeep(result);
-                });
+            if (studentId) {
+                $scope.currentStudent = studentModel.getStudent(currentClass, studentId);
             } else {
-                studentModel.createNewStudent(classId).
-                    then(function(student) {
-                        $scope.currentStudent = student;
-                    });
+                $scope.currentStudent = studentModel.createNewStudent(classId);
             }
 
             $scope.selectedBps = [];
@@ -65,7 +61,7 @@ angular.module('trng.students').controller('singleStudentController', [
 
         $scope.initBpPermissionsDataGrid = function () {
             $scope.bpPermissionsDataGrid = {
-                data: 'currentStudent.blueprintPermissions',
+                data: 'currentStudent.blueprints',
                 columnDefs: $scope.studentsColumns,
                 selectedItems: $scope.selectedBps,
                 showSelectionCheckbox: true,
@@ -80,7 +76,7 @@ angular.module('trng.students').controller('singleStudentController', [
         $scope.configureBpPermission = function(bpToConfigure) {
             var bpId = bpToConfigure.getProperty('id');
 
-            var bpPermissions = _.find($scope.currentStudent.blueprintPermissions, function(currentBp) {
+            var bpPermissions = _.find($scope.currentStudent.blueprints, function(currentBp) {
                 return (currentBp.hasOwnProperty('id') && currentBp['id'] === bpId);
             });
 

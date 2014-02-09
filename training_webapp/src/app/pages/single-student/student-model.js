@@ -4,27 +4,7 @@
     angular.module('trng.students').factory('trng.students.StudentModel', [
         '$q',
         '$log',
-        'trng.courses.classes.ClassModel',
-        function ($q, $log, classModel) {
-
-            var viewModelToDomainModel = function(student) {
-                // Create a list of bpPermissions that only hold what the domain model should hold.
-                var bpPermissions = _.map(student['blueprintPermissions'], function(currentBp) {
-                    return _.pick(currentBp, ['id', 'startVms', 'stopVms', 'console']);
-                });
-
-                // Now, the student has to hold the bp permissions as a map between bpId and the bpPermissions.
-                var blueprintPermissionsMap = {};
-                _.forEach(bpPermissions, function(currentBp) {
-                    var bpId = currentBp['id'];
-                    currentBp = _.omit(currentBp, 'id');
-                    blueprintPermissionsMap[bpId] = currentBp;
-                });
-
-                student['blueprintPermissions'] = blueprintPermissionsMap;
-
-                return student;
-            };
+        function ($q, $log) {
 
             var assignBlueprintsToStudent = function(theClass, student) {
                 var blueprints = _.map(theClass['course']['blueprints'], function(currentBp) {
@@ -41,47 +21,49 @@
                     }
                 });
 
-                student['blueprintPermissions'] = blueprints;
+                student['blueprints'] = blueprints;
             };
 
-            var service = {
-                getStudentById: function(classId, studentId) {
-                    return classModel.getCurrentClass(classId).
-                        then(function(theClass) {
-                            var student = _.find(theClass['students'], function(currentStudent) {
-                                return (currentStudent && currentStudent.hasOwnProperty('id') && currentStudent['id'] === studentId);
-                            });
+            var model = {
+                getStudent: function(theClass, studentId) {
+                    var student = _.find(theClass['students'], function(currentStudent) {
+                        return (currentStudent && currentStudent.hasOwnProperty('id') && currentStudent['id'] === studentId);
+                    });
 
-                            assignBlueprintsToStudent(theClass, student);
+                    assignBlueprintsToStudent(theClass, student);
 
-                            return student;
-                        });
+                    return student;
                 },
 
-                createNewStudent: function(classId) {
+                createNewStudent: function(theClass) {
                     var student = {};
-                    return classModel.getClassById(classId).
-                        then(function(theClass) {
-                            assignBlueprintsToStudent(theClass, student);
-                            return student;
-                        });
+                    assignBlueprintsToStudent(theClass, student);
+                    return student;
                 },
 
-                setStudent: function(classId, student) {
-                    return classModel.getCurrentClass(classId).
-                        then(function(theClass) {
-                            var students = _.map(theClass['students'], function(currentStudent) {
-                                if (currentStudent['id'] === student['id']) {
-                                    return viewModelToDomainModel(student);
-                                }
-                                return currentStudent;
-                            });
+                viewModelToDomainModel: function(student) {
+                    // Now, the student has to hold the bp permissions as a map between bpId and the bpPermissions.
+                    var blueprintPermissionsMap = {};
+                    _.forEach(student['blueprints'], function(currentBp) {
+                        // The view-model for a blueprint in the student holds a mix of data - both plain
+                        // bp data, and the student-specific bp permissions data.
+                        // When we go back to the domain model, we want to keep only the student-specific data,
+                        // so we pick only the relevant properties from the object.
+                        var bpPermissions = _.pick(currentBp, ['id', 'startVms', 'stopVms', 'console']);
 
-                            theClass['students'] = students;
-                        });
+                        // Then, the domain model holds the information as an map, instead of an array,
+                        // between bp ID and the student-specific bp permissions.
+                        var bpId = currentBp['id'];
+                        bpPermissions = _.omit(bpPermissions, 'id');
+                        blueprintPermissionsMap[bpId] = bpPermissions;
+                    });
+
+                    student['blueprintPermissions'] = blueprintPermissionsMap;
+
+                    return student;
                 }
-            };
+        };
 
-            return service;
+            return model;
         }]);
 })(angular);

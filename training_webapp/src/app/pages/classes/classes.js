@@ -20,7 +20,8 @@
                         templateUrl: 'app/pages/classes/single-class/single-class-edit.html'
                     }).state('courses.single-class.single-student', {
                         url: '/single-student?studentId',
-                        templateUrl: 'app/pages/single-student/single-student.html'
+                        templateUrl: 'app/pages/single-student/single-student.html',
+                        controller: 'singleStudentController'
                     });
             }
         ]);

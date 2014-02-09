@@ -6,13 +6,12 @@
         '$log',
         'trng.services.ClassesService',
         'trng.courses.courses.CourseModel',
-        function ($q, $log, classesService, courseModel) {
+        'trng.students.StudentModel',
+        function ($q, $log, classesService, courseModel, studentModel) {
 
             var classesLoaded = false;
 
             var classes = [];
-
-            var currentClass = null;
 
             var getClassById = function(classId) {
                 var foundClasses = _.where(classes, {id: classId});
@@ -22,25 +21,8 @@
                 return null;
             };
 
-            var viewModelToDomainModel = function(theClass) {
-                theClass = _.omit(theClass, 'course');
-                return theClass;
-            };
-
             var model = {
                 classes: classes,
-
-                setCurrentClass: function(theClass) {
-                    if (theClass == null) {
-                        currentClass = null;
-                    } else {
-                        currentClass = _.cloneDeep(theClass);
-                    }
-                },
-
-                setCurrentClassById: function(classId) {
-                    model.setCurrentClass(getClassById(classId));
-                },
 
                 getClassById: function(classId) {
                     if (classesLoaded) {
@@ -53,27 +35,6 @@
                     return this.getAllClasses().then(function(result) {
                         return getClassById(classId);
                     });
-                },
-
-                /*
-                 * The idea of this function is to encapsulate the code that deals with getting the currently
-                 * edited class in a clean manner.
-                 * This means getting the currentClass if it's set, or finding and cloning the class in the
-                 * classes list.
-                 */
-                getCurrentClass: function(classId) {
-                    if (currentClass) {
-                        var deferred = $q.defer();
-                        var promise = deferred.promise;
-                        deferred.resolve(currentClass);
-                        return promise;
-                    }
-
-                    return model.getClassById(classId).
-                        then(function(result) {
-                            model.setCurrentClass(result);
-                            return currentClass;
-                        });
                 },
 
                 getAllClasses: function () {
@@ -143,14 +104,25 @@
                             }
                             return currentClass;
                         });
-                        classesService.update(viewModelToDomainModel(classToSave));
+                        classesService.update(model.viewModelToDomainModel(classToSave));
                     } else {
                         classes.push(classToSave);
                         classesService.add(classToSave);
                     }
+                },
+
+                viewModelToDomainModel: function(theClass) {
+                    theClass = _.omit(theClass, 'course');
+
+                    theClass['students'] = _.map(theClass['students'], function(student) {
+                        return studentModel.viewModelToDomainModel(student);
+                    });
+
+                    return theClass;
                 }
             };
 
             return model;
-        }]);
+        }
+    ]);
 })(angular);

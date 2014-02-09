@@ -12,13 +12,11 @@ angular.module('trng.courses.classes').controller('singleClassController', [
     'trng.services.ClassesService',
     'trng.courses.courses.CourseModel',
     'trng.common.utils.DateUtil',
-    function ($scope, $rootScope, $state, $stateParams, $log, $window, classModel, classesService, courseModel, dateUtil) {
-
-        var classId = undefined;
+    'currentClass',
+    'courses',
+    function ($scope, $rootScope, $state, $stateParams, $log, $window, classModel, classesService, courseModel, dateUtil, currentClass, courses) {
 
         $scope.init = function () {
-            classId = $stateParams['classId'];
-
             $scope.apps = [];
 
             $scope.initClass();
@@ -28,58 +26,48 @@ angular.module('trng.courses.classes').controller('singleClassController', [
         };
 
         $scope.initClass = function() {
-            if (!classId) {
-                classModel.setCurrentClass({});
-            }
-
-            classModel.getCurrentClass(classId).
-                then(function(result) {
-                    $scope.currentClass = result;
-                    return $scope.matchCourses();
-                }).then(function(result) {
-                    return $scope.matchApps();
-                });
+            $scope.currentClass = currentClass;
+            $scope.matchCourses();
+            $scope.matchApps();
 
             $scope.selectedStudents = [];
         };
 
         $scope.matchCourses = function() {
-            $scope.courses = courseModel.courses;
+            $scope.courses = courses;
 
             // It's important to make sure the courses are really loaded, since if the user refreshes this
             // view without visiting the previous view first, the course might not be loaded.
-            return courseModel.getAllCourses().
-                then(function(result) {
-                    $scope.currentClass['course'] = _.find(result, function(course) {
-                        return (course && course.hasOwnProperty('id') && course['id'] === $scope.currentClass['courseId']);
-                    });
-                });
+            $scope.currentClass['course'] = _.find($scope.courses, function(course) {
+                return (course && course.hasOwnProperty('id') && course['id'] === $scope.currentClass['courseId']);
+            });
         };
 
         $scope.matchApps = function() {
             // Eventually the data grid of apps is a mix between a few entities: the students, their apps,
             // and every app's blueprint.
             // At first, we have to make sure that there's a course loaded, to match the apps against bps.
-            return courseModel.getCourseById($scope.currentClass['courseId']).
-                then(function(course) {
-                    // Then we go over the students.
-                    _.forEach($scope.currentClass['students'], function(currentStudent) {
-                        // We then go over every student's map of apps.
-                        _.forIn(currentStudent['apps'], function(currentApp, appId) {
+            var course = _.find($scope.courses, function(currentCourse) {
+                return (currentCourse && currentCourse.hasOwnProperty('id') && currentCourse['id'] === $scope.currentClass['courseId']);
+            });
 
-                            // We match the single app with its blueprint, from the courses\s list of bps.
-                            var matchingBp = _.find(course['blueprints'], function(currentBp) {
-                                return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == currentApp['blueprintId']);
-                            });
+            // Then we go over the students.
+            _.forEach($scope.currentClass['students'], function(currentStudent) {
+                // We then go over every student's map of apps.
+                _.forIn(currentStudent['apps'], function(currentApp, appId) {
 
-                            var appViewModel = _.cloneDeep(_.assign(currentApp));
-                            appViewModel['blueprint'] = matchingBp;
-                            appViewModel['student'] = currentStudent;
-
-                            $scope.apps.push(appViewModel);
-                        });
+                    // We match the single app with its blueprint, from the courses\s list of bps.
+                    var matchingBp = _.find(course['blueprints'], function(currentBp) {
+                        return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == currentApp['blueprintId']);
                     });
+
+                    var appViewModel = _.cloneDeep(_.assign(currentApp));
+                    appViewModel['blueprint'] = matchingBp;
+                    appViewModel['student'] = currentStudent;
+
+                    $scope.apps.push(appViewModel);
                 });
+            });
         };
 
         $scope.initDates = function() {
@@ -184,3 +172,24 @@ angular.module('trng.courses.classes').controller('singleClassController', [
         $scope.init();
     }
 ]);
+
+
+var singleClassResolver = {
+    currentClass: ['$q', '$stateParams', 'trng.courses.classes.ClassModel', function($q, $stateParams, classModel) {
+        var classId = $stateParams['classId'];
+
+        if (!classId) {
+            var deferred = $q.defer();
+            deferred.resolve({});
+            return deferred.promise;
+        }
+
+        return classModel.getClassById(classId).then(function(result) {
+            return _.cloneDeep(result);
+        });
+    }],
+
+    courses: ['trng.courses.courses.CourseModel', function(courseModel) {
+        return courseModel.getAllCourses();
+    }]
+};
