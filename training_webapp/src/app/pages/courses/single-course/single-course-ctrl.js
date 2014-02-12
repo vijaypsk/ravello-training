@@ -5,29 +5,19 @@ angular.module('trng.courses.courses').controller('singleCourseController', [
     '$scope',
     '$state',
     '$stateParams',
+    '$window',
     '$log',
     'trng.courses.courses.CourseModel',
-    function ($scope, $state, $stateParams, $log, courseModel) {
-
-        var courseId = undefined;
+    'currentCourse',
+    function ($scope, $state, $stateParams, $window, $log, courseModel, currentCourse) {
 
         $scope.init = function () {
-            courseId = $stateParams['courseId'];
-
             $scope.initCourse();
             $scope.initBlueprintsDataGrid();
         };
 
         $scope.initCourse = function() {
-            if (!courseId) {
-                courseModel.setCurrentCourse({});
-            }
-
-            courseModel.getCurrentCourse(courseId).
-                then(function(result) {
-                    $scope.currentCourse = result;
-                });
-
+            $scope.currentCourse = currentCourse;
             $scope.selectedBlueprints = [];
         };
 
@@ -87,15 +77,33 @@ angular.module('trng.courses.courses').controller('singleCourseController', [
 
         $scope.save = function() {
             courseModel.save($scope.currentCourse);
-            courseModel.setCurrentCourse(null);
-            $state.go('^.courses');
         };
 
-        $scope.cancel = function() {
-            courseModel.setCurrentCourse(null);
-            $state.go('^.courses');
+        $scope.back = function() {
+            $window.history.back();
         };
 
         $scope.init();
     }
 ]);
+
+var singleCourseResolver = {
+    currentCourse: ['$q', '$stateParams', 'trng.courses.courses.CourseModel',
+        function ($q, $stateParams, courseModel) {
+
+            var courseId = $stateParams['courseId'];;
+
+            if (courseId) {
+                return courseModel.getAllCourses().then(function (courses) {
+                        return _.cloneDeep(_.find(courses, function (course) {
+                            return (course && course.hasOwnProperty('id') &&
+                                course['id'] === courseId);
+                        }));
+                    });
+            }
+
+            var deferred = $q.defer();
+            deferred.resolve({});
+            return deferred.promise;
+        }]
+}

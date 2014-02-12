@@ -6,26 +6,16 @@ angular.module('trng.courses.courses').controller('coursesController', [
     '$state',
     '$log',
     'trng.courses.courses.CourseModel',
-    function ($scope, $state, $log,  courseModel) {
+    'courses',
+    function ($scope, $state, $log,  courseModel, courses) {
 
         $scope.init = function() {
-            $scope.coursesAvailable = false;
-            $scope.selectedCourses = [];
-
             $scope.initCourses();
             $scope.initCoursesDataGrid();
         };
 
         $scope.initCourses = function() {
-            $scope.courses = [];
-            courseModel.getAllCourses().
-                then(function(result) {
-                    _.forEach(result, function(currentCourse) {
-                        $scope.courses.push(_.cloneDeep(currentCourse));
-                    });
-
-                    $scope.coursesAvailable = true;
-                });
+            $scope.courses = courses;
         };
 
         $scope.initCourseColumns = function () {
@@ -46,7 +36,10 @@ angular.module('trng.courses.courses').controller('coursesController', [
         };
 
         $scope.initCoursesDataGrid = function () {
+            $scope.selectedCourses = [];
+
             $scope.initCourseColumns();
+
             $scope.coursesDataGrid = {
                 data: 'courses',
                 columnDefs: $scope.coursesColumns,
@@ -57,13 +50,11 @@ angular.module('trng.courses.courses').controller('coursesController', [
         };
 
         $scope.addCourse = function() {
-            courseModel.setCurrentCourse({});
             $state.go('^.single-course');
         };
 
         $scope.editCourse = function(courseToEdit) {
             var courseId = courseToEdit.getProperty('id');
-            courseModel.setCurrentCourseById(courseId);
             $state.go('^.single-course', {courseId: courseId});
         };
 
@@ -81,3 +72,12 @@ angular.module('trng.courses.courses').controller('coursesController', [
         $scope.init();
     }
 ]);
+
+var coursesResolver = {
+    courses: ['$q', 'trng.courses.courses.CourseModel', function($q, courseModel) {
+        return courseModel.getAllCourses().
+            then(function(result) {
+                return _.cloneDeep(result);
+            });
+    }]
+}
