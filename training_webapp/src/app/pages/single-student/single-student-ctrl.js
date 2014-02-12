@@ -54,7 +54,10 @@ angular.module('trng.students').controller('singleStudentController', [
                 },
                 {
                     displayName: 'Actions',
-                    cellTemplate: '<a href="" class="btn btn-small btn-link" ng-click="configureBpPermission(row)"><i class="icon-edit" /> Configure permissions</a>'
+                    cellTemplate:
+                        '<a href="" class="btn btn-small btn-link" ng-click="configureBpPermission(row)">' +
+                            '<i class="icon-edit" /> Configure permissions' +
+                        '</a>'
                 }
             ];
         };
@@ -85,17 +88,19 @@ angular.module('trng.students').controller('singleStudentController', [
             });
 
             modalInstance.result.then(function(result) {
-                $scope.currentStudent['blueprints'] = _.map($scope.currentStudent['blueprints'], function(currentBp) {
-                    var selectedBp = _.find($scope.selectedBps, function(currentSelectedBp) {
-                        return (currentBp['id'] === currentSelectedBp['id']);
-                    });
+                $scope.currentStudent['blueprints'] = _.map($scope.currentStudent['blueprints'],
+                    function(currentBp) {
+                        var selectedBp = _.find($scope.selectedBps, function(currentSelectedBp) {
+                            return (currentBp['id'] === currentSelectedBp['id']);
+                        });
 
-                    if (selectedBp) {
-                        return _.assign(currentBp, result);
+                        if (selectedBp) {
+                            return _.assign(currentBp, result);
+                        }
+
+                        return currentBp;
                     }
-
-                    return currentBp;
-                });
+                );
             });
         };
 

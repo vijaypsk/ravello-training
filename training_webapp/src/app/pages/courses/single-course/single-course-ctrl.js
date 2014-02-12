@@ -45,7 +45,10 @@ angular.module('trng.courses.courses').controller('singleCourseController', [
                 },
                 {
                     displayName: 'Actions',
-                    cellTemplate: '<a href="" class="btn btn-small btn-link" ng-click="deleteBlueprint(row)"><i class="icon-trash" /> Delete</a>'
+                    cellTemplate:
+                        '<a href="" class="btn btn-small btn-link" ng-click="deleteBlueprint(row)">' +
+                            '<i class="icon-trash" /> Delete' +
+                        '</a>'
                 }
             ];
         };

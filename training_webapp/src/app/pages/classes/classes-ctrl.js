@@ -8,25 +8,16 @@ angular.module('trng.courses.classes').controller('classesController', [
     'trng.courses.classes.ClassModel',
     'trng.services.ClassesService',
     'trng.courses.courses.CourseModel',
-    function ($scope, $state, $log, classModel, classesService, courseModel) {
+    'classes',
+    function ($scope, $state, $log, classModel, classesService, courseModel, classes) {
 
         $scope.init = function () {
-            $scope.classes = [];
-            $scope.selectedClasses = [];
-            $scope.classesAvailable = false;
-
             $scope.initClassesDataGrid();
             $scope.getAllClasses();
         };
 
         $scope.getAllClasses = function () {
-            classModel.getAllClasses().
-                then(function (result) {
-                    _.forEach(result, function(currentClass) {
-                        $scope.classes.push(_.cloneDeep(currentClass));
-                    });
-                    $scope.classesAvailable = true;
-                });
+            $scope.classes = classes;
         };
 
         $scope.initClassesColumns = function () {
@@ -57,7 +48,10 @@ angular.module('trng.courses.classes').controller('classesController', [
         };
 
         $scope.initClassesDataGrid = function () {
+            $scope.selectedClasses = [];
+
             $scope.initClassesColumns();
+
             $scope.classesDataGrid = {
                 data: 'classes',
                 columnDefs: $scope.classesColumns,
@@ -91,4 +85,16 @@ angular.module('trng.courses.classes').controller('classesController', [
         };
 
         $scope.init();
-    }]);
+    }
+]);
+
+var classesResolver = {
+    classes: ['$q', 'trng.courses.classes.ClassModel',
+        function($q, classModel) {
+            return classModel.getAllClasses().
+                then(function (result) {
+                    return _.cloneDeep(result);
+                });
+        }
+    ]
+};

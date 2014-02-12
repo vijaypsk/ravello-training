@@ -35,8 +35,10 @@ angular.module('trng.courses.classes').controller('singleClassController', [
         $scope.matchCourses = function() {
             $scope.courses = courses;
 
-            // It's important to make sure the courses are really loaded, since if the user refreshes this
-            // view without visiting the previous view first, the course might not be loaded.
+            // The course reference inside the class should be a reference to the actual list of courses,
+            // otherwise there might be problems rendering the view correctly.
+            // Since the class is a copy of the originally loaded class, we know the reference is in fact
+            // NOT a reference to the actual list of courses, so here the controller fixes that.
             $scope.currentClass['course'] = _.find($scope.courses, function(course) {
                 return (course && course.hasOwnProperty('id') && course['id'] === $scope.currentClass['courseId']);
             });
@@ -46,8 +48,9 @@ angular.module('trng.courses.classes').controller('singleClassController', [
             // Eventually the data grid of apps is a mix between a few entities: the students, their apps,
             // and every app's blueprint.
             // At first, we have to make sure that there's a course loaded, to match the apps against bps.
-            var course = _.find($scope.courses, function(currentCourse) {
-                return (currentCourse && currentCourse.hasOwnProperty('id') && currentCourse['id'] === $scope.currentClass['courseId']);
+            var course = _.find($scope.courses, function (currentCourse) {
+                return (currentCourse && currentCourse.hasOwnProperty('id') &&
+                    currentCourse['id'] === $scope.currentClass['courseId']);
             });
 
             // Then we go over the students.
@@ -56,8 +59,9 @@ angular.module('trng.courses.classes').controller('singleClassController', [
                 _.forIn(currentStudent['apps'], function(currentApp, appId) {
 
                     // We match the single app with its blueprint, from the courses\s list of bps.
-                    var matchingBp = _.find(course['blueprints'], function(currentBp) {
-                        return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == currentApp['blueprintId']);
+                    var matchingBp = _.find(course['blueprints'], function (currentBp) {
+                        return (currentBp && currentBp.hasOwnProperty('id') &&
+                            currentBp['id'] == currentApp['blueprintId']);
                     });
 
                     var appViewModel = _.cloneDeep(_.assign(currentApp));
@@ -86,7 +90,13 @@ angular.module('trng.courses.classes').controller('singleClassController', [
                 },
                 {
                     displayName: 'Actions',
-                    cellTemplate: '<a href="" class="btn btn-small btn-link" ng-click="editStudent(row)"><i class="icon-edit" /> Edit</a><a href="" class="btn btn-small btn-link" ng-click="deleteStudent(row)"><i class="icon-trash" /> Delete</a>'
+                    cellTemplate:
+                        '<a href="" class="btn btn-small btn-link" ng-click="editStudent(row)">' +
+                            '<i class="icon-edit" /> Edit' +
+                        '</a>' +
+                        '<a href="" class="btn btn-small btn-link" ng-click="deleteStudent(row)">' +
+                            '<i class="icon-trash" /> Delete' +
+                        '</a>'
                 }
             ];
         };
@@ -177,21 +187,25 @@ angular.module('trng.courses.classes').controller('singleClassController', [
 
 
 var singleClassResolver = {
-    currentClass: ['$q', '$stateParams', 'trng.courses.classes.ClassModel', function($q, $stateParams, classModel) {
-        var classId = $stateParams['classId'];
+    currentClass: ['$q', '$stateParams', 'trng.courses.classes.ClassModel',
+        function($q, $stateParams, classModel) {
+            var classId = $stateParams['classId'];
 
-        if (!classId) {
-            var deferred = $q.defer();
-            deferred.resolve({});
-            return deferred.promise;
+            if (!classId) {
+                var deferred = $q.defer();
+                deferred.resolve({});
+                return deferred.promise;
+            }
+
+            return classModel.getClassById(classId).then(function(result) {
+                return _.cloneDeep(result);
+            });
         }
+    ],
 
-        return classModel.getClassById(classId).then(function(result) {
-            return _.cloneDeep(result);
-        });
-    }],
-
-    courses: ['trng.courses.courses.CourseModel', function(courseModel) {
-        return courseModel.getAllCourses();
-    }]
+    courses: ['trng.courses.courses.CourseModel',
+        function(courseModel) {
+            return courseModel.getAllCourses();
+        }
+    ]
 };

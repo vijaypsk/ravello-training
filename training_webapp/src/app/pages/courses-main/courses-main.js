@@ -8,7 +8,8 @@
                 state('courses.classes', {
                     url: '/classes',
                     templateUrl: 'app/pages/classes/classes.html',
-                    controller: 'classesController'
+                    controller: 'classesController',
+                    resolve: classesResolver
                 }).state('courses.courses', {
                     url: '/courses',
                     templateUrl: 'app/pages/courses/courses.html',
