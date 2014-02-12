@@ -28,7 +28,7 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
             if (studentId) {
                 $scope.currentStudent = studentModel.getStudent(currentClass, studentId);
             } else {
-                $scope.currentStudent = studentModel.createNewStudent(classId);
+                $scope.currentStudent = studentModel.createNewStudent(currentClass);
             }
 
             $scope.selectedBps = [];

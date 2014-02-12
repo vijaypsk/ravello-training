@@ -1,4 +1,6 @@
 
+/* Main */
+
 #mainAppDiv {
     height: 100%;
     width: 100%;
@@ -9,64 +11,79 @@
     width: 100%;
 }
 
+/* Classes */
+
 #classesDiv {
     height: 100%;
     width: 100%;
 }
 
-#classesGrid {
+#classesDataGridDiv {
     height: 800px;
-    width: 400px;
+    width: 800px;
 }
 
-.classesGrid {
+#classesDataGrid {
     height: 300px;
     width: 800px;
 }
 
-#coursesGrid {
+/* Courses */
+
+#coursesDataGridDiv {
     height: 800px;
-    width: 400px;
+    width: 800px;
 }
 
-.coursesGrid {
+#coursesDataGrid {
     height: 300px;
     width: 800px;
 }
 
-.studentsGrid {
+/* Single class */
+
+#studentsDataGrid {
     height: 300px;
     width: 800px;
 }
 
-.bpPermissionsGrid {
+#appsDataGridDiv {
+    height: 800px;
+    width: 800px;
+}
+
+#appsDataGrid {
     height: 300px;
     width: 800px;
 }
 
-.appsGrid {
+/* Single student */
+
+#bpPermissionsDataGrid {
     height: 300px;
     width: 800px;
 }
 
-.blueprintsGrid {
+/* Single course */
+
+#blueprintsDataGrid {
     height: 300px;
     width: 800px;
-}
-
-.allBlueprintsGrid {
-    height: 300px;
-    width: 550px;
-}
-
-#allBlueprintsGridDiv {
-    height: 500px;
-    width: 1200px;
 }
 
 #allBlueprintsDiv {
     width: 1200px;
     height: 600px;
+}
+
+#allBlueprintsDataGrid {
+    height: 300px;
+    width: 550px;
+}
+
+#allBlueprintsDataGridDiv {
+    height: 500px;
+    width: 1200px;
 }
 
 
