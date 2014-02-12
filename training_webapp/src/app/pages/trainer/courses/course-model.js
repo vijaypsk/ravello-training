@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.courses.courses').factory('trng.courses.courses.CourseModel', [
+    angular.module('trng.trainer.courses.courses').factory('trng.trainer.courses.courses.CourseModel', [
         '$q', '$log', 'trng.services.CoursesService',
         function ($q, $log, coursesService) {
 

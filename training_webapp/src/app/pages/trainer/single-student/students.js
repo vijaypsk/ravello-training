@@ -1,5 +1,5 @@
 'use strict';
 
 (function(angular) {
-	angular.module('trng.students', []);
+	angular.module('trng.trainer.students', []);
 })(angular);

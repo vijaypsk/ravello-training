@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('trng.students').controller('bpPermissionsController',
+angular.module('trng.trainer.students').controller('bpPermissionsController',
     ['$scope', '$log', '$modalInstance', 'bpPermissions',
     function($scope, $log, $modalInstance, bpPermissions) {
 

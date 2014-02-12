@@ -1,14 +1,14 @@
 'use strict';
 
 
-angular.module('trng.courses.classes').controller('classesController', [
+angular.module('trng.trainer.courses.classes').controller('classesController', [
     '$scope',
     '$rootScope',
     '$state',
     '$log',
-    'trng.courses.classes.ClassModel',
+    'trng.trainer.courses.classes.ClassModel',
     'trng.services.ClassesService',
-    'trng.courses.courses.CourseModel',
+    'trng.trainer.courses.courses.CourseModel',
     'classes',
     function ($scope, $rootScope, $state, $log, classModel, classesService, courseModel, classes) {
 
@@ -104,7 +104,7 @@ angular.module('trng.courses.classes').controller('classesController', [
 ]);
 
 var classesResolver = {
-    classes: ['$q', 'trng.courses.classes.ClassModel',
+    classes: ['$q', 'trng.trainer.courses.classes.ClassModel',
         function($q, classModel) {
             return classModel.getAllClasses().
                 then(function (result) {

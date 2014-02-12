@@ -1,14 +1,14 @@
 'use strict';
 
 
-angular.module('trng.students').controller('singleStudentController', [
+angular.module('trng.trainer.students').controller('singleStudentController', [
     '$scope',
     '$state',
     '$stateParams',
     '$log',
     '$modal',
     '$window',
-    'trng.students.StudentModel',
+    'trng.trainer.students.StudentModel',
     'currentClass',
     function ($scope, $state, $stateParams, $log, $modal, $window, studentModel, currentClass) {
 

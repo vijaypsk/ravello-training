@@ -1,11 +1,11 @@
 'use strict';
 
 
-angular.module('trng.courses.courses').controller('coursesController', [
+angular.module('trng.trainer.courses.courses').controller('coursesController', [
     '$scope',
     '$state',
     '$log',
-    'trng.courses.courses.CourseModel',
+    'trng.trainer.courses.courses.CourseModel',
     'courses',
     function ($scope, $state, $log,  courseModel, courses) {
 
@@ -74,7 +74,7 @@ angular.module('trng.courses.courses').controller('coursesController', [
 ]);
 
 var coursesResolver = {
-    courses: ['$q', 'trng.courses.courses.CourseModel', function($q, courseModel) {
+    courses: ['$q', 'trng.trainer.courses.courses.CourseModel', function($q, courseModel) {
         return courseModel.getAllCourses().
             then(function(result) {
                 return _.cloneDeep(result);

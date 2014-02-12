@@ -1,12 +1,12 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.courses.classes').factory('trng.courses.classes.ClassModel', [
+    angular.module('trng.trainer.courses.classes').factory('trng.trainer.courses.classes.ClassModel', [
         '$q',
         '$log',
         'trng.services.ClassesService',
-        'trng.courses.courses.CourseModel',
-        'trng.students.StudentModel',
+        'trng.trainer.courses.courses.CourseModel',
+        'trng.trainer.students.StudentModel',
         function ($q, $log, classesService, courseModel, studentModel) {
 
             var classesLoaded = false;

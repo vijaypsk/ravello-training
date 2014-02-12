@@ -1,8 +1,11 @@
 'use strict';
 
 (function(angular) {
-    angular.module('trng.courses.main', ['ui.router', 'trng.courses.courses', 'trng.courses.classes'])
-		.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
+    angular.module('trng.trainer.courses.main', [
+        'ui.router', 'trng.trainer.courses.courses', 'trng.trainer.courses.classes']).config([
+        '$urlRouterProvider',
+        '$stateProvider',
+        function($urlRouterProvider, $stateProvider) {
 
             $stateProvider.
                 state('trainer.courses.classes', {
@@ -26,5 +29,6 @@
                     controller: 'singleCourseController',
                     resolve: singleCourseResolver
                 });
-        }]);
+        }
+    ]);
 })(angular);

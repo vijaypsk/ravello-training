@@ -1,8 +1,9 @@
 'use strict';
 
 (function(angular) {
-    angular.module('trng.trainer', ['ui.router', 'trng.courses.main']).config([
-        '$urlRouterProvider', '$stateProvider',
+    angular.module('trng.trainer', ['ui.router', 'trng.trainer.courses.main']).config([
+        '$urlRouterProvider',
+        '$stateProvider',
         function($urlRouterProvider, $stateProvider) {
             $urlRouterProvider.when('/courses', 'trainer/courses/classes');
             $urlRouterProvider.when('/trainer/courses', 'trainer/courses/classes');

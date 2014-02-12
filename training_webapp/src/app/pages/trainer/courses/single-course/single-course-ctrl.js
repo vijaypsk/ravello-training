@@ -1,14 +1,14 @@
 'use strict';
 
 
-angular.module('trng.courses.courses').controller('singleCourseController', [
+angular.module('trng.trainer.courses.courses').controller('singleCourseController', [
     '$scope',
     '$state',
     '$stateParams',
     '$window',
     '$modal',
     '$log',
-    'trng.courses.courses.CourseModel',
+    'trng.trainer.courses.courses.CourseModel',
     'currentCourse',
     'blueprints',
     function ($scope, $state, $stateParams, $window, $modal, $log, courseModel, currentCourse, blueprints) {
@@ -133,7 +133,7 @@ angular.module('trng.courses.courses').controller('singleCourseController', [
 ]);
 
 var singleCourseResolver = {
-    currentCourse: ['$q', '$stateParams', 'trng.courses.courses.CourseModel',
+    currentCourse: ['$q', '$stateParams', 'trng.trainer.courses.courses.CourseModel',
         function ($q, $stateParams, courseModel) {
 
             var courseId = $stateParams['courseId'];;
