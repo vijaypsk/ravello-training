@@ -6,10 +6,12 @@ angular.module('trng.courses.courses').controller('singleCourseController', [
     '$state',
     '$stateParams',
     '$window',
+    '$modal',
     '$log',
     'trng.courses.courses.CourseModel',
     'currentCourse',
-    function ($scope, $state, $stateParams, $window, $log, courseModel, currentCourse) {
+    'blueprints',
+    function ($scope, $state, $stateParams, $window, $modal, $log, courseModel, currentCourse, blueprints) {
 
         $scope.init = function () {
             $scope.initCourse();
@@ -41,7 +43,9 @@ angular.module('trng.courses.courses').controller('singleCourseController', [
                 },
                 {
                     field: 'displayForStudents',
-                    displayName: 'Display name for students'
+                    displayName: 'Display name for students',
+                    enableCellEdit: true,
+                    width: '35%'
                 },
                 {
                     displayName: 'Actions',
@@ -65,6 +69,44 @@ angular.module('trng.courses.courses').controller('singleCourseController', [
         };
 
         $scope.addBlueprint = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/pages/courses/single-course/add-blueprints.html',
+                controller: 'addBlueprintsController',
+                resolve: {
+                    allBlueprints: function() {
+                        return blueprints;
+                    },
+                    courseBlueprints: function() {
+                        return $scope.currentCourse['blueprints'];
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(result) {
+                _.forEach(result, function(newlySelectedBp) {
+                    var matching = _.find($scope.currentCourse['blueprints'], function(existingBp) {
+                        return (existingBp && newlySelectedBp &&
+                            existingBp.hasOwnProperty('id') && newlySelectedBp.hasOwnProperty('id') &&
+                            existingBp['id'] === newlySelectedBp['id']);
+                    });
+
+                    if (!matching) {
+                        var newBp = _.cloneDeep(newlySelectedBp);
+                        newBp['displayForStudents'] = newBp['name'];
+                        $scope.currentCourse['blueprints'].push(newBp);
+                    }
+                });
+
+                _.remove($scope.currentCourse['blueprints'], function(existingBp) {
+                    var matching = _.find(result, function(newlySelectedBp) {
+                        return (existingBp && newlySelectedBp &&
+                            existingBp.hasOwnProperty('id') && newlySelectedBp.hasOwnProperty('id') &&
+                            existingBp['id'] === newlySelectedBp['id']);
+                    });
+
+                    return !matching;
+                });
+            });
         };
 
         $scope.deleteBlueprints = function() {
@@ -108,5 +150,12 @@ var singleCourseResolver = {
             var deferred = $q.defer();
             deferred.resolve({});
             return deferred.promise;
-        }]
+        }
+    ],
+
+    blueprints: ['trng.services.BlueprintsService',
+        function(blueprintsService) {
+            return blueprintsService.getAllBlueprints();
+        }
+    ]
 }
