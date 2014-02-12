@@ -65,38 +65,37 @@
     <script src='app/services/courses-service.js'></script>
     <script src='app/services/blueprints-service.js'></script>
 
-    <script src='app/pages/courses-main/courses-main.js'></script>
-    <script src='app/pages/courses-main/courses-main-ctrl.js'></script>
+    <script src='app/pages/login/login.js'></script>
+    <script src='app/pages/login/login-ctrl.js'></script>
 
-    <script src='app/pages/courses/courses.js'></script>
-    <script src='app/pages/courses/course-model.js'></script>
-    <script src='app/pages/courses/courses-ctrl.js'></script>
-    <script src='app/pages/courses/single-course/single-course-ctrl.js'></script>
-    <script src='app/pages/courses/single-course/add-blueprints-ctrl.js'></script>
+    <script src='app/pages/trainer/trainer.js'></script>
 
-    <script src='app/pages/classes/classes.js'></script>
-    <script src='app/pages/classes/classes-ctrl.js'></script>
-    <script src='app/pages/classes/classes-model.js'></script>
-    <script src='app/pages/classes/single-class/single-class-ctrl.js'></script>
+    <script src='app/pages/trainer/courses-main/courses-main.js'></script>
 
-    <script src='app/pages/single-student/students.js'></script>
-    <script src='app/pages/single-student/student-model.js'></script>
-    <script src='app/pages/single-student/single-student-ctrl.js'></script>
-    <script src='app/pages/single-student/bp-permissions-ctrl.js'></script>
+    <script src='app/pages/trainer/courses/courses.js'></script>
+    <script src='app/pages/trainer/courses/course-model.js'></script>
+    <script src='app/pages/trainer/courses/courses-ctrl.js'></script>
+    <script src='app/pages/trainer/courses/single-course/single-course-ctrl.js'></script>
+    <script src='app/pages/trainer/courses/single-course/add-blueprints-ctrl.js'></script>
+
+    <script src='app/pages/trainer/classes/classes.js'></script>
+    <script src='app/pages/trainer/classes/classes-ctrl.js'></script>
+    <script src='app/pages/trainer/classes/classes-model.js'></script>
+    <script src='app/pages/trainer/classes/single-class/single-class-ctrl.js'></script>
+
+    <script src='app/pages/trainer/single-student/students.js'></script>
+    <script src='app/pages/trainer/single-student/student-model.js'></script>
+    <script src='app/pages/trainer/single-student/single-student-ctrl.js'></script>
+    <script src='app/pages/trainer/single-student/bp-permissions-ctrl.js'></script>
+
+    <script src='app/pages/student/student.js'></script>
+
+    <script src='app/pages/student/class/student-class-ctrl.js'></script>
 
 </head>
 
 <body>
 	<div id="mainAppDiv">
-		<div class="navbar navbar-default">
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<li><a ui-sref="courses">Courses</a></li>
-				</ul>
-			
-			</div>
-		</div>
-
         <div id="mainPanelDiv">
             <div ui-view></div>
         </div>

@@ -173,14 +173,6 @@ angular.module('trng.courses.classes').controller('singleClassController', [
             $state.go('^.edit-class');
         };
 
-        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-            if (toState['name'] === 'courses.single-class.add-class') {
-                $rootScope.isAdd = true;
-            } else {
-                $rootScope.isAdd = false;
-            }
-        });
-
         $scope.init();
     }
 ]);

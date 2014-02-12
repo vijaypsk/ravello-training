@@ -70,7 +70,7 @@ angular.module('trng.courses.courses').controller('singleCourseController', [
 
         $scope.addBlueprint = function() {
             var modalInstance = $modal.open({
-                templateUrl: 'app/pages/courses/single-course/add-blueprints.html',
+                templateUrl: 'app/pages/trainer/courses/single-course/add-blueprints.html',
                 controller: 'addBlueprintsController',
                 resolve: {
                     allBlueprints: function() {

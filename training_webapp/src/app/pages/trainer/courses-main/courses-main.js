@@ -5,24 +5,24 @@
 		.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
 
             $stateProvider.
-                state('courses.classes', {
+                state('trainer.courses.classes', {
                     url: '/classes',
-                    templateUrl: 'app/pages/classes/classes.html',
+                    templateUrl: 'app/pages/trainer/classes/classes.html',
                     controller: 'classesController',
                     resolve: classesResolver
-                }).state('courses.courses', {
+                }).state('trainer.courses.courses', {
                     url: '/courses',
-                    templateUrl: 'app/pages/courses/courses.html',
+                    templateUrl: 'app/pages/trainer/courses/courses.html',
                     controller: 'coursesController',
                     resolve: coursesResolver
-                }).state('courses.single-class', {
+                }).state('trainer.courses.single-class', {
                     url: '/single-class?classId',
-                    templateUrl: 'app/pages/classes/single-class/single-class.html',
+                    templateUrl: 'app/pages/trainer/classes/single-class/single-class.html',
                     controller: 'singleClassController',
                     resolve: singleClassResolver
-                }).state('courses.single-course', {
+                }).state('trainer.courses.single-course', {
                     url: '/single-course?courseId',
-                    templateUrl: 'app/pages/courses/single-course/single-course.html',
+                    templateUrl: 'app/pages/trainer/courses/single-course/single-course.html',
                     controller: 'singleCourseController',
                     resolve: singleCourseResolver
                 });

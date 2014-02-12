@@ -12,15 +12,15 @@
                 });
 
                 $stateProvider.
-                    state('courses.single-class.add-class', {
+                    state('trainer.courses.single-class.add-class', {
                         url: '/add',
-                        templateUrl: 'app/pages/classes/single-class/single-class-add.html'
-                    }).state('courses.single-class.edit-class', {
+                        templateUrl: 'app/pages/trainer/classes/single-class/single-class-add.html'
+                    }).state('trainer.courses.single-class.edit-class', {
                         url: '/edit',
-                        templateUrl: 'app/pages/classes/single-class/single-class-edit.html'
-                    }).state('courses.single-class.single-student', {
+                        templateUrl: 'app/pages/trainer/classes/single-class/single-class-edit.html'
+                    }).state('trainer.courses.single-class.single-student', {
                         url: '/single-student?studentId',
-                        templateUrl: 'app/pages/single-student/single-student.html',
+                        templateUrl: 'app/pages/trainer/single-student/single-student.html',
                         controller: 'singleStudentController'
                     });
             }

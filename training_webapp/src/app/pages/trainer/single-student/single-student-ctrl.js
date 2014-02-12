@@ -74,7 +74,7 @@ angular.module('trng.students').controller('singleStudentController', [
 
         $scope.configurBpPermissions = function() {
             var modalInstance = $modal.open({
-                templateUrl: 'app/pages/single-student/bp-permissions.html',
+                templateUrl: 'app/pages/trainer/single-student/bp-permissions.html',
                 controller: 'bpPermissionsController',
                 resolve: {
                     bpPermissions: function() {
@@ -112,7 +112,7 @@ angular.module('trng.students').controller('singleStudentController', [
             });
 
             var modalInstance = $modal.open({
-                templateUrl: 'app/pages/single-student/bp-permissions.html',
+                templateUrl: 'app/pages/trainer/single-student/bp-permissions.html',
                 controller: 'bpPermissionsController',
                 resolve: {
                     bpPermissions: function() {

@@ -3,13 +3,14 @@
 
 angular.module('trng.courses.classes').controller('classesController', [
     '$scope',
+    '$rootScope',
     '$state',
     '$log',
     'trng.courses.classes.ClassModel',
     'trng.services.ClassesService',
     'trng.courses.courses.CourseModel',
     'classes',
-    function ($scope, $state, $log, classModel, classesService, courseModel, classes) {
+    function ($scope, $rootScope, $state, $log, classModel, classesService, courseModel, classes) {
 
         $scope.init = function () {
             $scope.initClassesDataGrid();
@@ -42,7 +43,13 @@ angular.module('trng.courses.classes').controller('classesController', [
                 },
                 {
                     displayName: 'Actions',
-                    cellTemplate: '<a href="" class="btn btn-small btn-link" ng-click="editClass(row)"><i class="icon-edit" /> Edit</a><a href="" class="btn btn-small btn-link" ng-click="deleteClass(row)"><i class="icon-trash" /> Delete</a>'
+                    cellTemplate:
+                        '<a href="" class="btn btn-small btn-link" ng-click="editClass(row)">' +
+                            '<i class="icon-edit" /> Edit' +
+                        '</a>' +
+                        '<a href="" class="btn btn-small btn-link" ng-click="deleteClass(row)">' +
+                            '<i class="icon-trash" /> Delete' +
+                        '</a>'
                 }
             ];
         };
@@ -83,6 +90,14 @@ angular.module('trng.courses.classes').controller('classesController', [
             var classId = classToDelete.getProperty('id');
             classModel.deleteClassById($scope.classes, classId);
         };
+
+        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+            if (toState['name'] === 'trainer.courses.single-class.add-class') {
+                $rootScope.isAdd = true;
+            } else {
+                $rootScope.isAdd = false;
+            }
+        });
 
         $scope.init();
     }
