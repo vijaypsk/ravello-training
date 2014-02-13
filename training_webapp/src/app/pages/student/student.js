@@ -1,15 +1,26 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.student', []).config([
+    angular.module('trng.student', ['trng.services']).config([
         '$urlRouterProvider', '$stateProvider',
         function($urlRouterProvider, $stateProvider) {
-            $urlRouterProvider.when('/class', 'student/class');
+            $urlRouterProvider.when('/student/class/{classId}', '/student/class/{classId}/apps')
 
             $stateProvider.
                 state('student.class', {
                     url: '/class/{classId}',
                     templateUrl: 'app/pages/student/class/student-class.html',
+                    controller: 'studentClassController',
+                    resolve: studentClassResolver,
+                    abstract: true
+                }).state('student.class.single-app', {
+                    url: '/single-app?appId',
+                    templateUrl: 'app/pages/student/class/student-single-app.html',
+                    controller: 'studentAppController',
+                    resolve: studentAppResolver
+                }).state('student.class.apps-list', {
+                    url: '/apps',
+                    templateUrl: 'app/pages/student/class/student-apps-list.html',
                     controller: 'studentClassController'
                 });
         }

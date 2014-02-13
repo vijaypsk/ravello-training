@@ -86,4 +86,21 @@
     width: 1200px;
 }
 
+/* Student in class */
 
+#studentAppsDataGird {
+    height: 300px;
+    width: 800px;
+}
+
+#studentVmsDataGird {
+    height: 300px;
+    width: 800px;
+}
+
+/* VM Details */
+
+#vmDetailsDiv {
+    height: 400px;
+    width: 400px;
+}

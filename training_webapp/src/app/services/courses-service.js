@@ -20,6 +20,14 @@ angular.module('trng.services').factory('trng.services.CoursesService', [
 				});
 			},
 
+            getCourseById: function(courseId) {
+                return coursesProxy.getCourseById(courseId).then(
+                    function(result) {
+                        return coursesTrans.dtoToEntity(result.data);
+                    }
+                );
+            },
+
             add: function(entity) {
                 var dto = coursesTrans.entityToDto(entity);
                 coursesProxy.add(dto);

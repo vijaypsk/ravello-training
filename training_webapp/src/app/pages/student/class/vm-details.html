@@ -1,0 +1,27 @@
+
+<div id="vmDetailsDiv" class="container">
+    <div class="row">
+        <h4>Hostnames:</h4>
+    </div>
+
+    <div ng-repeat="hostname in selectedVm.hostnames" class="row">
+        - {{hostname.name}}
+    </div>
+
+    <div class="row">
+        <h4>External access:</h4>
+    </div>
+
+    <div class="row">
+        <h5>{{selectedVm.dns.name}}</h5>
+    </div>
+
+    <div ng-repeat="service in selectedVm.dns.services" class="row">
+        - {{service.name}}      {{service.port}}
+    </div>
+
+
+    <div class="row">
+        <button id="okBtn" ng-click="ok()">OK</button>
+    </div>
+</div>

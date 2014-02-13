@@ -1,0 +1,15 @@
+
+<div id="studentSingleAppDiv" class="container">
+    <div class="row">
+        <div class="col-lg-2">
+            <button id="startBtn" ng-click="startVm()" ng-disabled="!bpPermissions.startVms">Start</button>
+        </div>
+        <div class="col-lg-2">
+            <button id="stopBtn" ng-click="stopVm()" ng-disabled="!bpPermissions.stopVms">Stop</button>
+        </div>
+        <div class="col-lg-2">
+            <button id="consoleBtn" ng-click="consoleVm()" ng-disabled="!bpPermissions.console">Console</button>
+        </div>
+    </div>
+    <div id="studentVmsDataGird" ng-grid="studentVmsDataGird"></div>
+</div>

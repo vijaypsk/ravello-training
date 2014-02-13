@@ -6,6 +6,10 @@ angular.module('trng.proxies').factory('trng.proxies.CoursesProxy', ['$http', '$
 			return $http.get('/rest/courses');
 		},
 
+        getCourseById: function(courseId) {
+            return $http.get('/rest/courses/' + courseId);
+        },
+
         add: function(courseToSave) {
             return $http.post('/rest/courses', courseToSave);
         },
