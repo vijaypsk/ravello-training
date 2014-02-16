@@ -2,61 +2,36 @@
 
 
 var _ = require('lodash');
-var mongoose = require('mongoose');
+var mongoose = require('mongoose-q')(require('mongoose'));
 
 var ObjectId = mongoose.Types.ObjectId;
 
 var TrainingClass = mongoose.model('TrainingClass');
 
-exports.classes = function(request, response) {
-    TrainingClass.find().exec(function(error, entities) {
-        if (error) {
-            console.log("error while reading classes");
-        } else {
-            var dtos = _.map(entities, function(entity) {
-                return TrainingClass.entityToDto(entity.toJSON(), entity.id);
-            });
-
-            response.json(dtos);
-        }
+exports.getClasses = function() {
+    return TrainingClass.findQ().then(function(entities) {
+        return _.map(entities, function(entity) {
+            return TrainingClass.entityToDto(entity.toObject(), entity.id);
+        });
     });
 };
 
-exports.createClass = function(request, response) {
-    var dtoData = request.body;
-    var entityData = TrainingClass.dtoToEntity(dtoData);
+exports.createClass = function(classData) {
+    var entityData = TrainingClass.dtoToEntity(classData);
 
     var newClass = new TrainingClass(entityData);
-    newClass.save(function(error, entity) {
-        if (error) {
-            console.log("There was an error: " + error);
-        } else {
-            var dto = TrainingClass.entityToDto(entity.toObject(), entity.id);
-            response.json(dto);
-        }
+
+    return newClass.saveQ().then(function(entity) {
+        return TrainingClass.entityToDto(entity.toObject(), entity.id);
     });
 };
 
-exports.updateClass = function(request, response) {
-    var classId = request.params.classId;
-    var updatedClassDto = request.body;
-    var updatedClassEntity = TrainingClass.dtoToEntity(updatedClassDto);
+exports.updateClass = function(classId, classData) {
+    var updatedClassEntity = TrainingClass.dtoToEntity(classData);
 
-    TrainingClass.update({'_id': new ObjectId(classId)}, updatedClassEntity,
-        function(error, numOfUpdatedEntities, existingClass) {
-            if (error) {
-                console.log("Could not update class " + classId + ": " + error);
-            }
-        }
-    );
+    return TrainingClass.updateQ({'_id': new ObjectId(classId)}, updatedClassEntity);
 };
 
-exports.deleteClass = function(request, response) {
-    var classId = request.params.classId;
-
-    TrainingClass.remove({'_id': new ObjectId(classId)}).exec(function(error) {
-        if (error) {
-            console.log("Could not delete class " + classId);
-        }
-    });
+exports.deleteClass = function(classId) {
+    return TrainingClass.removeQ({'_id': new ObjectId(classId)});
 };

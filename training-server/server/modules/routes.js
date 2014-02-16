@@ -3,7 +3,7 @@
 require('./model/classes-model');
 require('./model/courses-model');
 
-var classes = require('./dal/classes-dal');
+var classesController = require('./controllers/classes-ctrl');
 var coursesController = require('./controllers/courses-ctrl');
 var blueprintsController = require('./controllers/blueprints-ctrl');
 
@@ -23,10 +23,10 @@ module.exports = function(app) {
     // Route the application.
 
     // Classes route.
-    app.get('/rest/classes', classes.classes);
-    app.post('/rest/classes', classes.createClass);
-    app.delete('/rest/classes/:classId', classes.deleteClass);
-    app.put('/rest/classes/:classId', classes.updateClass);
+    app.get('/rest/classes', classesController.getClasses);
+    app.post('/rest/classes', classesController.createClass);
+    app.delete('/rest/classes/:classId', classesController.deleteClass);
+    app.put('/rest/classes/:classId', classesController.updateClass);
 
     // Courses route.
     app.get('/rest/courses', coursesController.getCourses);

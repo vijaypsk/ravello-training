@@ -39,9 +39,9 @@ exports.createCourse = function(request, response) {
 
 exports.updateCourse = function(request, response) {
     var courseId = request.params.courseId;
-    var course = request.body;
+    var courseData = request.body;
 
-    coursesDal.updateCourse(courseId, course).fail(function(error) {
+    coursesDal.updateCourse(courseId, courseData).fail(function(error) {
         console.log("Could not update course, error: " + error);
     });
 };
