@@ -30,21 +30,21 @@ angular.module('trng.services').factory('trng.services.CoursesService', [
 
             add: function(entity) {
                 var dto = coursesTrans.entityToDto(entity);
-                coursesProxy.add(dto);
+                return coursesProxy.add(dto);
             },
 
             update: function(entity) {
                 var dto = coursesTrans.entityToDto(entity);
-                coursesProxy.update(dto);
+                return coursesProxy.update(dto);
             },
 
             delete: function(entity) {
                 var dto = coursesTrans.entityToDto(entity);
-                coursesProxy.delete(dto);
+                return coursesProxy.delete(dto);
             },
 
             deleteById: function(entityId) {
-                coursesProxy.deleteById(entityId);
+                return coursesProxy.deleteById(entityId);
             }
         };
 		

@@ -1,32 +1,36 @@
 'use strict';
 
-angular.module('trng.proxies').factory('trng.proxies.CoursesProxy', ['$http', '$q', function($http, $q) {
-	var service = {
-		getAllCourses: function() {
-			return $http.get('/rest/courses');
-		},
+angular.module('trng.proxies').factory('trng.proxies.CoursesProxy', [
+    '$http',
+    '$q',
+    'app.config',
+    function($http, $q, config) {
+        var service = {
+            getAllCourses: function() {
+                return $http.get(config.baseUrl + '/rest/courses');
+            },
 
-        getCourseById: function(courseId) {
-            return $http.get('/rest/courses/' + courseId);
-        },
+            getCourseById: function(courseId) {
+                return $http.get(config.baseUrl + '/rest/courses/' + courseId);
+            },
 
-        add: function(courseToSave) {
-            return $http.post('/rest/courses', courseToSave);
-        },
+            add: function(courseToSave) {
+                return $http.post(config.baseUrl + '/rest/courses', courseToSave);
+            },
 
-        update: function(courseToSave) {
-            return $http.put('/rest/courses/' + courseToSave['id'], courseToSave);
-        },
+            update: function(courseToSave) {
+                return $http.put(config.baseUrl + '/rest/courses/' + courseToSave['id'], courseToSave);
+            },
 
-        delete: function(courseToDelete) {
-            return $http.delete('/rest/courses/' + courseToDelete['id']);
-        },
+            delete: function(courseToDelete) {
+                return $http.delete(config.baseUrl + '/rest/courses/' + courseToDelete['id']);
+            },
 
-        deleteById: function(courseId) {
-            return $http.delete('/rest/courses/' + courseId);
-        }
+            deleteById: function(courseId) {
+                return $http.delete(config.baseUrl + '/rest/courses/' + courseId);
+            }
+        };
 
-    };
-
-    return service;
-}]);
+        return service;
+    }
+]);

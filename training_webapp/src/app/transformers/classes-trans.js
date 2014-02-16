@@ -9,8 +9,8 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
 			dtoToEntity: function(dto) {
 		        var entity = _.cloneDeep(dto);
 
-                entity['startDate'] = Date.parse(entity['startDate']);
-                entity['endDate'] = Date.parse(entity['endDate']);
+//                entity['startDate'] = Date.parse(entity['startDate']);
+//                entity['endDate'] = Date.parse(entity['endDate']);
 
                 return entity;
 			},
@@ -18,8 +18,8 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
 			entityToDto: function(entity) {
                 var dto = _.cloneDeep(entity);
 
-                dto['startDate'] = dto['startDate'].toString(dateUtil.dateFormat);
-                dto['endDate'] = dto['endDate'].toString(dateUtil.dateFormat);
+//                dto['startDate'] = dto['startDate'].toString(dateUtil.dateFormat);
+//                dto['endDate'] = dto['endDate'].toString(dateUtil.dateFormat);
 
                 return dto;
 			}

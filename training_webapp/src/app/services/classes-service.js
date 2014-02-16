@@ -23,21 +23,24 @@ angular.module('trng.services').factory('trng.services.ClassesService', [
 
             add: function(entity) {
                 var dto = classesTrans.entityToDto(entity);
-                classesProxy.add(dto);
+                return classesProxy.add(dto).then(
+                    function(result) {
+                        return classesTrans.dtoToEntity(result.data);
+                    });
             },
 
             update: function(entity) {
                 var dto = classesTrans.entityToDto(entity);
-                classesProxy.update(dto);
+                return classesProxy.update(dto);
             },
 
             delete: function(entity) {
                 var dto = classesTrans.entityToDto(entity);
-                classesProxy.delete(dto);
+                return classesProxy.delete(dto);
             },
 
             deleteById: function(entityId) {
-                classesProxy.deleteById(entityId);
+                return classesProxy.deleteById(entityId);
             }
 		};
 		

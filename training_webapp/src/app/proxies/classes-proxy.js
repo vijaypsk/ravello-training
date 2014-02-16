@@ -1,31 +1,33 @@
 'use strict';
 
-angular.module('trng.proxies').factory('trng.proxies.ClassesProxy', ['$http', '$q', function($http, $q) {
-	return {
-		getAllClasses: function() {
-			var promise = $http.get('/rest/classes');
-			
-			promise.then(function(result) {
-				return result;
-			});
-			
-			return promise;
-		},
+angular.module('trng.proxies').factory('trng.proxies.ClassesProxy', [
+    '$http',
+    '$q',
+    'app.config',
+    function($http, $q, config) {
+        return {
+            getAllClasses: function() {
+                return $http.get(config.baseUrl + '/rest/classes');
+            },
 
-        add: function(classToSave) {
-            return $http.post('/rest/classes', classToSave);
-        },
+            add: function(classToSave) {
+                return $http.post(config.baseUrl + '/rest/classes', classToSave);
+            },
 
-        update: function(classToSave) {
-            return $http.put('/rest/classes/' + classToSave['id'], classToSave);
-        },
+            update: function(classToSave) {
+                if (classToSave.hasOwnProperty('__v')) {
+                    classToSave = _.omit(classToSave, '__v');
+                }
+                return $http.put(config.baseUrl + '/rest/classes/' + classToSave['id'], classToSave);
+            },
 
-        delete: function(classToDelete) {
-            return $http.delete('/rest/classes/' + classToDelete['id']);
-        },
+            delete: function(classToDelete) {
+                return $http.delete(config.baseUrl + '/rest/classes/' + classToDelete['id']);
+            },
 
-        deleteById: function(classId) {
-            return $http.delete('/rest/classes/' + classId);
-        }
-	};
-}]);
+            deleteById: function(classId) {
+                return $http.delete(config.baseUrl + '/rest/classes/' + classId);
+            }
+        };
+    }
+]);

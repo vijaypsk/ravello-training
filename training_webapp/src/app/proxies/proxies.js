@@ -1,5 +1,5 @@
 'use strict';
 
 (function (angular) {
-	angular.module('trng.proxies', []);
+	angular.module('trng.proxies', ['trng.config']);
 })(angular);

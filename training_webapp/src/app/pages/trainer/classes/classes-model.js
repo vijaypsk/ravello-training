@@ -92,27 +92,42 @@
                     });
                 },
 
-                save: function(classToSave) {
+                save: function(theClass) {
+
+                    var classToSave = model.viewModelToDomainModel(theClass);
+
                     var exists = false;
-                    var matchingClasses = _.where(classes, {id: classToSave['id']});
+                    var matchingClasses = _.where(classes, {id: theClass['id']});
                     exists = matchingClasses && matchingClasses.length > 0;
 
                     if (exists) {
                         classes = _.map(classes, function(currentClass) {
-                            if (currentClass['id'] == classToSave['id']) {
-                                return classToSave;
+                            if (currentClass['id'] == theClass['id']) {
+                                return theClass;
                             }
                             return currentClass;
                         });
-                        classesService.update(model.viewModelToDomainModel(classToSave));
+
+                        classesService.update(classToSave);
+
                     } else {
-                        classes.push(classToSave);
-                        classesService.add(classToSave);
+                        classes.push(theClass);
+                        classesService.add(classToSave).then(
+                            function(result) {
+                                var persistedClass = result;
+                                theClass.id = persistedClass.id;
+                            });
                     }
                 },
 
                 viewModelToDomainModel: function(theClass) {
+                    var courseId = theClass['course']['id'];
+                    theClass['courseId'] = courseId;
                     theClass = _.omit(theClass, 'course');
+
+                    if (!theClass['students']) {
+                        theClass['students'] = [];
+                    }
 
                     theClass['students'] = _.map(theClass['students'], function(student) {
                         return studentModel.viewModelToDomainModel(student);

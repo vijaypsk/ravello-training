@@ -1,15 +1,14 @@
 'use strict';
 
-angular.module('trng.proxies').factory('trng.proxies.BlueprintsProxy', ['$http', '$q', function($http, $q) {
-	return {
-		getAllBlueprints: function() {
-			var promise = $http.get('/rest/blueprints');
-			
-			promise.then(function(result) {
-				return result;
-			});
-			
-			return promise;
-		}
-	};
-}]);
+angular.module('trng.proxies').factory('trng.proxies.BlueprintsProxy', [
+    '$http',
+    '$q',
+    'app.config',
+    function($http, $q, config) {
+        return {
+            getAllBlueprints: function() {
+                return $http.get(config.baseUrl + '/rest/blueprints');
+            }
+        };
+    }
+]);

@@ -38,6 +38,13 @@
                 createNewStudent: function(theClass) {
                     var student = {};
                     assignBlueprintsToStudent(theClass, student);
+
+                    if (!theClass['students']) {
+                        theClass['students'] = [];
+                    }
+
+                    theClass['students'].push(student);
+
                     return student;
                 },
 
