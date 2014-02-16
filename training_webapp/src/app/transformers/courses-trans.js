@@ -6,7 +6,6 @@ angular.module('trng.transformers').factory('trng.transformers.CoursesTransforme
 		var service = {
 			dtoToEntity: function(dto) {
 		        var entity = _.cloneDeep(dto);
-//		        generalTrans.dtoToEntity(dto, entity);
                 return entity;
 			},
 			

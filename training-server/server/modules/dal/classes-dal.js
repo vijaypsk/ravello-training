@@ -9,8 +9,8 @@ var ObjectId = mongoose.Types.ObjectId;
 var TrainingClass = mongoose.model('TrainingClass');
 
 exports.classes = function(request, response) {
-    TrainingClass.find().exec(function(err, entities) {
-        if (err) {
+    TrainingClass.find().exec(function(error, entities) {
+        if (error) {
             console.log("error while reading classes");
         } else {
             var dtos = _.map(entities, function(entity) {
@@ -31,7 +31,6 @@ exports.createClass = function(request, response) {
         if (error) {
             console.log("There was an error: " + error);
         } else {
-            console.log("Saved class with inner id: " + entity._id);
             var dto = TrainingClass.entityToDto(entity.toObject(), entity.id);
             response.json(dto);
         }

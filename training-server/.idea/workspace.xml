@@ -312,7 +312,11 @@
       <created>1392549572191</created>
       <updated>1392549572191</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="env">
+      <created>1392558285627</created>
+      <updated>1392558285627</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -354,7 +358,8 @@
     </option>
     <MESSAGE value="This is a rather big revision...&#10;I add a server app, written in nodejs.&#10;Currently it can offer a RESTful API, and for classes - it also stores the data in a mongodb.&#10;&#10;I changed some of the AngularJS code as well, to conform to the existence of the server (some of it wasn't correct, as I was working with deflect.io mocks)." />
     <MESSAGE value="Removing unnecessary code that came from the nodejs template project." />
-    <option name="LAST_COMMIT_MESSAGE" value="Removing unnecessary code that came from the nodejs template project." />
+    <MESSAGE value="env" />
+    <option name="LAST_COMMIT_MESSAGE" value="env" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />

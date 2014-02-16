@@ -15,9 +15,6 @@ angular.module('trng.proxies').factory('trng.proxies.ClassesProxy', [
             },
 
             update: function(classToSave) {
-                if (classToSave.hasOwnProperty('__v')) {
-                    classToSave = _.omit(classToSave, '__v');
-                }
                 return $http.put(config.baseUrl + '/rest/classes/' + classToSave['id'], classToSave);
             },
 

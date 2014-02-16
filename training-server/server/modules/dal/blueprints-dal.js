@@ -1,6 +1,8 @@
 'use strict';
 
-exports.blueprints = function(request, response) {
+var q = require('q');
+
+exports.getBlueprints = function() {
 
     var blueprints = [
         {
@@ -33,5 +35,8 @@ exports.blueprints = function(request, response) {
         }
     ];
 
-    response.json(blueprints);
+    var deferred = q.defer();
+    deferred.resolve(blueprints);
+
+    return deferred.promise;
 };

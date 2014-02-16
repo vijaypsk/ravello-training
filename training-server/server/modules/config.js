@@ -25,5 +25,5 @@ module.exports = function(app) {
 
     // DB configuration.
 
-    mongoose.connect('mongodb://localhost:training');
+    mongoose.connect('mongodb://localhost/training');
 };

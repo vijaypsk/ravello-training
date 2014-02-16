@@ -1,10 +1,11 @@
 'use strict';
 
-require('./model/classes_model');
+require('./model/classes-model');
+require('./model/courses-model');
 
-var classes = require('./dal/classes_dal');
-var courses = require('./dal/courses');
-var blueprints = require('./dal/blueprints');
+var classes = require('./dal/classes-dal');
+var coursesController = require('./controllers/courses-ctrl');
+var blueprintsController = require('./controllers/blueprints-ctrl');
 
 module.exports = function(app) {
 
@@ -28,8 +29,11 @@ module.exports = function(app) {
     app.put('/rest/classes/:classId', classes.updateClass);
 
     // Courses route.
-    app.get('/rest/courses', courses.courses);
+    app.get('/rest/courses', coursesController.getCourses);
+    app.post('/rest/courses', coursesController.createCourse);
+    app.delete('/rest/courses/:courseId', coursesController.deleteCourse);
+    app.put('/rest/courses/:courseId', coursesController.updateCourse);
 
     // Blueprints route.
-    app.get('/rest/blueprints', blueprints.blueprints);
+    app.get('/rest/blueprints', blueprintsController.getBlueprints);
 };

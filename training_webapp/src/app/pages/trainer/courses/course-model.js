@@ -107,7 +107,9 @@
                         coursesService.update(courseToSave);
                     } else {
                         courses.push(courseToSave);
-                        coursesService.add(courseToSave);
+                        coursesService.add(courseToSave).then(function(persistedCourse) {
+                            courseToSave.id = persistedCourse.id;
+                        });
                     }
                 },
 
