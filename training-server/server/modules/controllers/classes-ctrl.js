@@ -56,8 +56,8 @@ exports.updateClass = function(request, response) {
 
     // Once the promises of all users creation are resolved, continue to update the class entity.
     q.all(userPromises).then(function() {
-        classesDal.updateClass(classId, classData).spread(function(a, b, c) {
-            response.json(b);
+        classesDal.updateClass(classId, classData).then(function(result) {
+            response.json(result);
         }).fail(function(error) {
             console.log("Could not update class, error: " + error);
         });

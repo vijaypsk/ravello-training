@@ -4,8 +4,8 @@ require('./model/users-model');
 require('./model/classes-model');
 require('./model/courses-model');
 
-var classesController = require('./controllers/classes-ctrl');
-var coursesController = require('./controllers/courses-ctrl');
+var classesController = require('./controllers/mocks/classes-ctrl-mock');
+var coursesController = require('./controllers/mocks/courses-ctrl-mock');
 var blueprintsController = require('./controllers/blueprints-ctrl');
 
 module.exports = function(app) {
