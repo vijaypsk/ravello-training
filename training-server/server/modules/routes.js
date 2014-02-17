@@ -7,6 +7,7 @@ require('./model/courses-model');
 var classesController = require('./controllers/mocks/classes-ctrl-mock');
 var coursesController = require('./controllers/mocks/courses-ctrl-mock');
 var blueprintsController = require('./controllers/blueprints-ctrl');
+var studentController = require('./controllers/mocks/student-ctrl-mock');
 
 module.exports = function(app) {
 
@@ -31,10 +32,16 @@ module.exports = function(app) {
 
     // Courses route.
     app.get('/rest/courses', coursesController.getCourses);
+    app.get('/rest/courses/:courseId', coursesController.getCourse);
     app.post('/rest/courses', coursesController.createCourse);
     app.delete('/rest/courses/:courseId', coursesController.deleteCourse);
     app.put('/rest/courses/:courseId', coursesController.updateCourse);
 
     // Blueprints route.
     app.get('/rest/blueprints', blueprintsController.getBlueprints);
+
+    // Student route.
+    app.get('/rest/students/:studentId', studentController.getStudentClass);
+    app.get('/rest/students/:studentId/class/:classId/apps', studentController.getStudentClassApps);
+    app.get('/rest/students/:studentId/class/:classId/apps/:appId', studentController.getAppVms);
 };
