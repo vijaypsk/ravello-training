@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var mongoose = require('mongoose-q')(require('mongoose'));
+var mongoose = require('mongoose-q')(require('mongoose'), {spread: true});
 
 var ObjectId = mongoose.Types.ObjectId;
 
@@ -30,8 +30,21 @@ exports.createUser = function(userData) {
     });
 };
 
-exports.updateUser = function(userId, userData) {
-    return User.findByIdAndUpdate({'_id': new ObjectId(userId)}, userData, {upsert: true});
+exports.updateUser = function(username, userData) {
+    var data= _.cloneDeep(userData);
+    data = _.omit(data, '_id');
+
+    return User.findOneQ({'username': username}).then(function(user) {
+        if (user) {
+            return User.updateQ({'username': username}, data).spread(function(numOfUpdatedEntities, entity) {
+                return entity;
+            });
+        } else {
+            var user = User(data);
+            return user.saveQ();
+        }
+    });
+//    return User.findOneAndUpdateQ({'username': username}, userData, {upsert: true});
 };
 
 exports.deleteUser = function(username) {

@@ -30,7 +30,11 @@ angular.module('trng.services').factory('trng.services.ClassesService', [
             },
 
             update: function(entity) {
-                var dto = classesTrans.entityToDto(entity);
+                var dto = classesTrans.entityToDto(entity).then(
+                    function(result) {
+                        return classesTrans.dtoToEntity(result.data);
+                    }
+                );
                 return classesProxy.update(dto);
             },
 

@@ -5,3 +5,7 @@
         <select id="courseSelect" ng-options="c.name for c in courses" ng-model="currentClass.course"></select>
     </div>
 </div>
+
+<div save-and-cancel approve-label="Next" cancel-label="Back"
+     approve-func="addToEdit" cancel-func="back">
+ </div>

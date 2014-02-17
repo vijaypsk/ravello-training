@@ -1,6 +1,6 @@
 'use strict';
 
-var mongoose = require('mongoose-q')(require('mongoose'));
+var mongoose = require('mongoose-q')(require('mongoose'), {spread: true});
 var _ = require('lodash');
 var q = require('q');
 
@@ -25,7 +25,10 @@ exports.createCourse = function(courseData) {
 };
 
 exports.updateCourse = function(courseId, courseData) {
-    return TrainingCourse.updateQ({'_id': new ObjectId(courseId)}, courseData);
+    var data = _.cloneDeep(courseData);
+    data = _.omit(data, '_id');
+
+    return TrainingCourse.updateQ({'_id': new ObjectId(courseId)}, data, {upsert: true});
 };
 
 exports.deleteCourse = function(courseId) {

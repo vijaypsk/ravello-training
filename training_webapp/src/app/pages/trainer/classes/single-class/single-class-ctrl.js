@@ -81,7 +81,7 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
         $scope.initStudentsColumns = function () {
             $scope.studentsColumns = [
                 {
-                    field: 'username',
+                    field: 'user.username',
                     displayName: 'Student email'
                 },
                 {
@@ -104,7 +104,7 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
         $scope.initAppsColumns = function() {
             $scope.appsColumns = [
                 {
-                    field: 'student.username',
+                    field: 'student.user.username',
                     displayName: 'Student'
                 },
                 {
@@ -161,7 +161,7 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
             classModel.deleteStudent($scope.currentClass, studentId);
         };
 
-        $scope.save = function() {
+        $scope.saveClass = function() {
             classModel.save($scope.currentClass);
         };
 

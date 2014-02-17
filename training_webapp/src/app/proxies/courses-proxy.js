@@ -19,11 +19,11 @@ angular.module('trng.proxies').factory('trng.proxies.CoursesProxy', [
             },
 
             update: function(courseToSave) {
-                return $http.put(config.baseUrl + '/rest/courses/' + courseToSave['id'], courseToSave);
+                return $http.put(config.baseUrl + '/rest/courses/' + courseToSave['_id'], courseToSave);
             },
 
             delete: function(courseToDelete) {
-                return $http.delete(config.baseUrl + '/rest/courses/' + courseToDelete['id']);
+                return $http.delete(config.baseUrl + '/rest/courses/' + courseToDelete['_id']);
             },
 
             deleteById: function(courseId) {

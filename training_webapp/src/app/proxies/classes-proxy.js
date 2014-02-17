@@ -15,11 +15,11 @@ angular.module('trng.proxies').factory('trng.proxies.ClassesProxy', [
             },
 
             update: function(classToSave) {
-                return $http.put(config.baseUrl + '/rest/classes/' + classToSave['id'], classToSave);
+                return $http.put(config.baseUrl + '/rest/classes/' + classToSave['_id'], classToSave);
             },
 
             delete: function(classToDelete) {
-                return $http.delete(config.baseUrl + '/rest/classes/' + classToDelete['id']);
+                return $http.delete(config.baseUrl + '/rest/classes/' + classToDelete['_id']);
             },
 
             deleteById: function(classId) {

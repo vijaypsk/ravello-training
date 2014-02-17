@@ -2,17 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="048aa645-fcce-4987-ab73-4c8d2c7d5787" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/modules/dal/users-dal.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/modules/model/users-model.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../training_webapp/src/app/common/directives/common-directives.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../training_webapp/src/app/common/directives/saveAndCancel/save-and-cancel-directive.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../training_webapp/src/app/common/directives/saveAndCancel/save-and-cancel.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js" afterPath="$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/dal/classes-dal.js" afterPath="$PROJECT_DIR$/server/modules/dal/classes-dal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/model/classes-model.js" afterPath="$PROJECT_DIR$/server/modules/model/classes-model.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/classes-model.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/classes-model.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/proxies/classes-proxy.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/proxies/classes-proxy.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/services/classes-service.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/services/classes-service.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/transformers/classes-trans.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/transformers/classes-trans.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/classes.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/classes.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/dal/courses-dal.js" afterPath="$PROJECT_DIR$/server/modules/dal/courses-dal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/model/courses-model.js" afterPath="$PROJECT_DIR$/server/modules/model/courses-model.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/transformers/courses-trans.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/transformers/courses-trans.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/routes.js" afterPath="$PROJECT_DIR$/server/modules/routes.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/proxies/courses-proxy.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/proxies/courses-proxy.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/index.html" afterPath="$PROJECT_DIR$/../training_webapp/src/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-add.html" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-add.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-ctrl.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-ctrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-edit.html" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-edit.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class.html" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/single-student/single-student-ctrl.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/single-student/single-student-ctrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/single-student/single-student.html" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/single-student/single-student.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/single-student/student-model.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/single-student/student-model.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/transformers/students-trans.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/transformers/students-trans.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/single-student/students.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/single-student/students.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/dal/users-dal.js" afterPath="$PROJECT_DIR$/server/modules/dal/users-dal.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="training-server.iws" />
@@ -35,7 +47,44 @@
     <favorites_list name="training-server" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="classes-ctrl.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="55" column="0" selection-start="2110" selection-end="2110" vertical-scroll-proportion="0.50223213" vertical-offset="600" max-vertical-offset="1320">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="classes-dal.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/dal/classes-dal.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="40" column="101" selection-start="1333" selection-end="1333" vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="780">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="classes-model.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/model/classes-model.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="30" column="14" selection-start="813" selection-end="813" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1425">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="users-dal.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/dal/users-dal.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="39" column="30" selection-start="1060" selection-end="1060" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="915">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -73,13 +122,13 @@
         <option value="$PROJECT_DIR$/server/modules/config.js" />
         <option value="$PROJECT_DIR$/server/modules/dal/courses_dal.js" />
         <option value="$PROJECT_DIR$/server/modules/controllers/courses-ctrl.js" />
-        <option value="$PROJECT_DIR$/server/modules/dal/courses-dal.js" />
         <option value="$PROJECT_DIR$/server/modules/model/courses-model.js" />
         <option value="$PROJECT_DIR$/tryout.js" />
         <option value="$PROJECT_DIR$/server/modules/routes.js" />
         <option value="$PROJECT_DIR$/server/modules/model/classes-model.js" />
         <option value="$PROJECT_DIR$/server/modules/model/users-model.js" />
         <option value="$PROJECT_DIR$/server/modules/dal/users-dal.js" />
+        <option value="$PROJECT_DIR$/server/modules/dal/courses-dal.js" />
         <option value="$PROJECT_DIR$/server/modules/dal/classes-dal.js" />
         <option value="$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js" />
       </list>
@@ -336,14 +385,18 @@
       <created>1392559068591</created>
       <updated>1392559068591</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="The server now saves the students of each class as separate users, so that the login process can run against that store of users (instead of searching for the login in the students lists of the classes.">
+      <created>1392622675107</created>
+      <updated>1392622675107</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="778" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32863188" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32863188" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32863188" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -354,7 +407,7 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20069444" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20069444" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -381,7 +434,8 @@
     <MESSAGE value="env" />
     <MESSAGE value="I add the server-side handling of courses with the mongodb, with equivalent little client-side changes (like updating the course in the client after they are persisted in the db)." />
     <MESSAGE value="Converting the classes flow to the more robust logic, of controller-dal-model, with decoupling and promises." />
-    <option name="LAST_COMMIT_MESSAGE" value="Converting the classes flow to the more robust logic, of controller-dal-model, with decoupling and promises." />
+    <MESSAGE value="The server now saves the students of each class as separate users, so that the login process can run against that store of users (instead of searching for the login in the students lists of the classes." />
+    <option name="LAST_COMMIT_MESSAGE" value="The server now saves the students of each class as separate users, so that the login process can run against that store of users (instead of searching for the login in the students lists of the classes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -453,13 +507,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/controllers/courses-ctrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="145" selection-end="145" vertical-scroll-proportion="0.19642857" vertical-offset="2" max-vertical-offset="900">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tryout.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="53" column="0" selection-start="1191" selection-end="1191" vertical-scroll-proportion="0.0" vertical-offset="542" max-vertical-offset="1050">
@@ -470,48 +517,6 @@
     <entry file="file://$PROJECT_DIR$/server/modules/routes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="0" selection-start="311" selection-end="311" vertical-scroll-proportion="0.3013393" vertical-offset="0" max-vertical-offset="690">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="0" selection-start="2536" selection-end="2536" vertical-scroll-proportion="1.2678572" vertical-offset="437" max-vertical-offset="1320">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/dal/classes-dal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="0" selection-start="1555" selection-end="1555" vertical-scroll-proportion="0.79910713" vertical-offset="377" max-vertical-offset="825">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/dal/courses-dal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="0" selection-start="449" selection-end="449" vertical-scroll-proportion="0.3638393" vertical-offset="92" max-vertical-offset="585">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/dal/users-dal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="23" selection-start="596" selection-end="596" vertical-scroll-proportion="0.78348213" vertical-offset="39" max-vertical-offset="720">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/model/classes-model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="79" selection-end="79" vertical-scroll-proportion="-1.9754465" vertical-offset="960" max-vertical-offset="1425">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/model/courses-model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="0" selection-start="421" selection-end="421" vertical-scroll-proportion="0.73660713" vertical-offset="0" max-vertical-offset="448">
           <folding />
         </state>
       </provider>
@@ -533,6 +538,55 @@
     <entry file="file://$PROJECT_DIR$/../training_webapp/src/app/transformers/courses-trans.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/model/courses-model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="0" selection-start="421" selection-end="421" vertical-scroll-proportion="0.73660713" vertical-offset="0" max-vertical-offset="448">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/controllers/courses-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="0" selection-start="1412" selection-end="1412" vertical-scroll-proportion="0.0" vertical-offset="317" max-vertical-offset="900">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/dal/courses-dal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="0" selection-start="790" selection-end="790" vertical-scroll-proportion="0.73214287" vertical-offset="107" max-vertical-offset="630">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/model/classes-model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="14" selection-start="813" selection-end="813" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1425">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/dal/users-dal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="30" selection-start="1060" selection-end="1060" vertical-scroll-proportion="0.0" vertical-offset="315" max-vertical-offset="915">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/dal/classes-dal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="101" selection-start="1333" selection-end="1333" vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="780">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="0" selection-start="2110" selection-end="2110" vertical-scroll-proportion="0.50223213" vertical-offset="600" max-vertical-offset="1320">
           <folding />
         </state>
       </provider>

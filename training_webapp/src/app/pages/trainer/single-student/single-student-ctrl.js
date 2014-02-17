@@ -9,32 +9,16 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
     '$modal',
     '$window',
     'trng.trainer.students.StudentModel',
+    'currentStudent',
     'currentClass',
-    function ($scope, $state, $stateParams, $log, $modal, $window, studentModel, currentClass) {
-
-        var classId = undefined;
-        var studentId = undefined;
+    function ($scope, $state, $stateParams, $log, $modal, $window, studentModel, currentStudent, currentClass) {
 
         $scope.init = function () {
-            classId = $stateParams['classId'];
-            studentId = $stateParams['studentId'];
-
-            $scope.initStudent();
-            $scope.initStudentsColumns();
+            $scope.currentStudent = currentStudent;
             $scope.initBpPermissionsDataGrid();
         };
 
-        $scope.initStudent = function() {
-            if (studentId) {
-                $scope.currentStudent = studentModel.getStudent(currentClass, studentId);
-            } else {
-                $scope.currentStudent = studentModel.createNewStudent(currentClass);
-            }
-
-            $scope.selectedBps = [];
-        };
-
-        $scope.initStudentsColumns = function () {
+        $scope.initBpPermissionsColumns = function () {
             $scope.studentsColumns = [
                 {
                     field: 'name',
@@ -63,6 +47,10 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
         };
 
         $scope.initBpPermissionsDataGrid = function () {
+            $scope.selectedBps = [];
+
+            $scope.initBpPermissionsColumns();
+
             $scope.bpPermissionsDataGrid = {
                 data: 'currentStudent.blueprints',
                 columnDefs: $scope.studentsColumns,
@@ -126,6 +114,28 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
             });
         };
 
+        $scope.saveStudent = function() {
+            if (!_.contains(currentClass.students, currentStudent)) {
+                currentClass.students.push(currentStudent);
+            }
+            $scope.saveClass();
+        };
+
         $scope.init();
     }
 ]);
+
+var singleStudentResolver = {
+    currentStudent: [
+        '$stateParams', 'trng.trainer.students.StudentModel', 'currentClass',
+        function($stateParams, studentModel, currentClass) {
+            var studentId = $stateParams['studentId'];
+
+            if (studentId) {
+                return studentModel.getStudent(currentClass, studentId);
+            } else {
+                return studentModel.createNewStudent(currentClass);
+            }
+        }
+    ]
+};

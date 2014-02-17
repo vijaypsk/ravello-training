@@ -36,12 +36,9 @@ exports.createClass = function(classData) {
 
 exports.updateClass = function(classId, classData) {
     var updatedClassEntity = TrainingClass.dtoToEntity(classData);
+    updatedClassEntity = _.omit(updatedClassEntity, '_id');
 
-    return TrainingClass.update({'_id': new ObjectId(classId)}, updatedClassEntity).execQ().then(function(entity) {
-        return entity.populateQ('students.user').then(function(fullEntity) {
-            return TrainingClass.entityToDto(fullEntity.toJSON());
-        });
-    });
+    return TrainingClass.updateQ({'_id': new ObjectId(classId)}, updatedClassEntity, {upsert: true});
 };
 
 exports.deleteClass = function(classId) {

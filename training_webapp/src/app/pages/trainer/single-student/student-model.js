@@ -43,8 +43,6 @@
                         theClass['students'] = [];
                     }
 
-                    theClass['students'].push(student);
-
                     return student;
                 },
 

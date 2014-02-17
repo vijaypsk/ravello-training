@@ -6,10 +6,6 @@ var _ = require('lodash');
 var classesDal = require('../dal/classes-dal');
 var usersDal = require('../dal/users-dal');
 
-var toUserEntity = function(userInClass) {
-    return _.pick(userInClass, 'username', 'password', 'firstName', 'surname');
-}
-
 exports.getClasses = function(request, response) {
     classesDal.getClasses().then(function(classes) {
         response.json(classes);
@@ -25,7 +21,7 @@ exports.createClass = function(request, response) {
     // of users against which login will be made.
     var usersCreationPromises = [];
     _.forEach(classData.students, function(student) {
-        var promise = usersDal.createUser(toUserEntity(student)).then(function(persistedUser) {
+        var promise = usersDal.createUser(student.user).then(function(persistedUser) {
             student.user = persistedUser.id;
         });
         usersCreationPromises.push(promise);
@@ -52,7 +48,7 @@ exports.updateClass = function(request, response) {
     // new users if they're not existing yet.
     var userPromises = [];
     _.forEach(classData.students, function(student) {
-        var promise = usersDal.updateUser(student._id, student).then(function(persistedUser) {
+        var promise = usersDal.updateUser(student.user.username, student.user).then(function(persistedUser) {
             student.user = persistedUser.id;
         });
         userPromises.push(promise);
@@ -60,9 +56,13 @@ exports.updateClass = function(request, response) {
 
     // Once the promises of all users creation are resolved, continue to update the class entity.
     q.all(userPromises).then(function() {
-        classesDal.updateClass(classId, classData).fail(function(error) {
+        classesDal.updateClass(classId, classData).spread(function(a, b, c) {
+            response.json(b);
+        }).fail(function(error) {
             console.log("Could not update class, error: " + error);
         });
+    }).fail(function(error) {
+        console.log("Could not update one of the students as users, error: " + error);
     });
 };
 
@@ -72,7 +72,7 @@ exports.deleteClass = function(request, response) {
     classesDal.deleteClass(classId).then(function(deletedClass) {
         var studentsInClass = deletedClass.students;
         _.forEach(deletedClass.students, function(student) {
-            usersDal.findAndDelete(student.username).fail(function(error) {
+            usersDal.findAndDelete(student.user.username).fail(function(error) {
                 console.log("Could not delete one of the users associated with the class, error: " + error);
             });
         });

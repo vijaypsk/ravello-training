@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('trng.transformers').factory('trng.transformers.ClassesTransformer', [
-	'trng.transformers.GeneralTransformer',
+	'trng.transformers.StudentsTransformer',
 	'trng.common.utils.DateUtil',
-	function(generalTrans, dateUtil) {
+	function(studentTrans, dateUtil) {
 
         var service = {
 			dtoToEntity: function(dto) {
@@ -12,6 +12,9 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
                 entity.id = dto._id;
                 entity = _.omit(entity, '_id');
 
+                entity.students = _.map(entity.students, function(student) {
+                    return studentTrans.dtoToEntity(student);
+                });
 
 //                entity['startDate'] = Date.parse(entity['startDate']);
 //                entity['endDate'] = Date.parse(entity['endDate']);
@@ -24,6 +27,10 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
 
                 dto._id = dto.id;
                 dto = _.omit(dto, 'id');
+
+                dto.students = _.map(dto.students, function(student) {
+                    return studentTrans.entityToDto(student);
+                });
 
 //                dto['startDate'] = dto['startDate'].toString(dateUtil.dateFormat);
 //                dto['endDate'] = dto['endDate'].toString(dateUtil.dateFormat);

@@ -1,7 +1,7 @@
 <div id="singleStudentDiv">
     <form name="studentForm">
         <div class="container">
-            <h3>{{currentStudent.firstName}} {{currentStudent.surname}}</h3>
+            <h3>{{currentStudent.user.firstName}} {{currentStudent.user.surname}}</h3>
 
             <div class="row">
                 <div class="col-md-6">
@@ -9,10 +9,10 @@
 
                     <div>
                         <label>Email:</label>
-                        <input type="text" ng-model="currentStudent.username">
+                        <input type="text" ng-model="currentStudent.user.username">
 
                         <label>Password:</label>
-                        <input type="text" ng-model="currentStudent.password">
+                        <input type="text" ng-model="currentStudent.user.password">
                     </div>
                 </div>
 
@@ -39,4 +39,8 @@
             </div>
         </div>
     </form>
+</div>
+
+<div save-and-cancel approve-label="Save" cancel-label="Back"
+     approve-func="saveStudent" cancel-func="back">
 </div>

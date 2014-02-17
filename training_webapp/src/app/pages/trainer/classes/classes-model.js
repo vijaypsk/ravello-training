@@ -108,14 +108,28 @@
                             return currentClass;
                         });
 
-                        classesService.update(classToSave);
+                        classesService.update(classToSave).then(
+                            function(persistedClass) {
+                                theClass.students = persistedClass.students;
+//                                _.forEach(theClass.students, function(currentStudent) {
+//                                    var matchedStudent = _.find(persistedClass.students, function(persistedStudent) {
+//                                        return currentStudent.username === persistedStudent.username;
+//                                    });
+//
+//                                    if (matchedStudent) {
+//                                        currentStudent.id = matchedStudent.id;
+//                                        currentStudent.user = matchedStudent.user;
+//                                    }
+//                                });
+                            }
+                        );
 
                     } else {
                         classes.push(theClass);
                         classesService.add(classToSave).then(
-                            function(result) {
-                                var persistedClass = result;
+                            function(persistedClass) {
                                 theClass.id = persistedClass.id;
+                                theClass.students = persistedClass.students;
                             });
                     }
                 },
