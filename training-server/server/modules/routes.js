@@ -1,5 +1,6 @@
 'use strict';
 
+require('./model/users-model');
 require('./model/classes-model');
 require('./model/courses-model');
 

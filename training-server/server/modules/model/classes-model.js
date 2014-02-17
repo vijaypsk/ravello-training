@@ -15,11 +15,7 @@ var TrainingClassSchema = mongoose.Schema({
     },
     students: [
         {
-            id: String,
-            firstName: String,
-            surname: String,
-            username: String,
-            password: String,
+            user: {type: mongoose.Schema.ObjectId, ref: 'User'},
             blueprintPermissions: [
                 {
                     bpId: String,
@@ -46,7 +42,7 @@ var TrainingClassSchema = mongoose.Schema({
 });
 
 TrainingClassSchema.statics.dtoToEntity = function(dto) {
-    var entity = _.cloneDeep(dto);
+    var entity = dto;
 
     _.forEach(entity.students, function(student) {
         var bpPermissionsArray = [];
@@ -68,7 +64,7 @@ TrainingClassSchema.statics.dtoToEntity = function(dto) {
 };
 
 TrainingClassSchema.statics.entityToDto = function(entity, id) {
-    var dto = _.cloneDeep(entity);
+    var dto = entity;
 
     _.forEach(entity.students, function(student) {
         var bpPermissionsMap = {};
@@ -87,11 +83,6 @@ TrainingClassSchema.statics.entityToDto = function(entity, id) {
         });
         student.apps = appsMap;
     });
-
-    if (id) {
-        dto.id = id;
-        dto = _.omit(dto, '_id');
-    }
 
     return dto;
 };

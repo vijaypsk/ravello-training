@@ -20,15 +20,4 @@ var TrainingCourseSchema = mongoose.Schema(
     }
 );
 
-TrainingCourseSchema.statics.entityToDto = function(entity, id) {
-    var dto = _.cloneDeep(entity);
-
-    if (id) {
-        dto.id = id;
-        dto = _.omit(dto, '_id');
-    }
-
-    return dto;
-};
-
 var TrainingCourse = mongoose.model('TrainingCourse', TrainingCourseSchema);

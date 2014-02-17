@@ -11,7 +11,7 @@ var TrainingCourse = mongoose.model('TrainingCourse');
 exports.getCourses = function(request, response) {
     return TrainingCourse.find().execQ().then(function (entities) {
         return _.map(entities, function(entity) {
-            return TrainingCourse.entityToDto(entity.toObject(), entity.id);
+            return entity.toJSON();
         });
     });
 };
@@ -20,7 +20,7 @@ exports.createCourse = function(courseData) {
     var newCourse = new TrainingCourse(courseData);
 
     return newCourse.saveQ().then(function(entity) {
-       return TrainingCourse.entityToDto(entity.toObject(), entity.id);
+        return entity.toJSON();
     });
 };
 
