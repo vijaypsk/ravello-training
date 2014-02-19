@@ -1,17 +1,10 @@
-
-<div id="allBlueprintsDiv" class="container">
-    <h3>Select blueprints for course</h3>
-
+<div id="allBlueprintsDiv">
+    <h3>Select Blueprints for Course</h3>
     <div id="allBlueprintsDataGridDiv">
         <div id="allBlueprintsDataGrid" ng-grid="allBlueprintsDataGrid"></div>
     </div>
-
-    <div class="row">
-        <div class="col-md-2">
-            <button ng-click="ok()">OK</button>
-        </div>
-        <div class="col-md-2">
-            <button ng-click="cancel()">Cancel</button>
-        </div>
+    <div class="row btns-ok-cancel">
+        <button ng-click="ok()" class="btn btn-success btn-sm"><i class="icon-ok"></i> OK</button>
+        <button ng-click="cancel()" class="btn btn-danger btn-sm"><i class="icon-cancel"></i> Cancel</button>
     </div>
 </div>

@@ -1,11 +1,13 @@
-
-<div>
-    <div>
-        <label for="courseSelect">Course:</label>
-        <select id="courseSelect" ng-options="c.name for c in courses" ng-model="currentClass.course"></select>
+<div class="form-horizontal">
+    <div class="form-box">
+        <div class="form-group">
+            <label class="col-sm-1 control-label" for="courseSelect">Course:</label>
+            <div class="col-sm-5">
+                <select id="courseSelect" class="form-control" ng-options="c.name for c in courses" ng-model="currentClass.course"></select>
+            </div>
+        </div>
+    </div>
+    <div save-and-cancel approve-label="Next" cancel-label="Back"
+         approve-func="addToEdit" cancel-func="back">
     </div>
 </div>
-
-<div save-and-cancel approve-label="Next" cancel-label="Back"
-     approve-func="addToEdit" cancel-func="back">
- </div>

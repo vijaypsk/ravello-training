@@ -14,7 +14,7 @@
 
                 // Routes configuration.
 
-                $urlRouterProvider.when('', 'login');
+                $urlRouterProvider.when('', 'trainer');
 
                 $stateProvider.
                     state('login', {

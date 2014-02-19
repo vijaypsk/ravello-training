@@ -90,6 +90,10 @@ angular.module('trng.trainer.courses.courses').controller('singleCourseControlle
                             existingBp['id'] === newlySelectedBp['id']);
                     });
 
+                    if (!$scope.currentCourse['blueprints']) {
+                        $scope.currentCourse['blueprints'] = [];
+                    }
+
                     if (!matching) {
                         var newBp = _.cloneDeep(newlySelectedBp);
                         newBp['displayForStudents'] = newBp['name'];

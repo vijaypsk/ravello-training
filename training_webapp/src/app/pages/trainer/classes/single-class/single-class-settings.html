@@ -1,39 +1,43 @@
-<form name="classForm">
-    <div class="container">
-        <div class="row">
+<form name="classForm" class="form-horizontal" role="form">
+    <div class="form-box">
+        <div class="form-group">
             <div class="col-md-6">
-                <label for="nameInput">Name:</label>
-                <input id="nameInput" type="text" ng-model="currentClass.name">
+                <label for="nameInput" class="col-sm-3 control-label">Name:</label>
+                <div class="col-sm-9">
+                    <input id="nameInput" type="text" ng-model="currentClass.name" class="form-control">
+                </div>
             </div>
             <div class="col-md-6">
-                <label>Name:</label>
-                {{currentClass.course.name}}
-            </div>
-        </div>
+                <label class="col-sm-3 control-label">Course:</label>
+                <div class="col-sm-9"><div class="form-control mock-disabled-input">{{currentClass.course.name}}</div></div>
 
-        <div class="row">
-            <label for="descriptionInput">Description for students:</label>
-            <input id="descriptionInput" type="text" ng-model="currentClass.description">
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <label>Start date:</label>
-                <div ng-date ng-model="currentClass.startDate" date-format="{{dateFormat}}"></div>
-            </div>
-
-            <div class="col-md-6">
-                <label>End date:</label>
-                <div ng-date ng-model="currentClass.endDate" date-format="{{dateFormat}}"></div>
             </div>
         </div>
 
-        <div>
-            <button id="addStudentBtn" ng-click="addStudent()">Add</button>
-            <button id="deleteStudentBtn" ng-click="deleteStudents()">Delete</button>
-            <div id="studentsDataGridDiv">
-                <div id="studentsDataGrid" ng-grid="studentsDataGrid"></div>
+        <div class="form-group">
+            <div class="col-md-6">
+                <label for="descriptionInput"  class="col-sm-3 control-label">Description:</label>
+                <div class="col-sm-9">
+                    <input id="descriptionInput" type="text" class="form-control" ng-model="currentClass.description">
+                </div>
+            </div>
+            <div class="col-md-6">
+                 <label class="col-sm-3 control-label"><i class="icon-calendar "></i> Start date:</label>
+                <div class="col-sm-3"><ng-date ng-model="currentClass.startDate" date-format="{{dateFormat}}"/></div>
+
+         <label class="col-sm-3 control-label"><i class="icon-calendar"></i> End date:</label>
+                <div class="col-sm-3"><ng-date ng-model="currentClass.endDate" date-format="{{dateFormat}}"/></div>
+
+
             </div>
         </div>
     </div>
+    <div>
+        <button id="addStudentBtn" class="btn" ng-click="addStudent()"><i class="icon-plus"></i> Add</button>
+        <button id="deleteStudentBtn" class="btn" ng-click="deleteStudents()"><i class="icon-trash"></i>Delete</button>
+        <div id="studentsDataGridDiv" class="grid-table">
+            <div id="studentsDataGrid" ng-grid="studentsDataGrid"></div>
+        </div>
+    </div>
+
 </form>

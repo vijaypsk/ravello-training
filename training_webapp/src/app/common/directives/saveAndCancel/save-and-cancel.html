@@ -1,9 +1,4 @@
-
-<div class="row">
-    <div class="col-lg-3">
-        <button ng-click="approveFunc()">{{approveLabel}}</button>
-    </div>
-    <div class="col-lg-3">
-        <button ng-click="cancelFunc()">{{cancelLabel}}</button>
-    </div>
+<div class="row pull-right">
+        <button class="btn btn-success" ng-click="approveFunc()"><i class="icon-floppy"></i> {{approveLabel}}</button>
+        <button class="btn btn-warning" ng-click="cancelFunc()"><i class="icon-undo"></i> {{cancelLabel}}</button>
 </div>

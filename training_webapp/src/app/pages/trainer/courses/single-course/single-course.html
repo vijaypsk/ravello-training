@@ -2,42 +2,41 @@
 <div id="coursesDiv" class="container">
     <div>
         <form name="coursesForm">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <label for="nameInput">Name:</label>
-                        </div>
-                        <div class="col-lg-6">
-                            <input id="nameInput" type="text" ng-model="currentCourse.name" />
+
+            <div class="form-horizontal form-box">
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="nameInput" class="col-sm-2 control-label">Name:</label>
+                        <div class="col-sm-10">
+                            <input id="nameInput" type="text" ng-model="currentCourse.name" class="form-control">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <label for="descriptionInput">Description:</label>
-                        </div>
-                        <div class="col-lg-6">
-                            <input id="descriptionInput" type="text" ng-model="currentCourse.description" />
+                    <div class="col-md-6">
+                        <label for="descriptionInput" class="col-sm-2 control-label">Description:</label>
+                        <div class="col-sm-10">
+                            <input id="descriptionInput" type="text" ng-model="currentCourse.description" class="form-control">
                         </div>
                     </div>
                 </div>
+
+
+
             </div>
+
+
             <div>
-                <button id="addBlueprintBtn" ng-click="addBlueprint()">Add</button>
-                <button id="deleteBlueprinttBtn" ng-click="deleteBlueprints()">Delete</button>
-                <div id="blueprintsDataGridDiv">
+                <button id="addBlueprintBtn" class="btn" ng-click="addBlueprint()"><i class="icon-plus"></i> Add</button>
+                <button id="deleteBlueprinttBtn" class="btn" ng-click="deleteBlueprints()"><i class="icon-trash"></i> Delete</button>
+                <div id="blueprintsDataGridDiv" class="grid-table">
                     <div id="blueprintsDataGrid" ng-grid="blueprintsDataGrid"></div>
                 </div>
             </div>
         </form>
+        <div class="row pull-right">
+            <button class="btn btn-success" ng-click="save()"><i class="icon-floppy"></i> Save</button>
+            <button class="btn btn-warning" ng-click="back()"><i class="icon-undo"></i> Back</button>
 
-        <div>
-            <div class="col-lg-3">
-                <button ng-click="save()">Save</button>
-            </div>
-            <div class="col-lg-3">
-                <button ng-click="back()">Back</button>
-            </div>
         </div>
     </div>
 </div>
