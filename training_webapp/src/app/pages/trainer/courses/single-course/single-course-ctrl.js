@@ -83,15 +83,19 @@ angular.module('trng.trainer.courses.courses').controller('singleCourseControlle
             });
 
             modalInstance.result.then(function(result) {
-                _.forEach(result, function(newlySelectedBp) {
+                _.forEach(result, function(newSelectedBp) {
                     var matching = _.find($scope.currentCourse['blueprints'], function(existingBp) {
-                        return (existingBp && newlySelectedBp &&
-                            existingBp.hasOwnProperty('id') && newlySelectedBp.hasOwnProperty('id') &&
-                            existingBp['id'] === newlySelectedBp['id']);
+                        return (existingBp && newSelectedBp &&
+                            existingBp.hasOwnProperty('id') && newSelectedBp.hasOwnProperty('id') &&
+                            existingBp['id'] === newSelectedBp['id']);
                     });
 
+                    if (!$scope.currentCourse['blueprints']) {
+                        $scope.currentCourse['blueprints'] = [];
+                    }
+
                     if (!matching) {
-                        var newBp = _.cloneDeep(newlySelectedBp);
+                        var newBp = _.cloneDeep(newSelectedBp);
                         newBp['displayForStudents'] = newBp['name'];
                         $scope.currentCourse['blueprints'].push(newBp);
                     }
