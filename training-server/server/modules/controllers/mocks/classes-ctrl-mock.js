@@ -16,6 +16,20 @@ exports.createClass = function(request, response) {
     var classData = request.body;
     classData._id = classId;
 
+    _.forEach(classData.students, function(student) {
+        if (!student.apps) {
+            student.apps = {};
+
+            var appName = "checkpoint-internal_firewall-basic-bp01_" + student.user.firstName;
+
+            classData[appName] = {
+                "blueprintId": "1",
+                "creationTime": "20/01/2014 09:02:31",
+                "numOfRunningVms": 3
+            };
+        }
+    });
+
     classes.push(classData);
 
     response.json(classData);

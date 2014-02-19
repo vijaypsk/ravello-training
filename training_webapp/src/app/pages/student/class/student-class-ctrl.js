@@ -18,7 +18,7 @@ angular.module('trng.student').controller('studentClassController', [
         };
 
         $scope.initDescription = function() {
-            $scope.description = course['description'] +  ' ' + $scope.student['class']['description'];
+            $scope.description = course['description'] +  ' ' + $scope.student['userClass']['description'];
         };
 
         $scope.initAppsColumns = function() {
@@ -63,46 +63,26 @@ angular.module('trng.student').controller('studentClassController', [
 ]);
 
 var studentClassResolver = {
-    student: [
-        'trng.services.StudentsService',
-        function(studentsService) {
-            return studentsService.getStudent("1");
-        }
-    ],
-
     course: [
-        '$q', 'trng.services.StudentsService', 'trng.services.CoursesService',
-        function($q, studentsService, coursesService) {
-            return studentsService.getStudent("1").then(
-                function(student) {
-                    if (student.hasOwnProperty('class') &&
-                        student['class'].hasOwnProperty('courseId')) {
+        '$q', 'trng.services.CoursesService', 'student',
+        function($q, coursesService, student) {
+            if (student.hasOwnProperty('userClass') &&
+                student['userClass'].hasOwnProperty('courseId')) {
 
-                        var courseId = student['class']['courseId'];
-                        return coursesService.getCourseById(courseId);
-                    }
+                var courseId = student['userClass']['courseId'];
+                return coursesService.getCourseById(courseId);
+            }
 
-                    var deferred = $q.defer();
-                    deferred.reject("Could not find student or the course of the student's class");
-                    return deferred.promise;
-                }
-            );
+            var deferred = $q.defer();
+            deferred.reject("Could not find student or the course of the student's class");
+            return deferred.promise;
         }
     ],
 
     apps: [
-        '$q', '$stateParams', 'trng.services.StudentsService',
-        function($q, $stateParams, studentsService) {
-            var classId = $stateParams['classId'];
-
-            if (!classId) {
-                var deferred = $q.defer();
-                deferred.reject("No class provided for the student");
-                return deferred.promise;
-            }
-
-            return studentsService.getStudentClassApps("1", classId);
+        'trng.services.StudentsService', 'student',
+        function(studentsService, student) {
+            return studentsService.getStudentClassApps(student._id, student['userClass']['_id']);
         }
     ]
-
 };

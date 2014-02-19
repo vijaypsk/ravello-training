@@ -3,15 +3,17 @@
 var request = require('superagent');
 var q = require('q');
 
-var baseUrl = 'https://cloud.ravellosystems.com';
+var properties = require('../config/properties');
 
 exports.login = function(username, password) {
     var deferred = q.defer();
 
     request.
-        get(baseUrl + '/services/login').
+        post(properties.baseUrl + '/services/login').
+        set('Content-Length', 0).
+        accept('application/json').
         auth(username, password).
-        end(q.makeNodeResolver());
+        end(deferred.makeNodeResolver());
 
     return deferred.promise;
 };

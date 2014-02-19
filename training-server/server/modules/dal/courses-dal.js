@@ -1,6 +1,6 @@
 'use strict';
 
-var mongoose = require('mongoose-q')(require('mongoose'), {spread: true});
+var mongoose = require('mongoose-q')(require('mongoose'));
 var _ = require('lodash');
 var q = require('q');
 
@@ -8,11 +8,17 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var TrainingCourse = mongoose.model('TrainingCourse');
 
-exports.getCourses = function(request, response) {
+exports.getCourses = function() {
     return TrainingCourse.find().execQ().then(function (entities) {
         return _.map(entities, function(entity) {
             return entity.toJSON();
         });
+    });
+};
+
+exports.getCourse = function(courseId) {
+    return TrainingCourse.findByIdQ(courseId).then(function(entity) {
+        return entity.toJSON();
     });
 };
 

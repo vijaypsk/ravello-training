@@ -4,15 +4,13 @@
     angular.module('trng.student', ['trng.services']).config([
         '$urlRouterProvider', '$stateProvider',
         function($urlRouterProvider, $stateProvider) {
-            $urlRouterProvider.when('/student/class/{classId}', '/student/class/{classId}/apps')
-
             $stateProvider.
                 state('student.class', {
-                    url: '/class/{classId}',
+                    url: '/class',
                     templateUrl: 'app/pages/student/class/student-class.html',
                     controller: 'studentClassController',
-                    resolve: studentClassResolver,
-                    abstract: true
+                    resolve: studentClassResolver
+//                    abstract: true
                 }).state('student.class.single-app', {
                     url: '/single-app?appId',
                     templateUrl: 'app/pages/student/class/student-single-app.html',

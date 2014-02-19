@@ -2,13 +2,16 @@
 
 var _ = require('lodash');
 
+var appsService = require('../services/apps-service');
 var classesDal = require('../dal/classes-dal');
-var blueprintsDal = require('../dal/blueprints-dal');
-var blueprintsService = require('../services/blueprints-service');
 
-exports.getBlueprints = function(request, response) {
+exports.vmAction = function(request, response) {
     var user = request.user;
     var userId = user.id;
+
+    var appId = request.params.appId;
+    var vmId = request.params.vmId;
+    var action = request.params.action;
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUser(userId).then(function(classEntity) {
@@ -19,10 +22,8 @@ exports.getBlueprints = function(request, response) {
         var ravelloUsername = studentData.ravelloCredentials.username;
         var ravelloPassword = studentData.ravelloCredentials.password;
 
-        blueprintsService.getBlueprints(ravelloUsername, ravelloPassword).then(function(blueprints) {
-            response.json(blueprints);
-        }).fail(function(error) {
-            console.log("Could not load blueprints, error: " + error);
+        appsService.vmAction(appId, vmId, action, ravelloUsername, ravelloPassword).then(function(result) {
+            response.send(result.status);
         });
     });
 };

@@ -24,6 +24,7 @@
 
 	<script src='libraries/jquery/jquery.js'></script>
     <script src='libraries/angular/angular.js'></script>
+    <script src='libraries/angular-cookies/angular-cookies.js'></script>
     <script src='libraries/bootstrap/dist/js/bootstrap.js'></script>
     <script src='libraries/angular-ui-router/release/angular-ui-router.js'></script>
     <script src='libraries/ng-grid/build/ng-grid.js'></script>
@@ -31,11 +32,13 @@
     <script src='libraries/datejs/build/date-he-IL.js'></script>
     <script src='libraries/lodash/dist/lodash.js'></script>
     <script src='libraries/ngQuickDate/dist/ng-quick-date.js'></script>
+    <script src='libraries/angular-base64/angular-base64.js'></script>
 
     <!-- App scripts -->
 
     <script src='app/training-app.js'></script>
-    
+    <script src='app/training-main-ctrl.js'></script>
+
     <script src='app/common/config.js'></script>
 
     <script src='app/common/util/util.js'></script>
@@ -46,6 +49,7 @@
     <script src='app/common/directives/saveAndCancel/save-and-cancel-directive.js'></script>
 
     <script src='app/proxies/proxies.js'></script>
+    <script src='app/proxies/login-proxy.js'></script>
     <script src='app/proxies/classes-proxy.js'></script>
     <script src='app/proxies/courses-proxy.js'></script>
     <script src='app/proxies/blueprints-proxy.js'></script>
@@ -62,6 +66,7 @@
     <script src='app/transformers/apps-trans.js'></script>
 
     <script src='app/services/services.js'></script>
+    <script src='app/services/login-service.js'></script>
     <script src='app/services/classes-service.js'></script>
     <script src='app/services/courses-service.js'></script>
     <script src='app/services/blueprints-service.js'></script>
@@ -70,6 +75,7 @@
 
     <script src='app/pages/login/login.js'></script>
     <script src='app/pages/login/login-ctrl.js'></script>
+    <script src='app/pages/login/login-model.js'></script>
 
     <script src='app/pages/trainer/trainer.js'></script>
 
@@ -92,6 +98,8 @@
     <script src='app/pages/trainer/single-student/bp-permissions-ctrl.js'></script>
 
     <script src='app/pages/student/student.js'></script>
+    <script src='app/pages/student/student-resolver.js'></script>
+    <script src='app/pages/student/student-ctrl.js'></script>
 
     <script src='app/pages/student/class/student-class-ctrl.js'></script>
     <script src='app/pages/student/class/student-single-app-ctrl.js'></script>
@@ -100,10 +108,8 @@
 </head>
 
 <body>
-	<div id="mainAppDiv">
-        <div id="mainPanelDiv">
-            <div ui-view></div>
-        </div>
+	<div id="mainAppDiv" ng-controller="MainController">
+        <div ui-view></div>
 	</div>
 	
 	<script>

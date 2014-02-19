@@ -5,10 +5,14 @@ var _ = require('lodash');
 
 var classesDal = require('../dal/classes-dal');
 var usersDal = require('../dal/users-dal');
+var classesTrans = require('../trans/classes-trans');
 
 exports.getClasses = function(request, response) {
     classesDal.getClasses().then(function(classes) {
-        response.json(classes);
+        var dtos = _.map(classes, function(currentClass) {
+            return classesTrans.entityToDto(currentClass);
+        });
+        response.json(dtos);
     }).fail(function(error) {
         console.log('Could not load classes, error: ' + error);
     });
@@ -29,8 +33,10 @@ exports.createClass = function(request, response) {
 
     // Only once all of the promises of the users creation were resolved - continue to create the class.
     q.all(usersCreationPromises).then(function() {
-        classesDal.createClass(classData).then(function(result) {
-            response.json(result);
+        var classEntityData = classesTrans.dtoToEntity(classData);
+        classesDal.createClass(classEntityData).then(function(result) {
+            var dto = classesTrans.entityToDto(result);
+            response.json(dto);
         }).fail(function(error) {
             console.log("Could not save class, error: " + error);
         });
@@ -56,7 +62,9 @@ exports.updateClass = function(request, response) {
 
     // Once the promises of all users creation are resolved, continue to update the class entity.
     q.all(userPromises).then(function() {
-        classesDal.updateClass(classId, classData).then(function(result) {
+        var classEntityData = classesTrans.dtoToEntity(classData);
+        classesDal.updateClass(classId, classEntityData).then(function(result) {
+            var dto = classesTrans.entityToDto(result);
             response.json(result);
         }).fail(function(error) {
             console.log("Could not update class, error: " + error);
