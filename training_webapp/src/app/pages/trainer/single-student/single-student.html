@@ -2,45 +2,82 @@
     <form name="studentForm">
         <div class="container">
             <h3>{{currentStudent.user.firstName}} {{currentStudent.user.surname}}</h3>
-
             <div class="row">
-                <div class="col-md-6">
-                    <label>Student login</label>
+                <div class="col-md-12 form-box form-horizontal">
+                    <h3>Student Login</h3>
+                    <div class="col-md-6">
+                        <div class="form-group">
 
-                    <div>
-                        <label>Email:</label>
-                        <input type="text" ng-model="currentStudent.user.username">
+                            <label for="student-email"  class="col-sm-3 control-label">Email:</label>
+                            <div class="col-sm-9">
+                                <input id="student-email" type="text" class="form-control" ng-model="currentStudent.user.username">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
 
-                        <label>Password:</label>
-                        <input type="text" ng-model="currentStudent.user.password">
+                            <label for="student-password"  class="col-sm-3 control-label">Password:</label>
+                            <div class="col-sm-9">
+                                <input id="student-password" type="text" class="form-control" ng-model="currentStudent.user.password">
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    Ravello Credentials
+                                </a>
+                            </h3>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class="panel-body form-box form-horizontal">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="rav-email"  class="col-sm-3 control-label">Email:</label>
+                                            <div class="col-sm-9">
+                                                <input id="rav-email" type="text" class="form-control" ng-model="currentStudent.ravelloCredentials.username">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
 
-                <div class="col-md-6">
-                    <label>Ravello credentials</label>
+                                            <label for="rav-password"  class="col-sm-3 control-label">Password:</label>
+                                            <div class="col-sm-9">
+                                                <input id="rav-password" type="text" class="form-control" ng-model="currentStudent.ravelloCredentials.password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br><br><br>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
 
-                    <div>
-                        <label>Email:</label>
-                        <input type="text" ng-model="currentStudent.ravelloCredentials.username">
-
-                        <label>Password:</label>
-                        <input type="text" ng-model="currentStudent.ravelloCredentials.password">
-
-                        <input type="checkbox" ng-model="currentStudent.useDefaultRavelloUser"/>
+                                            <label for="rav-default-check"  class="col-sm-4 control-label">Use Default User?</label>
+                                            <div class="col-sm-8">
+                                                <input type="checkbox" id="rav-default-check" ng-model="currentStudent.useDefaultRavelloUser"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
             <div class="row">
-                <button id="configurePermissionsBtn" ng-click="configurBpPermissions()">Configure permissions</button>
-                <div id="bpPermissionsDataGridDiv">
+                <button id="configurePermissionsBtn" class="btn" ng-click="configurBpPermissions()"><i class="icon-cog"></i> Configure permissions</button>
+                <div id="bpPermissionsDataGridDiv" class="grid-table">
                     <div id="bpPermissionsDataGrid" ng-grid="bpPermissionsDataGrid"></div>
                 </div>
             </div>
         </div>
     </form>
 </div>
-
 <div save-and-cancel approve-label="Save" cancel-label="Back"
      approve-func="saveStudent" cancel-func="back">
 </div>

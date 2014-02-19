@@ -1,12 +1,12 @@
-
-<h2>Courses</h2>
-
-<div id="coursesDiv">
-    <div>
-        <button id="addCourseBtn" ng-click="addCourse()">Add</button>
-        <button id="deleteCoursesBtn" ng-click="deleteCourses()">Delete</button>
-        <div id="coursesDataGridDiv">
-            <div id="coursesDataGrid" ng-grid="coursesDataGrid"></div>
+<div class="container">
+    <h2>Courses</h2>
+    <div id="coursesDiv">
+        <div>
+            <button id="addCourseBtn" class="btn" ng-click="addCourse()"><i class="icon-plus"></i> Add</button>
+            <button id="deleteCoursesBtn" class="btn" ng-click="deleteCourses()"><i class="icon-trash"></i> Delete</button>
+            <div id="coursesDataGridDiv">
+                <div id="coursesDataGrid" ng-grid="coursesDataGrid"></div>
+            </div>
         </div>
     </div>
 </div>

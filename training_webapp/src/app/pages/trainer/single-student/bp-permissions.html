@@ -1,33 +1,27 @@
 
 <div id="bpPermissionsDiv">
     <h3>Permissions</h3>
-    <div class="container">
-        <div class="row">
-            <label for="startVmsInput">Start VMs</label>
+    <div>
+        <div class="col-md-4">
+            <label for="startVmsInput">Start VMs&nbsp;&nbsp;</label>
             <input id="startVmsInput" type="checkbox" ng-model="viewModel.bpPermissions.startVms">
         </div>
 
-        <br>
 
-        <div class="row">
-            <label for="stopVmsInput">Stop VMs</label>
+
+        <div class="col-md-4">
+            <label for="stopVmsInput">Stop VMs&nbsp;&nbsp;</label>
             <input id="stopVmsInput" type="checkbox" ng-model="viewModel.bpPermissions.stopVms">
         </div>
 
-        <br>
-
-        <div class="row">
-            <label for="consoleInput">Start VMs</label>
+        <div class="col-md-4">
+            <label for="consoleInput">Start VMs&nbsp;&nbsp;</label>
             <input id="consoleInput" type="checkbox" ng-model="viewModel.bpPermissions.console">
         </div>
-
-        <div class="row">
-            <div class="col-md-2">
-                <button ng-click="ok()">OK</button>
-            </div>
-            <div class="col-md-2">
-                <button ng-click="cancel()">Cancel</button>
-            </div>
+<div class="clearfix "></div>
+        <div class="row btns-ok-cancel">
+                <button ng-click="ok()"class="btn btn-success btn-sm"><i class="icon-ok"></i>OK</button>
+                <button ng-click="cancel()"class="btn btn-danger btn-sm"><i class="icon-cancel"></i>Cancel</button>
         </div>
     </div>
 </div>

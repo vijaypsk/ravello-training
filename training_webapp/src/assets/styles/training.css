@@ -13,84 +13,73 @@
     width: 100%;
 }
 
-#classesDataGridDiv {
-    height: 800px;
-    width: 800px;
+#classesDataGridDiv, #coursesDataGridDiv {
+    margin-top: 20px;
+
 }
 
 #classesDataGrid {
     height: 300px;
-    width: 800px;
+
 }
 
 /* Courses */
 
-#coursesDataGridDiv {
-    height: 800px;
-    width: 800px;
-}
 
 #coursesDataGrid {
     height: 300px;
-    width: 800px;
+
 }
 
 /* Single class */
 
 #studentsDataGrid {
     height: 300px;
-    width: 800px;
+
 }
 
 #appsDataGridDiv {
-    height: 800px;
-    width: 800px;
+
 }
 
 #appsDataGrid {
     height: 300px;
-    width: 800px;
+
 }
 
 /* Single student */
 
 #bpPermissionsDataGrid {
     height: 300px;
-    width: 800px;
+
 }
 
 /* Single course */
 
 #blueprintsDataGrid {
     height: 300px;
-    width: 800px;
-}
 
-#allBlueprintsDiv {
-    width: 1200px;
-    height: 600px;
 }
 
 #allBlueprintsDataGrid {
-    height: 300px;
-    width: 550px;
+    min-height: 300px;
+    width: 100%;
 }
 
 #allBlueprintsDataGridDiv {
-    height: 500px;
-    width: 1200px;
+
 }
 
 /* Student in class */
 
 #studentAppsDataGird {
     height: 300px;
-    width: 800px;
+
 }
 
 #studentVmsDataGird {
     height: 300px;
-    width: 800px;
+
 }
 
 /* VM Details */
@@ -98,4 +87,161 @@
 #vmDetailsDiv {
     height: 400px;
     width: 400px;
+}
+.header-container {
+    background-color: #232323;
+}
+.header {
+    height: 50px;
+    display: table;
+    margin: 0 auto 62px;
+}
+@media (min-width: 768px) {
+    .header, .submenu-wrapper {
+        width: 750px;
+    }
+}
+@media (min-width: 992px) {
+    .header, .submenu-wrapper {
+        width: 970px;
+    }
+}
+@media (min-width: 1200px) {
+    .header, .submenu-wrapper {
+        width: 1170px;
+    }
+}
+.header-title {
+    background: transparent url(../images/ravello-logo-small.png) no-repeat center left scroll;
+    padding-left: 45px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 0;
+    display: table-cell;
+    vertical-align: middle;
+    color: white;
+    font-size: 22px;
+    width: 25%;
+}
+.main-nav {
+    float: left;
+    margin: 0;
+    padding: 0;
+    height: 50px;
+    line-height: 50px;
+}
+.main-nav li a {
+    padding: 0 10px;
+    color: white;
+}
+.main-nav li a:hover, .main-nav li a:hover {
+    color: #ffe403;
+    text-decoration: none;
+}
+.submenu {
+    width: 100%;
+    left: 0;
+    position: absolute;
+    background-color: #0898de;
+    text-align: center;
+    display: block;
+    height: 42px;
+    z-index: 1;
+    top:50px;
+    padding: 0;
+}
+.submenu-wrapper {
+    margin: 0 auto;
+    height: 42px;
+}
+
+.submenu-links {
+    padding-left: 25%;
+}
+.submenu li {
+    float: left;
+    line-height: 42px;
+    height: 42px;
+    list-style: none;
+}
+.submenu li a {
+    color: white;
+}
+a.dropdown {
+    position: relative;
+    display: block;
+}
+a.dropdown:after{
+    content: "";
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-bottom: 8px solid #0898de;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -11px;
+}
+.mock-disabled-input {
+    border-color:#FFF;
+    box-shadow: none;
+}
+.nav-tabs {
+    margin-bottom: 25px;
+}
+.nav-tabs > li > a:hover {
+    cursor: pointer !important;
+}
+.nav-tabs > li.active > a:hover {
+    cursor: default !important;
+}
+.grid-table {
+    margin: 25px 0;
+}
+.row {
+    margin-left:auto ;
+    margin-right:auto ;
+}
+.form-box {
+    background: #E5e5e5;
+    margin: 15px 0;
+    border-radius: 3px;
+    padding: 20px;
+}
+.form-box .form-group:last-child {
+    margin-bottom: 0;
+}
+.form-box h3 {
+    margin-top: 0;
+    font-size: 20px;
+}
+.panel-body.form-box {
+    border-top-left-radius: 0;
+    border-top-right-radius:0 ;
+    margin: 0;
+}
+h3.panel-title {
+    font-size: 20px !important;
+}
+.panel-default > .panel-heading {
+    background-image: none;
+    background-color:#E5e5e5 ;
+}
+.panel-group .panel-heading + .panel-collapse .panel-body {
+    border-top: none;
+}
+#accordion {
+    margin-bottom: 15px;
+}
+#rav-default-check {
+    margin-top: 10px;
+}
+.modal-content>div>h3:first-child {
+margin-top: 0;
+}
+.modal-content {
+    padding: 2em;
+}
+.btns-ok-cancel {
+    margin-top: 15px;
 }

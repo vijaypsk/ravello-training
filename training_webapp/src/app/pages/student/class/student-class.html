@@ -1,17 +1,21 @@
-
+<div class="container-fluid header-container">
+    <div class="header">
+        <h1 class="header-title">Ravello Training Portal</h1>
+    </div>
+</div>
 <div id="studentClassDiv" class="container">
     <div class="row">
         <div class="col-lg-5">
-            <h3>{{student.userClass.name}}</h3>
+            <h3>{{student.class.name}}</h3>
         </div>
         <div class="col-lg-7">
-            {{student.userClass.startDate}} - {{student.userClass.endDate}}
+
         </div>
     </div>
 
     <div class="row">
-        {{description}}
+        <i class="icon-clock"></i> {{student.class.startDate}} - {{student.class.endDate}}
+        <i class="icon-info"></i> {{description}} Soaked, quartered pudding is best jumbled with gooey worcestershire sauce. Who can experience the relativity and history of a master if he has the unveiled mind of the lama?
     </div>
-
     <div ui-view></div>
 </div>
