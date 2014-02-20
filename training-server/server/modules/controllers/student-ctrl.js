@@ -247,24 +247,43 @@ exports.getAppVms = function(request, response) {
                     };
                 });
 
-                var services = _.map(vm.suppliedServices, function(currentService) {
-                    return {
-                        name: currentService.name,
-                        port: currentService.portRange
-                    };
+                var allDns = _.map(vm.networkConnections, function(networkConnection) {
+                    var publicIp = networkConnection.ipConfig.publicIp;
+
+                    if (publicIp) {
+                        var servicesForNic = _.map(vm.suppliedServices, function(currentService) {
+                            // Return the service if:
+                            // 1. It has no ip property (meaning it is for all IPs).
+                            // 2. OR it has an ip property, and its equal to the current public IP.
+                            // 3. AND it is defined as external.
+                            if ((!currentService.hasOwnProperty('ip') || currentService.ip === publicIp) &&
+                                currentService.external) {
+
+                                return {
+                                    name: currentService.name,
+                                    port: currentService.externalPort
+                                };
+                            }
+                        });
+
+                        return {
+                            name: networkConnection.ipConfig.fqdn,
+                            services: servicesForNic
+                        }
+                    }
                 });
 
-                var dnsDto = {
-                    name: app.deployment.network.dnsService.host[0].name,
-                    services: services
-                };
+                var firstDns = allDns.length == 1 ? allDns[0] : _.find(allDns, function(dns) {
+                    return (dns.servicesForNic && dns.servicesForNic.length > 0);
+                });
 
                 var vmDto = {
                     id: vm.id,
                     name: vm.name,
                     status: vm.state,
                     hostnames: hostnames,
-                    dns: dnsDto
+                    allDns: allDns,
+                    firstDns: firstDns
                 };
 
                 vms.push(vmDto);

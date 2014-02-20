@@ -12,12 +12,13 @@
         <h4>External access:</h4>
     </div>
 
-    <div class="row">
-        <h5>{{selectedVm.dns.name}}</h5>
-    </div>
-
-    <div ng-repeat="service in selectedVm.dns.services" class="row">
-        - {{service.name}}      {{service.port}}
+    <div ng-repeat="dns in selectedVm.allDns">
+        <div class="row">
+            <h5>{{dns.name}}</h5>
+        </div>
+        <div ng-repeat="service in dns.services" class="row">
+            - {{service.name}}      {{service.port}}
+        </div>
     </div>
 
 

@@ -33,8 +33,10 @@ angular.module('trng.student').controller('studentAppController', [
                     displayName: 'Status'
                 },
                 {
-                    field: 'dns.name',
-                    displayName: 'DNS'
+                    field: 'firstDns.name',
+                    displayName: 'DNS',
+                    enableCellEdit: true,
+                    width: '30%'
                 },
                 {
                     displayName: 'Details',
