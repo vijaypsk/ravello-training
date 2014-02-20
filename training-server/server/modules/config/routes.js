@@ -42,6 +42,7 @@ module.exports = function(app) {
     app.get('/rest/students/:studentId/class/:classId/apps/:appId', passport.authenticate('basic', {session: false}), studentController.getAppVms);
 
     // App route.
+    app.post('/rest/applications/:appId/:action', passport.authenticate('basic', {session: false}), appController.appAction);
     app.post('/rest/applications/:appId/vms/:vmId/:action', passport.authenticate('basic', {session: false}), appController.vmAction);
     app.get('/rest/applications/:appId/vms/:vmId/vncUrl', passport.authenticate('basic', {session: false}), appController.vmVnc);
 };

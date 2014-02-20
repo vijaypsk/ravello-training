@@ -54,6 +54,19 @@ exports.createApp = function(name, description, bpId, username, password) {
     return deferred.promise;
 };
 
+exports.appAction = function(appId, action, username, password) {
+    var deferred = q.defer();
+
+    request.
+        post(properties.baseUrl + "/services/applications/" + appId + "/" + action).
+        set('Content-Length', 0).
+        accept('application/json').
+        auth(username, password).
+        end(deferred.makeNodeResolver());
+
+    return deferred.promise;
+};
+
 exports.vmAction = function(appId, vmId, action, username, password) {
     var deferred = q.defer();
 

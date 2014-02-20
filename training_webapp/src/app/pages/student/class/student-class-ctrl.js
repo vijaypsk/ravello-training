@@ -4,12 +4,13 @@ angular.module('trng.student').controller('studentClassController', [
     '$log',
     '$scope',
     '$state',
+    'trng.services.AppsService',
     'student',
     'course',
     'apps',
-    function($log, $scope, $state, student, course, apps) {
+    function($log, $scope, $state, appsService, student, course, apps) {
         $scope.init = function() {
-            $scope.name = "daniel";
+            $scope.name = student.firstName + ' ' + student.surname;
             $scope.student = student;
             $scope.apps = apps;
 
@@ -46,16 +47,48 @@ angular.module('trng.student').controller('studentClassController', [
         };
 
         $scope.initAppsDataGrid = function() {
+            $scope.selectedApps = [];
+
             $scope.initAppsColumns();
+
             $scope.studentAppsDataGird = {
                 data: 'apps',
-                columnDefs: $scope.appsColumns
+                columnDefs: $scope.appsColumns,
+                selectedItems: $scope.selectedApps,
+                showSelectionCheckbox: true,
+                selectWithCheckboxOnly: true
             };
         };
 
         $scope.edit = function(appToEdit) {
             var appId = appToEdit.getProperty("id");
             $state.go("^.single-app", {appId: appId});
+        };
+
+        $scope.startApps = function() {
+            _.forEach($scope.selectedApps, function(app) {
+                var bpId = app['blueprintId'];
+                var bpPermissions = $scope.student['userClass']['blueprintPermissions'][bpId];
+
+                if (bpPermissions.startVms) {
+                    appsService.startApp(app['id']).then(function(result) {
+
+                    });
+                }
+            });
+        };
+
+        $scope.stopApps = function() {
+            _.forEach($scope.selectedApps, function(app) {
+                var bpId = app['blueprintId'];
+                var bpPermissions = $scope.student['userClass']['blueprintPermissions'][bpId];
+
+                if (bpPermissions.stopVms) {
+                    appsService.stopApp(app['id']).then(function(result) {
+
+                    });
+                }
+            });
         };
 
         $scope.init();

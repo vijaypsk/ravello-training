@@ -6,6 +6,14 @@ angular.module('trng.proxies').factory('trng.proxies.AppsProxy', [
     'app.config',
     function($http, $q, config) {
         var service = {
+            startApp: function(appId) {
+                return $http.post(config.baseUrl + '/rest/applications/' + appId + '/start');
+            },
+
+            stopApp: function(appId) {
+                return $http.post(config.baseUrl + '/rest/applications/' + appId + '/stop');
+            },
+
             startVm: function(appId, vmId) {
                 return $http.post(config.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/start");
             },
