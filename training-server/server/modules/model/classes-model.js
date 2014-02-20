@@ -63,7 +63,7 @@ TrainingClassSchema.statics.dtoToEntity = function(dto) {
     return entity;
 };
 
-TrainingClassSchema.statics.entityToDto = function(entity, id) {
+TrainingClassSchema.statics.entityToDto = function(entity) {
     var dto = entity;
 
     _.forEach(entity.students, function(student) {

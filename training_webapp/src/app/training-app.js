@@ -14,7 +14,7 @@
 
                 // Routes configuration.
 
-                $urlRouterProvider.when('', 'trainer');
+//                $urlRouterProvider.when('', 'login');
 
                 $stateProvider.
                     state('login', {
@@ -23,18 +23,19 @@
                         controller: 'loginController'
                     }).state('trainer', {
                         url: '/trainer',
-                        templateUrl: 'app/pages/trainer/trainer.html',
-                        abstract: true
+                        templateUrl: 'app/pages/trainer/trainer.html'
+//                        abstract: true
                     }).state('student', {
                         url: '/student',
                         templateUrl: 'app/pages/student/student.html',
-                        abstract: true
+                        controller: 'studentController',
+                        resolve: studentResolver
+//                        abstract: true
                     });
 
                 // HTTP configurations
 
                 $httpProvider.defaults.useXDomain = true;
-//                delete $httpProvider.defaults.headers.common['X-Requested-With'];
             }
         ]);
 })(angular);

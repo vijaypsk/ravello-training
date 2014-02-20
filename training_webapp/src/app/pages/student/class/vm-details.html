@@ -10,13 +10,14 @@
         <h4>External Access</h4>
         <hr>
     </div>
-
-    <div class="row">
-        <h5>{{selectedVm.dns.name}}</h5>
+    <div ng-repeat="dns in selectedVm.allDns">
+        <div class="row">
+            <h5>{{dns.name}}</h5>
+        </div>
+        <div ng-repeat="service in dns.services" class="row">
+            - {{service.name}}      {{service.port}}
+        </div>
     </div>
-<ul>
-    <li ng-repeat="service in selectedVm.dns.services">{{service.name}}      {{service.port}} </li>
-</ul>
     <div class="row spacer">
         <button class="btn btn-success" id="okBtn" ng-click="ok()"><i class="icon-ok"></i> OK</button>
     </div>

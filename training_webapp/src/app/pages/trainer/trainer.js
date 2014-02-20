@@ -10,8 +10,8 @@
             $stateProvider.
                 state('trainer.courses', {
                     url: '/courses',
-                    templateUrl: 'app/pages/trainer/courses-main/courses-main.html',
-                    abstract: true
+                    templateUrl: 'app/pages/trainer/courses-main/courses-main.html'
+//                    abstract: true
                 });
         }
     ]);

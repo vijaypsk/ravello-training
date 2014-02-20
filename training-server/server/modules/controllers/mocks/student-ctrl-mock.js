@@ -8,12 +8,12 @@ exports.getStudentClass = function(request, response) {
         "id": "1",
         "firstName": "Daniel",
         "surname": "Wolf",
-        "class": {
+        "userClass": {
             "id": "1",
             "name": "IDF training",
             "startDate": "22/10/2013 08:00:00",
             "endDate": "22/10/2013 13:30:00",
-            "courseId": "1",
+            "courseId": "5301bf9ebdc869b2bcf3d00f",
             "blueprintPermissions": {
                 "1": {
                     "startVms": true,

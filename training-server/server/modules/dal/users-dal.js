@@ -8,14 +8,14 @@ var ObjectId = mongoose.Types.ObjectId;
 var User = mongoose.model('User');
 
 exports.getUser = function(username) {
-    return User.findQ({username: username}).then(function(entity) {
-        return entity;
+    return User.findQ({username: username}).then(function(result) {
+        return result[0];
     });
 };
 
 exports.getUsers = function() {
-    return User.find().then(function(entities) {
-        var users = _.map(entities, function(entity) {
+    return User.find().then(function(result) {
+        var users = _.map(result[0], function(entity) {
             return entity;
         });
 
@@ -26,7 +26,7 @@ exports.getUsers = function() {
 exports.createUser = function(userData) {
     var user = new User(userData);
     return user.saveQ().then(function(entity) {
-        return entity;
+        return entity[0];
     });
 };
 

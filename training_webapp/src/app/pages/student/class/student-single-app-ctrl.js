@@ -5,10 +5,12 @@ angular.module('trng.student').controller('studentAppController', [
     '$scope',
     '$state',
     '$modal',
+    '$window',
     'trng.services.AppsService',
+    'trng.services.StudentsService',
     'student',
     'currentApp',
-    function($log, $scope, $state, $modal, appsSerivce, student, currentApp) {
+    function($log, $scope, $state, $modal, $window, appsSerivce, studentsService, student, currentApp) {
         $scope.init = function() {
             $scope.currentApp = currentApp;
             $scope.initPermissions();
@@ -17,7 +19,7 @@ angular.module('trng.student').controller('studentAppController', [
 
         $scope.initPermissions = function() {
             var bpId = currentApp['blueprintId'];
-            $scope.bpPermissions = student['class']['blueprintPermissions'][bpId];
+            $scope.bpPermissions = student['userClass']['blueprintPermissions'][bpId];
         };
 
         $scope.initVmsColumns= function() {
@@ -31,8 +33,10 @@ angular.module('trng.student').controller('studentAppController', [
                     displayName: 'Status'
                 },
                 {
-                    field: 'dns.name',
-                    displayName: 'DNS'
+                    field: 'firstDns.name',
+                    displayName: 'DNS',
+                    enableCellEdit: true,
+                    width: '30%'
                 },
                 {
                     displayName: 'Details',
@@ -77,18 +81,67 @@ angular.module('trng.student').controller('studentAppController', [
 
         $scope.startVm = function() {
             _.forEach($scope.selectedVms, function(vm) {
-                appsSerivce.startVm(currentApp['id'], vm['id']);
+                appsSerivce.startVm(currentApp['id'], vm['id']).then(function(result) {
+                    if (result.status === 202) {
+                        $scope.refreshState();
+                    } else {
+                        alert("Could not perform action on VM: " + result.message);
+                    }
+                });
             });
         };
 
         $scope.stopVm = function() {
             _.forEach($scope.selectedVms, function(vm) {
-                appsSerivce.stopVm(currentApp['id'], vm['id']);
+                appsSerivce.stopVm(currentApp['id'], vm['id']).then(function(result) {
+                    if (result.status === 202) {
+                        $scope.refreshState();
+                    } else {
+                        alert("Could not perform action on VM: " + result.message);
+                    }
+                });
             });
         };
 
         $scope.consoleVm = function() {
+            if ($scope.selectedVms.length == 1) {
+                var vm = $scope.selectedVms[0];
 
+                appsSerivce.consoleVm($scope.currentApp.id, vm.id).then(function(result) {
+                    if (result.status === 200) {
+                        var vncUrl = result.data;
+                        $window.open(vncUrl);
+                    } else {
+                        $log.info("Didn't get VNC URL, status: " + result.status);
+                    }
+                }).catch(function(error) {
+                    $log.info("Didn't get VNC URL, status: " + error);
+                });
+            }
+        };
+
+        $scope.startButtonDisabled = function() {
+            return ($scope.selectedVms.length < 1 ||
+                !$scope.bpPermissions.startVms);
+        };
+
+        $scope.stopButtonDisabled = function() {
+            return ($scope.selectedVms.length < 1 ||
+                !$scope.bpPermissions.stopVms);
+        };
+
+        $scope.consoleButtonDisabled = function() {
+            return ($scope.selectedVms.length != 1 ||
+                    !$scope.bpPermissions.console);
+        };
+
+        $scope.refreshState = function() {
+            return studentsService.getStudentClassSingleApp(
+                    student._id, student['userClass']['_id'], $scope.currentApp.id).then(
+                function(result) {
+                    $scope.currentApp = result;
+                }
+            );
         };
 
         $scope.init();
@@ -107,7 +160,7 @@ var studentAppResolver = {
                 return deferred.promise;
             }
 
-            return studentsService.getStudentClassSingleApp("1", student['class']['id'], appId);
+            return studentsService.getStudentClassSingleApp(student._id, student['userClass']['_id'], appId);
         }
     ]
 };

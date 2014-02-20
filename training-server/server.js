@@ -6,8 +6,8 @@
 
 var express = require('express');
 
-var config = require('./server/modules/config');
-var routes = require('./server/modules/routes');
+var config = require('./server/modules/config/config');
+var routes = require('./server/modules/config/routes');
 
 var app = express();
 

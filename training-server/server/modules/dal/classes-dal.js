@@ -9,38 +9,35 @@ var ObjectId = mongoose.Types.ObjectId;
 var TrainingClass = mongoose.model('TrainingClass');
 
 exports.getClasses = function() {
-    return TrainingClass.find().populate('students.user').execQ().then(function(entities) {
-        return _.map(entities, function(entity) {
-            return TrainingClass.entityToDto(entity);
-        });
-    });
+    return TrainingClass.find().populate('students.user').execQ();
 };
 
 exports.getClass = function(classId) {
-    return TrainingClass.findById(classId).populate('students.user').execQ().then(function(entity) {
-        return TrainingClass.entityToDto(entity.toObject(), entity.id);
-    });
+    return TrainingClass.findById(classId).populate('students.user').execQ();
+};
+
+exports.getClassOfUser = function(userId) {
+    return TrainingClass.find({'students.user': new ObjectId(userId)}).populate('students.user').execQ().then(
+        function(result) {
+            return result[0];
+        });
 };
 
 exports.createClass = function(classData) {
-    var entityData = TrainingClass.dtoToEntity(classData);
+    var newClass = new TrainingClass(classData);
 
-    var newClass = new TrainingClass(entityData);
-
-    return newClass.saveQ().then(function(entity) {
-        return entity.populateQ('students.user').then(function(fullEntity) {
-            return TrainingClass.entityToDto(fullEntity.toJSON());
-        });
+    return newClass.saveQ().then(function(result) {
+        var entity = result[0];
+        return entity.populateQ('students.user');
     });
 };
 
 exports.updateClass = function(classId, classData) {
-    var updatedClassEntity = TrainingClass.dtoToEntity(classData);
-    updatedClassEntity = _.omit(updatedClassEntity, '_id');
+    var updatedClassEntity = _.omit(classData, '_id');
 
     return TrainingClass.updateQ({'_id': new ObjectId(classId)}, updatedClassEntity, {upsert: true});
 };
 
 exports.deleteClass = function(classId) {
-    return TrainingClass.findByIdAndRemoveQ(classId);
+    return TrainingClass.findByIdAndRemove(classId).populate('students.user').execQ();
 };

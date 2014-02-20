@@ -1,13 +1,16 @@
 <div id="studentSingleAppDiv" class="container">
     <div class="row">
-        <div class="col-lg-4 text-center">
-            <button id="startBtn" class="btn btn-success" ng-click="startVm()" ng-disabled="!bpPermissions.startVms"><i class="icon-play"></i> Start</button>
+        <div class="col-lg-3 text-center">
+            <button id="startBtn" class="btn btn-success" ng-click="startVm()" ng-disabled="startButtonDisabled()"><i class="icon-play"></i> Start</button>
         </div>
-        <div class="col-lg-4 text-center">
-            <button id="stopBtn" class="btn btn-danger" ng-click="stopVm()" ng-disabled="!bpPermissions.stopVms"><i class="icon-stop"></i> Stop</button>
+        <div class="col-lg-3 text-center">
+            <button id="stopBtn" class="btn btn-danger" ng-click="stopVm()" ng-disabled="stopButtonDisabled()"><i class="icon-stop"></i> Stop</button>
         </div>
-        <div class="col-lg-4 text-center">
-            <button id="consoleBtn" class="btn btn-default" ng-click="consoleVm()" ng-disabled="!bpPermissions.console"><i class="icon-terminal"></i> Console</button>
+        <div class="col-lg-3 text-center">
+            <button id="consoleBtn" class="btn btn-default" ng-click="consoleVm()" ng-disabled="consoleButtonDisabled()"><i class="icon-terminal"></i> Console</button>
+        </div>
+        <div class="col-lg-3 text-center">
+            <button id="refreshBtn" class="btn btn-success" ng-click="refreshState()">Refresh</button>
         </div>
     </div>
     <div class="row spacer"></div>
