@@ -11,7 +11,7 @@ angular.module('trng.proxies').factory('trng.proxies.LoginProxy', [
 
                 $http.defaults.headers.common.Authorization = auth;
 
-                return $http.post(config.baseUrl + '/login');
+                return $http.post(config.baseUrl + '/rest/login');
             }
         };
 
