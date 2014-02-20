@@ -66,3 +66,15 @@ exports.vmAction = function(appId, vmId, action, username, password) {
 
     return deferred.promise;
 };
+
+exports.vmVnc = function(appId, vmId, username, password) {
+    var deferred = q.defer();
+
+    request.
+        get(properties.baseUrl + "/services/applications/" + appId + "/vms/" + vmId + "/vncUrl").
+        set('Content-Length', 0).
+        auth(username, password).
+        end(deferred.makeNodeResolver());
+
+    return deferred.promise;
+};

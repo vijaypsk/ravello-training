@@ -12,6 +12,10 @@ angular.module('trng.proxies').factory('trng.proxies.AppsProxy', [
 
             stopVm: function(appId, vmId) {
                 return $http.post(config.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/stop");
+            },
+
+            consoleVm: function(appId, vmId) {
+                return $http.get(config.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/vncUrl");
             }
         };
 

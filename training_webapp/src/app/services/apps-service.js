@@ -11,6 +11,10 @@ angular.module('trng.services').factory('trng.services.AppsService', [
 
             stopVm: function(appId, vmId) {
                 return appsProxy.stopVm(appId, vmId);
+            },
+
+            consoleVm: function(appId, vmId) {
+                return appsProxy.consoleVm(appId, vmId);
             }
         };
 		

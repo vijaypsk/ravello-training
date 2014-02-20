@@ -5,11 +5,12 @@ angular.module('trng.student').controller('studentAppController', [
     '$scope',
     '$state',
     '$modal',
+    '$window',
     'trng.services.AppsService',
     'trng.services.StudentsService',
     'student',
     'currentApp',
-    function($log, $scope, $state, $modal, appsSerivce, studentsService, student, currentApp) {
+    function($log, $scope, $state, $modal, $window, appsSerivce, studentsService, student, currentApp) {
         $scope.init = function() {
             $scope.currentApp = currentApp;
             $scope.initPermissions();
@@ -101,7 +102,35 @@ angular.module('trng.student').controller('studentAppController', [
         };
 
         $scope.consoleVm = function() {
+            if ($scope.selectedVms.length == 1) {
+                var vm = $scope.selectedVms[0];
 
+                appsSerivce.consoleVm($scope.currentApp.id, vm.id).then(function(result) {
+                    if (result.status === 200) {
+                        var vncUrl = result.data;
+                        $window.open(vncUrl);
+                    } else {
+                        $log.info("Didn't get VNC URL, status: " + result.status);
+                    }
+                }).catch(function(error) {
+                    $log.info("Didn't get VNC URL, status: " + error);
+                });
+            }
+        };
+
+        $scope.startButtonDisabled = function() {
+            return ($scope.selectedVms.length < 1 ||
+                !$scope.bpPermissions.startVms);
+        };
+
+        $scope.stopButtonDisabled = function() {
+            return ($scope.selectedVms.length < 1 ||
+                !$scope.bpPermissions.stopVms);
+        };
+
+        $scope.consoleButtonDisabled = function() {
+            return ($scope.selectedVms.length != 1 ||
+                    !$scope.bpPermissions.console);
         };
 
         $scope.refreshState = function() {
