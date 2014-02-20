@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 var UsersSchema = mongoose.Schema(
     {
