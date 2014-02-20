@@ -5,6 +5,7 @@ var q = require('q');
 
 var ravelloAuth = require('../auth/ravello-auth');
 
+var coursesDal = require('../dal/courses-dal');
 var classesDal = require('../dal/classes-dal');
 var classesTrans = require('../trans/classes-trans');
 
@@ -40,6 +41,18 @@ var authenticateStudent = function(theClass, userId) {
             return result;
         }
     );
+};
+
+var determineAppDisplayName = function(course, bpId) {
+    var matchingBp = _.find(course.blueprints, function(bp) {
+        return bp.id = bpId;
+    });
+
+    if (matchingBp) {
+        return matchingBp.displayForStudents;
+    }
+
+    return null;
 };
 
 exports.getStudentClass = function(request, response) {
@@ -130,73 +143,78 @@ exports.getStudentClassApps = function(request, response) {
         var ravelloUsername = studentData.ravelloCredentials.username;
         var ravelloPassword = studentData.ravelloCredentials.password;
 
-        // Now we want to start all of the applications of the student for this class.
-        // That's why we first need to get the blueprints associated with the course.
-        var bpPermissionPromises = [];
-        _.forEach(studentData.blueprintPermissions, function(bpPermissions) {
-            var bpId = bpPermissions.bpId;
-            var promise = blueprintsService.getBlueprintById(bpId, ravelloUsername, ravelloPassword);
-            bpPermissionPromises.push(promise);
-        });
+        coursesDal.getCourse(classEntity.courseId).then(function(course) {
 
-        q.all(bpPermissionPromises).then(function(blueprintResults) {
-            var appPromises = [];
+            // Now we want to start all of the applications of the student for this class.
+            // That's why we first need to get the blueprints associated with the course.
+            var bpPermissionPromises = [];
+            _.forEach(studentData.blueprintPermissions, function(bpPermissions) {
+                var bpId = bpPermissions.bpId;
+                var promise = blueprintsService.getBlueprintById(bpId, ravelloUsername, ravelloPassword);
+                bpPermissionPromises.push(promise);
+            });
 
-            var appDtos = [];
+            q.all(bpPermissionPromises).then(function(blueprintResults) {
+                var appPromises = [];
 
-            appsService.getApps(ravelloUsername, ravelloPassword).then(function(apps) {
+                var appDtos = [];
 
-                _.forEach(blueprintResults, function(bpResult) {
+                appsService.getApps(ravelloUsername, ravelloPassword).then(function(apps) {
 
-                    var bp = bpResult.body;
+                    _.forEach(blueprintResults, function(bpResult) {
 
-                    // The application name is: bpName_className_studentName.
-                    var appName = bp.name + "_" +
-                        classEntity.name + "_" +
-                        userData.firstName + "-" + userData.surname;
+                        var bp = bpResult.body;
 
-                    var matchingApp = _.find(apps, function(currentApp) {
-                        return currentApp.name === appName;
-                    });
+                        // The application name is: bpName_className_studentName.
+                        var appName = classEntity.name + "##" +
+                            bp.name + "##" +
+                            userData.firstName + "-" + userData.surname;
 
-                    var promise = appsService.getApp(matchingApp.id, ravelloUsername, ravelloPassword);
-                    appPromises.push(promise);
-                });
-
-                q.all(appPromises).then(function(appResults) {
-                    _.forEach(appResults, function(appResult) {
-                        var app = appResult.body;
-
-                        var numOfVms = app.deployment.vms.length;
-                        var numOfRunningVms = 0;
-
-                        _.forEach(app.deployment.vms, function(vm) {
-                            if (vm.state === 'STARTED') {
-                                numOfRunningVms++;
-                            }
+                        var matchingApp = _.find(apps, function(currentApp) {
+                            return currentApp.name === appName;
                         });
 
-                        var appDto = {
-                            id: app.id,
-                            name: app.name,
-                            blueprintId: app.baseBlueprintId,
-                            numOfVms: numOfVms,
-                            numOfRunningVms: numOfRunningVms
-                        };
-
-                        appDtos.push(appDto);
+                        var promise = appsService.getApp(matchingApp.id, ravelloUsername, ravelloPassword);
+                        appPromises.push(promise);
                     });
 
-                    response.json(appDtos);
+                    q.all(appPromises).then(function(appResults) {
+                        _.forEach(appResults, function(appResult) {
+                            var app = appResult.body;
 
+                            var numOfVms = app.deployment.vms.length;
+                            var numOfRunningVms = 0;
+
+                            _.forEach(app.deployment.vms, function(vm) {
+                                if (vm.state === 'STARTED') {
+                                    numOfRunningVms++;
+                                }
+                            });
+
+                            var appDisplayName = determineAppDisplayName(course, app.baseBlueprintId);
+
+                            var appDto = {
+                                id: app.id,
+                                name: appDisplayName ? appDisplayName : app.name,
+                                blueprintId: app.baseBlueprintId,
+                                numOfVms: numOfVms,
+                                numOfRunningVms: numOfRunningVms
+                            };
+
+                            appDtos.push(appDto);
+                        });
+
+                        response.json(appDtos);
+
+                    }).fail(function(error) {
+                            console.log("Could not get info for one of the student's apps, error: " + error);
+                    });
                 }).fail(function(error) {
-                        console.log("Could not get info for one of the student's apps, error: " + error);
+                    console.log("Could not get apps from Ravello, error: " + error);
                 });
             }).fail(function(error) {
-                console.log("Could not get apps from Ravello, error: " + error);
+                console.log("Could not get student's blueprints, error: " + error);
             });
-        }).fail(function(error) {
-            console.log("Could not get student's blueprints, error: " + error);
         });
     }).fail(function(error) {
             console.log("Could not find the class associated with user " + userId + ", error: " + error);
