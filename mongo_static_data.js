@@ -34,7 +34,12 @@ var danielStudent  = {
         useClassCredentials: false,
         username: 'daniel.wolf@ravellosystems.com',
         password: '!Q@W3e4r'
-    }
+    },
+    apps: [
+        {
+            ravelloId: '42434647'
+        }
+    ]
 };
 
 var hadasUser = {
@@ -62,7 +67,12 @@ var hadasStudent = {
         useClassCredentials: false,
         username: 'daniel.wolf@ravellosystems.com',
         password: '!Q@W3e4r'
-    }
+    },
+    apps: [
+        {
+            ravelloId: '42434650'
+        }
+    ]
 };
 
 var course01 = {
