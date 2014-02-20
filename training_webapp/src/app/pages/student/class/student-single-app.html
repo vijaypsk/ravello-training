@@ -1,15 +1,15 @@
-
 <div id="studentSingleAppDiv" class="container">
     <div class="row">
-        <div class="col-lg-2">
-            <button id="startBtn" ng-click="startVm()" ng-disabled="!bpPermissions.startVms">Start</button>
+        <div class="col-lg-4 text-center">
+            <button id="startBtn" class="btn btn-success" ng-click="startVm()" ng-disabled="!bpPermissions.startVms"><i class="icon-play"></i> Start</button>
         </div>
-        <div class="col-lg-2">
-            <button id="stopBtn" ng-click="stopVm()" ng-disabled="!bpPermissions.stopVms">Stop</button>
+        <div class="col-lg-4 text-center">
+            <button id="stopBtn" class="btn btn-danger" ng-click="stopVm()" ng-disabled="!bpPermissions.stopVms"><i class="icon-stop"></i> Stop</button>
         </div>
-        <div class="col-lg-2">
-            <button id="consoleBtn" ng-click="consoleVm()" ng-disabled="!bpPermissions.console">Console</button>
+        <div class="col-lg-4 text-center">
+            <button id="consoleBtn" class="btn btn-default" ng-click="consoleVm()" ng-disabled="!bpPermissions.console"><i class="icon-terminal"></i> Console</button>
         </div>
     </div>
+    <div class="row spacer"></div>
     <div id="studentVmsDataGird" ng-grid="studentVmsDataGird"></div>
 </div>

@@ -88,11 +88,6 @@
 }
 
 /* VM Details */
-
-#vmDetailsDiv {
-    height: 400px;
-    width: 400px;
-}
 .header-container {
     background-color: #232323;
 }
@@ -249,4 +244,7 @@ margin-top: 0;
 }
 .btns-ok-cancel {
     margin-top: 15px;
+}
+.spacer {
+    margin-top: 35px;
 }

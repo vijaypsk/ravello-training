@@ -38,7 +38,7 @@ angular.module('trng.student').controller('studentAppController', [
                     displayName: 'Details',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
-                            '<i class="icon-edit" /> More' +
+                            '<i class="icon-plus"></i> More' +
                             '</a>'
                 }
             ];
