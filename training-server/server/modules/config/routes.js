@@ -4,16 +4,16 @@ var passport = require('passport');
 
 var trainingAuth = require('./../auth/training-auth');
 
-//var classesController = require('./../controllers/classes-ctrl');
-//var coursesController = require('./../controllers/courses-ctrl');
-//var blueprintsController = require('./../controllers/blueprints-ctrl');
-//var studentController = require('./../controllers/student-ctrl');
-//var appController = require('./../controllers/app-ctrl');
-
-var classesController = require('./../controllers/mocks/classes-ctrl-mock');
-var coursesController = require('./../controllers/mocks/courses-ctrl-mock');
+var classesController = require('./../controllers/classes-ctrl');
+var coursesController = require('./../controllers/courses-ctrl');
 var blueprintsController = require('./../controllers/blueprints-ctrl');
-var studentController = require('./../controllers/mocks/student-ctrl-mock');
+var studentController = require('./../controllers/student-ctrl');
+var appController = require('./../controllers/app-ctrl');
+
+//var classesController = require('./../controllers/mocks/classes-ctrl-mock');
+//var coursesController = require('./../controllers/mocks/courses-ctrl-mock');
+//var blueprintsController = require('./../controllers/blueprints-ctrl');
+//var studentController = require('./../controllers/mocks/student-ctrl-mock');
 
 module.exports = function(app) {
 
