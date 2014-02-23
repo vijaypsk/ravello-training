@@ -46,6 +46,19 @@ exports.getAppVms = function(appId, username, password) {
     return deferred.promise;
 };
 
+exports.getAppDeployment = function(appId, username, password) {
+    var deferred = q.defer();
+
+    request.
+        get(properties.baseUrl + "/services/applications/" + appId + ";deployment").
+        set('Content-Length', 0).
+        accept('application/json').
+        auth(username, password).
+        end(deferred.makeNodeResolver());
+
+    return deferred.promise;
+};
+
 exports.createApp = function(name, description, bpId, username, password) {
     var deferred = q.defer();
 
@@ -73,6 +86,23 @@ exports.appAction = function(appId, action, username, password) {
     request.
         post(properties.baseUrl + "/services/applications/" + appId + "/" + action).
         set('Content-Length', 0).
+        accept('application/json').
+        auth(username, password).
+        end(deferred.makeNodeResolver());
+
+    return deferred.promise;
+};
+
+exports.appAutoStop = function(appId, secondsFromNow, username, password) {
+    var deferred = q.defer();
+
+    var dto = {
+        expirationFromNowSeconds: secondsFromNow
+    };
+
+    request.
+        post(properties.baseUrl + "/services/applications/" + appId + "/setExpiration").
+        send(dto).
         accept('application/json').
         auth(username, password).
         end(deferred.makeNodeResolver());
