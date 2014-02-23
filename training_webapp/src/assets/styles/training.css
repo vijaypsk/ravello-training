@@ -1,6 +1,10 @@
+body {
+    background-color: #F7F7F7;
+}
 
-/* Main */
-
+.ngGrid {
+     background-color: transparent;
+}
 #mainAppDiv {
     height: 100%;
     width: 100%;
