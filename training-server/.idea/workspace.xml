@@ -2,20 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="048aa645-fcce-4987-ab73-4c8d2c7d5787" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../training_webapp/src/app/demo.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/bower.json" afterPath="$PROJECT_DIR$/../training_webapp/bower.json" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../training_webapp/src/app/demo.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/common/error-handler.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/common/error-handler.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/index.html" afterPath="$PROJECT_DIR$/../training_webapp/src/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/proxies/login-proxy.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/proxies/login-proxy.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/login/login.html" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/login/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/proxies/proxies.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/proxies/proxies.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/student/class/student-class.html" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/student/class/student-class.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/student/class/student-single-app-ctrl.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/student/class/student-single-app-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/student/class/student-single-app.html" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/student/class/student-single-app.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/student/student.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/student/student.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/proxies/students-proxy.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/proxies/students-proxy.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/training-app.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/training-app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="training-server.iws" />
     <ignored path=".idea/workspace.xml" />
