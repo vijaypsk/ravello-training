@@ -109,8 +109,8 @@ var class01 = {
     name: 'class 01',
     courseId: 'cccccccccccccccccccc2222',
     description: 'A tryout class',
-    startDate: ISODate("2014-05-02T06:54:00Z"),
-    endDate: ISODate("2014-07-02T06:54:00Z"),
+    startDate: ISODate("2014-02-15T08:00:00Z"),
+    endDate: ISODate("2014-02-16T13:00:00Z"),
     students: [
         danielStudent,
         hadasStudent

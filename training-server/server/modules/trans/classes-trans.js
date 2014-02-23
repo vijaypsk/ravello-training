@@ -1,6 +1,9 @@
 'use strict';
 
 var _ = require('lodash');
+var datejs = require('datejs');
+
+var properties = require('../config/properties');
 
 exports.dtoToEntity = function(dto) {
     var entity = dto;
@@ -20,6 +23,9 @@ exports.dtoToEntity = function(dto) {
         });
         student.apps = appsArray;
     });
+
+    entity.startDate = Date.parse(entity.startDate);
+    entity.endDate = Date.parse(entity.endDate);
 
     return entity;
 };
@@ -44,6 +50,9 @@ exports.entityToDto = function(entityDocument) {
         });
         student.apps = appsMap;
     });
+
+    dto.startDate = dto.startDate.toString(properties.dateFormat);
+    dto.endDate = dto.endDate.toString(properties.dateFormat);
 
     return dto;
 };
