@@ -1,6 +1,10 @@
+body {
+    background-color: #F7F7F7;
+}
 
-/* Main */
-
+.ngGrid {
+     background-color: transparent;
+}
 #mainAppDiv {
     height: 100%;
     width: 100%;
@@ -107,7 +111,8 @@
     }
 }
 .header-title {
-    background: transparent url(../images/ravello-logo-small.png) no-repeat center left scroll;
+    /*background: transparent url(../images/ravello-logo-small.png) no-repeat center left scroll;*/
+    background: transparent url(../images/check-point-software-logo.png) no-repeat center left scroll;
     padding-left: 45px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;

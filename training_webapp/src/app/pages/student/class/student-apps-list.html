@@ -1,11 +1,12 @@
 <div class="row">
-    <div class="col-lg-2">
-        <button id="startBtn" ng-click="startApps()" ng-disabled="startButtonDisabled()">Start</button>
+    <div class="col-lg-6 text-center">
+        <button id="startBtn" ng-click="startApps()" class="btn btn-success" ng-disabled="startButtonDisabled()"><i class="icon-play"></i> Start App</button>
     </div>
-    <div class="col-lg-2">
-        <button id="stopBtn" ng-click="stopApps()" ng-disabled="stopButtonDisabled()">Stop</button>
+    <div class="col-lg-6 text-center">
+        <button id="stopBtn" ng-click="stopApps()" class="btn btn-danger" ng-disabled="stopButtonDisabled()"><i class="icon-stop"></i> Stop App</button>
     </div>
 </div>
+<div class="row spacer"></div>
 <div id="studentAppsDiv">
     <div id="studentAppsDataGird" ng-grid="studentAppsDataGird"></div>
 </div>

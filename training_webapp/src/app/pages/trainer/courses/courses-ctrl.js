@@ -30,7 +30,7 @@ angular.module('trng.trainer.courses.courses').controller('coursesController', [
                 },
                 {
                     displayName: 'Actions',
-                    cellTemplate: '<a href="" class="btn btn-small btn-link" ng-click="editCourse(row)"><i class="icon-edit" /> Edit</a><a href="" class="btn btn-small btn-link" ng-click="deleteCourse(row)"><i class="icon-trash" /> Delete</a>'
+                    cellTemplate: '<a href="" class="btn btn-small btn-link" ng-click="editCourse(row)"><i class="icon-pencil" /> Edit</a><a href="" class="btn btn-small btn-link" ng-click="deleteCourse(row)"><i class="icon-trash" /> Delete</a>'
                 }
             ];
         };

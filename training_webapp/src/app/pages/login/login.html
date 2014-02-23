@@ -1,6 +1,6 @@
 <div class="container-fluid header-container">
     <div class="header">
-        <h1 class="header-title">Ravello Training Portal</h1>
+        <h1 class="header-title">Training Portal</h1>
     </div>
 </div>
  <div class="container" cg-busy="{tracker: 'trainingTracker'}">
@@ -8,7 +8,6 @@
     <div class="col-md-6">
     <div class="panel panel-default">
         <div class="panel-body">
-
             <form role="loginForm" class="form-horizonta">
                 <div class="form-group">
                     <label for="usernameInput">Username</label>
@@ -19,12 +18,9 @@
                     <input type="password" class="form-control" id="passwordInput" ng-model="password">
                 </div>
                 <div class="row">
-                    <div class="col-lg-3">
-                        <button id="loginBtn" ng-click="login()">Login</button>
-                    </div>
+                        <button id="loginBtn" class="btn btn-default" ng-click="login()">Login</button>
                 </div>
             </form>
-
         </div>
     </div>
     </div>

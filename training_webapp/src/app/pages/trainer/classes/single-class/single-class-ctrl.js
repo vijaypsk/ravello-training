@@ -92,7 +92,7 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
                     displayName: 'Actions',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="editStudent(row)">' +
-                            '<i class="icon-edit" /> Edit' +
+                            '<i class="icon-pencil" /> Edit' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="deleteStudent(row)">' +
                             '<i class="icon-trash" /> Delete' +
