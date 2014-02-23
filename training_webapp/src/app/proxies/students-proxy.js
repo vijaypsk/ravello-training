@@ -4,22 +4,31 @@ angular.module('trng.proxies').factory('trng.proxies.StudentsProxy', [
     '$http',
     '$q',
     'app.config',
-    function($http, $q, config) {
+    'trainingTracker',
+    function($http, $q, config, trainingTracker) {
         var service = {
             getStudent: function(studentId) {
-                return $http.get(config.baseUrl + '/rest/students/' + studentId);
+                var promise = $http.get(config.baseUrl + '/rest/students/' + studentId);
+                trainingTracker.addPromise(promise);
+                return promise;
             },
 
             getStudentClass: function(studentId, classId) {
-                return $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId);
+                var promise = $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId);
+                trainingTracker.addPromise(promise);
+                return promise;
             },
 
             getStudentClassApps: function(studentId, classId) {
-                return $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps');
+                var promise = $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps');
+                trainingTracker.addPromise(promise);
+                return promise;
             },
 
             getStudentClassSingleApp: function(studentId, classId, appId) {
-                return $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps/' + appId);
+                var promise = $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps/' + appId);
+                trainingTracker.addPromise(promise);
+                return promise;
             }
         };
 

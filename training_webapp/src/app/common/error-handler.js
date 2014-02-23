@@ -22,7 +22,7 @@
                 }
             ]);
 
-            $httpProvider.interceptors.push('httpInterceptor');
+//            $httpProvider.interceptors.push('httpInterceptor');
         }
     ]);
 })(angular);

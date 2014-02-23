@@ -1,16 +1,24 @@
 <div id="studentSingleAppDiv" class="container">
-    <div class="row">
+    <div class="row" cg-busy="{tracker: 'single'}">
         <div class="col-lg-3 text-center">
-            <button id="startBtn" class="btn btn-success" ng-click="startVm()" ng-disabled="startButtonDisabled()"><i class="icon-play"></i> Start</button>
+            <button id="startBtn" class="btn btn-success" ng-click="startVm()"
+                    ng-disabled="startButtonDisabled()"><i class="icon-play"></i> Start
+            </button>
         </div>
         <div class="col-lg-3 text-center">
-            <button id="stopBtn" class="btn btn-danger" ng-click="stopVm()" ng-disabled="stopButtonDisabled()"><i class="icon-stop"></i> Stop</button>
+            <button id="stopBtn" class="btn btn-danger" ng-click="stopVm()"
+                    ng-disabled="stopButtonDisabled()"><i class="icon-stop"></i> Stop
+            </button>
         </div>
         <div class="col-lg-3 text-center">
-            <button id="consoleBtn" class="btn btn-default" ng-click="consoleVm()" ng-disabled="consoleButtonDisabled()"><i class="icon-terminal"></i> Console</button>
+            <button id="consoleBtn" class="btn btn-default" ng-click="consoleVm()"
+                    ng-disabled="consoleButtonDisabled()"><i class="icon-terminal"></i> Console
+            </button>
         </div>
         <div class="col-lg-3 text-center">
-            <button id="refreshBtn" class="btn btn-success" ng-click="refreshState()">Refresh</button>
+            <button id="refreshBtn" class="btn btn-success"
+                    ng-click="refreshState()" ng-disabled="refreshButtonDisabled()">Refresh
+            </button>
         </div>
     </div>
     <div class="row spacer"></div>

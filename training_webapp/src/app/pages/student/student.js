@@ -1,8 +1,11 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.student', ['trng.services']).config([
-        '$urlRouterProvider', '$stateProvider',
+    angular.module('trng.student', [
+        'trng.services']).
+    config([
+        '$urlRouterProvider',
+        '$stateProvider',
         function($urlRouterProvider, $stateProvider) {
             $stateProvider.
                 state('student.class', {

@@ -6,7 +6,10 @@
             'trng.trainer',
             'trng.student',
             'trng.error',
-            'ui.router'
+            'ui.router',
+            'ngAnimate',
+            'ajoslin.promise-tracker',
+            'cgBusy'
         ]).config([
             '$urlRouterProvider',
             '$stateProvider',
@@ -37,6 +40,15 @@
                 // HTTP configurations
 
                 $httpProvider.defaults.useXDomain = true;
+
+
+
+            }
+        ]).factory('trainingTracker', [
+            'promiseTracker',
+            function(promiseTracker) {
+                var trainingTracker = promiseTracker('trainingTracker');
+                return trainingTracker;
             }
         ]);
 })(angular);
