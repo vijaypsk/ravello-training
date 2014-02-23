@@ -5,6 +5,7 @@
             'trng.login',
             'trng.trainer',
             'trng.student',
+            'trng.error',
             'ui.router'
         ]).config([
             '$urlRouterProvider',

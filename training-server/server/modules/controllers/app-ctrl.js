@@ -46,7 +46,17 @@ exports.vmAction = function(request, response) {
 
         appsService.vmAction(appId, vmId, action, ravelloUsername, ravelloPassword).then(function(result) {
             response.send(result.status);
+        }).fail(function(error) {
+            var message = "Could not perform action " + action + ", error: " + error;
+            console.log(message);
+            response.send(400, error);
         });
+    }).fail(function(error) {
+        var message =
+            "Could not find the class associated with the logged in user: " + user.username +
+            ", error: " + error;
+        console.log(message);
+        response.send(404, message);
     });
 };
 
@@ -70,8 +80,18 @@ exports.vmVnc = function(request, response) {
             if (result.status === 200) {
                 response.send(200, result.text);
             } else {
-                response.send(result.status);
+                response.send(result.status, result.text);
             }
+        }).fail(function(error) {
+            var message = "Could not get the URL for the VNC, error: " + error;
+            console.log(message);
+            response.send(400, error);
         });
+    }).fail(function(error) {
+        var message =
+            "Could not find the class associated with the logged in user: " + user.username +
+                ", error: " + error;
+        console.log(message);
+        response.send(404, message);
     });
 };

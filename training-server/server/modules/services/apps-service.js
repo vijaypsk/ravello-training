@@ -33,6 +33,19 @@ exports.getApp = function(appId, username, password) {
     return deferred.promise;
 };
 
+exports.getAppVms = function(appId, username, password) {
+    var deferred = q.defer();
+
+    request.
+        get(properties.baseUrl + "/services/applications/" + appId + ";deployment/vms").
+        set('Content-Length', 0).
+        accept('application/json').
+        auth(username, password).
+        end(deferred.makeNodeResolver());
+
+    return deferred.promise;
+};
+
 exports.createApp = function(name, description, bpId, username, password) {
     var deferred = q.defer();
 

@@ -31,15 +31,20 @@ var TrainingClassSchema = mongoose.Schema({
             },
             apps: [
                 {
-                    appId: String,
-                    blueprintId: String,
-                    creationTime: Date,
-                    numOfRunningVms: Number
+                    ravelloId: String
                 }
             ]
         }
     ]
 });
+
+TrainingClassSchema.methods = {
+    findStudentByUserId: function(userId) {
+        return _.find(this.students, function(studentEntity) {
+            return (studentEntity.user.id === userId);
+        });
+    }
+};
 
 TrainingClassSchema.statics.dtoToEntity = function(dto) {
     var entity = dto;

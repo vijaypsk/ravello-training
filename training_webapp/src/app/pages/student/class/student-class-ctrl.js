@@ -113,8 +113,8 @@ var studentClassResolver = {
     ],
 
     apps: [
-        'trng.services.StudentsService', 'student',
-        function(studentsService, student) {
+        '$log', 'trng.services.StudentsService', 'student',
+        function($log, studentsService, student) {
             return studentsService.getStudentClassApps(student._id, student['userClass']['_id']);
         }
     ]
