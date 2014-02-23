@@ -26,10 +26,12 @@ angular.module('trng.student').controller('studentAppController', [
             $scope.vmsColumns = [
                 {
                     field: 'name',
+                    enableCellEdit: false,
                     displayName: 'VM name'
                 },
                 {
                     field: 'status',
+                    enableCellEdit: false,
                     displayName: 'Status'
                 },
                 {
@@ -40,10 +42,11 @@ angular.module('trng.student').controller('studentAppController', [
                 },
                 {
                     displayName: 'Details',
+                    enableCellEdit: false,
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
                             '<i class="icon-plus"></i> More' +
-                            '</a>'
+                        '</a>'
                 }
             ];
         };
@@ -58,7 +61,8 @@ angular.module('trng.student').controller('studentAppController', [
                 columnDefs: $scope.vmsColumns,
                 selectedItems: $scope.selectedVms,
                 showSelectionCheckbox: true,
-                selectWithCheckboxOnly: true
+                selectWithCheckboxOnly: true,
+                enableCellEditOnFocus: true
             };
         };
 

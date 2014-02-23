@@ -26,7 +26,11 @@ angular.module('trng.student').controller('studentClassController', [
             $scope.appsColumns = [
                 {
                     field: 'name',
-                    displayName: 'Name'
+                    displayName: 'Name',
+                    cellTemplate:
+                        '<a href="" class="btn btn-small btn-link" ng-click="view(row)">' +
+                            '<i></i> {{row.getProperty(col.field)}}' +
+                        '</a>'
                 },
                 {
                     field: 'numOfVms',
@@ -39,9 +43,15 @@ angular.module('trng.student').controller('studentClassController', [
                 {
                     displayName: 'Actions',
                     cellTemplate:
-                        '<a href="" class="btn btn-small btn-link" ng-click="edit(row)">' +
-                            '<i class="icon-pencil"></i> Edit' +
-                            '</a>'
+                        '<a href="" class="btn btn-small btn-link" ng-click="startApp(row)">' +
+                            '<i></i> Start' +
+                        '</a>' +
+                        '<a href="" class="btn btn-small btn-link" ng-click="stopApp(row)">' +
+                            '<i></i> Stop' +
+                        '</a>' +
+                        '<a href="" class="btn btn-small btn-link" ng-click="view(row)">' +
+                            '<i class="icon-pencil"></i> View' +
+                        '</a>'
                 }
             ];
         };
@@ -54,41 +64,31 @@ angular.module('trng.student').controller('studentClassController', [
             $scope.studentAppsDataGird = {
                 data: 'apps',
                 columnDefs: $scope.appsColumns,
-                selectedItems: $scope.selectedApps,
-                showSelectionCheckbox: true,
-                selectWithCheckboxOnly: true
+                selectedItems: $scope.selectedApps
             };
         };
 
-        $scope.edit = function(appToEdit) {
-            var appId = appToEdit.getProperty("id");
+        $scope.view = function(appToView) {
+            var appId = appToView.getProperty("id");
             $state.go("^.single-app", {appId: appId});
         };
 
-        $scope.startApps = function() {
-            _.forEach($scope.selectedApps, function(app) {
-                var bpId = app['blueprintId'];
-                var bpPermissions = $scope.student['userClass']['blueprintPermissions'][bpId];
+        $scope.startApp = function(app) {
+            var bpId = app.getProperty('blueprintId');
+            var bpPermissions = $scope.student['userClass']['blueprintPermissions'][bpId];
 
-                if (bpPermissions.startVms) {
-                    appsService.startApp(app['id']).then(function(result) {
-
-                    });
-                }
-            });
+            if (bpPermissions.startVms) {
+                appsService.startApp(app.getProperty('id'));
+            }
         };
 
-        $scope.stopApps = function() {
-            _.forEach($scope.selectedApps, function(app) {
-                var bpId = app['blueprintId'];
-                var bpPermissions = $scope.student['userClass']['blueprintPermissions'][bpId];
+        $scope.stopApp = function(app) {
+            var bpId = app.getProperty('blueprintId');
+            var bpPermissions = $scope.student['userClass']['blueprintPermissions'][bpId];
 
-                if (bpPermissions.stopVms) {
-                    appsService.stopApp(app['id']).then(function(result) {
-
-                    });
-                }
-            });
+            if (bpPermissions.stopVms) {
+                appsService.stopApp(app.getProperty('id'));
+            }
         };
 
         $scope.init();
