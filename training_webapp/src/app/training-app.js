@@ -18,8 +18,6 @@
 
                 // Routes configuration.
 
-//                $urlRouterProvider.when('', 'login');
-
                 $stateProvider.
                     state('login', {
                         url: '/login',
@@ -28,21 +26,16 @@
                     }).state('trainer', {
                         url: '/trainer',
                         templateUrl: 'app/pages/trainer/trainer.html'
-//                        abstract: true
                     }).state('student', {
                         url: '/student',
                         templateUrl: 'app/pages/student/student.html',
                         controller: 'studentController',
                         resolve: studentResolver
-//                        abstract: true
                     });
 
                 // HTTP configurations
 
                 $httpProvider.defaults.useXDomain = true;
-
-
-
             }
         ]).factory('trainingTracker', [
             'promiseTracker',
