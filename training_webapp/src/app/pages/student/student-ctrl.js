@@ -3,11 +3,8 @@
 angular.module('trng.student').controller('studentController', [
     '$scope',
     '$state',
-    'loginModel',
-    'trng.services.StudentsService',
-    function($scope, $state, loginModel, studentsService) {
+    function($scope, $state) {
         $scope.init = function() {
-//            $state.go('.class.apps-list');
         };
 
         $scope.init();
