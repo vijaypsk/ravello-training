@@ -5,24 +5,32 @@ var _ = require('lodash');
 var classesDal = require('../dal/classes-dal');
 var blueprintsDal = require('../dal/blueprints-dal');
 var blueprintsService = require('../services/blueprints-service');
+var blueprintsTrans = require('../trans/blueprints-trans');
 
 exports.getBlueprints = function(request, response) {
     var user = request.user;
     var userId = user.id;
 
-    // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(function(classEntity) {
-        var studentData = _.find(classEntity.students, function(student) {
-            return (student.user.id === userId);
-        });
+    if (user.ravelloCredentials) {
+        var ravelloUsername = user.ravelloCredentials.username;
+        var ravelloPassword = user.ravelloCredentials.password;
 
-        var ravelloUsername = studentData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password;
+        blueprintsService.getBlueprints(ravelloUsername, ravelloPassword).then(function(result) {
+            if (result.status != 200) {
+                response.send(result.status, result.text);
+            } else {
+                var dtos = _.map(result.body, function(bpDto) {
+                    return blueprintsTrans.dtoToEntity(bpDto);
+                });
 
-        blueprintsService.getBlueprints(ravelloUsername, ravelloPassword).then(function(blueprints) {
-            response.json(blueprints);
+                response.json(dtos);
+            }
         }).fail(function(error) {
-            console.log("Could not load blueprints, error: " + error);
+            var message = "Could not get blueprints from Ravello";
+            console.log(message);
+            response.send(404, message);
         });
-    });
+    } else {
+        response.send(401, 'User does not have sufficient Ravello credentials');
+    }
 };

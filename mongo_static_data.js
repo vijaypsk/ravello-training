@@ -6,7 +6,12 @@ var adminUser = {
     username : "admin",
     password : "$2a$10$sYPGeB3jT5teA6s1jPr3UOUZFq3JVxo5F5A/ZZaHJG7Yi2TuLtkM2",
     role : "TRAINER",
-    salt : "$2a$10$sYPGeB3jT5teA6s1jPr3UO"
+    salt : "$2a$10$sYPGeB3jT5teA6s1jPr3UO",
+    ravelloCredentials: {
+        _id: ObjectId('112233445566778899001122'),
+        username: 'daniel.wolf@ravellosystems.com',
+        password: '!Q@W3e4r'
+    }
 };
 
 var danielUser = {

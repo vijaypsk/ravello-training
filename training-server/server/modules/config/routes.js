@@ -17,8 +17,14 @@ var appController = require('./../controllers/app-ctrl');
 
 module.exports = function(app) {
 
+    var authConfig = {
+        session: false,
+        failureFlash: false,
+        failureRedirect: '/login'
+    };
+
     // Login route.
-    app.post('/rest/login', passport.authenticate('basic', {session: false}), trainingAuth.handleLogin);
+    app.post('/rest/login', passport.authenticate('basic', authConfig), trainingAuth.handleLogin);
 
     // Classes route.
     app.get('/rest/classes', passport.authenticate('basic', {session: false}), classesController.getClasses);

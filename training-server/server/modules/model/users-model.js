@@ -12,7 +12,11 @@ var UsersSchema = mongoose.Schema(
         username: String,
         password: String,
         salt: String,
-        role: String
+        role: String,
+        ravelloCredentials: {
+            username: String,
+            password: String
+        }
     }
 );
 

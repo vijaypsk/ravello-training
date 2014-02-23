@@ -18,7 +18,7 @@ exports.getBlueprints = function(username, password) {
         end(deferred.makeNodeResolver());
 
     return promise.then(function(result) {
-        return result.body;
+        return result;
     });
 };
 
@@ -33,7 +33,7 @@ exports.getBlueprintById = function(bpId, username, password) {
         end(deferred.makeNodeResolver());
 
     deferred.promise.then(function(result) {
-        return result.body;
+        return result;
     });
 
     return deferred.promise;

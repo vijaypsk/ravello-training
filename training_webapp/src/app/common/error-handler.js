@@ -15,8 +15,8 @@
                                     console.log(rejection.data);
                                     alert(rejection.data);
                                 }
-                                $q.reject(rejection);
                             }
+                            return $q.reject(rejection);
                         }
                     };
                 }
