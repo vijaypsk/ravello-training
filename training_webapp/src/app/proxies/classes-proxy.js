@@ -4,26 +4,37 @@ angular.module('trng.proxies').factory('trng.proxies.ClassesProxy', [
     '$http',
     '$q',
     'app.config',
-    function($http, $q, config) {
+    'trainingTracker',
+    function($http, $q, config, trainingTracker) {
         return {
             getAllClasses: function() {
-                return $http.get(config.baseUrl + '/rest/classes');
+                var promise = $http.get(config.baseUrl + '/rest/classes');
+                trainingTracker.addPromise(promise);
+                return promise;
             },
 
             add: function(classToSave) {
-                return $http.post(config.baseUrl + '/rest/classes', classToSave);
+                var promise = $http.post(config.baseUrl + '/rest/classes', classToSave);
+                trainingTracker.addPromise(promise);
+                return promise;
             },
 
             update: function(classToSave) {
-                return $http.put(config.baseUrl + '/rest/classes/' + classToSave['_id'], classToSave);
+                var promise = $http.put(config.baseUrl + '/rest/classes/' + classToSave['_id'], classToSave);
+                trainingTracker.addPromise(promise);
+                return promise;
             },
 
             delete: function(classToDelete) {
-                return $http.delete(config.baseUrl + '/rest/classes/' + classToDelete['_id']);
+                var promise = $http.delete(config.baseUrl + '/rest/classes/' + classToDelete['_id']);
+                trainingTracker.addPromise(promise);
+                return promise;
             },
 
             deleteById: function(classId) {
-                return $http.delete(config.baseUrl + '/rest/classes/' + classId);
+                var promise = $http.delete(config.baseUrl + '/rest/classes/' + classId);
+                trainingTracker.addPromise(promise);
+                return promise;
             }
         };
     }

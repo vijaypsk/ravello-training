@@ -4,10 +4,13 @@ angular.module('trng.proxies').factory('trng.proxies.BlueprintsProxy', [
     '$http',
     '$q',
     'app.config',
-    function($http, $q, config) {
+    'trainingTracker',
+    function($http, $q, config, trainingTracker) {
         return {
             getAllBlueprints: function() {
-                return $http.get(config.baseUrl + '/rest/blueprints');
+                var promise = $http.get(config.baseUrl + '/rest/blueprints');
+                trainingTracker.addPromise(promise);
+                return promise;
             }
         };
     }
