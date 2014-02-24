@@ -262,7 +262,7 @@ h3.panel-title {
 }
 .ravello-logo{
     background: transparent url(../images/ravello-logo-small.png) no-repeat center left scroll;
-    padding-left: 2%;
+    padding-left:20px;
     background-size: contain;
 }
 .small-padding-no-bullet {
@@ -278,4 +278,13 @@ hr {
     color: white;
     font-style: italic;
     font-size: 13px;
+    width: 20%;
+}
+.table-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+.rav-default-user-lbl {
+    padding-left: 0px;
+    padding-right: 7px;
 }

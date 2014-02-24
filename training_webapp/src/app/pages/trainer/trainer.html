@@ -3,6 +3,7 @@
         <div class="header">
             <h1 class="header-title">Training Portal</h1>
 
+
             <ul class="main-nav">
                 <li><a ui-sref="trainer.courses.classes" class="dropdown">Training</a>
                     <ul class="submenu">
@@ -16,7 +17,10 @@
                 </li>
             </ul>
 
-            <button id="logoutBtn" class="btn pull-right" ng-click="logout()"><i></i> Logout</button>
+            <div class="table-cell text-right">
+                <button id="logoutBtn" class="btn btn-default btn-sm" ng-click="logout()"><i class="icon-logout"></i> Logout</button>
+            </div>
+            <div class="powered-by text-right"><span class="ravello-logo">Powered by Ravello Systems</span></div>
         </div>
     </div>
     <div ui-view></div>
