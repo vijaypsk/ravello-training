@@ -44,10 +44,10 @@ angular.module('trng.student').controller('studentClassController', [
                     displayName: 'Actions',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="startApp(row)">' +
-                            '<i></i> Start' +
+                            '<i class="icon-play"></i> Start' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="stopApp(row)">' +
-                            '<i></i> Stop' +
+                            '<i class="icon-stop"></i> Stop' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="view(row)">' +
                             '<i class="icon-pencil"></i> View' +

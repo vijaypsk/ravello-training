@@ -82,11 +82,11 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
             $scope.studentsColumns = [
                 {
                     field: 'user.username',
-                    displayName: 'Student email'
+                    displayName: 'User'
                 },
                 {
                     field: 'ravelloCredentials.username',
-                    displayName: 'Ravello user'
+                    displayName: 'Email'
                 },
                 {
                     displayName: 'Actions',

@@ -26,6 +26,6 @@
     "angular-scenario": "~1.2.6"
   },
   "resolutions": {
-    "angular": "1.2.14-build.2272+sha.846ebb4"
+    "angular": "1.2.14-build.2285+sha.b488bbf"
   }
 }

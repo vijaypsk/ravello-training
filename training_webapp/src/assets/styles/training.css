@@ -1,9 +1,11 @@
 body {
     background-color: #F7F7F7;
 }
-
+html, body {
+    height: 100%;
+}
 .ngGrid {
-     background-color: transparent;
+    background-color: transparent;
 }
 #mainAppDiv {
     height: 100%;
@@ -21,14 +23,12 @@ body {
     margin-top: 20px;
 
 }
-
+#studentAppsDiv {
+    margin-top: 20px;
+}
 #classesDataGrid {
     height: 300px;
-
 }
-
-/* Courses */
-
 
 #coursesDataGrid {
     height: 300px;
@@ -185,6 +185,7 @@ a.dropdown:after{
 .mock-disabled-input {
     border-color:#FFF;
     box-shadow: none;
+    color: #9B9B9B;
 }
 .nav-tabs {
     margin-bottom: 25px;
@@ -203,10 +204,12 @@ a.dropdown:after{
     margin-right:auto ;
 }
 .form-box {
-    background: #E5e5e5;
+    background: #F0F0F0;
     margin: 15px 0;
     border-radius: 3px;
-    padding: 20px;
+    border: 1px solid #dddddd;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .form-box .form-group:last-child {
     margin-bottom: 0;
@@ -225,7 +228,7 @@ h3.panel-title {
 }
 .panel-default > .panel-heading {
     background-image: none;
-    background-color:#E5e5e5 ;
+    background-color:#F0F0F0;
 }
 .panel-group .panel-heading + .panel-collapse .panel-body {
     border-top: none;
@@ -237,7 +240,7 @@ h3.panel-title {
     margin-top: 10px;
 }
 .modal-content>div>h3:first-child {
-margin-top: 0;
+    margin-top: 0;
 }
 .modal-content {
     padding: 2em;
@@ -248,4 +251,31 @@ margin-top: 0;
 .spacer {
     margin-top: 35px;
 }
-
+.text-uppercase {
+    text-transform: uppercase;
+}
+.text-lowercase {
+    text-transform: lowercase;
+}
+.form-box, .panel-heading {
+    padding: 15px;
+}
+.ravello-logo{
+    background: transparent url(../images/ravello-logo-small.png) no-repeat center left scroll;
+    padding-left: 2%;
+    background-size: contain;
+}
+.small-padding-no-bullet {
+    list-style: none;
+    padding-left: 20px;
+}
+hr {
+    border-top: 1px solid #DDD;
+}
+.powered-by {
+    display: table-cell;
+    vertical-align: middle;
+    color: white;
+    font-style: italic;
+    font-size: 13px;
+}

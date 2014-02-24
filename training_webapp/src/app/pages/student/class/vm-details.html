@@ -1,23 +1,24 @@
 <div id="vmDetailsDiv">
     <div class="row">
-        <h4>Hostnames</h4>
+        <h4>Host Name</h4>
         <hr>
     </div>
-<ul>
-    <li ng-repeat="hostname in selectedVm.hostnames">{{hostname.name}}</li>
-</ul>
+    <ul class="small-padding-no-bullet">
+        <li ng-repeat="hostname in selectedVm.hostnames">{{hostname.name}}</li>
+    </ul>
     <div class="row spacer">
         <h4>External Access</h4>
         <hr>
     </div>
-    <div ng-repeat="dns in selectedVm.allDns">
-        <div class="row">
-            <h5>{{dns.name}}</h5>
-        </div>
-        <div ng-repeat="service in dns.services" class="row">
-            - {{service.name}}      {{service.port}}
-        </div>
-    </div>
+    <ul class="small-padding-no-bullet">
+        <li ng-repeat="dns in selectedVm.allDns" style="list-style: none;">
+            <h5><span style="font-weight: bold">DNS:</span> {{dns.name}}</h5>
+            <h5 style="font-weight: bold">Available Services:</h5>
+            <ul>
+                <li ng-repeat="service in dns.services"><span class="text-uppercase">{{service.name}}</span> (Port {{service.port}})</li>
+            </ul>
+        </li>
+    </ul>
     <div class="row spacer">
         <button class="btn btn-success" id="okBtn" ng-click="ok()"><i class="icon-ok"></i> OK</button>
     </div>
