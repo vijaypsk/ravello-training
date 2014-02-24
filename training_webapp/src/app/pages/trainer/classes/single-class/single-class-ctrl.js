@@ -130,7 +130,7 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
                 data: 'currentClass.students',
                 columnDefs: $scope.studentsColumns,
                 selectedItems: $scope.selectedStudents,
-                showSelectionCheckbox: true,
+                showSelectionCheckbox: false,
                 selectWithCheckboxOnly: true
             };
         };

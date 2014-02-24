@@ -27,22 +27,25 @@ angular.module('trng.student').controller('studentAppController', [
                 {
                     field: 'name',
                     enableCellEdit: false,
-                    displayName: 'VM name'
+                    displayName: 'VM name',
+                    width: '25%'
                 },
                 {
                     field: 'status',
                     enableCellEdit: false,
-                    displayName: 'Status'
+                    displayName: 'Status',
+                    width: '9%'
                 },
                 {
                     field: 'firstDns.name',
                     displayName: 'DNS',
                     enableCellEdit: true,
-                    width: '30%'
+                    width: '45%'
                 },
                 {
                     displayName: 'Details',
                     enableCellEdit: false,
+                    width: '15%',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
                             '<i class="icon-plus"></i> More' +

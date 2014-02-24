@@ -38,13 +38,13 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <div class="form-group">
-
-                                            <label for="rav-default-check"  class="col-sm-4 control-label">Use Default User?</label>
-                                            <div class="col-sm-8">
+                                            <label for="rav-default-check" class="rav-default-user-lbl col-sm-3 control-label">Use Default User?</label>
+                                            <div class="col-sm-9">
                                                 <input type="checkbox" id="rav-default-check" ng-model="currentStudent.useDefaultRavelloUser"/>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row spacer"></div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="rav-email"  class="col-sm-3 control-label">Email:</label>
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="row">
-                <button id="configurePermissionsBtn" class="btn btn-default" ng-click="configurBpPermissions()"><i class="icon-cog"></i> Configure permissions</button>
+                <button id="configurePermissionsBtn" class="btn btn-default" ng-click="configurBpPermissions()"><i class="icon-cog"></i> Configure Permissions</button>
                 <div id="bpPermissionsDataGridDiv" class="grid-table">
                     <div id="bpPermissionsDataGrid" ng-grid="bpPermissionsDataGrid"></div>
                 </div>
@@ -79,6 +79,7 @@
         </div>
     </form>
 </div>
+<hr>
 <div save-and-cancel approve-label="Save" cancel-label="Back"
      approve-func="saveStudent" cancel-func="back">
 </div>

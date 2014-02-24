@@ -49,9 +49,27 @@
       "src": "fontawesome"
     },
     {
+      "uid": "0d20938846444af8deb1920dc85a29fb",
+      "css": "logout",
+      "code": 59408,
+      "src": "fontawesome"
+    },
+    {
       "uid": "598a5f2bcf3521d1615de8e1881ccd17",
       "css": "clock",
       "code": 59405,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "555ef8c86832e686fef85f7af2eb7cde",
+      "css": "left-big",
+      "code": 59406,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "ad6b3fbb5324abe71a9c0b6609cbb9f1",
+      "css": "right-big",
+      "code": 59407,
       "src": "fontawesome"
     },
     {
