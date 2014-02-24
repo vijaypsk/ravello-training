@@ -32,8 +32,12 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
                     return studentTrans.entityToDto(student);
                 });
 
-                dto['startDate'] = dto['startDate'].toString(dateUtil.dateFormat);
-                dto['endDate'] = dto['endDate'].toString(dateUtil.dateFormat);
+                if (dto['startDate']) {
+                    dto['startDate'] = dto['startDate'].toString(dateUtil.dateFormat);
+                }
+                if (dto['endDate']) {
+                    dto['endDate'] = dto['endDate'].toString(dateUtil.dateFormat);
+                }
 
                 return dto;
 			}
