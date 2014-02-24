@@ -2,6 +2,6 @@
 
 exports.baseUrl = 'https://cloud.ravellosystems.com';
 
-exports.defaultAutoStopSeconds = 60 * 60 * 6;
+exports.defaultAutoStopSeconds = -1;
 
 exports.dateFormat = 'dd.MM.yyyy hh:mm:ss';
