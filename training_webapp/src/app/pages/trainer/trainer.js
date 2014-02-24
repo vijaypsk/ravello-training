@@ -5,9 +5,6 @@
         '$urlRouterProvider',
         '$stateProvider',
         function($urlRouterProvider, $stateProvider) {
-            $urlRouterProvider.when('/trainer', 'trainer/courses/classes');
-            $urlRouterProvider.when('/trainer/courses', 'trainer/courses/classes');
-
             $stateProvider.
                 state('trainer.courses', {
                     url: '/courses',
