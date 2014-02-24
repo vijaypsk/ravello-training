@@ -80,4 +80,4 @@ var coursesResolver = {
                 return _.cloneDeep(result);
             });
     }]
-}
+};
