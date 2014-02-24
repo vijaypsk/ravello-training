@@ -1,8 +1,13 @@
 'use strict';
 
-angular.module('trng.trainer.courses.courses').controller('addBlueprintsController',
-    ['$scope', '$log', '$modalInstance', 'allBlueprints', 'courseBlueprints',
-     function($scope, $log, $modalInstance, allBlueprints, courseBlueprints) {
+angular.module('trng.trainer.courses.courses').controller('addBlueprintsController', [
+    '$scope',
+    '$log',
+    '$modalInstance',
+    'trng.common.utils.DateUtil',
+    'allBlueprints',
+    'courseBlueprints',
+     function($scope, $log, $modalInstance, dateUtil, allBlueprints, courseBlueprints) {
 
          $scope.init = function() {
              $scope.initBlueprints();
@@ -38,7 +43,8 @@ angular.module('trng.trainer.courses.courses').controller('addBlueprintsControll
                  },
                  {
                      field: 'creationTime',
-                     displayName: 'Creation time'
+                     displayName: 'Creation time',
+                     cellFilter: 'date:\'' + dateUtil.dateFormat + '\''
                  },
                  {
                      field: 'owner',
