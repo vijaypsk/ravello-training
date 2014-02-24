@@ -43,12 +43,14 @@ angular.module('trng.student').controller('studentAppController', [
                     width: '45%'
                 },
                 {
-                    displayName: 'Details',
+                    displayName: 'Actions',
                     enableCellEdit: false,
-                    width: '15%',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
                             '<i class="icon-plus"></i> More' +
+                        '</a>' +
+                        '<a href="" class="btn btn-small btn-link" ng-click="consoleVm(row)" ng-disabled="consoleButtonDisabled()">' +
+                            '<i class="icon-terminal"></i> Console' +
                         '</a>'
                 }
             ];
@@ -110,21 +112,18 @@ angular.module('trng.student').controller('studentAppController', [
             });
         };
 
-        $scope.consoleVm = function() {
-            if ($scope.selectedVms.length == 1) {
-                var vm = $scope.selectedVms[0];
-
-                appsSerivce.consoleVm($scope.currentApp.id, vm.id).then(function(result) {
-                    if (result.status === 200) {
-                        var vncUrl = result.data;
-                        $window.open(vncUrl);
-                    } else {
-                        $log.info("Didn't get VNC URL, status: " + result.status);
-                    }
-                }).catch(function(error) {
-                    $log.info("Didn't get VNC URL, status: " + error);
-                });
-            }
+        $scope.consoleVm = function(vm) {
+            var vmId = vm.getProperty('id');
+            appsSerivce.consoleVm($scope.currentApp.id, vmId).then(function(result) {
+                if (result.status === 200) {
+                    var vncUrl = result.data;
+                    $window.open(vncUrl);
+                } else {
+                    $log.info("Didn't get VNC URL, status: " + result.status);
+                }
+            }).catch(function(error) {
+                $log.info("Didn't get VNC URL, status: " + error);
+            });
         };
 
         $scope.startButtonDisabled = function() {
@@ -138,8 +137,9 @@ angular.module('trng.student').controller('studentAppController', [
         };
 
         $scope.consoleButtonDisabled = function() {
-            return ($scope.selectedVms.length != 1 ||
-                !$scope.bpPermissions.console);
+            return !$scope.bpPermissions.console;
+//            return ($scope.selectedVms.length != 1 ||
+//                !$scope.bpPermissions.console);
         };
 
         $scope.refreshButtonDisabled = function() {
