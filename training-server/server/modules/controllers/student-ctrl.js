@@ -16,16 +16,27 @@ var appsService = require('../services/apps-service');
 
 /* --- Private functions --- */
 
-var prepareClassForStudent = function(classEntity, userId) {
+var prepareClassForStudent = function(classEntity, studentId) {
     var classData = classesTrans.entityToDto(classEntity);
 
-    var matchingStudent = _.find(classData.students, function(student) {
-        return (student._id = userId);
+    var matchingStudentEntity = null;
+    classEntity.students.forEach(function(studentEntity) {
+        if (studentEntity.id === studentId) {
+            matchingStudentEntity = studentEntity;
+        }
     });
 
-    classData = _.omit(classData, 'students');
-    classData.blueprintPermissions = matchingStudent.blueprintPermissions;
+    var matchingStudent = matchingStudentEntity.toJSON();
 
+    var bpPermissionsMap = {};
+    _.forEach(matchingStudent.blueprintPermissions, function(bpPermissions) {
+        var bpPermissionsDto = _.pick(bpPermissions, 'startVms', 'stopVms', 'console');
+        bpPermissionsMap[bpPermissions.bpId] = bpPermissionsDto;
+    });
+
+    classData.blueprintPermissions = bpPermissionsMap;
+
+    classData = _.omit(classData, 'students');
     return classData;
 };
 
@@ -105,7 +116,7 @@ exports.getStudentClass = function(request, response) {
         var classData = classesTrans.entityToDto(classEntity);
         var studentData = classEntity.findStudentByUserId(userId);
 
-        var classPerStudent = prepareClassForStudent(classEntity, studentData._id);
+        var classPerStudent = prepareClassForStudent(classEntity, studentData.id);
 
         var userData = user.toJSON();
         userData.userClass = classPerStudent;
