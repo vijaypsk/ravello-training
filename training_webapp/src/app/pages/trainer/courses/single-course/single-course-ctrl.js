@@ -10,8 +10,9 @@ angular.module('trng.trainer.courses.courses').controller('singleCourseControlle
     '$log',
     'trng.trainer.courses.courses.CourseModel',
     'trng.services.BlueprintsService',
+    'trng.common.utils.DateUtil',
     'currentCourse',
-    function ($scope, $state, $stateParams, $window, $modal, $log, courseModel, blueprintsService, currentCourse) {
+    function ($scope, $state, $stateParams, $window, $modal, $log, courseModel, blueprintsService, dateUtil, currentCourse) {
 
         $scope.init = function () {
             $scope.initCourse();
@@ -35,7 +36,8 @@ angular.module('trng.trainer.courses.courses').controller('singleCourseControlle
                 },
                 {
                     field: 'creationTime',
-                    displayName: 'Creation time'
+                    displayName: 'Creation time',
+                    cellFilter: 'date:\'' + dateUtil.dateFormat + '\''
                 },
                 {
                     field: 'owner',
