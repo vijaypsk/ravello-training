@@ -14,6 +14,39 @@ var adminUser = {
     }
 };
 
+var galUser = {
+    _id : ObjectId("333322222222222222222222"),
+    firstName : "Gal",
+    surname : "Moav",
+    username : "gal",
+    password : "$2a$10$sYPGeB3jT5teA6s1jPr3UOUZFq3JVxo5F5A/ZZaHJG7Yi2TuLtkM2",
+    role : "STUDENT",
+    salt : "$2a$10$sYPGeB3jT5teA6s1jPr3UO"
+}
+
+var galStudent = {  
+    _id : ObjectId("333322222222222222220000"),
+    user : ObjectId("333322222222222222222222"), 
+    blueprintPermissions : [
+        {   
+            bpId : "41386003",
+            startVms : true, 
+            stopVms : true,
+            console : true 
+        } 
+    ],   
+    ravelloCredentials : {
+        useClassCredentials : false,  
+        username : "daniel.wolf@ravellosystems.com",  
+        password : "!Q@W3e4r" 
+    },  
+    apps : [  
+        {   
+            ravelloId : "42434767" 
+        } 
+    ] 
+}
+
 var danielUser = {
     _id: ObjectId('111111111111111111111111'),
     firstName : "Daniel",
@@ -104,7 +137,19 @@ var course02 = {
     ]
 };
 
-var class01 = {
+var course03 = {
+    _id: ObjectId('cccccccccccccccccccc3333'),
+    name: 'CCSA-R77',
+    description: 'Checkpoint CCSA-R77.',
+    blueprints: [
+        {
+            bpId: '41386003',
+            displayForStudents: 'Atlantis & UK'
+        }
+    ]
+};
+
+var class02 = {
     _id: ObjectId('cacacacacacacacacaca2222'),
     name: 'class 01',
     courseId: 'cccccccccccccccccccc2222',
@@ -117,15 +162,31 @@ var class01 = {
     ]
 };
 
+var class03 = {
+    _id: ObjectId('cacacacacacacacacaca3333'),
+    name: 'Demo class',
+    courseId: 'cccccccccccccccccccc3333',
+    description: 'Demo.',
+    startDate: ISODate("2014-02-25T08:00:00Z"),
+    endDate: ISODate("2014-02-25T13:00:00Z"),
+    students: [
+        galStudent
+    ]
+};
+
 db.trainingclasses.remove();
 db.trainingcourses.remove();
 db.users.remove();
 
 db.users.save(adminUser);
+db.users.save(galUser);
 db.users.save(danielUser);
 db.users.save(hadasUser);
 
+db.trainingcourses.save(course01);
 db.trainingcourses.save(course02);
+db.trainingcourses.save(course03);
 
-db.trainingclasses.save(class01);
+db.trainingclasses.save(class02);
+db.trainingclasses.save(class03);
 
