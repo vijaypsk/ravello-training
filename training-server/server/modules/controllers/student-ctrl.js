@@ -98,7 +98,7 @@ var createVmViewObject = function(vm) {
     });
 
     var firstDns = _.find(allDns, function(dns) {
-        return (dns && dns.servicesForNic && dns.servicesForNic.length > 0);
+        return (dns && dns.services && dns.services.length > 0);
     });
 
     var vmViewObject = {
