@@ -17,9 +17,9 @@ exports.getClass = function(classId) {
 };
 
 exports.getClassOfUser = function(userId) {
-    return TrainingClass.find({'students.user': new ObjectId(userId)}).populate('students.user').execQ().then(
+    return TrainingClass.findOne({'students.user': new ObjectId(userId)}).populate('students.user').execQ().then(
         function(result) {
-            return result[0];
+            return result;
         });
 };
 
@@ -27,15 +27,14 @@ exports.createClass = function(classData) {
     var newClass = new TrainingClass(classData);
 
     return newClass.saveQ().then(function(result) {
-        var entity = result[0];
+        var entity = result;
         return entity.populateQ('students.user');
     });
 };
 
 exports.updateClass = function(classId, classData) {
     var updatedClassEntity = _.omit(classData, '_id');
-
-    return TrainingClass.updateQ({'_id': new ObjectId(classId)}, updatedClassEntity, {upsert: true});
+    return TrainingClass.updateQ({_id: new ObjectId(classId)}, updatedClassEntity, {upsert: true});
 };
 
 exports.deleteClass = function(classId) {

@@ -24,9 +24,8 @@ exports.getCourse = function(courseId) {
 
 exports.createCourse = function(courseData) {
     var newCourse = new TrainingCourse(courseData);
-
     return newCourse.saveQ().then(function(result) {
-        var entity = result[0];
+        var entity = result;
         return entity.toJSON();
     });
 };

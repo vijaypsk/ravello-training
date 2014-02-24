@@ -121,8 +121,10 @@ exports.updateClass = function(request, response) {
     // new users if they're not existing yet.
     var userPromises = [];
     _.forEach(classData.students, function(student) {
-        var promise = usersDal.updateUser(student.user.username, student.user).then(function(persistedUser) {
-            student.user = persistedUser.id;
+        var promise = usersDal.updateUser(student.user.username, student.user).then(function() {
+            return usersDal.getUser(student.user.username).then(function(persistedUser) {
+                student.user = persistedUser.id;
+            });
         });
         userPromises.push(promise);
     });
@@ -130,9 +132,11 @@ exports.updateClass = function(request, response) {
     // Once the promises of all users creation are resolved, continue to update the class entity.
     q.all(userPromises).then(function() {
         var classEntityData = classesTrans.dtoToEntity(classData);
-        classesDal.updateClass(classId, classEntityData).then(function(result) {
-            var dto = classesTrans.entityToDto(result);
-            response.json(result);
+        classesDal.updateClass(classId, classEntityData).then(function() {
+            return classesDal.getClass(classId).then(function(result) {
+                var dto = classesTrans.entityToDto(result);
+                response.json(dto);
+            });
         }).fail(function(error) {
             var message = "Could not save class, error: " + error;
             console.log(message);
