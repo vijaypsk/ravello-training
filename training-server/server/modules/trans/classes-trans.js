@@ -44,8 +44,12 @@ exports.entityToDto = function(entityDocument) {
         student.blueprintPermissions = bpPermissionsMap;
     });
 
-    dto.startDate = dto.startDate.toString(properties.dateFormat);
-    dto.endDate = dto.endDate.toString(properties.dateFormat);
+    if (dto.startDate) {
+        dto.startDate = dto.startDate.toString(properties.dateFormat);
+    }
+    if (dto.endDate) {
+        dto.endDate = dto.endDate.toString(properties.dateFormat);
+    }
 
     return dto;
 };
