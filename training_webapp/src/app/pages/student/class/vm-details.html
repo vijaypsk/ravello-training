@@ -11,7 +11,7 @@
         <hr>
     </div>
     <ul class="small-padding-no-bullet">
-        <li ng-repeat="dns in selectedVm.allDns" style="list-style: none;">
+        <li ng-repeat="dns in dnsWithExternalServices" style="list-style: none;">
             <h5><span style="font-weight: bold">DNS:</span> {{dns.name}}</h5>
             <h5 style="font-weight: bold">Available Services:</h5>
             <ul>

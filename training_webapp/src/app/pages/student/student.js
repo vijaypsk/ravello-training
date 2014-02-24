@@ -13,7 +13,6 @@
                     templateUrl: 'app/pages/student/class/student-class.html',
                     controller: 'studentClassController',
                     resolve: studentClassResolver
-//                    abstract: true
                 }).state('student.class.single-app', {
                     url: '/single-app?appId',
                     templateUrl: 'app/pages/student/class/student-single-app.html',

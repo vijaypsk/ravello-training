@@ -22,6 +22,11 @@ angular.module('trng.app').controller('MainController', [
             }
         };
 
+        $scope.logout = function() {
+            $cookieStore.remove('userAuthData');
+            $state.go('login');
+        };
+
         $scope.initApp();
     }
 ]);

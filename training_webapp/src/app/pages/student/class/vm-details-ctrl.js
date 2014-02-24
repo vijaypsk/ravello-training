@@ -8,6 +8,15 @@ angular.module('trng.student').controller('vmDetailsController', [
     function($log, $scope, $modalInstance, selectedVm) {
         $scope.init = function() {
             $scope.selectedVm = selectedVm;
+            $scope.dnsWithExternalServices = $scope.determineDnsWithExternalServices();
+        };
+
+        $scope.determineDnsWithExternalServices = function() {
+            return _.map(selectedVm.allDns, function(dns) {
+                if (dns.services && dns.services.length > 0) {
+                    return dns;
+                }
+            });
         };
 
         $scope.ok = function() {

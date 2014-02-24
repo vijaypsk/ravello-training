@@ -8,8 +8,10 @@ angular.module('trng.login').controller('loginController', [
     'loginModel',
     function($scope, $state, $cookieStore, loginService, loginModel) {
         $scope.init = function() {
-            $scope.username = "";
-            $scope.password = "";
+            if ($cookieStore.get('userAuthData')) {
+                $scope.username = $cookieStore.get('userAuthData').username;
+                $scope.password = $cookieStore.get('userAuthData').password;
+            }
         };
 
         $scope.login = function() {

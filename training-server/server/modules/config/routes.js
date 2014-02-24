@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var passport = require('passport');
 
 var trainingAuth = require('./../auth/training-auth');
@@ -23,32 +24,52 @@ module.exports = function(app) {
         failureRedirect: '/login'
     };
 
+
+    var isAuthorized = function(roles) {
+        return function(req, res, next) {
+            var user = req.user;
+
+            var roleApproved = false;
+            _.forEach(roles, function(role) {
+                if (user.role && user.role === role) {
+                    roleApproved = true;
+                }
+            });
+
+            if (roleApproved) {
+                next();
+            } else {
+                res.send(401, "User is not authorized");
+            }
+        }
+    };
+
     // Login route.
     app.post('/rest/login', passport.authenticate('basic', authConfig), trainingAuth.handleLogin);
 
     // Classes route.
-    app.get('/rest/classes', passport.authenticate('basic', {session: false}), classesController.getClasses);
-    app.post('/rest/classes', passport.authenticate('basic', {session: false}), classesController.createClass);
-    app.delete('/rest/classes/:classId', passport.authenticate('basic', {session: false}), classesController.deleteClass);
-    app.put('/rest/classes/:classId', passport.authenticate('basic', {session: false}), classesController.updateClass);
+    app.get('/rest/classes', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER']), classesController.getClasses);
+    app.post('/rest/classes', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER']), classesController.createClass);
+    app.delete('/rest/classes/:classId', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER']), classesController.deleteClass);
+    app.put('/rest/classes/:classId', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER']), classesController.updateClass);
 
     // Courses route.
-    app.get('/rest/courses', passport.authenticate('basic', {session: false}), coursesController.getCourses);
-    app.get('/rest/courses/:courseId', passport.authenticate('basic', {session: false}), coursesController.getCourse);
-    app.post('/rest/courses', passport.authenticate('basic', {session: false}), coursesController.createCourse);
-    app.delete('/rest/courses/:courseId', passport.authenticate('basic', {session: false}), coursesController.deleteCourse);
-    app.put('/rest/courses/:courseId', passport.authenticate('basic', {session: false}), coursesController.updateCourse);
+    app.get('/rest/courses', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER']), coursesController.getCourses);
+    app.get('/rest/courses/:courseId', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER', 'STUDENT']), coursesController.getCourse);
+    app.post('/rest/courses', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER']), coursesController.createCourse);
+    app.delete('/rest/courses/:courseId', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER']), coursesController.deleteCourse);
+    app.put('/rest/courses/:courseId', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER']), coursesController.updateCourse);
 
     // Blueprints route.
-    app.get('/rest/blueprints', passport.authenticate('basic', {session: false}), blueprintsController.getBlueprints);
+    app.get('/rest/blueprints', passport.authenticate('basic', {session: false}), isAuthorized(['TRAINER']), blueprintsController.getBlueprints);
 
     // Student route.
-    app.get('/rest/students/:studentId', passport.authenticate('basic', {session: false}), studentController.getStudentClass);
-    app.get('/rest/students/:studentId/class/:classId/apps', passport.authenticate('basic', {session: false}), studentController.getStudentClassApps);
-    app.get('/rest/students/:studentId/class/:classId/apps/:appId', passport.authenticate('basic', {session: false}), studentController.getAppVms);
+    app.get('/rest/students/:studentId', passport.authenticate('basic', {session: false}), isAuthorized(['STUDENT']), studentController.getStudentClass);
+    app.get('/rest/students/:studentId/class/:classId/apps', passport.authenticate('basic', {session: false}), isAuthorized(['STUDENT']), studentController.getStudentClassApps);
+    app.get('/rest/students/:studentId/class/:classId/apps/:appId', passport.authenticate('basic', {session: false}), isAuthorized(['STUDENT']), studentController.getAppVms);
 
     // App route.
-    app.post('/rest/applications/:appId/:action', passport.authenticate('basic', {session: false}), appController.appAction);
-    app.post('/rest/applications/:appId/vms/:vmId/:action', passport.authenticate('basic', {session: false}), appController.vmAction);
-    app.get('/rest/applications/:appId/vms/:vmId/vncUrl', passport.authenticate('basic', {session: false}), appController.vmVnc);
+    app.post('/rest/applications/:appId/:action', passport.authenticate('basic', {session: false}), isAuthorized(['STUDENT']), appController.appAction);
+    app.post('/rest/applications/:appId/vms/:vmId/:action', passport.authenticate('basic', {session: false}), isAuthorized(['STUDENT']), appController.vmAction);
+    app.get('/rest/applications/:appId/vms/:vmId/vncUrl', passport.authenticate('basic', {session: false}), isAuthorized(['STUDENT']), appController.vmVnc);
 };
