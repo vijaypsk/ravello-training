@@ -101,10 +101,14 @@ exports.createClass = function(request, response) {
             var dto = classesTrans.entityToDto(result);
             response.json(dto);
         }).fail(function(error) {
-            console.log("Could not save class, error: " + error);
+            var message = "Could not save class, error: " + error;
+            console.log(message);
+            response.send(400, message);
         });
     }).fail(function(error) {
-        console.log("Could not save one of the users associated with the new class, error: " + error);
+        var message = "Could not save one of the users associated with the new class, error: " + error;
+        console.log(message);
+        response.send(400, message);
     });
 };
 
@@ -130,10 +134,13 @@ exports.updateClass = function(request, response) {
             var dto = classesTrans.entityToDto(result);
             response.json(result);
         }).fail(function(error) {
-            console.log("Could not update class, error: " + error);
-        });
+            var message = "Could not save class, error: " + error;
+            console.log(message);
+            response.send(400, message);        });
     }).fail(function(error) {
-        console.log("Could not update one of the students as users, error: " + error);
+        var message = "Could not save one of the users associated with the new class, error: " + error;
+        console.log(message);
+        response.send(400, message);
     });
 };
 
@@ -143,11 +150,17 @@ exports.deleteClass = function(request, response) {
     classesDal.deleteClass(classId).then(function(deletedClass) {
         var studentsInClass = deletedClass.students;
         _.forEach(deletedClass.students, function(student) {
-            usersDal.findAndDelete(student.user.username).fail(function(error) {
-                console.log("Could not delete one of the users associated with the class, error: " + error);
+            usersDal.findAndDelete(student.user.username).then(function(result) {
+                response.send(200);
+            }).fail(function(error) {
+                var message = "Could not delete one of the users associated with the class, error: " + error;
+                console.log(message);
+                response.send(400, message);
             });
         });
     }).fail(function(error) {
-        console.log("Could not delete class, error: " + error);
+        var message = "Could not delete class, error: " + error;
+        console.log(message);
+        response.send(404, message);
     });
 };

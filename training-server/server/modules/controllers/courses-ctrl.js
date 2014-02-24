@@ -105,7 +105,9 @@ exports.createCourse = function(request, response) {
     coursesDal.createCourse(request.body).then(function(result) {
         response.json(result);
     }).fail(function(error) {
-        console.log("Could not save course, error: " + error);
+        var message = "Could not save course, error: " + error;
+        console.log(message);
+        response.send(400, message);
     });
 };
 
@@ -113,15 +115,23 @@ exports.updateCourse = function(request, response) {
     var courseId = request.params.courseId;
     var courseData = request.body;
 
-    coursesDal.updateCourse(courseId, courseData).fail(function(error) {
-        console.log("Could not update course, error: " + error);
+    coursesDal.updateCourse(courseId, courseData).then(function(result) {
+        resonse.send(200);
+    }).fail(function(error) {
+        var message = "Could not update course, error: " + error;
+        console.log(message);
+        response.send(404, message);
     });
 };
 
 exports.deleteCourse = function(request, response) {
     var courseId = request.params.courseId;
 
-    coursesDal.deleteCourse(courseId).fail(function(error) {
-        console.log("Could not delete course, error: " + error);
+    coursesDal.deleteCourse(courseId).then(function(result) {
+        response.send(200);
+    }).fail(function(error) {
+        var message = "Could not delete course, error: " + error;
+        console.log(message);
+        resopnse.send(404, message);
     });
 };
