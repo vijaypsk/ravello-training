@@ -5,16 +5,79 @@ var _ = require('lodash');
 
 var classesDal = require('../dal/classes-dal');
 var usersDal = require('../dal/users-dal');
+
 var classesTrans = require('../trans/classes-trans');
+var appsTrans = require('../trans/apps-trans');
+
+var appsService = require('../services/apps-service');
 
 exports.getClasses = function(request, response) {
+    var user = request.user;
+    var ravelloUsername = user.ravelloCredentials.username;
+    var ravelloPassword = user.ravelloCredentials.password;
+
+    // Okay, there are many async calls here, so stick with me.
+    // First, well, we get the classes entities.
     classesDal.getClasses().then(function(classes) {
-        var dtos = _.map(classes, function(currentClass) {
-            return classesTrans.entityToDto(currentClass);
+
+        var classesDtos = [];
+        var classesPromises = [];
+
+        _.forEach(classes, function(classEntity) {
+
+            // We then want the classes as DTOs.
+            var classDto = classesTrans.entityToDto(classEntity);
+            classesDtos.push(classDto);
+
+            // Now we want to go over each student in the each class.
+            var studentPromises = [];
+
+            _.forEach(classDto.students, function(student) {
+
+                // Then we need to get the data for each app of each student.
+                var appsPromises = [];
+                _.forEach(student.apps, function(app) {
+                    var appPromise = appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
+                    appsPromises.push(appPromise);
+                });
+
+                // Getting the apps is done with promises. We wait until all apps info is returned.
+                // We then set the apps of the student as a map between the app's name to the app DTO.
+                // Also notice that this q.all returns a promise, which will be resolved once all of
+                // the promises of the apps are resolved. This promise then represents the
+                // async call for a single student.
+                var studentPromise = q.all(appsPromises).then(function(appsResults) {
+                    var appsMap = {};
+
+                    _.forEach(appsResults, function(appResult) {
+                        var app = appsTrans.ravelloObjectToTrainerDto(appResult.body);
+                        appsMap[app.name] = app;
+                    });
+
+                    student.apps = appsMap;
+                });
+
+                studentPromises.push(studentPromise);
+            });
+
+            // After we're done with all students, we wait for all of the student promises to return,
+            // which will happen only after all of the apps promises of every student are returned.
+            var classPromise = q.all(studentPromises);
+
+            classesPromises.push(classPromise);
         });
-        response.json(dtos);
+
+        // At last, when we're done with the classes, we can wait for the promises of all classes to return.
+        q.all(classesPromises).then(function(classesResult) {
+            response.json(classesDtos);
+        }).fail(function(error) {
+            console.log(error);
+            response.send(404, error);
+        });
     }).fail(function(error) {
-        console.log('Could not load classes, error: ' + error);
+        var message = "Could not load classes, error: " + error;
+        console.log(message);
+        response.send(404, message);
     });
 };
 

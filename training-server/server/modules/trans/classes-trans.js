@@ -18,8 +18,9 @@ exports.dtoToEntity = function(dto) {
 
         var appsArray = [];
         _.forIn(student.apps, function(app, appId) {
-            app.appId = appId;
-            appsArray.push(app);
+            appsArray.push({
+                ravelloId: app.id
+            });
         });
         student.apps = appsArray;
     });
@@ -41,14 +42,6 @@ exports.entityToDto = function(entityDocument) {
             bpPermissionsMap[bpId] = bpPermissions;
         });
         student.blueprintPermissions = bpPermissionsMap;
-
-        var appsMap = {};
-        _.forEach(student.apps, function(app) {
-            var appId = app.appId;
-            app = _.omit(app, 'appId');
-            appsMap[appId] = app;
-        });
-        student.apps = appsMap;
     });
 
     dto.startDate = dto.startDate.toString(properties.dateFormat);

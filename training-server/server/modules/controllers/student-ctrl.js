@@ -7,7 +7,9 @@ var ravelloAuth = require('../auth/ravello-auth');
 
 var coursesDal = require('../dal/courses-dal');
 var classesDal = require('../dal/classes-dal');
+
 var classesTrans = require('../trans/classes-trans');
+var appsTrans = require('../trans/apps-trans');
 
 var blueprintsService = require('../services/blueprints-service');
 var appsService = require('../services/apps-service');
@@ -25,41 +27,6 @@ var prepareClassForStudent = function(classEntity, userId) {
     classData.blueprintPermissions = matchingStudent.blueprintPermissions;
 
     return classData;
-};
-
-var determineAppDisplayName = function(course, bpId) {
-    var matchingBp = _.find(course.blueprints, function(bp) {
-        return bp.id = bpId;
-    });
-
-    if (matchingBp) {
-        return matchingBp.displayForStudents;
-    }
-
-    return null;
-};
-
-var createAppViewObject = function(course, app) {
-    var numOfVms = app.deployment.vms.length;
-    var numOfRunningVms = 0;
-
-    _.forEach(app.deployment.vms, function(vm) {
-        if (vm.state === 'STARTED') {
-            numOfRunningVms++;
-        }
-    });
-
-    var appDisplayName = determineAppDisplayName(course, app.baseBlueprintId);
-
-    var appViewObject = {
-        id: app.id,
-        name: appDisplayName ? appDisplayName : app.name,
-        blueprintId: app.baseBlueprintId,
-        numOfVms: numOfVms,
-        numOfRunningVms: numOfRunningVms
-    };
-
-    return appViewObject;
 };
 
 var createVmViewObject = function(vm) {
@@ -175,7 +142,7 @@ exports.getStudentClassApps = function(request, response) {
                 var appViewObjects = [];
 
                 _.forEach(appsResults, function(appResult) {
-                    var appViewObject = createAppViewObject(course, appResult.body);
+                    var appViewObject = appsTrans.ravelloObjectToStudentDto(course, appResult.body);
                     appViewObjects.push(appViewObject);
                 });
 

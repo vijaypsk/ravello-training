@@ -119,7 +119,7 @@ var course01 = {
     description: 'tryout course',
     blueprints: [
         {
-            bpId: '42434571',
+            id: '42434571',
             displayForStudents: 'Environment 01'
         }
     ]
@@ -131,7 +131,7 @@ var course02 = {
     description: 'tryout course 02',
     blueprints: [
         {
-            bpId: '42434571',
+            id: '42434571',
             displayForStudents: 'Environment 02'
         }
     ]
@@ -143,7 +143,7 @@ var course03 = {
     description: 'Checkpoint CCSA-R77.',
     blueprints: [
         {
-            bpId: '41386003',
+            id: '41386003',
             displayForStudents: 'Atlantis & UK'
         }
     ]

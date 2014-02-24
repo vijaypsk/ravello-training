@@ -37,7 +37,7 @@ angular.module('trng.trainer.courses.courses').controller('singleCourseControlle
                 {
                     field: 'creationTime',
                     displayName: 'Creation time',
-                    cellFilter: 'date:\'' + dateUtil.dateFormat + '\''
+                    cellFilter: 'date:\'' + dateUtil.dateTimeFormat + '\''
                 },
                 {
                     field: 'owner',

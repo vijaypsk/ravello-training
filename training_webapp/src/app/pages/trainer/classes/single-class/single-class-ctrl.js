@@ -113,7 +113,8 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
                 },
                 {
                     field: 'creationTime',
-                    displayName: 'Creation Time'
+                    displayName: 'Creation Time',
+                    cellFilter: 'date:\'' + dateUtil.dateTimeFormat + '\''
                 },
                 {
                     field: 'numOfRunningVms',

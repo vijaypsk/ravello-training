@@ -9,8 +9,9 @@ angular.module('trng.trainer.courses.classes').controller('classesController', [
     'trng.trainer.courses.classes.ClassModel',
     'trng.services.ClassesService',
     'trng.trainer.courses.courses.CourseModel',
+    'trng.common.utils.DateUtil',
     'classes',
-    function ($scope, $rootScope, $state, $log, classModel, classesService, courseModel, classes) {
+    function ($scope, $rootScope, $state, $log, classModel, classesService, courseModel, dateUtil, classes) {
 
         $scope.init = function () {
             $scope.initClassesDataGrid();
@@ -34,12 +35,12 @@ angular.module('trng.trainer.courses.classes').controller('classesController', [
                 {
                     field: 'startDate',
                     displayName: 'Start date',
-                    cellFilter: 'date:"dd/MM/yyyy"'
+                    cellFilter: 'date:\'' + dateUtil.dateTimeFormat + '\''
                 },
                 {
                     field: 'endDate',
                     displayName: 'End date',
-                    cellFilter: 'date:"dd/MM/yyyy"'
+                    cellFilter: 'date:\'' + dateUtil.dateTimeFormat + '\''
                 },
                 {
                     displayName: 'Actions',

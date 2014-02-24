@@ -3,6 +3,8 @@
 var _ = require('lodash');
 
 exports.dtoToEntity = function(dto) {
-    return _.pick(dto, 'id', 'name', 'creationTime', 'owner');
+    var entity = _.pick(dto, 'id', 'name', 'creationTime', 'owner');
+    entity.creationTime = new Date(dto.creationTime);
+    return entity;
 };
 
