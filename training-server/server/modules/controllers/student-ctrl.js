@@ -69,11 +69,13 @@ var createVmViewObject = function(vm) {
         };
     });
 
-    var allDns = _.map(vm.networkConnections, function(networkConnection) {
-        var publicIp = networkConnection.ipConfig.publicIp;
+    var allDns = [];
+    _.forEach(vm.networkConnections, function(networkConnection) {
+        var publicIp = extractDeviceIp(networkConnection);
 
         if (publicIp) {
-            var servicesForNic = _.map(vm.suppliedServices, function(currentService) {
+            var servicesForNic = [];
+            _.forEach(vm.suppliedServices, function(currentService) {
                 // Return the service if:
                 // 1. It has no ip property (meaning it is for all IPs).
                 // 2. OR it has an ip property, and its equal to the current public IP.
@@ -81,22 +83,22 @@ var createVmViewObject = function(vm) {
                 if ((!currentService.hasOwnProperty('ip') || currentService.ip === publicIp) &&
                     currentService.external) {
 
-                    return {
+                    servicesForNic.push({
                         name: currentService.name,
                         port: currentService.externalPort
-                    };
+                    });
                 }
             });
 
-            return {
+            allDns.push({
                 name: networkConnection.ipConfig.fqdn,
                 services: servicesForNic
-            }
+            });
         }
     });
 
-    var firstDns = allDns.length == 1 ? allDns[0] : _.find(allDns, function(dns) {
-        return (dns.servicesForNic && dns.servicesForNic.length > 0);
+    var firstDns = _.find(allDns, function(dns) {
+        return (dns && dns.servicesForNic && dns.servicesForNic.length > 0);
     });
 
     var vmViewObject = {
@@ -109,6 +111,20 @@ var createVmViewObject = function(vm) {
     };
 
     return vmViewObject;
+};
+
+var extractDeviceIp = function(device) {
+    if (device.ipConfig) {
+        if (device.ipConfig.publicIp) {
+            return device.ipConfig.publicIp;
+        }
+
+        if (device.ipConfig.autoIpConfig && device.ipConfig.autoIpConfig.reservedIp) {
+            return device.ipConfig.autoIpConfig.reservedIp;
+        }
+    }
+
+    return undefined;
 };
 
 /* --- Public functions --- */
@@ -205,7 +221,11 @@ exports.getAppVms = function(request, response) {
             };
 
             response.json(appDto);
-        });
+        }).fail(function(error) {
+            var message = "Could not get application deployment information, error: " + error;
+            console.log(message);
+            response.send(404, message);
+            });
     }).fail(function(error) {
         var message = "Could not load app " + appId + ", error: " + error;
         console.log(message);
