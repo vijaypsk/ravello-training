@@ -91,14 +91,6 @@ angular.module('trng.trainer.courses.classes').controller('classesController', [
             classModel.deleteClassById($scope.classes, classId);
         };
 
-        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-            if (toState['name'] === 'trainer.courses.single-class.add-class') {
-                $rootScope.isAdd = true;
-            } else {
-                $rootScope.isAdd = false;
-            }
-        });
-
         $scope.init();
     }
 ]);
