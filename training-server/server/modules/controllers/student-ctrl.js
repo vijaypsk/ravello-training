@@ -3,8 +3,6 @@
 var _ = require('lodash');
 var q = require('q');
 
-var ravelloAuth = require('../auth/ravello-auth');
-
 var coursesDal = require('../dal/courses-dal');
 var classesDal = require('../dal/classes-dal');
 
