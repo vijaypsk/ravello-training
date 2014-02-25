@@ -99,6 +99,10 @@ var extractDeviceIp = function(device) {
         if (device.ipConfig.autoIpConfig && device.ipConfig.autoIpConfig.reservedIp) {
             return device.ipConfig.autoIpConfig.reservedIp;
         }
+
+        if (device.ipConfig.staticIpConfig && device.ipConfig.staticIpConfig.ip) {
+            return device.ipConfig.staticIpConfig.ip;
+        }
     }
 
     return undefined;
