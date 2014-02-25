@@ -92,16 +92,16 @@ var createVmViewObject = function(vm) {
 
 var extractDeviceIp = function(device) {
     if (device.ipConfig) {
-        if (device.ipConfig.publicIp) {
-            return device.ipConfig.publicIp;
-        }
-
         if (device.ipConfig.autoIpConfig && device.ipConfig.autoIpConfig.reservedIp) {
             return device.ipConfig.autoIpConfig.reservedIp;
         }
 
         if (device.ipConfig.staticIpConfig && device.ipConfig.staticIpConfig.ip) {
             return device.ipConfig.staticIpConfig.ip;
+        }
+
+        if (device.ipConfig.publicIp) {
+            return device.ipConfig.publicIp;
         }
     }
 
