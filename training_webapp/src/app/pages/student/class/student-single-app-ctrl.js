@@ -169,6 +169,10 @@ angular.module('trng.student').controller('studentAppController', [
                 });
         };
 
+        $scope.back = function() {
+            $window.history.back();
+        };
+
         $scope.init();
     }
 ]);
