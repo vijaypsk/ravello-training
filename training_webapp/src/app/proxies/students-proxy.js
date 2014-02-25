@@ -25,9 +25,18 @@ angular.module('trng.proxies').factory('trng.proxies.StudentsProxy', [
                 return promise;
             },
 
-            getStudentClassSingleApp: function(studentId, classId, appId) {
+            getStudentClassSingleApp: function(studentId, classId, appId, track) {
+                // By default, try tracking.
+                if (_.isUndefined(track) || _.isNull(track)) {
+                    track = true;
+                }
+
                 var promise = $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps/' + appId);
-                trainingTracker.addPromise(promise);
+
+                if (track) {
+                    trainingTracker.addPromise(promise);
+                }
+
                 return promise;
             }
         };

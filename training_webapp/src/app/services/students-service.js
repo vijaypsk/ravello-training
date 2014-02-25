@@ -29,8 +29,8 @@ angular.module('trng.services').factory('trng.services.StudentsService', [
                 )
             },
 
-            getStudentClassSingleApp: function(studentId, classId, appId) {
-                return studentsProxy.getStudentClassSingleApp(studentId, classId, appId).then(
+            getStudentClassSingleApp: function(studentId, classId, appId, track) {
+                return studentsProxy.getStudentClassSingleApp(studentId, classId, appId, track).then(
                     function(result) {
                         return appsTrans.dtoToEntity(result.data);
                     }

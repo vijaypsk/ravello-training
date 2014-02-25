@@ -2,6 +2,7 @@
 
 (function (angular) {
     angular.module('trng.config', []).constant('app.config', {
-        baseUrl: ''
+        baseUrl: '',
+        autoRefreshDuration: 15000
     });
 })(angular);

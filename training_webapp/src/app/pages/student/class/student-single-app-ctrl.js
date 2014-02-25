@@ -6,15 +6,23 @@ angular.module('trng.student').controller('studentAppController', [
     '$state',
     '$modal',
     '$window',
+    '$timeout',
+    'app.config',
     'trng.services.AppsService',
     'trng.services.StudentsService',
     'student',
     'currentApp',
-    function($log, $scope, $state, $modal, $window, appsSerivce, studentsService, student, currentApp) {
+    function($log, $scope, $state, $modal, $window, $timeout, config, appsSerivce, studentsService, student, currentApp) {
         $scope.init = function() {
             $scope.currentApp = currentApp;
             $scope.initPermissions();
             $scope.initVmsDataGrid();
+            $scope.initAutoRefresh();
+        };
+
+        $scope.initAutoRefresh = function() {
+            $scope.shouldAutoRefresh = true;
+            $scope.autoRefresh();
         };
 
         $scope.initPermissions = function() {
@@ -161,17 +169,42 @@ angular.module('trng.student').controller('studentAppController', [
             return ($scope.busy);
         };
 
-        $scope.refreshState = function () {
+        $scope.refreshState = function (track) {
             return studentsService.getStudentClassSingleApp(student._id, student['userClass']['_id'],
-                    $scope.currentApp.id).
+                    $scope.currentApp.id, track).
                 then(function (result) {
-                    $scope.currentApp = result;
+                    _.forEach($scope.currentApp.vms, function(vm) {
+                        var newVm = _.find(result.vms, function(vmDto) {
+                            return vm.id === vmDto.id;
+                        });
+
+                        if (newVm) {
+                            angular.copy(newVm, vm);
+                        }
+                    });
                 });
         };
 
+        $scope.autoRefresh = function() {
+            $timeout(function() {
+                $scope.refreshState(false);
+
+                if ($scope.shouldAutoRefresh) {
+                    $scope.autoRefresh();
+                }
+            }, config.autoRefreshDuration);
+        };
+
         $scope.back = function() {
+            $scope.shouldAutoRefresh = false;
             $window.history.back();
         };
+
+        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+            if (fromState && fromState.name === 'student.class.single-app') {
+                $scope.shouldAutoRefresh = false;
+            }
+        });
 
         $scope.init();
     }
