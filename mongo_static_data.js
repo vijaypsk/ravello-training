@@ -264,12 +264,12 @@ db.users.save(danielUser);
 db.users.save(hadasUser);
 db.users.save(student1User);
 
-//db.trainingcourses.save(course01);
-//db.trainingcourses.save(course02);
-//db.trainingcourses.save(course03);
-db.trainingcourses.save(checkpointCourse01);
+db.trainingcourses.save(course01);
+db.trainingcourses.save(course02);
+db.trainingcourses.save(course03);
+//db.trainingcourses.save(checkpointCourse01);
 
-//db.trainingclasses.save(class02);
-//db.trainingclasses.save(class03);
-db.trainingclasses.save(checkpointClass01);
+db.trainingclasses.save(class02);
+db.trainingclasses.save(class03);
+//db.trainingclasses.save(checkpointClass01);
 
