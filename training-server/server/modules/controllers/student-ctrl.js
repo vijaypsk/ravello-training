@@ -51,7 +51,7 @@ var createVmViewObject = function(vm) {
     _.forEach(vm.networkConnections, function(networkConnection) {
         var publicIp = extractDeviceIp(networkConnection);
 
-        if (publicIp) {
+        if (publicIp && networkConnection.ipConfig.hasPublicIp) {
             var servicesForNic = [];
             _.forEach(vm.suppliedServices, function(currentService) {
                 // Return the service if:
@@ -82,6 +82,7 @@ var createVmViewObject = function(vm) {
     var vmViewObject = {
         id: vm.id,
         name: vm.name,
+        description: vm.description,
         status: vm.state,
         hostnames: hostnames,
         allDns: allDns,
