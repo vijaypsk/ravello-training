@@ -33,6 +33,10 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
                     displayName: 'Stop VMs'
                 },
                 {
+                    field: 'restartVms',
+                    displayName: 'Restart VMs'
+                },
+                {
                     field: 'console',
                     displayName: 'Console'
                 },
@@ -69,6 +73,7 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
                         return {
                             startVms: true,
                             stopVms: true,
+                            restartVms: true,
                             console: true
                         };
                     }

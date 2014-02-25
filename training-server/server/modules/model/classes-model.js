@@ -21,6 +21,7 @@ var TrainingClassSchema = mongoose.Schema({
                     bpId: String,
                     startVms: Boolean,
                     stopVms: Boolean,
+                    restartVms: Boolean,
                     console: Boolean
                 }
             ],

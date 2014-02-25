@@ -30,7 +30,7 @@ var prepareClassForStudent = function(classEntity, studentId) {
 
     var bpPermissionsMap = {};
     _.forEach(matchingStudent.blueprintPermissions, function(bpPermissions) {
-        var bpPermissionsDto = _.pick(bpPermissions, 'startVms', 'stopVms', 'console');
+        var bpPermissionsDto = _.pick(bpPermissions, 'startVms', 'stopVms', 'restartVms', 'console');
         bpPermissionsMap[bpPermissions.bpId] = bpPermissionsDto;
     });
 

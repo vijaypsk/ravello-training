@@ -54,7 +54,7 @@
                         // bp data, and the student-specific bp permissions data.
                         // When we go back to the domain model, we want to keep only the student-specific data,
                         // so we pick only the relevant properties from the object.
-                        var bpPermissions = _.pick(currentBp, ['id', 'startVms', 'stopVms', 'console']);
+                        var bpPermissions = _.pick(currentBp, ['id', 'startVms', 'stopVms', 'restartVms', 'console']);
 
                         // Then, the domain model holds the information as an map, instead of an array,
                         // between bp ID and the student-specific bp permissions.

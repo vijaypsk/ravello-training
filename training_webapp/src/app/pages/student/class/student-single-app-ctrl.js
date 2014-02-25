@@ -112,6 +112,18 @@ angular.module('trng.student').controller('studentAppController', [
             });
         };
 
+        $scope.restartVm = function() {
+            _.forEach($scope.selectedVms, function(vm) {
+                appsSerivce.restartVm(currentApp['id'], vm['id']).then(function(result) {
+                    if (result.status === 202) {
+                        $scope.refreshState();
+                    } else {
+                        alert("Could not perform action on VM: " + result.message);
+                    }
+                });
+            });
+        };
+
         $scope.consoleVm = function(vm) {
             var vmId = vm.getProperty('id');
             appsSerivce.consoleVm($scope.currentApp.id, vmId).then(function(result) {
@@ -136,10 +148,13 @@ angular.module('trng.student').controller('studentAppController', [
                 !$scope.bpPermissions.stopVms);
         };
 
+        $scope.restartButtonDisabled = function() {
+            return ($scope.selectedVms.length < 1 ||
+                !$scope.bpPermissions.restartVms);
+        };
+
         $scope.consoleButtonDisabled = function() {
             return !$scope.bpPermissions.console;
-//            return ($scope.selectedVms.length != 1 ||
-//                !$scope.bpPermissions.console);
         };
 
         $scope.refreshButtonDisabled = function() {

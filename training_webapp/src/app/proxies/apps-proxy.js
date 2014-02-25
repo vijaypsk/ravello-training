@@ -31,6 +31,12 @@ angular.module('trng.proxies').factory('trng.proxies.AppsProxy', [
                 return promise;
             },
 
+            restartVm: function(appId, vmId) {
+                var promise = $http.post(config.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/restart");
+                trainingTracker.addPromise(promise);
+                return promise;
+            },
+
             consoleVm: function(appId, vmId) {
                 var promise = $http.get(config.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/vncUrl");
                 trainingTracker.addPromise(promise);
