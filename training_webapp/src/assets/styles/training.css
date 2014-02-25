@@ -280,6 +280,14 @@ hr {
     font-size: 13px;
     width: 20%;
 }
+.student-name {
+    display: table-cell;
+    vertical-align: middle;
+    color: white;
+    font-style: italic;
+    font-size: 12px;
+    width: 20%;
+}
 .table-cell {
     display: table-cell;
     vertical-align: middle;
