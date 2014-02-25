@@ -121,7 +121,7 @@ html, body {
     vertical-align: middle;
     color: white;
     font-size: 22px;
-    width: 25%;
+    width: 53%;
 }
 .main-nav {
     float: left;
@@ -272,15 +272,7 @@ h3.panel-title {
 hr {
     border-top: 1px solid #DDD;
 }
-.powered-by {
-    display: table-cell;
-    vertical-align: middle;
-    color: white;
-    font-style: italic;
-    font-size: 13px;
-    width: 20%;
-}
-.student-name {
+.powered-by, .student-name {
     display: table-cell;
     vertical-align: middle;
     color: white;

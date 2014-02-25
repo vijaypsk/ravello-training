@@ -50,7 +50,7 @@ angular.module('trng.student').controller('studentClassController', [
                             '<i class="icon-stop"></i> Stop' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="view(row)">' +
-                            '<i class="icon-pencil"></i> View' +
+                            '<i class="icon-search"></i> View' +
                         '</a>'
                 }
             ];
