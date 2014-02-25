@@ -19,6 +19,17 @@ angular.module('trng.student').controller('vmDetailsController', [
             });
         };
 
+        $scope.hostnames = function() {
+            var hostnamesString = "";
+
+            _.forEach($scope.selectedVm.hostnames, function(hostname) {
+                hostnamesString += hostname.name + ",";
+            });
+
+            // Get rid of the last ',' char.
+            return hostnamesString.slice(0, hostnamesString.length - 2);
+        };
+
         $scope.ok = function() {
             $modalInstance.close();
         };

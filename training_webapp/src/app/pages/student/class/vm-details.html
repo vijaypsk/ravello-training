@@ -1,10 +1,11 @@
 <div id="vmDetailsDiv">
     <div class="row">
-        <h4>Host Name</h4>
+        <h4>{{selectedVm.name}}</h4>
         <hr>
     </div>
     <ul class="small-padding-no-bullet">
-        <li ng-repeat="hostname in selectedVm.hostnames">{{hostname.name}}</li>
+        <li ng-show="selectedVm.hostnames.length > 0"><label>Hostname: </label> {{hostnames()}}</li>
+        <li><label ng-show="selectedVm.description">Description: </label> {{selectedVm.description}}</li>
     </ul>
     <div class="row spacer">
         <h4>External Access</h4>

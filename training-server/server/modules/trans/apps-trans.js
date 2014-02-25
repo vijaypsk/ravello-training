@@ -35,6 +35,7 @@ exports.ravelloObjectToStudentDto = function(course, app) {
     var appViewObject = {
         id: app.id,
         name: appDisplayName ? appDisplayName : app.name,
+        description: app.description,
         blueprintId: app.baseBlueprintId,
         numOfVms: numOfVms,
         numOfRunningVms: numOfRunningVms
