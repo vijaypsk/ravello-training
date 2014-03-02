@@ -12,8 +12,18 @@
                         responseError: function(rejection) {
                             if (rejection.hasOwnProperty('status')) {
                                 if (rejection.status >= 400) {
-                                    console.log(rejection.data);
-                                    alert(rejection.data);
+
+                                    if (rejection.config.url.indexOf('login') == -1 ||
+                                        rejection.status >= 500) {
+
+                                        var message = rejection.data;
+                                        if (rejection.status >= 500) {
+                                            message = "Technical error occurred, cannot proceed";
+                                        }
+
+                                        console.log(message);
+                                        alert(message);
+                                    }
                                 }
                             }
                             return $q.reject(rejection);

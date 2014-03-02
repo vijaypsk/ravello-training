@@ -1,14 +1,23 @@
 'use strict';
 
-var q = require('q');
+var passport = require('passport');
 
-var usersDal = require('./../dal/users-dal');
-
-exports.handleLogin = function(request, response) {
-    var user = request.user;
-
-    var auth = request.headers.authorization;
-    response.cookie('Authorization', auth);
-
-    response.json(user);
+var authConfig = {
+    session: false
 };
+
+exports.authenticate = function (request, response, next) {
+    passport.authenticate('basic', authConfig, function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+
+        if (!user) {
+            return response.send(401, "Username/password is incorrect");
+        }
+
+        request.user = user;
+        return next();
+    })(request, response, next);
+};
+

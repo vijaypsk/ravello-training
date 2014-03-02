@@ -6,6 +6,7 @@ var passport = require('passport');
 var authentication = require('./../auth/training-authentication');
 var authorization = require('./../auth/training-authorization');
 
+var loginController = require('./../controllers/login-ctrl');
 var classesController = require('./../controllers/classes-ctrl');
 var coursesController = require('./../controllers/courses-ctrl');
 var blueprintsController = require('./../controllers/blueprints-ctrl');
@@ -20,15 +21,13 @@ var appController = require('./../controllers/app-ctrl');
 module.exports = function(app) {
 
     var authConfig = {
-        session: false,
-        failureFlash: false,
-        failureRedirect: '/login'
+        session: false
     };
 
     // Login route.
     app.post('/rest/login',
-        passport.authenticate('basic', authConfig),
-        authentication.handleLogin);
+        authentication.authenticate,
+        loginController.login);
 
     // Classes route.
     app.get('/rest/classes',

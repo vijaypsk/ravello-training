@@ -14,7 +14,7 @@ angular.module('trng.app').controller('MainController', [
 
                 loginModel.login(userAuthData.username, userAuthData.password).catch(
                     function(error) {
-                        $state.go("/login");
+                        $state.go("login");
                     }
                 );
             } else {

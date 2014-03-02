@@ -1,7 +1,6 @@
 'use strict';
 
 var express = require('express');
-var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
@@ -14,14 +13,17 @@ var passportConfig = require('./config-passport');
 module.exports = function(app) {
     app.configure(function() {
 
+        console.log("NODE_ENV: " + app.get('env'));
+
         // General configuration.
         app.set('port', process.env.PORT || 3000);
-        app.use(express.favicon());
+
+        // Middleware
         app.use(express.logger('dev'));
         app.use(express.json());
         app.use(express.urlencoded());
         app.use(express.methodOverride());
-        app.use(express.static(path.join(__dirname, 'public')));
+        app.use(express.cookieParser());
         app.use(passport.initialize());
         app.use(app.router);
 

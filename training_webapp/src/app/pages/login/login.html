@@ -4,7 +4,7 @@
         <div class="powered-by text-right"><span class="ravello-logo">Powered by Ravello Systems</span></div>
     </div>
 </div>
- <div class="container">
+ <div id="loginDiv" class="container">
     <div class="col-md-4"></div>
     <div class="col-md-4">
     <div class="panel panel-default">
@@ -20,6 +20,12 @@
                 </div>
                 <div class="row">
                         <button id="loginBtn" class="btn btn-default" ng-click="login()">Login</button>
+                </div>
+
+                <br/>
+
+                <div>
+                    <alert ng-repeat="errorMessage in loginErrorMessages" type="danger">{{errorMessage}}</alert>
                 </div>
             </form>
         </div>
