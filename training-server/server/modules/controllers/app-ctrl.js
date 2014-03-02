@@ -23,8 +23,32 @@ exports.appAction = function(request, response) {
         var ravelloUsername = studentData.ravelloCredentials.username;
         var ravelloPassword = studentData.ravelloCredentials.password;
 
-        appsService.appAction(appId, action, ravelloUsername, ravelloPassword).then(function(result) {
-            response.send(result.status);
+        appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(function(result) {
+            if (result.status == 200) {
+                var app = result.body;
+                if (app.deployment.expirationType === 'AUTO_STOPPED') {
+                    return appsService.appAutoStop(appId, properties.defaultAutoStopSeconds, ravelloUsername,
+                        ravelloPassword);
+                }
+            } else {
+                var message = "Could not get app: " + appId + ", error: " + result.text;
+                console.log(message);
+                response.send(result.status, message);
+            }
+        }).then(function(autoStopResult) {
+            if (!autoStopResult || autoStopResult.result == 204) {
+                appsService.appAction(appId, action, ravelloUsername, ravelloPassword).then(function(result) {
+                    response.send(result.status);
+                }).fail(function(error) {
+                    var message = "Could not perform action " + action + ", error: " + error;
+                    console.log(message);
+                    response.send(400, error);
+                });
+            } else {
+                var message = "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text;
+                console.log(message);
+                response.send(400, message);
+            }
         });
     });
 };
@@ -68,7 +92,7 @@ exports.vmAction = function(request, response) {
                         response.send(400, error);
                     });
                 } else {
-                    var message = "Could not set autoStop for app: " + appId + ", error: " + result.text;
+                    var message = "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text;
                     console.log(message);
                     response.send(400, message);
                 }
