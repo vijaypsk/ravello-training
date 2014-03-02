@@ -15,14 +15,12 @@ angular.module('trng.login').controller('loginController', [
             // with the values set to the text inputs by the browser's autofill.
             $('#usernameInput').change(function(event) {
                 if ($scope.username == undefined && event.target.value) {
-                    console.log("new value [" + event.target.value + "]");
                     $scope.username = event.target.value;
                 }
             });
 
             $('#passwordInput').change(function(event) {
                 if ($scope.password == undefined && event.target.value) {
-                    console.log("new value [" + event.target.value + "]");
                     $scope.password = event.target.value;
                 }
             });
