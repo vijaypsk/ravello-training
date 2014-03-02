@@ -2,8 +2,6 @@
 
 var _ = require('lodash');
 
-var classesDal = require('../dal/classes-dal');
-var blueprintsDal = require('../dal/blueprints-dal');
 var blueprintsService = require('../services/blueprints-service');
 var blueprintsTrans = require('../trans/blueprints-trans');
 

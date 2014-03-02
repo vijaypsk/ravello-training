@@ -9,25 +9,16 @@ var ObjectId = mongoose.Types.ObjectId;
 var TrainingCourse = mongoose.model('TrainingCourse');
 
 exports.getCourses = function() {
-    return TrainingCourse.find().execQ().then(function (entities) {
-        return _.map(entities, function(entity) {
-            return entity.toJSON();
-        });
-    });
+    return TrainingCourse.find().execQ();
 };
 
 exports.getCourse = function(courseId) {
-    return TrainingCourse.findByIdQ(courseId).then(function(entity) {
-        return entity.toJSON();
-    });
+    return TrainingCourse.findByIdQ(courseId);
 };
 
 exports.createCourse = function(courseData) {
     var newCourse = new TrainingCourse(courseData);
-    return newCourse.saveQ().then(function(result) {
-        var entity = result;
-        return entity.toJSON();
-    });
+    return newCourse.saveQ();
 };
 
 exports.updateCourse = function(courseId, courseData) {

@@ -17,17 +17,13 @@ exports.getClass = function(classId) {
 };
 
 exports.getClassOfUser = function(userId) {
-    return TrainingClass.findOne({'students.user': new ObjectId(userId)}).populate('students.user').execQ().then(
-        function(result) {
-            return result;
-        });
+    return TrainingClass.findOne({'students.user': new ObjectId(userId)}).populate('students.user').execQ();
 };
 
 exports.createClass = function(classData) {
     var newClass = new TrainingClass(classData);
 
-    return newClass.saveQ().then(function(result) {
-        var entity = result;
+    return newClass.saveQ().then(function(entity) {
         return entity.populateQ('students.user');
     });
 };

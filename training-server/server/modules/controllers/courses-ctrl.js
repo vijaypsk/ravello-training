@@ -8,6 +8,7 @@ var classesDal = require('../dal/classes-dal');
 
 var blueprintsService = require('../services/blueprints-service');
 
+var coursesTrans = require('../trans/courses-trans');
 var blueprintsTrans = require('../trans/blueprints-trans');
 
 var assignBlueprintsToCourse = function(course, bpDtos) {
@@ -33,18 +34,22 @@ exports.getCourses = function(request, response) {
 
     coursesDal.getCourses().then(function(courses) {
 
-        q.all(_.map(courses, function(course) {
+        var courseDtos = [];
+
+        q.all(_.map(courses, function(courseEntity) {
+            var course = coursesTrans.entityToDto(courseEntity);
             return q.all(_.map(course.blueprints, function(bp) {
                 return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
             })).then(function(bpResults) {
                 course.blueprints = assignBlueprintsToCourse(course, bpResults);
+                courseDtos.push(course);
             }).fail(function(error) {
                 var message = "Could not get one of the course's blueprints, error: " + error;
                 console.log(message);
                 response.send(404, message);
             });
         })).then(function(coursesResults) {
-            response.json(courses);
+            response.json(courseDtos);
         });
     }).fail(function(error) {
         console.log("Could not load courses, error: " + error);
@@ -66,7 +71,8 @@ exports.getCourse = function(request, response) {
         var ravelloUsername = studentData.ravelloCredentials.username;
         var ravelloPassword = studentData.ravelloCredentials.password;
 
-        coursesDal.getCourse(courseId).then(function(course) {
+        coursesDal.getCourse(courseId).then(function(courseEntity) {
+            var course = coursesTrans.entityToDto(courseEntity);
             q.all(_.map(course.blueprints, function(bp) {
                 return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
             })).then(function(bpResults) {
@@ -88,8 +94,9 @@ exports.getCourse = function(request, response) {
 };
 
 exports.createCourse = function(request, response) {
-    coursesDal.createCourse(request.body).then(function(result) {
-        response.json(result);
+    coursesDal.createCourse(request.body).then(function(courseEntity) {
+        var course = coursesTrans.entityToDto(courseEntity);
+        response.json(courseEntity);
     }).fail(function(error) {
         var message = "Could not save course, error: " + error;
         console.log(message);
@@ -101,7 +108,7 @@ exports.updateCourse = function(request, response) {
     var courseId = request.params.courseId;
     var courseData = request.body;
 
-    coursesDal.updateCourse(courseId, courseData).then(function(result) {
+    coursesDal.updateCourse(courseId, courseData).then(function(courseEntity) {
         response.send(200);
     }).fail(function(error) {
         var message = "Could not update course, error: " + error;
@@ -113,7 +120,7 @@ exports.updateCourse = function(request, response) {
 exports.deleteCourse = function(request, response) {
     var courseId = request.params.courseId;
 
-    coursesDal.deleteCourse(courseId).then(function(result) {
+    coursesDal.deleteCourse(courseId).then(function(courseEntity) {
         response.send(200);
     }).fail(function(error) {
         var message = "Could not delete course, error: " + error;
