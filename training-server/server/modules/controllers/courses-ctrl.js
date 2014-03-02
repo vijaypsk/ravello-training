@@ -27,35 +27,25 @@ var assignBlueprintsToCourse = function(course, bpDtos) {
 
 exports.getCourses = function(request, response) {
     var user = request.user;
+
     var ravelloUsername = user.ravelloCredentials.username;
     var ravelloPassword = user.ravelloCredentials.password;
 
     coursesDal.getCourses().then(function(courses) {
 
-        var coursesPromises = [];
-
-        _.forEach(courses, function(course) {
-            var bpPromises = [];
-            _.forEach(course.blueprints, function(bp) {
-                var bpPromise = blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
-                bpPromises.push(bpPromise);
-            });
-
-            var coursePromise = q.all(bpPromises).then(function(bpResults) {
+        q.all(_.map(courses, function(course) {
+            return q.all(_.map(course.blueprints, function(bp) {
+                return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
+            })).then(function(bpResults) {
                 course.blueprints = assignBlueprintsToCourse(course, bpResults);
             }).fail(function(error) {
                 var message = "Could not get one of the course's blueprints, error: " + error;
                 console.log(message);
                 response.send(404, message);
             });
-
-            coursesPromises.push(coursePromise);
-        });
-
-        q.all(coursesPromises).then(function(coursesResults) {
+        })).then(function(coursesResults) {
             response.json(courses);
         });
-
     }).fail(function(error) {
         console.log("Could not load courses, error: " + error);
     });
@@ -76,14 +66,10 @@ exports.getCourse = function(request, response) {
         var ravelloUsername = studentData.ravelloCredentials.username;
         var ravelloPassword = studentData.ravelloCredentials.password;
 
-            coursesDal.getCourse(courseId).then(function(course) {
-                var bpPromises = [];
-            _.forEach(course.blueprints, function(bp) {
-                var promise = blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
-                bpPromises.push(promise);
-            });
-
-            return q.all(bpPromises).then(function(bpResults) {
+        coursesDal.getCourse(courseId).then(function(course) {
+            q.all(_.map(course.blueprints, function(bp) {
+                return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
+            })).then(function(bpResults) {
                 course.blueprints = assignBlueprintsToCourse(course, bpResults);
                 response.json(course);
             }).fail(function(error) {
@@ -116,7 +102,7 @@ exports.updateCourse = function(request, response) {
     var courseData = request.body;
 
     coursesDal.updateCourse(courseId, courseData).then(function(result) {
-        resonse.send(200);
+        response.send(200);
     }).fail(function(error) {
         var message = "Could not update course, error: " + error;
         console.log(message);
