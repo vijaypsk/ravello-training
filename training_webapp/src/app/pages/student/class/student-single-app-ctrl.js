@@ -7,12 +7,15 @@ angular.module('trng.student').controller('studentAppController', [
     '$modal',
     '$window',
     '$timeout',
+    '$dialogs',
     'app.config',
     'trng.services.AppsService',
     'trng.services.StudentsService',
     'student',
     'currentApp',
-    function($log, $scope, $state, $modal, $window, $timeout, config, appsSerivce, studentsService, student, currentApp) {
+    function ($log, $scope, $state, $modal, $window, $timeout, $dialogs, config, appsSerivce, studentsService,
+              student, currentApp) {
+
         $scope.init = function() {
             $scope.currentApp = currentApp;
             $scope.initPermissions();
@@ -109,25 +112,31 @@ angular.module('trng.student').controller('studentAppController', [
         };
 
         $scope.stopVm = function() {
-            _.forEach($scope.selectedVms, function(vm) {
-                appsSerivce.stopVm(currentApp['id'], vm['id']).then(function(result) {
-                    if (result.status === 202) {
-                        $scope.refreshState();
-                    } else {
-                        alert("Could not perform action on VM: " + result.message);
-                    }
+            var dialog = $dialogs.confirm("Stop VMs", "Are you sure you want to stop the VMs?");
+            dialog.result.then(function(result) {
+                _.forEach($scope.selectedVms, function(vm) {
+                    appsSerivce.stopVm(currentApp['id'], vm['id']).then(function(result) {
+                        if (result.status === 202) {
+                            $scope.refreshState();
+                        } else {
+                            alert("Could not perform action on VM: " + result.message);
+                        }
+                    });
                 });
             });
         };
 
         $scope.restartVm = function() {
-            _.forEach($scope.selectedVms, function(vm) {
-                appsSerivce.restartVm(currentApp['id'], vm['id']).then(function(result) {
-                    if (result.status === 202) {
-                        $scope.refreshState();
-                    } else {
-                        alert("Could not perform action on VM: " + result.message);
-                    }
+            var dialog = $dialogs.confirm("Restart VMs", "Are you sure you want to restart the VMs?");
+            dialog.result.then(function(result) {
+                _.forEach($scope.selectedVms, function(vm) {
+                    appsSerivce.restartVm(currentApp['id'], vm['id']).then(function(result) {
+                        if (result.status === 202) {
+                            $scope.refreshState();
+                        } else {
+                            alert("Could not perform action on VM: " + result.message);
+                        }
+                    });
                 });
             });
         };

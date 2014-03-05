@@ -5,9 +5,10 @@ angular.module('trng.trainer.courses.courses').controller('coursesController', [
     '$scope',
     '$state',
     '$log',
+    '$dialogs',
     'trng.trainer.courses.courses.CourseModel',
     'courses',
-    function ($scope, $state, $log,  courseModel, courses) {
+    function ($scope, $state, $log, $dialogs,  courseModel, courses) {
 
         $scope.init = function() {
             $scope.initCourses();
@@ -59,13 +60,19 @@ angular.module('trng.trainer.courses.courses').controller('coursesController', [
         };
 
         $scope.deleteCourse = function(courseToDelete) {
-            var courseId = courseToDelete.getProperty('id');
-            courseModel.deleteCourseById($scope.courses, courseId);
+            var dialog = $dialogs.confirm("Delete courses", "Are you sure you want to delete the courses?");
+            dialog.result.then(function(result) {
+                var courseId = courseToDelete.getProperty('id');
+                courseModel.deleteCourseById($scope.courses, courseId);
+            });
         };
 
         $scope.deleteCourses = function() {
-            _.forEach($scope.selectedCourses, function(currentCourse) {
-                courseModel.deleteCourseById($scope.courses, currentCourse['id']);
+            var dialog = $dialogs.confirm("Delete course", "Are you sure you want to delete the course?");
+            dialog.result.then(function(result) {
+                _.forEach($scope.selectedCourses, function(currentCourse) {
+                    courseModel.deleteCourseById($scope.courses, currentCourse['id']);
+                });
             });
         };
 

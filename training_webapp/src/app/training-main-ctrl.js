@@ -4,8 +4,9 @@ angular.module('trng.app').controller('MainController', [
     '$scope',
     '$cookieStore',
     '$state',
+    '$dialogs',
     'loginModel',
-    function ($scope, $cookieStore, $state, loginModel) {
+    function ($scope, $cookieStore, $state, $dialogs, loginModel) {
         $scope.initApp = function() {
             var userAuthData = $cookieStore.get('userAuthData');
 
@@ -23,8 +24,11 @@ angular.module('trng.app').controller('MainController', [
         };
 
         $scope.logout = function() {
-            $cookieStore.remove('userAuthData');
-            $state.go('login');
+            var dialog = $dialogs.confirm('Confirm logout', 'Are you sure you want to logout?');
+            dialog.result.then(function(result) {
+                $cookieStore.remove('userAuthData');
+                $state.go('login');
+            });
         };
 
         $scope.initApp();

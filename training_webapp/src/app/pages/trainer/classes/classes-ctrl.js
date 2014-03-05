@@ -6,12 +6,13 @@ angular.module('trng.trainer.courses.classes').controller('classesController', [
     '$rootScope',
     '$state',
     '$log',
+    '$dialogs',
     'trng.trainer.courses.classes.ClassModel',
     'trng.services.ClassesService',
     'trng.trainer.courses.courses.CourseModel',
     'trng.common.utils.DateUtil',
     'classes',
-    function ($scope, $rootScope, $state, $log, classModel, classesService, courseModel, dateUtil, classes) {
+    function ($scope, $rootScope, $state, $log, $dialogs, classModel, classesService, courseModel, dateUtil, classes) {
 
         $scope.init = function () {
             $scope.initClassesDataGrid();
@@ -82,14 +83,20 @@ angular.module('trng.trainer.courses.classes').controller('classesController', [
         };
 
         $scope.deleteClasses = function () {
-            _.forEach($scope.selectedClasses, function(currentClass) {
-                classModel.deleteClassById($scope.classes, currentClass['id']);
+            var dialog = $dialogs.confirm("Delete classes", "Are you sure you want to delete the classes?");
+            dialog.result.then(function(result) {
+                _.forEach($scope.selectedClasses, function(currentClass) {
+                    classModel.deleteClassById($scope.classes, currentClass['id']);
+                });
             });
         };
 
         $scope.deleteClass = function(classToDelete) {
-            var classId = classToDelete.getProperty('id');
-            classModel.deleteClassById($scope.classes, classId);
+            var dialog = $dialogs.confirm("Delete class", "Are you sure you want to delete the class?");
+            dialog.result.then(function(result) {
+                var classId = classToDelete.getProperty('id');
+                classModel.deleteClassById($scope.classes, classId);
+            });
         };
 
         $scope.init();

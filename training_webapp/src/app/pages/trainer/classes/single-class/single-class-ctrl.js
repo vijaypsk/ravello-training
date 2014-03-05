@@ -8,13 +8,14 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
     '$stateParams',
     '$log',
     '$window',
+    '$dialogs',
     'trng.trainer.courses.classes.ClassModel',
     'trng.services.ClassesService',
     'trng.trainer.courses.courses.CourseModel',
     'trng.common.utils.DateUtil',
     'currentClass',
     'courses',
-    function ($scope, $rootScope, $state, $stateParams, $log, $window, classModel, classesService,
+    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, classModel, classesService,
               courseModel, dateUtil, currentClass, courses) {
 
         $scope.init = function () {
@@ -154,12 +155,18 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
         };
 
         $scope.deleteStudents = function() {
-            classModel.deleteStudents($scope.currentClass, $scope.selectedStudents);
+            var dialog = $dialogs.confirm("Delete students", "Are you sure you want to delete the students?");
+            dialog.result.then(function(result) {
+                classModel.deleteStudents($scope.currentClass, $scope.selectedStudents);
+            });
         };
 
         $scope.deleteStudent = function(studentToDelete) {
-            var studentId = studentToDelete.getProperty('id');
-            classModel.deleteStudent($scope.currentClass, studentId);
+            var dialog = $dialogs.confirm("Delete student", "Are you sure you want to delete the student?");
+            dialog.result.then(function(result) {
+                var studentId = studentToDelete.getProperty('id');
+                classModel.deleteStudent($scope.currentClass, studentId);
+            });
         };
 
         $scope.saveClass = function() {

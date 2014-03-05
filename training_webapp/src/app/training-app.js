@@ -12,7 +12,8 @@
             'ajoslin.promise-tracker',
             'cgBusy',
             'angular-growl',
-            'ngSanitize'
+            'ngSanitize',
+            'dialogs'
         ]).config([
             '$urlRouterProvider',
             '$stateProvider',
