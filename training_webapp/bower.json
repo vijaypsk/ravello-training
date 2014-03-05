@@ -16,7 +16,7 @@
     "angular-bootstrap": "~0.10.0",
     "datejs": "",
     "lodash": "~2.4.1",
-    "ngQuickDate": "~1.2.5",
+    "ngQuickDate": "https://github.com/wolf-daniel/ngQuickDate.git#change_directive_name",
     "angular-xeditable": "~0.1.8",
     "angular-base64": "~2.0.1",
     "angular-busy": "~3.0.2",
@@ -27,6 +27,7 @@
     "angular-scenario": "~1.2.6"
   },
   "resolutions": {
-    "angular": "1.2.14-build.2285+sha.b488bbf"
+    "angular": "1.2.14-build.2285+sha.b488bbf",
+    "ngQuickDate": "change_directive_name"
   }
 }
