@@ -289,3 +289,30 @@ hr {
     padding-right: 7px;
 }
 
+/* Growl style */
+
+.growl {
+    position: absolute;
+    right: 0;
+    float: none;
+    width: 100%;
+}
+.growl-item {
+    position: absolute;
+    width: 20%;
+    left: 50%;
+    margin-left: -10%;
+    top: 0;
+    z-index: 101;
+    box-shadow: 0px 0px 6px #232323;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.growl-item.ng-enter,
+.growl-item.ng-leave {
+    -webkit-transition:1s linear all;
+    -moz-transition:14s linear all;
+    -o-transition:14s linear all;
+    transition:1s linear all;
+}

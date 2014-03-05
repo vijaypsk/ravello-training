@@ -1,13 +1,16 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.error', []).config([
+    angular.module('trng.error', []);
+
+    angular.module('trng.error').config([
         '$provide',
         '$httpProvider',
         function($provide, $httpProvider) {
             $provide.factory('httpInterceptor', [
                 '$q',
-                function($q) {
+                'growl',
+                function($q, growl) {
                     return {
                         responseError: function(rejection) {
                             if (rejection.hasOwnProperty('status')) {
@@ -22,7 +25,7 @@
                                         }
 
                                         console.log(message);
-                                        alert(message);
+                                        growl.addErrorMessage(message);
                                     }
                                 }
                             }

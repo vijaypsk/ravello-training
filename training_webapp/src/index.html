@@ -18,6 +18,8 @@
 
 	<link rel="stylesheet" type="text/css" href="libraries/angular-busy/dist/angular-busy.css">
 
+	<link rel="stylesheet" type="text/css" href="libraries/angular-growl/build/angular-growl.min.css">
+
     <!-- App styles -->
 
     <link rel="stylesheet" href="assets/fonts/training/css/training.css">
@@ -41,6 +43,8 @@
     <script src='libraries/angular-busy/dist/angular-busy.js'></script>
     <script src='libraries/angular-promise-tracker/promise-tracker.js'></script>
     <script src='libraries/autofill-event/src/autofill-event.js'></script>
+    <script src='libraries/angular-growl/build/angular-growl.js'></script>
+    <script src='libraries/angular-sanitize/angular-sanitize.js'></script>
 
     <!-- App scripts -->
 
@@ -118,6 +122,7 @@
 
 <body>
 	<div id="mainAppDiv" ng-controller="MainController">
+        <div growl></div>
         <div ui-view></div>
 	</div>
 	

@@ -2,6 +2,7 @@
 
 (function (angular) {
     angular.module('trng.app', [
+            'trng.config',
             'trng.login',
             'trng.trainer',
             'trng.student',
@@ -9,12 +10,16 @@
             'ui.router',
             'ngAnimate',
             'ajoslin.promise-tracker',
-            'cgBusy'
+            'cgBusy',
+            'angular-growl',
+            'ngSanitize'
         ]).config([
             '$urlRouterProvider',
             '$stateProvider',
             '$httpProvider',
-            function ($urlRouterProvider, $stateProvider, $httpProvider) {
+            'growlProvider',
+            'app.config',
+            function ($urlRouterProvider, $stateProvider, $httpProvider, growlProvider, config) {
 
                 // Routes configuration.
 
@@ -33,9 +38,13 @@
                         resolve: studentResolver
                     });
 
-                // HTTP configurations
+                // HTTP configurations.
 
                 $httpProvider.defaults.useXDomain = true;
+
+                // Growl configurations.
+
+                growlProvider.globalTimeToLive(config.messagesCloseTime);
             }
         ]).factory('trainingTracker', [
             'promiseTracker',
