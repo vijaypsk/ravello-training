@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('trng.trainer.courses.classes').controller('singleClassController', [
+angular.module('trng.trainer.training.classes').controller('singleClassController', [
     '$scope',
     '$rootScope',
     '$state',
@@ -9,9 +9,9 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
     '$log',
     '$window',
     '$dialogs',
-    'trng.trainer.courses.classes.ClassModel',
+    'trng.trainer.training.classes.ClassModel',
     'trng.services.ClassesService',
-    'trng.trainer.courses.courses.CourseModel',
+    'trng.trainer.training.courses.CourseModel',
     'trng.common.utils.DateUtil',
     'currentClass',
     'courses',
@@ -187,7 +187,7 @@ angular.module('trng.trainer.courses.classes').controller('singleClassController
 
 
 var singleClassResolver = {
-    currentClass: ['$q', '$stateParams', 'trng.trainer.courses.classes.ClassModel',
+    currentClass: ['$q', '$stateParams', 'trng.trainer.training.classes.ClassModel',
         function($q, $stateParams, classModel) {
             var classId = $stateParams['classId'];
 
@@ -203,7 +203,7 @@ var singleClassResolver = {
         }
     ],
 
-    courses: ['trng.trainer.courses.courses.CourseModel',
+    courses: ['trng.trainer.training.courses.CourseModel',
         function(courseModel) {
             return courseModel.getAllCourses();
         }

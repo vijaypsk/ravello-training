@@ -1,11 +1,11 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.trainer.courses.classes').factory('trng.trainer.courses.classes.ClassModel', [
+    angular.module('trng.trainer.training.classes').factory('trng.trainer.training.classes.ClassModel', [
         '$q',
         '$log',
         'trng.services.ClassesService',
-        'trng.trainer.courses.courses.CourseModel',
+        'trng.trainer.training.courses.CourseModel',
         'trng.trainer.students.StudentModel',
         function ($q, $log, classesService, courseModel, studentModel) {
 

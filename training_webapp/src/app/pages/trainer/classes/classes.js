@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.trainer.courses.classes', [
+    angular.module('trng.trainer.training.classes', [
             'ngGrid',
             'ngQuickDate',
             'ui.bootstrap',
@@ -18,13 +18,13 @@
                 });
 
                 $stateProvider.
-                    state('trainer.courses.single-class.add-class', {
+                    state('trainer.training.single-class.add-class', {
                         url: '/add',
                         templateUrl: 'app/pages/trainer/classes/single-class/single-class-add.html'
-                    }).state('trainer.courses.single-class.edit-class', {
+                    }).state('trainer.training.single-class.edit-class', {
                         url: '/edit',
                         templateUrl: 'app/pages/trainer/classes/single-class/single-class-edit.html'
-                    }).state('trainer.courses.single-class.single-student', {
+                    }).state('trainer.training.single-class.single-student', {
                         url: '/single-student?studentId',
                         templateUrl: 'app/pages/trainer/single-student/single-student.html',
                         controller: 'singleStudentController',

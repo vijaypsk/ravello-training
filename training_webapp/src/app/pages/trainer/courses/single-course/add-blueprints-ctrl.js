@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('trng.trainer.courses.courses').controller('addBlueprintsController', [
+angular.module('trng.trainer.training.courses').controller('addBlueprintsController', [
     '$scope',
     '$log',
     '$modalInstance',
