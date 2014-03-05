@@ -187,9 +187,8 @@ angular.module('trng.student').controller('studentAppController', [
 
         $scope.autoRefresh = function() {
             $timeout(function() {
-                $scope.refreshState(false);
-
                 if ($scope.shouldAutoRefresh) {
+                    $scope.refreshState(false);
                     $scope.autoRefresh();
                 }
             }, config.autoRefreshDuration);
