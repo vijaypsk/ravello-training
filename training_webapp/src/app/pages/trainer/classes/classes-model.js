@@ -57,8 +57,8 @@
                                 _.forEach(classes, function(currentClass) {
                                     if (currentClass && currentClass.hasOwnProperty('courseId')) {
                                         // Getting a course is also a promise-based API.
-                                        courseModel.getCourseById(currentClass['courseId']).then(function(matchingCourse) {
-                                            currentClass['course'] = matchingCourse;
+                                        courseModel.getCourseById(currentClass.courseId).then(function(matchingCourse) {
+                                            currentClass.course = matchingCourse;
                                         });
                                     }
                                 });
@@ -72,7 +72,7 @@
 
                 deleteClassById: function(classesList, classId) {
                     _.remove(classesList, function(currentClass) {
-                        return currentClass.hasOwnProperty('id') && currentClass['id'] === classId;
+                        return currentClass.hasOwnProperty('id') && currentClass.id === classId;
                     });
 
                     classes = classesList;
@@ -82,13 +82,13 @@
 
                 deleteStudents: function(theClass, studentsToDelete) {
                     _.forEach(studentsToDelete, function(currentStudent) {
-                        _.pull(theClass['students'], currentStudent);
+                        _.pull(theClass.students, currentStudent);
                     });
                 },
 
                 deleteStudent: function(theClass, studentId) {
-                    _.remove(theClass['students'], function(currentStudent) {
-                        return currentStudent.hasOwnProperty('id') && currentStudent['id'] === studentId;
+                    _.remove(theClass.students, function(currentStudent) {
+                        return currentStudent.hasOwnProperty('id') && currentStudent.id === studentId;
                     });
                 },
 
@@ -97,12 +97,12 @@
                     var classToSave = model.viewModelToDomainModel(theClass);
 
                     var exists = false;
-                    var matchingClasses = _.where(classes, {id: theClass['id']});
+                    var matchingClasses = _.where(classes, {id: theClass.id});
                     exists = matchingClasses && matchingClasses.length > 0;
 
                     if (exists) {
                         classes = _.map(classes, function(currentClass) {
-                            if (currentClass['id'] == theClass['id']) {
+                            if (currentClass.id == theClass.id) {
                                 return theClass;
                             }
                             return currentClass;
@@ -111,16 +111,6 @@
                         classesService.update(classToSave).then(
                             function(persistedClass) {
                                 theClass.students = persistedClass.students;
-//                                _.forEach(theClass.students, function(currentStudent) {
-//                                    var matchedStudent = _.find(persistedClass.students, function(persistedStudent) {
-//                                        return currentStudent.username === persistedStudent.username;
-//                                    });
-//
-//                                    if (matchedStudent) {
-//                                        currentStudent.id = matchedStudent.id;
-//                                        currentStudent.user = matchedStudent.user;
-//                                    }
-//                                });
                             }
                         );
 
@@ -135,15 +125,15 @@
                 },
 
                 viewModelToDomainModel: function(theClass) {
-                    var courseId = theClass['course']['id'];
-                    theClass['courseId'] = courseId;
+                    var courseId = theClass.course.id;
+                    theClass.courseId = courseId;
                     theClass = _.omit(theClass, 'course');
 
-                    if (!theClass['students']) {
-                        theClass['students'] = [];
+                    if (!theClass.students) {
+                        theClass.students = [];
                     }
 
-                    theClass['students'] = _.map(theClass['students'], function(student) {
+                    theClass.students = _.map(theClass.students, function(student) {
                         return studentModel.viewModelToDomainModel(student);
                     });
 

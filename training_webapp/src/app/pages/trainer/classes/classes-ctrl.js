@@ -86,7 +86,7 @@ angular.module('trng.trainer.training.classes').controller('classesController', 
             var dialog = $dialogs.confirm("Delete classes", "Are you sure you want to delete the classes?");
             dialog.result.then(function(result) {
                 _.forEach($scope.selectedClasses, function(currentClass) {
-                    classModel.deleteClassById($scope.classes, currentClass['id']);
+                    classModel.deleteClassById($scope.classes, currentClass.id);
                 });
             });
         };

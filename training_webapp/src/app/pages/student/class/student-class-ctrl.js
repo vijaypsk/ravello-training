@@ -19,7 +19,7 @@ angular.module('trng.student').controller('studentClassController', [
         };
 
         $scope.initDescription = function() {
-            $scope.description = course['description'] +  ' ' + $scope.student['userClass']['description'];
+            $scope.description = course.description +  ' ' + $scope.student.userClass.description;
         };
 
         $scope.initAppsColumns = function() {
@@ -69,7 +69,7 @@ angular.module('trng.student').controller('studentClassController', [
 
         $scope.startApp = function(app) {
             var bpId = app.getProperty('blueprintId');
-            var bpPermissions = $scope.student['userClass']['blueprintPermissions'][bpId];
+            var bpPermissions = $scope.student.userClass.blueprintPermissions[bpId];
 
             if (bpPermissions.startVms) {
                 appsService.startApp(app.getProperty('id'));
@@ -78,7 +78,7 @@ angular.module('trng.student').controller('studentClassController', [
 
         $scope.stopApp = function(app) {
             var bpId = app.getProperty('blueprintId');
-            var bpPermissions = $scope.student['userClass']['blueprintPermissions'][bpId];
+            var bpPermissions = $scope.student.userClass.blueprintPermissions[bpId];
 
             if (bpPermissions.stopVms) {
                 appsService.stopApp(app.getProperty('id'));
@@ -94,9 +94,9 @@ var studentClassResolver = {
         '$q', 'trng.services.CoursesService', 'student',
         function($q, coursesService, student) {
             if (student.hasOwnProperty('userClass') &&
-                student['userClass'].hasOwnProperty('courseId')) {
+                student.userClass.hasOwnProperty('courseId')) {
 
-                var courseId = student['userClass']['courseId'];
+                var courseId = student.userClass.courseId;
                 return coursesService.getCourseById(courseId);
             }
 
@@ -109,7 +109,7 @@ var studentClassResolver = {
     apps: [
         '$log', 'trng.services.StudentsService', 'student',
         function($log, studentsService, student) {
-            return studentsService.getStudentClassApps(student._id, student['userClass']['_id']);
+            return studentsService.getStudentClassApps(student._id, student.userClass._id);
         }
     ]
 };

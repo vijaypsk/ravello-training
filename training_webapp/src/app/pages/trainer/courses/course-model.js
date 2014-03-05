@@ -84,7 +84,7 @@
 
                 deleteCourseById: function(coursesList, courseId) {
                     _.remove(coursesList, function(currentCourse) {
-                        return currentCourse.hasOwnProperty('id') && currentCourse['id'] === courseId;
+                        return currentCourse.hasOwnProperty('id') && currentCourse.id === courseId;
                     });
 
                     courses = coursesList;
@@ -99,7 +99,7 @@
 
                     if (exists) {
                         courses = _.map(courses, function(currentCourse) {
-                            if (currentCourse['id'] == courseToSave['id']) {
+                            if (currentCourse.id == courseToSave.id) {
                                 return courseToSave;
                             }
                             return currentCourse;
@@ -114,8 +114,8 @@
                 },
 
                 deleteBlueprintById: function(course, bpId) {
-                    _.remove(course['blueprints'], function(currentBp) {
-                        return (currentBp && currentBp.hasOwnProperty('id') && currentBp['id'] == bpId);
+                    _.remove(course.blueprints, function(currentBp) {
+                        return (currentBp && currentBp.hasOwnProperty('id') && currentBp.id == bpId);
                     });
                 }
             };

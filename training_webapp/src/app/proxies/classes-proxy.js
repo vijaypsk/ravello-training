@@ -20,13 +20,13 @@ angular.module('trng.proxies').factory('trng.proxies.ClassesProxy', [
             },
 
             update: function(classToSave) {
-                var promise = $http.put(config.baseUrl + '/rest/classes/' + classToSave['_id'], classToSave);
+                var promise = $http.put(config.baseUrl + '/rest/classes/' + classToSave._id, classToSave);
                 trainingTracker.addPromise(promise);
                 return promise;
             },
 
             delete: function(classToDelete) {
-                var promise = $http.delete(config.baseUrl + '/rest/classes/' + classToDelete['_id']);
+                var promise = $http.delete(config.baseUrl + '/rest/classes/' + classToDelete._id);
                 trainingTracker.addPromise(promise);
                 return promise;
             },

@@ -22,7 +22,7 @@ angular.module('trng.trainer.training.courses').controller('addBlueprintsControl
              _.forEach(courseBlueprints, function(selectedBp) {
                 var matchingBp = _.find($scope.allBlueprints, function(bp) {
                     return (bp && selectedBp && bp.hasOwnProperty('id') && selectedBp.hasOwnProperty('id') &&
-                        bp['id'] === selectedBp['id']);
+                        bp.id === selectedBp.id);
                 });
 
                  if (matchingBp) {

@@ -16,8 +16,8 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
                     return studentTrans.dtoToEntity(student);
                 });
 
-                entity['startDate'] = Date.parse(entity['startDate']);
-                entity['endDate'] = Date.parse(entity['endDate']);
+                entity.startDate = Date.parse(entity.startDate);
+                entity.endDate = Date.parse(entity.endDate);
 
                 return entity;
 			},
@@ -32,11 +32,11 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
                     return studentTrans.entityToDto(student);
                 });
 
-                if (dto['startDate']) {
-                    dto['startDate'] = dto['startDate'].toString(dateUtil.dateFormat);
+                if (dto.startDate) {
+                    dto.startDate = dto.startDate.toString(dateUtil.dateFormat);
                 }
-                if (dto['endDate']) {
-                    dto['endDate'] = dto['endDate'].toString(dateUtil.dateFormat);
+                if (dto.endDate) {
+                    dto.endDate = dto.endDate.toString(dateUtil.dateFormat);
                 }
 
                 return dto;

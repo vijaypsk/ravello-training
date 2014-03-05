@@ -144,13 +144,13 @@ var singleCourseResolver = {
     currentCourse: ['$q', '$stateParams', 'trng.trainer.training.courses.CourseModel',
         function ($q, $stateParams, courseModel) {
 
-            var courseId = $stateParams['courseId'];;
+            var courseId = $stateParams.courseId;;
 
             if (courseId) {
                 return courseModel.getAllCourses().then(function (courses) {
                         return _.cloneDeep(_.find(courses, function (course) {
                             return (course && course.hasOwnProperty('id') &&
-                                course['id'] === courseId);
+                                course.id === courseId);
                         }));
                     });
             }

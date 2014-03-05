@@ -81,10 +81,10 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
             });
 
             modalInstance.result.then(function(result) {
-                $scope.currentStudent['blueprints'] = _.map($scope.currentStudent['blueprints'],
+                $scope.currentStudent.blueprints = _.map($scope.currentStudent.blueprints,
                     function(currentBp) {
                         var selectedBp = _.find($scope.selectedBps, function(currentSelectedBp) {
-                            return (currentBp['id'] === currentSelectedBp['id']);
+                            return (currentBp.id === currentSelectedBp.id);
                         });
 
                         if (selectedBp) {
@@ -101,7 +101,7 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
             var bpId = bpToConfigure.getProperty('id');
 
             var bpPermissions = _.find($scope.currentStudent.blueprints, function(currentBp) {
-                return (currentBp.hasOwnProperty('id') && currentBp['id'] === bpId);
+                return (currentBp.hasOwnProperty('id') && currentBp.id === bpId);
             });
 
             var modalInstance = $modal.open({
@@ -134,7 +134,7 @@ var singleStudentResolver = {
     currentStudent: [
         '$stateParams', 'trng.trainer.students.StudentModel', 'currentClass',
         function($stateParams, studentModel, currentClass) {
-            var studentId = $stateParams['studentId'];
+            var studentId = $stateParams.studentId;
 
             if (studentId) {
                 return studentModel.getStudent(currentClass, studentId);

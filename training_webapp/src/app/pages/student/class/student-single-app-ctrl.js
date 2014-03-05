@@ -29,8 +29,8 @@ angular.module('trng.student').controller('studentAppController', [
         };
 
         $scope.initPermissions = function() {
-            var bpId = currentApp['blueprintId'];
-            $scope.bpPermissions = student['userClass']['blueprintPermissions'][bpId];
+            var bpId = currentApp.blueprintId;
+            $scope.bpPermissions = student.userClass.blueprintPermissions[bpId];
         };
 
         $scope.initVmsColumns= function() {
@@ -84,8 +84,8 @@ angular.module('trng.student').controller('studentAppController', [
 
         $scope.showDetails = function(vmToExpand) {
             var vmId = vmToExpand.getProperty('id');
-            var selectedVm = _.find($scope.currentApp['vms'], function(currentVm) {
-                return (currentVm && currentVm.hasOwnProperty('id') && currentVm['id'] === vmId);
+            var selectedVm = _.find($scope.currentApp.vms, function(currentVm) {
+                return (currentVm && currentVm.hasOwnProperty('id') && currentVm.id === vmId);
             });
 
             var modalInstance = $modal.open({
@@ -101,7 +101,7 @@ angular.module('trng.student').controller('studentAppController', [
 
         $scope.startVm = function() {
             _.forEach($scope.selectedVms, function(vm) {
-                appsSerivce.startVm(currentApp['id'], vm['id']).then(function(result) {
+                appsSerivce.startVm(currentApp.id, vm.id).then(function(result) {
                     if (result.status === 202) {
                         $scope.refreshState();
                     } else {
@@ -115,7 +115,7 @@ angular.module('trng.student').controller('studentAppController', [
             var dialog = $dialogs.confirm("Stop VMs", "Are you sure you want to stop the VMs?");
             dialog.result.then(function(result) {
                 _.forEach($scope.selectedVms, function(vm) {
-                    appsSerivce.stopVm(currentApp['id'], vm['id']).then(function(result) {
+                    appsSerivce.stopVm(currentApp.id, vm.id).then(function(result) {
                         if (result.status === 202) {
                             $scope.refreshState();
                         } else {
@@ -130,7 +130,7 @@ angular.module('trng.student').controller('studentAppController', [
             var dialog = $dialogs.confirm("Restart VMs", "Are you sure you want to restart the VMs?");
             dialog.result.then(function(result) {
                 _.forEach($scope.selectedVms, function(vm) {
-                    appsSerivce.restartVm(currentApp['id'], vm['id']).then(function(result) {
+                    appsSerivce.restartVm(currentApp.id, vm.id).then(function(result) {
                         if (result.status === 202) {
                             $scope.refreshState();
                         } else {
@@ -222,7 +222,7 @@ var studentAppResolver = {
     currentApp: [
         '$q', '$stateParams', 'trng.services.StudentsService', 'student',
         function($q, $stateParams, studentsService, student) {
-            var appId = $stateParams['appId'];
+            var appId = $stateParams.appId;
 
             if (!appId || !student) {
                 var deferred = $q.defer();
@@ -230,7 +230,7 @@ var studentAppResolver = {
                 return deferred.promise;
             }
 
-            return studentsService.getStudentClassSingleApp(student._id, student['userClass']['_id'], appId);
+            return studentsService.getStudentClassSingleApp(student._id, student.userClass._id, appId);
         }
     ]
 };

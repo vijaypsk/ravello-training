@@ -26,13 +26,13 @@ angular.module('trng.proxies').factory('trng.proxies.CoursesProxy', [
             },
 
             update: function(courseToSave) {
-                var promise = $http.put(config.baseUrl + '/rest/courses/' + courseToSave['_id'], courseToSave);
+                var promise = $http.put(config.baseUrl + '/rest/courses/' + courseToSave._id, courseToSave);
                 trainingTracker.addPromise(promise);
                 return promise;
             },
 
             delete: function(courseToDelete) {
-                var promise = $http.delete(config.baseUrl + '/rest/courses/' + courseToDelete['_id']);
+                var promise = $http.delete(config.baseUrl + '/rest/courses/' + courseToDelete._id);
                 trainingTracker.addPromise(promise);
                 return promise;
             },
