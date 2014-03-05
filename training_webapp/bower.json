@@ -2,37 +2,33 @@
   "name": "ravello-training",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "~1.2.15",
-    "json3": "~3.2.4",
-    "es5-shim": "~2.1.0",
-    "jquery": "~1.10.2",
-    "angular-resource": "~1.2.6",
-    "angular-cookies": "~1.2.6",
-    "angular-sanitize": "~1.2.14",
-    "angular-route": "~1.2.6",
+    "angular": "1.2.14",
+    "json3": "3.2.4",
+    "es5-shim": "2.1.0",
+    "jquery": "1.10.2",
+    "angular-resource": "1.2.6",
+    "angular-cookies": "1.2.6",
+    "angular-sanitize": "1.2.14",
+    "angular-route": "1.2.6",
     "angular-ui-router": "0.2.8-bowratic-tedium",
-    "bootstrap": "~3.0.3",
-    "ng-grid": "~2.0.7",
-    "angular-bootstrap": "~0.10.0",
+    "bootstrap": "3.0.3",
+    "ng-grid": "2.0.7",
+    "angular-bootstrap": "0.10.0",
     "datejs": "",
-    "lodash": "~2.4.1",
+    "lodash": "2.4.1",
     "ngQuickDate": "https://github.com/wolf-daniel/ngQuickDate.git#change_directive_name",
-    "angular-xeditable": "~0.1.8",
-    "angular-base64": "~2.0.1",
-    "angular-busy": "~3.0.2",
-    "autofill-event": "~1.0.0",
-    "angular-growl": "~0.4.0",
-    "dialogs": "~3.1.0"
+    "angular-xeditable": "0.1.8",
+    "angular-base64": "2.0.1",
+    "angular-busy": "3.0.2",
+    "autofill-event": "1.0.0",
+    "angular-growl": "0.4.0",
+    "dialogs": "3.1.0"
   },
   "devDependencies": {
-    "angular-mocks": "~1.2.6",
-    "angular-scenario": "~1.2.6"
+    "angular-mocks": "1.2.6",
+    "angular-scenario": "1.2.6"
   },
   "resolutions": {
-    "angular": "~1.2.15",
-    "angular-resource": "~1.2.6",
-    "angular-cookies": "~1.2.6",
-    "angular-sanitize": "~1.2.14",
-    "angular-route": "~1.2.6"
+    "angular": "1.2.14"
   }
 }
