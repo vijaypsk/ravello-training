@@ -19,8 +19,7 @@ var matchClassWithApps = function(theClass, ravelloUsername, ravelloPassword) {
             return appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
         })).then(function(appsResults) {
             student.apps = _.map(appsResults, function(appResult) {
-                var app = appsTrans.ravelloObjectToTrainerDto(appResult.body);
-                return app;
+                return appsTrans.ravelloObjectToTrainerDto(appResult.body);
             });
         });
     }));

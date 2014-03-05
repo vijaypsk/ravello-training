@@ -19,21 +19,32 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
         };
 
         $scope.matchApps = function() {
-            // Then we go over the students.
+            // The idea here is to display a table that will show all of the students, and for each one
+            // all of the BPs of the class. This way, the trainer can monitor the apps created for each
+            // student for each BP. If an app has been created for the student from that BP, the trainer
+            // would see the app info. Otherwise, the app info should be blank, but a row for that pair
+            // of student-BP must still appear.
             _.forEach(classApps.students, function(currentStudent) {
-                // We then go over every student's map of apps.
-                _.forEach(currentStudent.apps, function(currentApp) {
 
-                    // We match the single app with its blueprint, from the courses\s list of bps.
-                    var matchingBp = _.find($scope.currentClass.course.blueprints, function (currentBp) {
-                        return (currentBp && currentBp.hasOwnProperty('id') &&
-                            currentBp.id == currentApp.blueprintId);
+                // Thus, the iteration is done through the BPs of the course, and NOT the apps of the student.
+                _.forEach($scope.currentClass.course.blueprints, function(currentBp) {
+
+                    // Then, an app matching the current BP is searched for the specific student.
+                    var app = _.find(currentStudent.apps, function(currentApp) {
+                        return (
+                            currentApp && currentApp.hasOwnProperty('blueprintId') &&
+                            currentBp.id === currentApp.blueprintId);
                     });
 
-                    currentApp.blueprint = matchingBp;
-                    currentApp.studentUsername = currentStudent.user.username;
+                    // If not found, an empty object is created, so that the app fields will be blank.
+                    if (!app) {
+                        app = {};
+                    }
 
-                    $scope.apps.push(currentApp);
+                    app.blueprint = currentBp;
+                    app.studentUsername = currentStudent.user.username;
+
+                    $scope.apps.push(app);
                 });
             });
         };
@@ -69,10 +80,16 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
         };
 
         $scope.initAppsDataGrid = function() {
+            $scope.selectedApps = [];
+
             $scope.initAppsColumns();
+
             $scope.appsDataGrid = {
                 data: 'apps',
-                columnDefs: $scope.appsColumns
+                columnDefs: $scope.appsColumns,
+                selectedItems: $scope.selectedApps,
+                showSelectionCheckbox: true,
+                selectWithCheckboxOnly: true
             };
         };
 
