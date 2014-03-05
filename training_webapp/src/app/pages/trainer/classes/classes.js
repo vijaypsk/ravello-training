@@ -24,6 +24,11 @@
                     }).state('trainer.training.single-class.edit-class', {
                         url: '/edit',
                         templateUrl: 'app/pages/trainer/classes/single-class/single-class-edit.html'
+                    }).state('trainer.training.single-class.monitor-class', {
+                        url: '/monitor',
+                        templateUrl: 'app/pages/trainer/classes/single-class/single-class-monitor.html',
+                        controller: 'singleClassMonitorController',
+                        resolve: singleClassMonitorResolver
                     }).state('trainer.training.single-class.single-student', {
                         url: '/single-student?studentId',
                         templateUrl: 'app/pages/trainer/single-student/single-student.html',

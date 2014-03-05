@@ -15,14 +15,6 @@ exports.dtoToEntity = function(dto) {
             bpPermissionsArray.push(bpPermission);
         });
         student.blueprintPermissions = bpPermissionsArray;
-
-        var appsArray = [];
-        _.forIn(student.apps, function(app, appId) {
-            appsArray.push({
-                ravelloId: app.id
-            });
-        });
-        student.apps = appsArray;
     });
 
     entity.startDate = Date.parse(entity.startDate);

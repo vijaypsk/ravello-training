@@ -11,6 +11,23 @@ var appsTrans = require('../trans/apps-trans');
 
 var appsService = require('../services/apps-service');
 
+/* --- Private functions --- */
+
+var matchClassWithApps = function(theClass, ravelloUsername, ravelloPassword) {
+    return q.all(_.map(theClass.students, function(student) {
+        return q.all(_.map(student.apps, function(app) {
+            return appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
+        })).then(function(appsResults) {
+            student.apps = _.map(appsResults, function(appResult) {
+                var app = appsTrans.ravelloObjectToTrainerDto(appResult.body);
+                return app;
+            });
+        });
+    }));
+};
+
+/* --- Public functions --- */
+
 exports.getClasses = function(request, response) {
     var user = request.user;
     var ravelloUsername = user.ravelloCredentials.username;
@@ -19,39 +36,37 @@ exports.getClasses = function(request, response) {
     // Okay, there are many async calls here, so stick with me.
     // First, well, we get the classes entities.
     classesDal.getClasses().then(function(classes) {
-
-        var classesDtos = [];
-        q.all(_.map(classes, function(classEntity) {
-
-            // We then want the classes as DTOs.
-            var classDto = classesTrans.entityToDto(classEntity);
-            classesDtos.push(classDto);
-
-            return q.all(_.map(classDto.students, function(student) {
-
-                return q.all(_.map(student.apps, function(app) {
-                    return appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
-                })).then(
-                    function(appsResults) {
-                        var appsMap = {};
-
-                        _.forEach(appsResults, function(appResult) {
-                            var app = appsTrans.ravelloObjectToTrainerDto(appResult.body);
-                            appsMap[app.name] = app;
-                        });
-
-                        student.apps = appsMap;
-                    }
-                );
-            }));
-        })).then(function(classesResult) {
-            response.json(classesDtos);
-        }).fail(function(error) {
-            console.log(error);
-            response.send(404, error);
+        var classesDtos = _.map(classes, function(classEntity) {
+            return classesTrans.entityToDto(classEntity);
         });
+        response.json(classesDtos);
     }).fail(function(error) {
         var message = "Could not load classes, error: " + error;
+        console.log(message);
+        response.send(404, message);
+    });
+};
+
+exports.getAllClassApps = function(request, response) {
+    var user = request.user;
+    var ravelloUsername = user.ravelloCredentials.username;
+    var ravelloPassword = user.ravelloCredentials.password;
+
+    var classId = request.params.classId;
+
+    classesDal.getClass(classId).then(function(classEntity) {
+
+        var classDto = classesTrans.entityToDto(classEntity);
+        var promise = matchClassWithApps(classDto, ravelloUsername, ravelloPassword);
+        promise.then(function(result) {
+            response.json(classDto);
+        }).fail(function(error) {
+            var message = "Could not load one of the apps of one of the students in the class, error: " + error;
+            console.log(message);
+            response.send(404, message);
+        });
+    }).fail(function(error) {
+        var message = "Could not load applications of class, error: " + error;
         console.log(message);
         response.send(404, message);
     });

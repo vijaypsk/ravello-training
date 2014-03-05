@@ -45,9 +45,13 @@ angular.module('trng.trainer.training.classes').controller('classesController', 
                 },
                 {
                     displayName: 'Actions',
+                    width: '25%',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="editClass(row)">' +
                             '<i class="icon-pencil" /> Edit' +
+                        '</a>' +
+                        '<a href="" class="btn btn-small btn-link" ng-click="monitorClass(row)">' +
+                            '<i class="icon-desktop" /> Monitor' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="deleteClass(row)">' +
                             '<i class="icon-trash" /> Delete' +
@@ -74,12 +78,14 @@ angular.module('trng.trainer.training.classes').controller('classesController', 
             $state.go('^.single-class.add-class');
         };
 
-        $scope.editClass = function (classToEdit) {
-            var classId = classToEdit.getProperty('id');
+        $scope.editClass = function (theClass) {
+            var classId = theClass.getProperty('id');
+            $state.go('^.single-class.edit-class', {classId: classId});
+        };
 
-            classModel.getClassById(classId).then(function(result) {
-                $state.go('^.single-class.edit-class', {classId: classId});
-            });
+        $scope.monitorClass = function (theClass) {
+            var classId = theClass.getProperty('id');
+            $state.go('^.single-class.monitor-class', {classId: classId});
         };
 
         $scope.deleteClasses = function () {

@@ -70,6 +70,10 @@
                         });
                 },
 
+                getClassApps: function(classId) {
+                    return classesService.getClassApps(classId);
+                },
+
                 deleteClassById: function(classesList, classId) {
                     _.remove(classesList, function(currentClass) {
                         return currentClass.hasOwnProperty('id') && currentClass.id === classId;

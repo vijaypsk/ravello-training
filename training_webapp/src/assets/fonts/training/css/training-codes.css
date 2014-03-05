@@ -8,13 +8,14 @@
 .icon-trash:before { content: '\e806'; } /* '' */
 .icon-cog:before { content: '\e802'; } /* '' */
 .icon-logout:before { content: '\e810'; } /* '' */
+.icon-clock:before { content: '\e80d'; } /* '' */
 .icon-ok:before { content: '\e803'; } /* '' */
-.icon-left-big:before { content: '\e80e'; } /* '' */
 .icon-right-big:before { content: '\e80f'; } /* '' */
 .icon-cw:before { content: '\e811'; } /* '' */
 .icon-arrows-cw:before { content: '\e808'; } /* '' */
 .icon-play:before { content: '\e801'; } /* '' */
 .icon-stop:before { content: '\e800'; } /* '' */
+.icon-desktop:before { content: '\e813'; } /* '' */
 .icon-floppy:before { content: '\e80b'; } /* '' */
 .icon-terminal:before { content: '\e805'; } /* '' */
-.icon-clock:before { content: '\e80d'; } /* '' */
+.icon-left-big:before { content: '\e80e'; } /* '' */

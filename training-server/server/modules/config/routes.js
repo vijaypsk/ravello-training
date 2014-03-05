@@ -34,6 +34,10 @@ module.exports = function(app) {
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['TRAINER']),
         classesController.getClasses);
+    app.get('/rest/classes/:classId/apps',
+        passport.authenticate('basic', authConfig),
+        authorization.isAuthorized(['TRAINER']),
+        classesController.getAllClassApps);
     app.post('/rest/classes',
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['TRAINER']),

@@ -21,6 +21,12 @@ angular.module('trng.services').factory('trng.services.ClassesService', [
 				});
             },
 
+            getClassApps: function(classId) {
+                return classesProxy.getClassApps(classId).then(function(result) {
+                    return classesTrans.dtoToEntity(result.data);
+                });
+            },
+
             add: function(entity) {
                 var dto = classesTrans.entityToDto(entity);
                 return classesProxy.add(dto).then(

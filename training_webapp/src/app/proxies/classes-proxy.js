@@ -13,6 +13,12 @@ angular.module('trng.proxies').factory('trng.proxies.ClassesProxy', [
                 return promise;
             },
 
+            getClassApps: function(classId) {
+                var promise = $http.get(config.baseUrl + '/rest/classes/' + classId + '/apps');
+                trainingTracker.addPromise(promise);
+                return promise;
+            },
+
             add: function(classToSave) {
                 var promise = $http.post(config.baseUrl + '/rest/classes', classToSave);
                 trainingTracker.addPromise(promise);

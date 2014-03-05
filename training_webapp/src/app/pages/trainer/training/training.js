@@ -21,8 +21,8 @@
                 }).state('trainer.training.single-class', {
                     url: '/single-class?classId',
                     templateUrl: 'app/pages/trainer/classes/single-class/single-class.html',
-                    controller: 'singleClassController',
-                    resolve: singleClassResolver
+                    controller: 'singleClassEditController',
+                    resolve: singleClassEditResolver
                 }).state('trainer.training.single-course', {
                     url: '/single-course?courseId',
                     templateUrl: 'app/pages/trainer/courses/single-course/single-course.html',
