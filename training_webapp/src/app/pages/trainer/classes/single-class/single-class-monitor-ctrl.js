@@ -93,7 +93,8 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                 columnDefs: $scope.appsColumns,
                 selectedItems: $scope.selectedApps,
                 showSelectionCheckbox: true,
-                selectWithCheckboxOnly: true
+                selectWithCheckboxOnly: true,
+                enableColumnResize: true
             };
         };
 
