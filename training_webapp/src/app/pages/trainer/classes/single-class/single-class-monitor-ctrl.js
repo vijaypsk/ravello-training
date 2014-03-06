@@ -45,7 +45,6 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
 
                     app.blueprint = currentBp;
                     app.studentUsername = currentStudent.user.username;
-                    app.student = currentStudent;
 
                     $scope.apps.push(app);
                 });
