@@ -6,10 +6,11 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
     '$scope',
     '$rootScope',
     '$state',
+    'growl',
     'trng.common.utils.DateUtil',
     'trng.services.AppsService',
     'classApps',
-    function ($log, $scope, $rootScope, $state, dateUtil, appsService, classApps) {
+    function ($log, $scope, $rootScope, $state, growl, dateUtil, appsService, classApps) {
 
         $scope.init = function () {
             $scope.apps = [];
@@ -44,6 +45,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
 
                     app.blueprint = currentBp;
                     app.studentUsername = currentStudent.user.username;
+                    app.student = currentStudent;
 
                     $scope.apps.push(app);
                 });
@@ -106,9 +108,14 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                     ' from BP ' + app.blueprint.name +
                     ' for class ' + $scope.currentClass.name;
 
-                appsService.createApp(name, description, app.blueprint.id).then(function(result) {
-                    app = result.body;
-                });
+                if (!app.creationTime) {
+                    appsService.createApp(name, description, app.blueprint.id).then(function(result) {
+                        app = result.body;
+                    });
+                } else {
+                    growl.addInfoMessage("Application for student " + app.studentUsername +
+                        " from blueprint [" + app.blueprint.name + "] already exists");
+                }
             });
         };
 

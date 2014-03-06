@@ -4,6 +4,6 @@
     angular.module('trng.config', []).constant('app.config', {
         baseUrl: '',
         autoRefreshDuration: 15000,
-        messagesCloseTime: 4000
+        messagesCloseTime: 6000
     });
 })(angular);
