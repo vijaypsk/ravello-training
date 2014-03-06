@@ -8,35 +8,11 @@ var classesDal = require('../dal/classes-dal');
 
 var classesTrans = require('../trans/classes-trans');
 var appsTrans = require('../trans/apps-trans');
+var singleStudentTrans = require('../trans/single-student-trans');
 
-var blueprintsService = require('../services/blueprints-service');
 var appsService = require('../services/apps-service');
 
 /* --- Private functions --- */
-
-var prepareClassForStudent = function(classEntity, studentId) {
-    var classData = classesTrans.entityToDto(classEntity);
-
-    var matchingStudentEntity = null;
-    classEntity.students.forEach(function(studentEntity) {
-        if (studentEntity.id === studentId) {
-            matchingStudentEntity = studentEntity;
-        }
-    });
-
-    var matchingStudent = matchingStudentEntity.toJSON();
-
-    var bpPermissionsMap = {};
-    _.forEach(matchingStudent.blueprintPermissions, function(bpPermissions) {
-        var bpPermissionsDto = _.pick(bpPermissions, 'startVms', 'stopVms', 'restartVms', 'console');
-        bpPermissionsMap[bpPermissions.bpId] = bpPermissionsDto;
-    });
-
-    classData.blueprintPermissions = bpPermissionsMap;
-
-    classData = _.omit(classData, 'students');
-    return classData;
-};
 
 var createVmViewObject = function(vm) {
     var hostnames = _.map(vm.hostnames, function(hostname) {
@@ -116,15 +92,9 @@ exports.getStudentClass = function(request, response) {
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUser(userId).then(function(classEntity) {
-        var classData = classesTrans.entityToDto(classEntity);
-        var studentData = classEntity.findStudentByUserId(userId);
-
-        var classPerStudent = prepareClassForStudent(classEntity, studentData.id);
-
-        var userData = user.toJSON();
-        userData.userClass = classPerStudent;
-
-        response.json(userData);
+        var studentEntity = classEntity.findStudentByUserId(userId);
+        var dto = singleStudentTrans.entityToDto(studentEntity, classEntity);
+        response.json(dto);
     }).fail(function(error) {
         response.send(404, "Could not find the class of student: " + user.username);
     });

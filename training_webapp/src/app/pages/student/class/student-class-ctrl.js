@@ -67,24 +67,6 @@ angular.module('trng.student').controller('studentClassController', [
             $state.go("^.single-app", {appId: appId});
         };
 
-        $scope.startApp = function(app) {
-            var bpId = app.getProperty('blueprintId');
-            var bpPermissions = $scope.student.userClass.blueprintPermissions[bpId];
-
-            if (bpPermissions.startVms) {
-                appsService.startApp(app.getProperty('id'));
-            }
-        };
-
-        $scope.stopApp = function(app) {
-            var bpId = app.getProperty('blueprintId');
-            var bpPermissions = $scope.student.userClass.blueprintPermissions[bpId];
-
-            if (bpPermissions.stopVms) {
-                appsService.stopApp(app.getProperty('id'));
-            }
-        };
-
         $scope.init();
     }
 ]);

@@ -29,8 +29,9 @@ angular.module('trng.student').controller('studentAppController', [
         };
 
         $scope.initPermissions = function() {
-            var bpId = currentApp.blueprintId;
-            $scope.bpPermissions = student.userClass.blueprintPermissions[bpId];
+            $scope.bpPermissions = _.find(student.blueprintPermissions, function(currentBpPermissions) {
+                return currentBpPermissions.bpId == currentApp.blueprintId;
+            });
         };
 
         $scope.initVmsColumns= function() {
