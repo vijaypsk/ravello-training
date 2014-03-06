@@ -80,6 +80,24 @@ exports.createApp = function(name, description, bpId, username, password) {
     return deferred.promise;
 };
 
+exports.publishApp = function(appId, username, password) {
+    var deferred = q.defer();
+
+    var dto = {
+        optimizationLevel: properties.defaultOptimizationLevel
+    };
+
+    request.
+        post(properties.baseUrl + "/services/applications/" + appId + "/publish").
+        send(dto).
+        type('application/json').
+        accept('application/json').
+        auth(username, password).
+        end(deferred.makeNodeResolver());
+
+    return deferred.promise;
+};
+
 exports.appAction = function(appId, action, username, password) {
     var deferred = q.defer();
 

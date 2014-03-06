@@ -22,12 +22,23 @@ exports.createApp = function(request, response) {
 
         appsService.createApp(appData.name, appData.description, appData.baseBlueprintId, ravelloUsername, ravelloPassword).then(
             function(result) {
-                if (result.status != 200 || result.status != 201) {
+                if (result.status != 200 && result.status != 201) {
                     return response.send(result.status, result.text);
                 }
 
                 var appDto = appsTrans.ravelloObjectToTrainerDto(result.body);
-                response.json(appDto);
+
+                appsService.publishApp(appDto.id, ravelloUsername, ravelloPassword).then(function(publishResult) {
+                    if (publishResult.status != 200 && publishResult.status != 202) {
+                        return response.send(publishResult.status, publishResult.text);
+                    }
+
+                    response.json(appDto);
+                }).fail(function(error) {
+                    var message = "Could not publish new application [" + appData.name + "], error: " + error;
+                    console.log(message);
+                    return response.send(401, message);
+                });
             }
         ).fail(function(error) {
             var message = "Could not create app with name [" + appData.name + "], error: " + error;

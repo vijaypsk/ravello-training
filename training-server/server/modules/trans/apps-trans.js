@@ -17,17 +17,24 @@ var determineAppDisplayName = function(course, bpId) {
 var getNumOfRunningVms = function(app) {
     var numOfRunningVms = 0;
 
-    _.forEach(app.deployment.vms, function(vm) {
-        if (vm.state === 'STARTED') {
-            numOfRunningVms++;
-        }
-    });
+    if (app.deployment) {
+        _.forEach(app.deployment.vms, function(vm) {
+            if (vm.state === 'STARTED') {
+                numOfRunningVms++;
+            }
+        });
+    }
 
     return numOfRunningVms;
 };
 
 exports.ravelloObjectToStudentDto = function(course, app) {
-    var numOfVms = app.deployment.vms.length;
+    var numOfVms = app.design.vms.length;
+
+    if (app.deployment && app.deployment.vms) {
+        var numOfVms = app.deployment.vms.length;
+    }
+
     var numOfRunningVms = getNumOfRunningVms(app);
 
     var appDisplayName = determineAppDisplayName(course, app.baseBlueprintId);
