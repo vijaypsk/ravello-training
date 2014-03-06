@@ -7,8 +7,9 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
     '$rootScope',
     '$state',
     'trng.common.utils.DateUtil',
+    'trng.services.AppsService',
     'classApps',
-    function ($log, $scope, $rootScope, $state, dateUtil, classApps) {
+    function ($log, $scope, $rootScope, $state, dateUtil, appsService, classApps) {
 
         $scope.init = function () {
             $scope.apps = [];
@@ -91,6 +92,24 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                 showSelectionCheckbox: true,
                 selectWithCheckboxOnly: true
             };
+        };
+
+        $scope.createApp = function() {
+            _.forEach($scope.selectedApps, function(app) {
+                var name =
+                    $scope.currentClass.name + '##' +
+                    app.blueprint.name + '##' +
+                    app.studentUsername;
+
+                var description =
+                    'App for student ' + app.studentUsername +
+                    ' from BP ' + app.blueprint.name +
+                    ' for class ' + $scope.currentClass.name;
+
+                appsService.createApp(name, description, app.blueprint.id).then(function(result) {
+                    app = result.body;
+                });
+            });
         };
 
         $scope.init();

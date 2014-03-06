@@ -94,6 +94,11 @@ module.exports = function(app) {
         studentController.getAppVms);
 
     // App route.
+    app.post('/rest/applications',
+        passport.authenticate('basic', {session: false}),
+        authorization.isAuthorized(['TRAINER']),
+        appController.createApp);
+
     app.post('/rest/applications/:appId/:action',
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['STUDENT']),

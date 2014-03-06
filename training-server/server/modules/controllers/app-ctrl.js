@@ -5,7 +5,39 @@ var _ = require('lodash');
 var properties = require('../config/properties');
 
 var appsService = require('../services/apps-service');
+
+var appsTrans = require('../trans/apps-trans');
+
 var classesDal = require('../dal/classes-dal');
+
+exports.createApp = function(request, response) {
+    var user = request.user;
+    var userId = user.id;
+
+    var appData = request.body;
+
+    if (user.ravelloCredentials) {
+        var ravelloUsername = user.ravelloCredentials.username;
+        var ravelloPassword = user.ravelloCredentials.password;
+
+        appsService.createApp(appData.name, appData.description, appData.baseBlueprintId, ravelloUsername, ravelloPassword).then(
+            function(result) {
+                if (result.status != 200 || result.status != 201) {
+                    return response.send(result.status, result.text);
+                }
+
+                var appDto = appsTrans.ravelloObjectToTrainerDto(result.body);
+                response.json(appDto);
+            }
+        ).fail(function(error) {
+            var message = "Could not create app with name [" + appData.name + "], error: " + error;
+            console.log(message);
+            response.send(401, message);
+        });
+    } else {
+        response.send(401, 'User does not have sufficient Ravello credentials');
+    }
+};
 
 exports.appAction = function(request, response) {
     var user = request.user;

@@ -17,5 +17,6 @@
 .icon-stop:before { content: '\e800'; } /* '' */
 .icon-desktop:before { content: '\e813'; } /* '' */
 .icon-floppy:before { content: '\e80b'; } /* '' */
+.icon-rocket:before { content: '\e814'; } /* '' */
 .icon-terminal:before { content: '\e805'; } /* '' */
 .icon-left-big:before { content: '\e80e'; } /* '' */

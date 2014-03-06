@@ -5,6 +5,10 @@ angular.module('trng.services').factory('trng.services.AppsService', [
 	function(appsProxy) {
 
 		var service = {
+            createApp: function(appName, appDescription, blueprintId) {
+                return appsProxy.createApp(appName, appDescription, blueprintId);
+            },
+
             startApp: function(appId) {
                 return appsProxy.startApp(appId);
             },

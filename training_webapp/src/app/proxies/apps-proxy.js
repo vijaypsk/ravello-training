@@ -7,6 +7,18 @@ angular.module('trng.proxies').factory('trng.proxies.AppsProxy', [
     'trainingTracker',
     function($http, $q, config, trainingTracker) {
         var service = {
+            createApp: function(appName, appDescription, blueprintId) {
+                var dto = {
+                    name: appName,
+                    description: appDescription,
+                    baseBlueprintId: blueprintId
+                };
+
+                var promise = $http.post(config.baseUrl + '/rest/applications', dto);
+                trainingTracker.addPromise(promise);
+                return promise;
+            },
+
             startApp: function(appId) {
                 var promise = $http.post(config.baseUrl + '/rest/applications/' + appId + '/start');
                 trainingTracker.addPromise(promise);
