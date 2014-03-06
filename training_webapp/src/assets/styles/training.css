@@ -121,7 +121,11 @@ html, body {
     vertical-align: middle;
     color: white;
     font-size: 22px;
-    width: 53%;
+    width: 28%;
+}
+.header-filler {
+    display: table-cell;
+    width: 25%
 }
 .main-nav {
     float: left;
@@ -243,7 +247,7 @@ h3.panel-title {
     margin-top: 0;
 }
 .modal-content {
-    padding: 2em;
+    padding: 1.7em;
 }
 .btns-ok-cancel {
     margin-top: 15px;
