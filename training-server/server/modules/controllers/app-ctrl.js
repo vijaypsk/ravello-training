@@ -7,6 +7,7 @@ var properties = require('../config/properties');
 var appsService = require('../services/apps-service');
 
 var appsTrans = require('../trans/apps-trans');
+var classesTrans = require('../trans/classes-trans');
 
 var classesDal = require('../dal/classes-dal');
 
@@ -23,17 +24,23 @@ exports.createApp = function(request, response) {
         appsService.createApp(appData.name, appData.description, appData.baseBlueprintId, ravelloUsername, ravelloPassword).then(
             function(result) {
                 if (result.status != 200 && result.status != 201) {
-                    return response.send(result.status, result.text);
+                    return response.send(result.status, "Could not create application [" + appData.name + "]");
                 }
 
                 var appDto = appsTrans.ravelloObjectToTrainerDto(result.body);
 
                 appsService.publishApp(appDto.id, ravelloUsername, ravelloPassword).then(function(publishResult) {
                     if (publishResult.status != 200 && publishResult.status != 202) {
-                        return response.send(publishResult.status, publishResult.text);
+                        return response.send(publishResult.status, "Could not publish app [" + appData.name + "]");
                     }
 
-                    response.json(appDto);
+                    classesDal.updateStudentApp(appData.userId, appDto.id).then(function(result) {
+                        response.json(appDto);
+                    }).fail(function(error) {
+                        var message = "Could not save the new app [" + appData.name + "] for the student, error: " + error;
+                        console.log(message);
+                        return response.send(401, message);
+                    });
                 }).fail(function(error) {
                     var message = "Could not publish new application [" + appData.name + "], error: " + error;
                     console.log(message);

@@ -33,6 +33,22 @@ exports.updateClass = function(classId, classData) {
     return TrainingClass.updateQ({_id: new ObjectId(classId)}, updatedClassEntity, {upsert: true});
 };
 
+exports.updateStudentApp = function(userId, appId) {
+    return TrainingClass.findOne({'students.user': new ObjectId(userId)}).execQ().then(
+        function(classEntity) {
+            var student = _.find(classEntity.students, function(currentStudent) {
+                return currentStudent.user == userId;
+            });
+
+            student.apps.push({ravelloId: appId});
+
+            var classData = classEntity.toJSON();
+            classData = _.omit(classData, '_id');
+            return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true});
+        }
+    );
+};
+
 exports.deleteClass = function(classId) {
     return TrainingClass.findByIdAndRemove(classId).populate('students.user').execQ();
 };

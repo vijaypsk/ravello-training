@@ -32,21 +32,23 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                 _.forEach($scope.currentClass.course.blueprints, function(currentBp) {
 
                     // Then, an app matching the current BP is searched for the specific student.
-                    var app = _.find(currentStudent.apps, function(currentApp) {
+                    var appViewObject = _.find(currentStudent.apps, function(currentApp) {
                         return (
                             currentApp && currentApp.hasOwnProperty('blueprintId') &&
                             currentBp.id === currentApp.blueprintId);
                     });
 
                     // If not found, an empty object is created, so that the app fields will be blank.
-                    if (!app) {
-                        app = {};
+                    if (!appViewObject) {
+                        appViewObject = {};
                     }
 
-                    app.blueprint = currentBp;
-                    app.studentUsername = currentStudent.user.username;
+                    var studentViewObject = _.omit(_.cloneDeep(currentStudent), 'apps');
 
-                    $scope.apps.push(app);
+                    appViewObject.student = studentViewObject;
+                    appViewObject.blueprint = currentBp;
+
+                    $scope.apps.push(appViewObject);
                 });
             });
         };
@@ -58,7 +60,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
         $scope.initAppsColumns = function() {
             $scope.appsColumns = [
                 {
-                    field: 'studentUsername',
+                    field: 'student.user.username',
                     displayName: 'Student'
                 },
                 {
@@ -100,19 +102,19 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                 var name =
                     $scope.currentClass.name + '##' +
                     app.blueprint.name + '##' +
-                    app.studentUsername;
+                    app.student.user.username;
 
                 var description =
-                    'App for student ' + app.studentUsername +
+                    'App for student ' + app.student.user.username +
                     ' from BP ' + app.blueprint.name +
                     ' for class ' + $scope.currentClass.name;
 
                 if (!app.creationTime) {
-                    appsService.createApp(name, description, app.blueprint.id).then(function(result) {
-                        app = result.body;
+                    appsService.createApp(name, description, app.blueprint.id, app.student.user.id).then(function(result) {
+                        _.assign(app, result.data);
                     });
                 } else {
-                    growl.addInfoMessage("Application for student " + app.studentUsername +
+                    growl.addInfoMessage("Application for student " + app.student.user.username +
                         " from blueprint [" + app.blueprint.name + "] already exists");
                 }
             });

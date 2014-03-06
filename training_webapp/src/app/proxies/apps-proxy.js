@@ -7,11 +7,12 @@ angular.module('trng.proxies').factory('trng.proxies.AppsProxy', [
     'trainingTracker',
     function($http, $q, config, trainingTracker) {
         var service = {
-            createApp: function(appName, appDescription, blueprintId) {
+            createApp: function(appName, appDescription, blueprintId, userId) {
                 var dto = {
                     name: appName,
                     description: appDescription,
-                    baseBlueprintId: blueprintId
+                    baseBlueprintId: blueprintId,
+                    userId: userId
                 };
 
                 var promise = $http.post(config.baseUrl + '/rest/applications', dto);
