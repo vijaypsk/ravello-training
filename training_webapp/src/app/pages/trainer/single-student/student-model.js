@@ -8,18 +8,25 @@
 
             var assignBlueprintsToStudent = function(theClass, student) {
                 var blueprints = _.map(theClass.course.blueprints, function(currentBp) {
-                    var bpId = currentBp.id;
-                    var bpPermissions = student.blueprintPermissions ? student.blueprintPermissions[bpId] : null;
+                    var bpDto = _.cloneDeep(currentBp);
+
+                    var bpPermissions = _.find(student.blueprintPermissions, function(currentBpPermissions) {
+                        return currentBp.id == currentBpPermissions.bpId;
+                    });
+
                     if (bpPermissions) {
-                        return _.assign(currentBp, bpPermissions);
+                        _.assign(bpDto, bpPermissions);
                     } else {
-                        return _.assign(currentBp, {
+                        _.assign(bpDto, {
+                            'bpId': currentBp.id,
                             'startVms': true,
                             'stopVms': true,
                             'restartVms': true,
                             'console': true
                         });
                     }
+
+                    return bpDto;
                 });
 
                 student.blueprints = blueprints;
@@ -48,25 +55,12 @@
                 },
 
                 viewModelToDomainModel: function(student) {
-
                     if (student.blueprints) {
-                        // Now, the student has to hold the bp permissions as a map between bpId and the bpPermissions.
-                        var blueprintPermissionsMap = {};
-                        _.forEach(student.blueprints, function(currentBp) {
-                            // The view-model for a blueprint in the student holds a mix of data - both plain
-                            // bp data, and the student-specific bp permissions data.
-                            // When we go back to the domain model, we want to keep only the student-specific data,
-                            // so we pick only the relevant properties from the object.
-                            var bpPermissions = _.pick(currentBp, ['id', 'startVms', 'stopVms', 'restartVms', 'console']);
-
-                            // Then, the domain model holds the information as an map, instead of an array,
-                            // between bp ID and the student-specific bp permissions.
-                            var bpId = currentBp.id;
-                            bpPermissions = _.omit(bpPermissions, 'id');
-                            blueprintPermissionsMap[bpId] = bpPermissions;
+                        student.blueprintPermissions = _.map(student.blueprints, function(currentBp) {
+                            return _.pick(currentBp, 'bpId', 'startVms', 'stopVms', 'restartVms', 'console');
                         });
 
-                        student.blueprintPermissions = blueprintPermissionsMap;
+                        student = _.omit(student, 'blueprints');
                     }
 
                     return student;
