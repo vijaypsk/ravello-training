@@ -4,12 +4,8 @@ var _ = require('lodash');
 var bcrypt = require('bcrypt-nodejs');
 
 var setDefaultValues = function(user) {
-    if (!user.salt) {
-        user.salt = bcrypt.genSaltSync();
-    }
-
     if (user.password) {
-        user.password = bcrypt.hashSync(user.password, user.salt);
+        user.password = bcrypt.hashSync(user.password);
     }
 
     if (!user.role) {
