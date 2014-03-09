@@ -96,7 +96,7 @@ exports.getStudentClass = function(request, response) {
         var dto = singleStudentTrans.entityToDto(studentEntity, classEntity);
         response.json(dto);
     }).fail(function(error) {
-        response.send(404, "Could not find the class of student: " + user.username);
+        response.send(404, "Could not find the class of student: " + user.username + ", error: " + error);
     });
 };
 
@@ -133,14 +133,14 @@ exports.getStudentClassApps = function(request, response) {
                 response.json(appViewObjects);
 
             }).fail(function(error) {
-                response.send(404, "Could not get one of the apps of user: " + user.username);
+                response.send(404, "Could not get one of the apps of user: " + user.username + ", error: " + error);
             } );
 
         }).fail(function(error) {
-            response.send(404, "Could not find the course of student: " + user.username);
+            response.send(404, "Could not find the course of student: " + user.username + ", error: " + error);
         });
     }).fail(function(error) {
-            response.send(404, "Could not find the class of student: " + user.username);
+            response.send(404, "Could not find the class of student: " + user.username + ", error: " + error);
     });
 };
 
