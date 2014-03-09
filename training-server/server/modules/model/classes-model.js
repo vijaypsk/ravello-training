@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 
 var TrainingClassSchema = mongoose.Schema({
     name: String,
+    description: String,
     courseId: String,
     startDate: Date,
     endDate: Date,
