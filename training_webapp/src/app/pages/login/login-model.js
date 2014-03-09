@@ -1,3 +1,4 @@
+
 'use strict';
 
 angular.module('trng.login').factory('loginModel', [
@@ -19,6 +20,8 @@ angular.module('trng.login').factory('loginModel', [
                             $state.go('student.class.apps-list');
                         } else if (result.role === 'TRAINER') {
                             $state.go('trainer');
+                        } else if (result.role === 'ADMIN') {
+                            $state.go('admin');
                         } else {
                             alert("User cannot be found, make sure you enter the correct username/password");
                         }

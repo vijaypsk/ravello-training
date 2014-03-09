@@ -7,6 +7,7 @@ var authentication = require('./../auth/training-authentication');
 var authorization = require('./../auth/training-authorization');
 
 var loginController = require('./../controllers/login-ctrl');
+var adminController = require('./../controllers/admin-ctrl');
 var classesController = require('./../controllers/classes-ctrl');
 var coursesController = require('./../controllers/courses-ctrl');
 var blueprintsController = require('./../controllers/blueprints-ctrl');
@@ -28,6 +29,11 @@ module.exports = function(app) {
     app.post('/rest/login',
         authentication.authenticate,
         loginController.login);
+
+    app.post('/rest/admin/profile',
+        passport.authenticate('basic', authConfig),
+        authorization.isAuthorized(['ADMIN']),
+        adminController.updateProfile);
 
     // Classes route.
     app.get('/rest/classes',

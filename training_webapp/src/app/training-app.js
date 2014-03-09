@@ -4,6 +4,7 @@
     angular.module('trng.app', [
             'trng.config',
             'trng.login',
+            'trng.admin',
             'trng.trainer',
             'trng.student',
             'trng.error',
@@ -29,6 +30,9 @@
                         url: '/login',
                         templateUrl: 'app/pages/login/login.html',
                         controller: 'loginController'
+                    }).state('admin', {
+                        url: '/admin',
+                        templateUrl: 'app/pages/admin/admin.html'
                     }).state('trainer', {
                         url: '/trainer',
                         templateUrl: 'app/pages/trainer/trainer.html'

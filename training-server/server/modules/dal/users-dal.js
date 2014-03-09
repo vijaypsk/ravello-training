@@ -27,6 +27,10 @@ exports.updateUser = function(id, userData) {
     // We don't want to persist the password if it's empty, in order to keep the existing password...
     if (!data.password) {
         options.select = '-password';
+
+        // Make sure the password is omitted, if its undefined, as mongoose will fail in the update if the
+        // property exists but is undefined.
+        data = _.omit(data, 'password');
     }
 
     // Also, for the upsert to work, in case there's a new entity (i.e. without and id)

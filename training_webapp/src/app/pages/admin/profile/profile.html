@@ -1,0 +1,31 @@
+
+<div id="adminProfileDiv" class="container">
+    <div class="row">
+        <h2>Profile</h2>
+    </div>
+
+    <form name="adminProfileForm">
+        <div class="form-box form-horizontal" role="form">
+            <div class="form-group">
+                <div class="col-md-6">
+                    <label for="usernameInput" class="col-sm-2 control-label">Username:</label>
+
+                    <div class="col-sm-10">
+                        <input id="usernameInput" type="text" ng-model="username" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-sm-2 control-label">Password:</label>
+
+                    <div class="col-sm-10">
+                        <set-password inner-class="password-control" password-model="password"></set-password>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pull-left">
+            <button class="btn btn-success" ng-click="save()"><i class="icon-floppy"></i> Save</button>
+        </div>
+    </form>
+</div>
