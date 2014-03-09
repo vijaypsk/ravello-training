@@ -9,6 +9,6 @@ angular.module('trng.common.directives').directive('saveAndCancel', function() {
             approveFunc: '=',
             cancelFunc: '='
         },
-        templateUrl: 'app/common/directives/saveAndCancel/save-and-cancel.html'
+        templateUrl: 'app/common/directives/save-and-cancel/save-and-cancel.html'
     };
 });
