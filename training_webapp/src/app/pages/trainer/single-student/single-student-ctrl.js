@@ -15,6 +15,7 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
 
         $scope.init = function () {
             $scope.currentStudent = currentStudent;
+            $scope.currentClass = currentClass;
             $scope.initBpPermissionsDataGrid();
         };
 
@@ -120,10 +121,24 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
         };
 
         $scope.saveStudent = function() {
-            if (!_.contains(currentClass.students, currentStudent)) {
-                currentClass.students.push(currentStudent);
+            // If the current student is a new student (find it using the id field),
+            // then that student has to be added to the class list of students.
+            var existingStudent = _.find($scope.currentClass.students, function(student) {
+                return student && student.id && student.id == $scope.currentStudent.id;
+            });
+
+            if (!existingStudent) {
+                $scope.currentClass.students.push(currentStudent);
             }
-            $scope.saveClass();
+
+            $scope.saveClass().then(function(persistedClass) {
+                // Also notice that if the student is a new one, then the student object held in the $scope
+                // has not id field. After the save, we need to assign the $scope student with the
+                // newly persisted student.
+                if (!existingStudent) {
+                    $scope.currentStudent = persistedClass.students[persistedClass.students.length - 1];
+                }
+            });
         };
 
         $scope.init();

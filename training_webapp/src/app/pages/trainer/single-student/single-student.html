@@ -17,9 +17,11 @@
                     <div class="col-md-6">
                         <div class="form-group">
 
-                            <label for="student-password"  class="col-sm-3 control-label">Password:</label>
+                            <label class="col-sm-3 control-label">Password:</label>
                             <div class="col-sm-9">
-                                <input id="student-password" type="text" class="form-control" ng-model="currentStudent.user.password">
+                                <set-password id="student-password"
+                                              inner-class="password-control"
+                                              password-model="currentStudent.user.password"></set-password>
                             </div>
                         </div>
                     </div>

@@ -112,19 +112,21 @@
                             return currentClass;
                         });
 
-                        classesService.update(classToSave).then(
+                        return classesService.update(classToSave).then(
                             function(persistedClass) {
                                 theClass.students = persistedClass.students;
+                                return theClass;
                             }
                         );
-
                     } else {
                         classes.push(theClass);
-                        classesService.add(classToSave).then(
+                        return classesService.add(classToSave).then(
                             function(persistedClass) {
                                 theClass.id = persistedClass.id;
                                 theClass.students = persistedClass.students;
-                            });
+                                return theClass;
+                            }
+                        );
                     }
                 },
 

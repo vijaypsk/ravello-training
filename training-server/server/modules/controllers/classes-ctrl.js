@@ -8,6 +8,7 @@ var usersDal = require('../dal/users-dal');
 
 var classesTrans = require('../trans/classes-trans');
 var appsTrans = require('../trans/apps-trans');
+var usersTrans = require('../trans/users-trans');
 
 var appsService = require('../services/apps-service');
 
@@ -77,6 +78,7 @@ exports.createClass = function(request, response) {
     // We first have to save all of the students of this class separately, since we need a store
     // of users against which login will be made.
     q.all(_.map(classData.students, function(student) {
+        student.user = usersTrans.dtoToEntity(student.user);
         return usersDal.createUser(student.user).then(function(persistedUser) {
             student.user = persistedUser.id;
         });
@@ -105,7 +107,8 @@ exports.updateClass = function(request, response) {
     // We can't know if a student is a new one or an existing one, so we use 'update' which will create
     // new users if they're not existing yet.
     q.all(_.map(classData.students, function(student) {
-        return usersDal.updateUser(student.user.username, student.user).then(function() {
+        student.user = usersTrans.dtoToEntity(student.user);
+        return usersDal.updateUser(student.user._id, student.user).then(function() {
             return usersDal.getUser(student.user.username).then(function(persistedUser) {
                 student.user = persistedUser.id;
             });
@@ -133,7 +136,7 @@ exports.deleteClass = function(request, response) {
 
     classesDal.deleteClass(classId).then(function(deletedClass) {
         _.forEach(deletedClass.students, function(student) {
-            usersDal.findAndDelete(student.user.username).then(function(result) {
+            usersDal.findAndDelete(student.user._id).then(function(result) {
                 response.send(200);
             }).fail(function(error) {
                 var message = "Could not delete one of the users associated with the class, error: " + error;

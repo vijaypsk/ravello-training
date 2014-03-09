@@ -108,7 +108,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassEditContr
         };
 
         $scope.saveClass = function() {
-            classModel.save($scope.currentClass);
+            return classModel.save($scope.currentClass);
         };
 
         $scope.back = function() {

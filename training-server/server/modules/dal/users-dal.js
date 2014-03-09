@@ -16,16 +16,32 @@ exports.createUser = function(userData) {
     return user.saveQ();
 };
 
-exports.updateUser = function(username, userData) {
-    var data= _.cloneDeep(userData);
+exports.updateUser = function(id, userData) {
+    var data = _.cloneDeep(userData);
     data = _.omit(data, '_id');
-    return User.findOneAndUpdateQ({'username': username}, data, {upsert: true});
+
+    var options = {
+        upsert: true
+    };
+
+    // We don't want to persist the password if it's empty, in order to keep the existing password...
+    if (!data.password) {
+        options.select = '-password';
+    }
+
+    // Also, for the upsert to work, in case there's a new entity (i.e. without and id)
+    // we need to create an empty ObjectId, otherwise mongoose will fail.
+    if (!id) {
+        id = new ObjectId();
+    }
+
+    return User.findByIdAndUpdateQ(id, data, options);
 };
 
 exports.deleteUser = function(username) {
     return User.removeQ({'username': username});
 };
 
-exports.findAndDelete = function(username) {
-    return User.findOneAndRemoveQ({'username': username});
+exports.findAndDelete = function(id) {
+    return User.findOneAndRemoveQ({'_id': id});
 };

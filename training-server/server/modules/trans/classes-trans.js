@@ -5,6 +5,8 @@ var datejs = require('datejs');
 
 var properties = require('../config/properties');
 
+var usersTrans = require('./users-trans');
+
 exports.dtoToEntity = function(dto) {
     var entity = dto;
 
@@ -23,6 +25,10 @@ exports.entityToDto = function(entityDocument) {
     if (dto.endDate) {
         dto.endDate = dto.endDate.toString(properties.dateFormat);
     }
+
+    _.forEach(dto.students, function(student) {
+        student.user = usersTrans.entityToDto(student.user);
+    });
 
     return dto;
 };

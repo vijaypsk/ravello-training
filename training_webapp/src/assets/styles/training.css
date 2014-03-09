@@ -320,3 +320,14 @@ hr {
     -o-transition:14s linear all;
     transition:1s linear all;
 }
+
+/* Password */
+
+.password-control {
+    height: 34px;
+    position: relative;
+}
+.password-div {
+    position: absolute;
+    top: 20%
+}
