@@ -46,10 +46,10 @@ exports.updateUser = function(id, userData) {
     return User.findByIdAndUpdateQ(id, data, options);
 };
 
-exports.deleteUser = function(username) {
-    return User.removeQ({'username': username});
+exports.deleteUser = function(id) {
+    return User.removeQ({'_id': new ObjectId(id)});
 };
 
 exports.findAndDelete = function(id) {
-    return User.findOneAndRemoveQ({'_id': id});
+    return User.findOneAndRemoveQ({'_id': new ObjectId(id)});
 };

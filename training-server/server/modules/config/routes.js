@@ -31,14 +31,21 @@ module.exports = function(app) {
         authentication.authenticate,
         loginController.login);
 
+    // Admin profile routes.
     app.post('/rest/admin/profile',
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['ADMIN']),
         adminController.updateProfile);
+
+    // Admin trainers routes.
     app.get('/rest/admin/trainers',
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['ADMIN']),
         trainersController.getAllTrainers);
+    app.delete('/rest/admin/trainers/:trainerId',
+        passport.authenticate('basic', authConfig),
+        authorization.isAuthorized(['ADMIN']),
+        trainersController.deleteTrainer);
 
     // Classes route.
     app.get('/rest/classes',

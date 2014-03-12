@@ -4,8 +4,9 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
     '$log',
     '$scope',
     '$state',
+    'trng.admin.trainers.trainersModel',
     'trainers',
-    function($log, $scope, $state, trainers) {
+    function($log, $scope, $state, trainersModel, trainers) {
 
         $scope.init = function() {
             $scope.trainers = trainers;
@@ -63,7 +64,9 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
         };
 
         $scope.deleteTrainers = function() {
-
+            _.forEach($scope.selectedTrainers, function(trainer) {
+                trainersModel.deleteTrainer(trainer.id);
+            });
         };
 
         $scope.init();

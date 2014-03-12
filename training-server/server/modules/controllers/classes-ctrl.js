@@ -136,7 +136,7 @@ exports.deleteClass = function(request, response) {
 
     classesDal.deleteClass(classId).then(function(deletedClass) {
         _.forEach(deletedClass.students, function(student) {
-            usersDal.findAndDelete(student.user._id).then(function(result) {
+            usersDal.findAndDelete(student.user.id).then(function(result) {
                 response.send(200);
             }).fail(function(error) {
                 var message = "Could not delete one of the users associated with the class, error: " + error;
