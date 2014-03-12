@@ -26,8 +26,12 @@ exports.entityToDto = function(entityDocument) {
         dto.endDate = dto.endDate.toString(properties.dateFormat);
     }
 
-    _.forEach(dto.students, function(student) {
-        student.user = usersTrans.entityToDto(student.user);
+    _.forEach(entityDocument.students, function(studentDocument) {
+        var matchingstudentDto = _.find(dto.students, function(studentDto) {
+            return studentDto._id == studentDocument.id;
+        });
+
+        matchingstudentDto.user = usersTrans.entityToDto(studentDocument.user);
     });
 
     return dto;

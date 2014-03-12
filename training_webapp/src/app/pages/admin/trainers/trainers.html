@@ -1,2 +1,13 @@
 
-<h2>Trainers</h2>
+<div class="container">
+    <h2>Trainers</h2>
+    <div id="trainersDiv">
+        <div>
+            <button id="addTrainerBtn" class="btn btn-default" ng-click="addTrainer()"><i class="icon-plus"></i> Add</button>
+            <button id="deleteTrainerBtn" class="btn btn-default" ng-click="deleteTrainers()"><i class="icon-trash"></i> Delete</button>
+            <div id="trainersDataGridDiv">
+                <div id="trainersDataGrid" ng-grid="trainersDataGrid"></div>
+            </div>
+        </div>
+    </div>
+</div>

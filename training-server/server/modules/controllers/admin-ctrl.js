@@ -18,7 +18,7 @@ exports.updateProfile = function(request, response) {
     var user = usersTrans.dtoToEntity(userDto);
 
     usersDal.updateUser(userEntity.id, user).then(function(persistedUser) {
-        var returnedUser = usersTrans.entityToDto(persistedUser.toJSON());
+        var returnedUser = usersTrans.entityToDto(persistedUser);
         response.json(returnedUser);
     }).fail(function(error) {
         var message = "Could not update the admin profile, error: " + error;

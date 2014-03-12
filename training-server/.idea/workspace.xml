@@ -2,24 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="048aa645-fcce-4987-ab73-4c8d2c7d5787" name="Default" comment="UI change - the 'console' button for a VM is now in the row of the VM itself in the data grid, instead of being a button outside of the data grid (then the VM has to be selected before the console button can be clicked).&#10;It makes more sense, because opening a console can be done only for a single VM, and not for several (which justifies the button being external).&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/font/training.eot" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/font/training.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/font/training.ttf" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/font/training.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/font/training.woff" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/font/training.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/controllers/app-ctrl.js" afterPath="$PROJECT_DIR$/server/modules/controllers/app-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/proxies/apps-proxy.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/proxies/apps-proxy.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/services/apps-service.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/services/apps-service.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/config.json" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/config.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/modules/controllers/trainers-ctrl.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/trainers/trainers-model.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../training_webapp/src/app/proxies/trainers-proxy.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../training_webapp/src/app/services/trainers-service.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../training_webapp/src/app/transformers/trainers-trans.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/controllers/admin-ctrl.js" afterPath="$PROJECT_DIR$/server/modules/controllers/admin-ctrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/admin-ctrl.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/admin-ctrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/admin.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/admin.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/trans/classes-trans.js" afterPath="$PROJECT_DIR$/server/modules/trans/classes-trans.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/index.html" afterPath="$PROJECT_DIR$/../training_webapp/src/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../mongo_static_data.js" afterPath="$PROJECT_DIR$/../mongo_static_data.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/profile/profile.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/profile/profile.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/config/routes.js" afterPath="$PROJECT_DIR$/server/modules/config/routes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-monitor-ctrl.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-monitor-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-monitor.html" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/trainer/classes/single-class/single-class-monitor.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training-codes.css" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training-codes.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training-embedded.css" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training-embedded.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training-ie7-codes.css" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training-ie7-codes.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training-ie7.css" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training-ie7.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training.css" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/css/training.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/trainers/trainers-ctrl.js" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/trainers/trainers-ctrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/trainers/trainers.html" afterPath="$PROJECT_DIR$/../training_webapp/src/app/pages/admin/trainers/trainers.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/styles/training.css" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/styles/training.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/font/training.svg" afterPath="$PROJECT_DIR$/../training_webapp/src/assets/fonts/training/font/training.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/dal/users-dal.js" afterPath="$PROJECT_DIR$/server/modules/dal/users-dal.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/model/users-model.js" afterPath="$PROJECT_DIR$/server/modules/model/users-model.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/modules/trans/users-trans.js" afterPath="$PROJECT_DIR$/server/modules/trans/users-trans.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="training-server.iws" />
@@ -42,7 +43,80 @@
     <favorites_list name="training-server" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="trainers-ctrl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/controllers/trainers-ctrl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="48" selection-start="359" selection-end="359" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin-ctrl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/controllers/admin-ctrl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="63" selection-start="674" selection-end="674" vertical-scroll-proportion="0.0" vertical-offset="47" max-vertical-offset="495">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="classes-trans.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/modules/trans/classes-trans.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="35" column="0" selection-start="947" selection-end="947" vertical-scroll-proportion="1.171875" vertical-offset="0" max-vertical-offset="645">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="users-trans.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/trans/users-trans.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="29" selection-start="471" selection-end="471" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="540">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="student-ctrl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/controllers/student-ctrl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="108" column="37" selection-start="3481" selection-end="3481" vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="2865">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="courses-ctrl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/controllers/courses-ctrl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="97" column="34" selection-start="3696" selection-end="3696" vertical-scroll-proportion="0.0" vertical-offset="1314" max-vertical-offset="2025">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="classes-ctrl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="58" column="36" selection-start="2005" selection-end="2005" vertical-scroll-proportion="0.0" vertical-offset="729" max-vertical-offset="2370">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="users-dal.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/modules/dal/users-dal.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="33" selection-start="176" selection-end="176" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -55,9 +129,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/public/app/services/courses-service.js" />
-        <option value="$PROJECT_DIR$/public/app/pages/trainer/classes/classes-model.js" />
-        <option value="$PROJECT_DIR$/public/app/pages/trainer/single-student/student-model.js" />
         <option value="$PROJECT_DIR$/server/modules/classes.js" />
         <option value="$PROJECT_DIR$/server/modules/model/classes_model.js" />
         <option value="$PROJECT_DIR$/server/modules/dal/courses.js" />
@@ -80,32 +151,35 @@
         <option value="$PROJECT_DIR$/server/modules/controllers/mocks/classes-ctrl-mock.js" />
         <option value="$PROJECT_DIR$/server/modules/auth/training_auth.js" />
         <option value="$PROJECT_DIR$/server/modules/auth/ravello_auth.js" />
-        <option value="$PROJECT_DIR$/server/modules/services/apps-service.js" />
         <option value="$PROJECT_DIR$/server/modules/services/blueprints-service.js" />
         <option value="$PROJECT_DIR$/../mongo_static_data.js" />
-        <option value="$PROJECT_DIR$/server/modules/config/properties.js" />
         <option value="$PROJECT_DIR$/server/modules/trans/blueprints-trans.js" />
-        <option value="$PROJECT_DIR$/server/modules/dal/users-dal.js" />
-        <option value="$PROJECT_DIR$/server/modules/model/users-model.js" />
-        <option value="$PROJECT_DIR$/server/modules/trans/users-trans.js" />
-        <option value="$PROJECT_DIR$/server/modules/model/classes-model.js" />
-        <option value="$PROJECT_DIR$/server/modules/trans/apps-trans.js" />
         <option value="$PROJECT_DIR$/server/modules/controllers/login-ctrl.js" />
         <option value="$PROJECT_DIR$/server/modules/config/config-passport.js" />
         <option value="$PROJECT_DIR$/server/modules/config/config.js" />
         <option value="$PROJECT_DIR$/../training_webapp/src/app/pages/login/login-model.js" />
-        <option value="$PROJECT_DIR$/server/modules/controllers/student-ctrl.js" />
         <option value="$PROJECT_DIR$/server/modules/auth/training-authentication.js" />
         <option value="$PROJECT_DIR$/server/modules/auth/training-authorization.js" />
-        <option value="$PROJECT_DIR$/server/modules/dal/classes-dal.js" />
         <option value="$PROJECT_DIR$/server/modules/trans/courses-trans.js" />
         <option value="$PROJECT_DIR$/server/modules/controllers/courses-ctrl.js" />
         <option value="$PROJECT_DIR$/server/modules/dal/courses-dal.js" />
         <option value="$PROJECT_DIR$/server/modules/controllers/blueprints-ctrl.js" />
-        <option value="$PROJECT_DIR$/server/modules/trans/classes-trans.js" />
-        <option value="$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js" />
-        <option value="$PROJECT_DIR$/server/modules/config/routes.js" />
+        <option value="$PROJECT_DIR$/server/modules/services/apps-service.js" />
+        <option value="$PROJECT_DIR$/server/modules/trans/apps-trans.js" />
         <option value="$PROJECT_DIR$/server/modules/controllers/app-ctrl.js" />
+        <option value="$PROJECT_DIR$/server/modules/dal/classes-dal.js" />
+        <option value="$PROJECT_DIR$/server/modules/trans/single-student-trans.js" />
+        <option value="$PROJECT_DIR$/server/modules/controllers/student-ctrl.js" />
+        <option value="$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js" />
+        <option value="$PROJECT_DIR$/server/modules/model/classes-model.js" />
+        <option value="$PROJECT_DIR$/server/modules/config/properties.js" />
+        <option value="$PROJECT_DIR$/server/modules/dal/users-dal.js" />
+        <option value="$PROJECT_DIR$/server/modules/config/routes.js" />
+        <option value="$PROJECT_DIR$/server/modules/model/users-model.js" />
+        <option value="$PROJECT_DIR$/server/modules/trans/users-trans.js" />
+        <option value="$PROJECT_DIR$/server/modules/controllers/trainers-ctrl.js" />
+        <option value="$PROJECT_DIR$/server/modules/controllers/admin-ctrl.js" />
+        <option value="$PROJECT_DIR$/server/modules/trans/classes-trans.js" />
       </list>
     </option>
   </component>
@@ -141,6 +215,14 @@
     </navigator>
     <panes>
       <pane id="Scope">
+        <subPane subId="Default">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
         <subPane subId="Tests">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
@@ -148,6 +230,14 @@
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
             <PATH_ELEMENT USER_OBJECT="training-server">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="Changed Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
@@ -211,54 +301,6 @@
               <option name="myItemId" value="modules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="training-server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="training-server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="training-server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="training-server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -282,50 +324,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="training-server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="training-server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="training-server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="training-server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="auth" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -335,7 +333,7 @@
     <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="false" />
     <property name="SearchEverywhereHistory" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../aham" />
     <property name="LayoutCode.rearrangeEntriesJavaScript" value="false" />
     <property name="options.lastSelected" value="web-ide.project.structure" />
     <property name="options.splitter.main.proportions" value="0.3" />
@@ -375,14 +373,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Node.js.app.js">
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
-      <method />
-    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -393,15 +383,23 @@
       <option name="showConsoleOnStdOut" value="false" />
       <method />
     </configuration>
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
       <setting name="configLocationType" value="CONFIG_FILE" />
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="CHROME" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
-      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
@@ -559,17 +557,37 @@
       <created>1394003997702</created>
       <updated>1394003997702</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Begining the flow for creating apps from the trainer view, for the students in a class.&#10;Currently, the button to create an app is there, and accesses the server to create the app, but the app is not published yet, and the result is not returned yet.">
+      <created>1394089021797</created>
+      <updated>1394089021797</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Simplifying the way I create the DTO for the student when he first logins.&#10;Mapping the student to its class, and finding the BP permissions for that student, is simpler now.">
+      <created>1394119200246</created>
+      <updated>1394119200246</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Forgot to include the class description in the DB.">
+      <created>1394373793438</created>
+      <updated>1394373793438</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Solving a little bug with the passwords when creating a new class (therefore going to POST action instead of PUT).">
+      <created>1394373837595</created>
+      <updated>1394373837595</updated>
+    </task>
+    <task id="LOCAL-00035" summary="1. Introducing the admin page.&#10; &#10; 2. Currently only implementing the part that enables the admin to edit its own profile (username and password).">
+      <created>1394379510261</created>
+      <updated>1394379510261</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="778" extended-state="0" />
+    <frame x="0" y="22" width="1440" height="778" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32863188" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32863188" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20069444" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -581,10 +599,10 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32863188" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -599,11 +617,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Converting the classes flow to the more robust logic, of controller-dal-model, with decoupling and promises." />
-    <MESSAGE value="The server now saves the students of each class as separate users, so that the login process can run against that store of users (instead of searching for the login in the students lists of the classes." />
-    <MESSAGE value="Continuing with making sure the students are also saved separately as users." />
-    <MESSAGE value="Introducing mocks in the server side, so that development can continue while the server is not fully functional." />
-    <MESSAGE value="Mocks for the student flow." />
     <MESSAGE value="Adding HTTP response status codes for failures." />
     <MESSAGE value="Enabling trainer login, by saving its ravello credentials in the DB, so that actions done against Ravello from the trainer flow will work. This means mostly getting the blueprints, so that the trainer can edit courses." />
     <MESSAGE value="Fixing the date formatting in both client and server side.&#10;" />
@@ -624,42 +637,17 @@
     <MESSAGE value="Refactoring the code, using the promises in a more concise (and hopefully more readable) way (using q.all and _.map)" />
     <MESSAGE value="Refactor - conforming the relationship between DAL and controller in the server.&#10;The idea is that the DAL return full mongo entities, and the controller is responsible for transforming them to whatever needed." />
     <MESSAGE value="Solving the issue with the ngQuickDate lib - it had a directive name clash with ui-bootstrap, for the 'datepicker' directive.&#10;For some unknown reason, the maintainer of ngQuickDate does not change the directive name, even though there's an open issue about it.&#10;Up until now, I changed the directive name directly in the dist file after installing the original lib with bower.&#10;That's annoying obviously, so now I forked the original ngQuickDate project and changed the directive name to 'ngDate'. I now reference our project's dependency to the new forked ngQuickDate project with the directive name changed. Currently this forked project lies in my own github account, hopefully we can move it to Ravello's." />
-    <option name="LAST_COMMIT_MESSAGE" value="Solving the issue with the ngQuickDate lib - it had a directive name clash with ui-bootstrap, for the 'datepicker' directive.&#10;For some unknown reason, the maintainer of ngQuickDate does not change the directive name, even though there's an open issue about it.&#10;Up until now, I changed the directive name directly in the dist file after installing the original lib with bower.&#10;That's annoying obviously, so now I forked the original ngQuickDate project and changed the directive name to 'ngDate'. I now reference our project's dependency to the new forked ngQuickDate project with the directive name changed. Currently this forked project lies in my own github account, hopefully we can move it to Ravello's." />
+    <MESSAGE value="Begining the flow for creating apps from the trainer view, for the students in a class.&#10;Currently, the button to create an app is there, and accesses the server to create the app, but the app is not published yet, and the result is not returned yet." />
+    <MESSAGE value="Simplifying the way I create the DTO for the student when he first logins.&#10;Mapping the student to its class, and finding the BP permissions for that student, is simpler now." />
+    <MESSAGE value="Forgot to include the class description in the DB." />
+    <MESSAGE value="Solving a little bug with the passwords when creating a new class (therefore going to POST action instead of PUT)." />
+    <MESSAGE value="1. Introducing the admin page.&#10; &#10; 2. Currently only implementing the part that enables the admin to edit its own profile (username and password)." />
+    <option name="LAST_COMMIT_MESSAGE" value="1. Introducing the admin page.&#10; &#10; 2. Currently only implementing the part that enables the admin to edit its own profile (username and password)." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/server/modules/dal/classes-dal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="86" selection-start="1235" selection-end="1235" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/controllers/student-ctrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="355" selection-end="355" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2490" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/trans/classes-trans.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="38" selection-start="740" selection-end="740" vertical-scroll-proportion="0.0" vertical-offset="405" max-vertical-offset="810" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="34" selection-start="1432" selection-end="1432" vertical-scroll-proportion="0.0" vertical-offset="555" max-vertical-offset="1395" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/dal/classes-dal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="0" selection-start="651" selection-end="651" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="735" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/model/classes-model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="0" selection-start="1123" selection-end="1691" vertical-scroll-proportion="0.0" vertical-offset="945" max-vertical-offset="1425" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/modules/services/apps-service.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="0" selection-start="568" selection-end="568" vertical-scroll-proportion="0.0" vertical-offset="330" max-vertical-offset="465" />
@@ -735,11 +723,6 @@
         <state line="13" column="0" selection-start="218" selection-end="218" vertical-scroll-proportion="0.45990565" vertical-offset="0" max-vertical-offset="424" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/config/properties.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="36" selection-start="144" selection-end="144" vertical-scroll-proportion="0.20089285" vertical-offset="0" max-vertical-offset="448" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/modules/services/blueprints-service.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="12" selection-start="261" selection-end="261" vertical-scroll-proportion="0.4017857" vertical-offset="0" max-vertical-offset="675" />
@@ -755,24 +738,9 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.1313869" vertical-offset="465" max-vertical-offset="915" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/model/users-model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="100" selection-end="139" vertical-scroll-proportion="0.20089285" vertical-offset="0" max-vertical-offset="1020" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/trans/blueprints-trans.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="227" selection-end="227" vertical-scroll-proportion="0.33482143" vertical-offset="0" max-vertical-offset="448" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/modules/services/login-service.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="0" selection-start="203" selection-end="203" vertical-scroll-proportion="0.3013393" vertical-offset="0" max-vertical-offset="448" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/config/config-passport.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="510" selection-end="510" vertical-scroll-proportion="0.26339287" vertical-offset="122" max-vertical-offset="570" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/modules/config/config.js">
@@ -802,117 +770,163 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/modules/auth/training-authentication.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="6" selection-start="453" selection-end="453" vertical-scroll-proportion="0.44052863" vertical-offset="0" max-vertical-offset="681">
-          <folding />
-        </state>
+        <state line="20" column="6" selection-start="453" selection-end="453" vertical-scroll-proportion="0.44052863" vertical-offset="0" max-vertical-offset="681" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/model/courses-model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="17" selection-start="333" selection-end="333" vertical-scroll-proportion="0.50223213" vertical-offset="0" max-vertical-offset="448" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/dal/courses-dal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="2" selection-start="299" selection-end="299" vertical-scroll-proportion="0.0" vertical-offset="92" max-vertical-offset="585" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/services/apps-service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="0" selection-start="2118" selection-end="2118" vertical-scroll-proportion="0.0" vertical-offset="1037" max-vertical-offset="2385" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/dal/classes-dal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="50" selection-start="1377" selection-end="1377" vertical-scroll-proportion="0.0" vertical-offset="286" max-vertical-offset="900" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/controllers/app-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="41" selection-start="1426" selection-end="1426" vertical-scroll-proportion="0.0" vertical-offset="287" max-vertical-offset="3015" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/model/classes-model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="24" selection-start="165" selection-end="165" vertical-scroll-proportion="0.234375" vertical-offset="0" max-vertical-offset="1530" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/config/properties.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="52" selection-start="205" selection-end="205" vertical-scroll-proportion="0.26785713" vertical-offset="0" max-vertical-offset="448" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/bcrypt-nodejs/bCrypt.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="697" column="43" selection-start="25232" selection-end="25232" vertical-scroll-proportion="-7.0" vertical-offset="10273" max-vertical-offset="10695" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/config/config-passport.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="0" selection-start="729" selection-end="729" vertical-scroll-proportion="0.0" vertical-offset="122" max-vertical-offset="570" />
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/NodeJS/lib/NodeJS.jar!/com/jetbrains/nodejs/library/node_globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="17" selection-start="1887" selection-end="1887" vertical-scroll-proportion="0.50574714" vertical-offset="620" max-vertical-offset="12795" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/controllers/blueprints-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="41" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/modules/controllers/login-ctrl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="8" selection-start="23" selection-end="23" vertical-scroll-proportion="0.04405286" vertical-offset="0" max-vertical-offset="681">
+        <state line="10" column="0" selection-start="210" selection-end="210" vertical-scroll-proportion="0.33482143" vertical-offset="0" max-vertical-offset="448" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/config/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="0" selection-start="1605" selection-end="1605" vertical-scroll-proportion="0.0" vertical-offset="435" max-vertical-offset="1965">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/model/users-model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="0" selection-start="415" selection-end="415" vertical-scroll-proportion="0.0" vertical-offset="47" max-vertical-offset="555">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/modules/dal/users-dal.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="269" selection-end="269" vertical-scroll-proportion="0.19642857" vertical-offset="92" max-vertical-offset="540">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/dal/classes-dal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="197" selection-end="197" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/model/courses-model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="17" selection-start="333" selection-end="333" vertical-scroll-proportion="0.50223213" vertical-offset="0" max-vertical-offset="448">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/trans/courses-trans.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="43" selection-end="43" vertical-scroll-proportion="0.13392857" vertical-offset="0" max-vertical-offset="448" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/controllers/courses-ctrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="114" column="29" selection-start="4299" selection-end="4299" vertical-scroll-proportion="0.43080357" vertical-offset="1517" max-vertical-offset="2025">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/dal/courses-dal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="2" selection-start="299" selection-end="299" vertical-scroll-proportion="0.0" vertical-offset="92" max-vertical-offset="585">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/trans/classes-trans.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="0" selection-start="520" selection-end="520" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="780">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/model/classes-model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="78" selection-end="78" vertical-scroll-proportion="0.13392857" vertical-offset="0" max-vertical-offset="1515">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="15" selection-start="837" selection-end="837" vertical-scroll-proportion="-1.0334822" vertical-offset="793" max-vertical-offset="2325">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/controllers/student-ctrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="145" column="0" selection-start="4739" selection-end="4739" vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="3315">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/services/apps-service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="0" selection-start="1846" selection-end="1846" vertical-scroll-proportion="0.46875" vertical-offset="855" max-vertical-offset="2115">
+        <state line="7" column="33" selection-start="176" selection-end="176" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/modules/trans/apps-trans.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="0" selection-start="1166" selection-end="1166" vertical-scroll-proportion="0.56473213" vertical-offset="467" max-vertical-offset="945">
+        <state line="30" column="47" selection-start="633" selection-end="633" vertical-scroll-proportion="1.0044643" vertical-offset="0" max-vertical-offset="1050">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/controllers/blueprints-ctrl.js">
+    <entry file="file://$PROJECT_DIR$/server/modules/trans/blueprints-trans.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="0" selection-start="1063" selection-end="1144" vertical-scroll-proportion="0.73214287" vertical-offset="152" max-vertical-offset="600">
+        <state line="4" column="8" selection-start="51" selection-end="51" vertical-scroll-proportion="0.13392857" vertical-offset="0" max-vertical-offset="448">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/controllers/app-ctrl.js">
+    <entry file="file://$PROJECT_DIR$/server/modules/trans/courses-trans.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="550" selection-end="550" vertical-scroll-proportion="0.26785713" vertical-offset="195" max-vertical-offset="2745">
+        <state line="7" column="2" selection-start="149" selection-end="149" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/modules/config/routes.js">
+    <entry file="file://$PROJECT_DIR$/server/modules/trans/single-student-trans.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="100" column="0" selection-start="3993" selection-end="3993" vertical-scroll-proportion="0.53125" vertical-offset="1262" max-vertical-offset="1800">
+        <state line="6" column="13" selection-start="160" selection-end="160" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="315">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/controllers/student-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="108" column="37" selection-start="3481" selection-end="3481" vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="2865">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/controllers/courses-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="97" column="34" selection-start="3696" selection-end="3696" vertical-scroll-proportion="0.0" vertical-offset="1314" max-vertical-offset="2025">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/controllers/classes-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="36" selection-start="2005" selection-end="2005" vertical-scroll-proportion="0.0" vertical-offset="729" max-vertical-offset="2370">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/trans/users-trans.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="29" selection-start="471" selection-end="471" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="540">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/controllers/trainers-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="48" selection-start="359" selection-end="359" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/controllers/admin-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="63" selection-start="674" selection-end="674" vertical-scroll-proportion="0.0" vertical-offset="47" max-vertical-offset="495">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/modules/trans/classes-trans.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="0" selection-start="947" selection-end="947" vertical-scroll-proportion="1.171875" vertical-offset="0" max-vertical-offset="645">
           <folding />
         </state>
       </provider>

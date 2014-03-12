@@ -5,6 +5,7 @@
             'trng.admin.profile',
             'trng.admin.trainers',
             'trng.services',
+            'trng.login',
             'ui.router'
         ]).
         config([
@@ -19,7 +20,8 @@
                     }).state('admin.trainers', {
                         url: '/trainers',
                         templateUrl: 'app/pages/admin/trainers/trainers.html',
-                        controller: 'adminTrainersController'
+                        controller: 'adminTrainersController',
+                        resolve: adminTrainerResolver
                     }).state('student.trainers.single-trainer', {
                         url: '/single-trainer?trainerId',
                         templateUrl: 'app/pages/admin/trainers/single-trainer/single-trainer.html',

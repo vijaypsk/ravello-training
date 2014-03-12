@@ -22,9 +22,10 @@ exports.dtoToEntity = function(dto) {
 };
 
 exports.entityToDto = function(entity) {
-    var dto = entity;
+    var dto = entity.toJSON();
 
     dto = _.omit(dto, 'password');
+    dto.fullName = entity.fullName;
 
     return dto;
 };

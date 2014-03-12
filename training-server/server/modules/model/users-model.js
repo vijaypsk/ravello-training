@@ -25,4 +25,8 @@ UsersSchema.methods = {
     }
 };
 
+UsersSchema.virtual('fullName').get(function() {
+    return this.firstName + ' ' + this.surname;
+});
+
 mongoose.model('User', UsersSchema);

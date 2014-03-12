@@ -11,6 +11,10 @@ exports.getUser = function(username) {
     return User.findOneQ({username: username});
 };
 
+exports.getUserByRole = function(role) {
+    return User.findQ({role: role});
+};
+
 exports.createUser = function(userData) {
     var user = new User(userData);
     return user.saveQ();
