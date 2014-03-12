@@ -42,6 +42,14 @@ module.exports = function(app) {
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['ADMIN']),
         trainersController.getAllTrainers);
+    app.post('/rest/admin/trainers',
+        passport.authenticate('basic', authConfig),
+        authorization.isAuthorized(['ADMIN']),
+        trainersController.saveTrainer);
+    app.put('/rest/admin/trainers/:trainerId',
+        passport.authenticate('basic', authConfig),
+        authorization.isAuthorized(['ADMIN']),
+        trainersController.updateTrainer);
     app.delete('/rest/admin/trainers/:trainerId',
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['ADMIN']),

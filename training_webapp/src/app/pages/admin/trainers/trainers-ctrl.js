@@ -53,11 +53,12 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
         };
 
         $scope.addTrainer = function() {
-
+            $state.go('^.single-trainer');
         };
 
         $scope.editTrainer = function(trainerToEdit) {
-
+            var trainerId = trainerToEdit.getProperty('id');
+            $state.go('^.single-trainer', {trainerId: trainerId});
         };
 
         $scope.deleteTrainer = function(trainerToDelete) {

@@ -21,22 +21,28 @@ angular.module('trng.admin.trainers').factory('trng.admin.trainers.trainersModel
             },
 
             saveTrainer: function(trainer) {
-                return trainersService.saveTrainer(trainer).then(function(entity) {
-                    trainers.push(entity);
-                    return entity;
+                var existingTrainer = _.find(trainers, function(currentTrainer) {
+                    return currentTrainer.id == trainer.id;
                 });
-            },
 
-            updateTrainer: function(trainerId, trainer) {
-                return trainersService.updateTrainer(trainerId, trainer).then(function(entity) {
-                    trainers = _.map(trainers, function(currentTrainer) {
-                        if (currentTrainer && currentTrainer.id == trainerId) {
-                            return entity;
-                        }
-                        return currentTrainer;
-                    });
+                var promise;
+                if (existingTrainer) {
+                    promise = trainersService.updateTrainer(trainer.id, trainer);
+                } else {
+                    promise = trainersService.saveTrainer(trainer);
+                }
 
-                    return entity;
+                promise.then(function(persistedTrainer) {
+                    if (existingTrainer) {
+                        trainers = _.map(trainers, function(currentTrainer) {
+                            if (currentTrainer.id == persistedTrainer.id) {
+                                return persistedTrainer;
+                            }
+                            return currentTrainer;
+                        });
+                    } else {
+                        trainers.push(persistedTrainer);
+                    }
                 });
             },
 

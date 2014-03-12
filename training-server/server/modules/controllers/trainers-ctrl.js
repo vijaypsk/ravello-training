@@ -19,12 +19,44 @@ exports.getAllTrainers = function(request, response) {
     });
 };
 
+exports.saveTrainer = function(request, response) {
+    var newTrainerDto = request.body;
+    var newTrainerData = usersTrans.dtoToEntity(newTrainerDto);
+    newTrainerData.role = 'TRAINER';
+
+    usersDal.createUser(newTrainerData).then(function(trainerEntity) {
+        var dto = usersTrans.entityToDto(trainerEntity);
+        response.json(dto);
+    }).fail(function(error) {
+        var message = "Could not save new trainer, error: " + error;
+        console.log(message);
+        response.send(400, message);
+    });
+};
+
+exports.updateTrainer = function(request, response) {
+    var trainerId = request.params.trainerId;
+
+    var newTrainerDto = request.body;
+    var newTrainerData = usersTrans.dtoToEntity(newTrainerDto);
+    newTrainerData.role = 'TRAINER';
+
+    usersDal.updateUser(trainerId, newTrainerData).then(function(trainerEntity) {
+        var dto = usersTrans.entityToDto(trainerEntity);
+        response.json(dto);
+    }).fail(function(error) {
+        var message = "Could not update trainer, error: " + error;
+        console.log(message);
+        response.send(400, message);
+    });
+};
+
 exports.deleteTrainer = function(request, response) {
-    var userId = request.params.trainerId;
-    usersDal.deleteUser(userId).then(function(result) {
+    var trainerId = request.params.trainerId;
+    usersDal.deleteUser(trainerId).then(function(result) {
         response.send(200);
     }).fail(function(error) {
-        var message = "Could not delete trainer [" + userId + "], error: " + error;
+        var message = "Could not delete trainer [" + trainerId + "], error: " + error;
         console.log(message);
         response.send(404, message);
     });

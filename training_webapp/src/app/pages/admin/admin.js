@@ -22,10 +22,11 @@
                         templateUrl: 'app/pages/admin/trainers/trainers.html',
                         controller: 'adminTrainersController',
                         resolve: adminTrainerResolver
-                    }).state('student.trainers.single-trainer', {
+                    }).state('admin.single-trainer', {
                         url: '/single-trainer?trainerId',
                         templateUrl: 'app/pages/admin/trainers/single-trainer/single-trainer.html',
-                        controller: 'adminSingleTrainerController'
+                        controller: 'adminSingleTrainerController',
+                        resolve: singleTrainerResolver
                     });
             }
         ]);
