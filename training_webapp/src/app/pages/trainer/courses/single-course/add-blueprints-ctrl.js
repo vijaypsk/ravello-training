@@ -60,7 +60,8 @@ angular.module('trng.trainer.training.courses').controller('addBlueprintsControl
                  columnDefs: $scope.allBlueprintsColumns,
                  selectedItems: $scope.courseBlueprints,
                  showSelectionCheckbox: true,
-                 selectWithCheckboxOnly: true
+                 selectWithCheckboxOnly: true,
+                 enableColumnResize: true
              };
          };
 
