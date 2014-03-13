@@ -385,3 +385,9 @@ div > span.block-title {
     display: block;
 }
 
+.panel-title {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.1;
+}
+
