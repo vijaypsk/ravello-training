@@ -4,10 +4,12 @@ angular.module('trng.common.directives.setPassword').controller('setPasswordPopu
     '$log',
     '$scope',
     '$modalInstance',
-    function($log, $scope, $modalInstance) {
+    'inlineMessage',
+    function($log, $scope, $modalInstance, inlineMessage) {
         $scope.init = function() {
             $scope.viewModel = {
-                password: ''
+                password: '',
+                inlineMessage: inlineMessage
             };
         };
 

@@ -11,7 +11,12 @@ angular.module('trng.common.directives.setPassword').controller('setPasswordCont
         $scope.setPassword = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/common/directives/set-password/set-password-popup.html',
-                controller: 'setPasswordPopupController'
+                controller: 'setPasswordPopupController',
+                resolve: {
+                    inlineMessage: function() {
+                        return $scope.inlineMessage;
+                    }
+                }
             });
 
             modalInstance.result.then(
@@ -31,7 +36,8 @@ angular.module('trng.common.directives.setPassword').directive('setPassword', [
             restrict: 'EA',
             scope: {
                 password: '=passwordModel',
-                innerClass: '@'
+                innerClass: '@',
+                inlineMessage: '@'
             },
             templateUrl: 'app/common/directives/set-password/set-password.html',
             controller: 'setPasswordController'
