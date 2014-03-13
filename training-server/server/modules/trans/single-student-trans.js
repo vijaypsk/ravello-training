@@ -1,6 +1,9 @@
 'use strict';
 
 var _ = require('lodash');
+var datejs = require('datejs');
+
+var properties = require('../config/properties');
 
 exports.entityToDto = function(studentEntity, classEntity) {
     var dto = studentEntity.user.toJSON();
@@ -8,6 +11,13 @@ exports.entityToDto = function(studentEntity, classEntity) {
     var classDto = classEntity.toJSON();
 
     classDto = _.omit(classDto, 'students');
+
+    if (classDto.startDate) {
+        classDto.startDate = classDto.startDate.toString(properties.dateFormat);
+    }
+    if (classDto.endDate) {
+        classDto.endDate = classDto.endDate.toString(properties.dateFormat);
+    }
 
     dto.blueprintPermissions = studentDto.blueprintPermissions;
     dto.userClass = classDto;
