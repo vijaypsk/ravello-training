@@ -53,6 +53,14 @@ html, body {
 
 /* Single class */
 
+#classStudentsDiv {
+    background-color: #F7F7F7;
+}
+
+#classStudentsDiv > span {
+    margin-bottom: 20px;
+}
+
 #studentsDataGrid {
     height: 300px;
 
@@ -64,10 +72,17 @@ html, body {
 
 #appsDataGrid {
     height: 300px;
-
 }
 
 /* Single student */
+
+#studentBlueprintsDiv {
+    background-color: #F7F7F7;
+}
+
+#studentBlueprintsDiv > span {
+    margin-bottom: 20px;
+}
 
 #bpPermissionsDataGrid {
     height: 300px;
@@ -75,6 +90,14 @@ html, body {
 }
 
 /* Single course */
+
+#courseBlueprintsDiv {
+    background-color: #F7F7F7;
+}
+
+#courseBlueprintsDiv > div:first-of-type {
+    margin-bottom: 20px;
+}
 
 #blueprintsDataGrid {
     height: 300px;
@@ -256,6 +279,9 @@ h3.panel-title {
 #accordion {
     margin-bottom: 15px;
 }
+.accordionGroup {
+    background-color: #F0F0F0;
+}
 #rav-default-check {
     margin-top: 10px;
 }
@@ -347,3 +373,15 @@ hr {
     position: absolute;
     top: 20%
 }
+
+.block-title {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.1;
+}
+
+div > span.block-title {
+    margin-bottom: 10px;
+    display: block;
+}
+

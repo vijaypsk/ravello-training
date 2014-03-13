@@ -1,5 +1,6 @@
 <form name="classForm" class="form-horizontal" role="form">
     <div class="form-box">
+        <span class="block-title">Class details</span>
         <div class="form-group">
             <div class="col-md-6">
                 <label for="nameInput" class="col-sm-3 control-label">Name:</label>
@@ -10,7 +11,6 @@
             <div class="col-md-6">
                 <label class="col-sm-3 control-label">Course:</label>
                 <div class="col-sm-9"><div class="form-control mock-disabled-input">{{currentClass.course.name}}</div></div>
-
             </div>
         </div>
 
@@ -31,46 +31,84 @@
         </div>
     </div>
 
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                        Ravello Credentials
-                    </a>
-                </h3>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse">
-                <div class="panel-body form-box form-horizontal">
+    <accordion close-others="oneAtATime">
+        <accordion-group class="accordionGroup" heading="Ravello Credentials" is-open="isRavelloCredentials">
+                <div class="form-group">
                     <div class="col-md-12">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="rav-email"  class="col-sm-3 control-label">Email:</label>
-                                <div class="col-sm-9">
-                                    <input id="rav-email" type="text" class="form-control"
-                                           ng-model="currentClass.ravelloCredentials.username">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-
-                                <label for="rav-password"  class="col-sm-3 control-label">Password:</label>
-                                <div class="col-sm-9">
-                                    <input id="rav-password" type="text" class="form-control"
-                                           ng-model="currentClass.ravelloCredentials.password">
-                                </div>
-                            </div>
-                        </div>
-
-
+                            <span>These credentials will be used for all Ravello operations on the environments created for the
+                                students in this class.</span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="rav-email"  class="col-sm-3 control-label">Email:</label>
+                            <div class="col-sm-9">
+                                <input id="rav-email" type="text" class="form-control"
+                                       ng-model="currentClass.ravelloCredentials.username">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="rav-password"  class="col-sm-3 control-label">Password:</label>
+                            <div class="col-sm-9">
+                                <input id="rav-password" type="text" class="form-control"
+                                       ng-model="currentClass.ravelloCredentials.password">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </accordion-group>
+    </accordion>
 
-    <div>
+    <!--<div class="panel-group" id="accordion">-->
+        <!--<div class="panel panel-default">-->
+            <!--<div class="panel-heading">-->
+                <!--<h3 class="panel-title">-->
+                    <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">-->
+                        <!--<span class="block-title">Ravello Credentials</span>-->
+                    <!--</a>-->
+                <!--</h3>-->
+            <!--</div>-->
+            <!--<div id="collapseOne" class="panel-collapse collapse">-->
+                <!--<div class="panel-body form-box form-horizontal">-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<span>These credentials will be used for all Ravello operations on the environments created for the-->
+                                <!--students in this class.</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<br/>-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-6">-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="rav-email"  class="col-sm-3 control-label">Email:</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input id="rav-email" type="text" class="form-control"-->
+                                           <!--ng-model="currentClass.ravelloCredentials.username">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-6">-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="rav-password"  class="col-sm-3 control-label">Password:</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input id="rav-password" type="text" class="form-control"-->
+                                           <!--ng-model="currentClass.ravelloCredentials.password">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div id="classStudentsDiv" class="form-box">
+        <span class="block-title">Students</span>
+
         <button id="addStudentBtn" class="btn btn-default" ng-click="addStudent()"><i class="icon-plus"></i> Add</button>
 
         <div id="studentsDataGridDiv" class="grid-table">

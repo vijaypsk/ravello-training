@@ -29,6 +29,10 @@ angular.module('trng.trainer.training.classes').controller('singleClassEditContr
         $scope.initClass = function() {
             $scope.currentClass = currentClass;
             $scope.matchCourses();
+
+            $scope.isRavelloCredentials =
+                (!$scope.currentClass.ravelloCredentials ||
+                (!$scope.currentClass.ravelloCredentials.username && !$scope.currentClass.ravelloCredentials.password));
         };
 
         $scope.matchCourses = function() {

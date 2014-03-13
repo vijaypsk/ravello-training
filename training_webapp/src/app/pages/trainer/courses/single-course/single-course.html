@@ -2,8 +2,8 @@
 <div id="coursesDiv" class="container">
     <div>
         <form name="coursesForm">
-
             <div class="form-horizontal form-box">
+                <span class="block-title">Course Details</span>
 
                 <div class="form-group">
                     <div class="col-md-6">
@@ -19,24 +19,25 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
+            <div id="courseBlueprintsDiv" class="form-box">
+                <div>
+                    <span class="block-title">Blueprints</span>
+                    <span>The blueprints chosen below will be used to create private environments for each student taking this course.</span>
+                </div>
 
-
-            <div>
                 <button id="addBlueprintBtn" class="btn btn-default" ng-click="addBlueprint()"><i class="icon-plus"></i> Add</button>
                 <button id="deleteBlueprinttBtn" class="btn btn-default" ng-click="deleteBlueprints()"><i class="icon-trash"></i> Delete</button>
+
                 <div id="blueprintsDataGridDiv" class="grid-table">
                     <div id="blueprintsDataGrid" ng-grid="blueprintsDataGrid"></div>
                 </div>
             </div>
         </form>
         <div class="row pull-right">
-            <button class="btn btn-success" ng-click="save()"><i class="icon-floppy"></i> Save</button>
-            <button class="btn btn-warning" ng-click="back()"><i class="icon-undo"></i> Back</button>
-
+            <div save-and-cancel approve-label="Save" cancel-label="Back"
+                 approve-func="save" cancel-func="back">
+            </div>
         </div>
     </div>
 </div>

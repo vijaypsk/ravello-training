@@ -16,7 +16,12 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
         $scope.init = function () {
             $scope.currentStudent = currentStudent;
             $scope.currentClass = currentClass;
+
             $scope.initBpPermissionsDataGrid();
+
+            $scope.isRavelloCredentials =
+                (!$scope.currentStudent.ravelloCredentials ||
+                (!$scope.currentStudent.ravelloCredentials.username && !$scope.currentStudent.ravelloCredentials.password));
         };
 
         $scope.initBpPermissionsColumns = function () {
