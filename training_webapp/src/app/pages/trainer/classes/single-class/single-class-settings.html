@@ -25,13 +25,51 @@
                  <label class="col-sm-3 control-label"><i class="icon-calendar "></i> Start date:</label>
                 <div class="col-sm-3"><ng-date ng-model="currentClass.startDate" placeholder="Pick Date" date-format="{{dateFormat}}"/></div>
 
-         <label class="col-sm-3 control-label"><i class="icon-calendar"></i> End date:</label>
+                <label class="col-sm-3 control-label"><i class="icon-calendar"></i> End date:</label>
                 <div class="col-sm-3"><ng-date ng-model="currentClass.endDate" placeholder="Pick Date" date-format="{{dateFormat}}"/></div>
-
-
             </div>
         </div>
     </div>
+
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        Ravello Credentials
+                    </a>
+                </h3>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body form-box form-horizontal">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="rav-email"  class="col-sm-3 control-label">Email:</label>
+                                <div class="col-sm-9">
+                                    <input id="rav-email" type="text" class="form-control"
+                                           ng-model="currentClass.ravelloCredentials.username">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <label for="rav-password"  class="col-sm-3 control-label">Password:</label>
+                                <div class="col-sm-9">
+                                    <input id="rav-password" type="text" class="form-control"
+                                           ng-model="currentClass.ravelloCredentials.password">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div>
         <button id="addStudentBtn" class="btn btn-default" ng-click="addStudent()"><i class="icon-plus"></i> Add</button>
 

@@ -7,7 +7,8 @@
         'trng.services.ClassesService',
         'trng.trainer.training.courses.CourseModel',
         'trng.trainer.students.StudentModel',
-        function ($q, $log, classesService, courseModel, studentModel) {
+        'trng.services.AppsService',
+        function ($q, $log, classesService, courseModel, studentModel, appsService) {
 
             var classesLoaded = false;
 
@@ -144,6 +145,24 @@
                     });
 
                     return theClass;
+                },
+
+                createAppForStudent: function(classId, appName, appDesc, bpId, userId) {
+                    return appsService.createApp(appName, appDesc, bpId, userId).then(function(result) {
+                        var persistedApp = result.data;
+
+                        var theClass = getClassById(classId);
+
+                        var matchingStudent = _.find(theClass.students, function(student) {
+                            return student.user.id == userId;
+                        });
+
+                        if (matchingStudent) {
+                            matchingStudent.apps.push(persistedApp);
+                        }
+
+                        return persistedApp;
+                    });
                 }
             };
 

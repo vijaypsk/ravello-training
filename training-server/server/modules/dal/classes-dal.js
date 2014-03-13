@@ -44,7 +44,9 @@ exports.updateStudentApp = function(userId, appId) {
 
             var classData = classEntity.toJSON();
             classData = _.omit(classData, '_id');
-            return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true});
+            return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(function(result) {
+                return classEntity;
+            });
         }
     );
 };

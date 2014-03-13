@@ -109,8 +109,8 @@ exports.getStudentClassApps = function(request, response) {
         var classData = classesTrans.entityToDto(classEntity);
         var studentData = classEntity.findStudentByUserId(userId);
 
-        var ravelloUsername = studentData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password;
+        var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+        var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
         coursesDal.getCourse(classEntity.courseId).then(function(course) {
 
@@ -152,11 +152,11 @@ exports.getAppVms = function(request, response) {
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUser(userId).then(function(classEntity) {
-
+        var classData = classesTrans.entityToDto(classEntity);
         var studentData = classEntity.findStudentByUserId(userId);
 
-        var ravelloUsername = studentData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password;
+        var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+        var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
         appsService.getApp(appId, ravelloUsername, ravelloPassword).then(function(appResult) {
             var app = appResult.body;

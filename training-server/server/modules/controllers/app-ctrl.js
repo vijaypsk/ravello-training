@@ -15,40 +15,54 @@ exports.createApp = function(request, response) {
     var user = request.user;
     var userId = user.id;
 
-    var appData = request.body;
+    var requestData = request.body;
 
     if (user.ravelloCredentials) {
         var ravelloUsername = user.ravelloCredentials.username;
         var ravelloPassword = user.ravelloCredentials.password;
 
-        appsService.createApp(appData.name, appData.description, appData.baseBlueprintId, ravelloUsername, ravelloPassword).then(
+        appsService.createApp(requestData.name, requestData.description, requestData.baseBlueprintId, ravelloUsername, ravelloPassword).then(
             function(result) {
                 if (result.status != 200 && result.status != 201) {
-                    return response.send(result.status, "Could not create application [" + appData.name + "]");
+                    return response.send(result.status, "Could not create application [" + requestData.name + "]");
                 }
 
-                var appDto = appsTrans.ravelloObjectToTrainerDto(result.body);
+                var appData = appsTrans.ravelloObjectToTrainerDto(result.body);
 
-                appsService.publishApp(appDto.id, ravelloUsername, ravelloPassword).then(function(publishResult) {
+                appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(function(publishResult) {
                     if (publishResult.status != 200 && publishResult.status != 202) {
-                        return response.send(publishResult.status, "Could not publish app [" + appData.name + "]");
+                        return response.send(publishResult.status, "Could not publish app [" + requestData.name + "]");
                     }
 
-                    classesDal.updateStudentApp(appData.userId, appDto.id).then(function(result) {
-                        response.json(appDto);
+                    classesDal.updateStudentApp(requestData.userId, appData.ravelloId).then(function(persistedClass) {
+                        // The appData contains all the bare info of the app, as received from Ravello.
+                        // But we also need to return the newly persisted data (mainly, the mongo ID of the document that was
+                        // created for the app).
+                        var dto = appData;
+
+                        var matchingStudent = _.find(persistedClass.students, function(student) {
+                            return student.user == requestData.userId;
+                        });
+
+                        if (matchingStudent) {
+                            var newPersistedApp = _.last(matchingStudent.apps);
+                            _.assign(dto, newPersistedApp.toJSON());
+                        }
+
+                        response.json(dto);
                     }).fail(function(error) {
-                        var message = "Could not save the new app [" + appData.name + "] for the student, error: " + error;
+                        var message = "Could not save the new app [" + requestData.name + "] for the student, error: " + error;
                         console.log(message);
                         return response.send(401, message);
                     });
                 }).fail(function(error) {
-                    var message = "Could not publish new application [" + appData.name + "], error: " + error;
+                    var message = "Could not publish new application [" + requestData.name + "], error: " + error;
                     console.log(message);
                     return response.send(401, message);
                 });
             }
         ).fail(function(error) {
-            var message = "Could not create app with name [" + appData.name + "], error: " + error;
+            var message = "Could not create app with name [" + requestData.name + "], error: " + error;
             console.log(message);
             response.send(401, message);
         });
@@ -66,12 +80,13 @@ exports.appAction = function(request, response) {
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUser(userId).then(function(classEntity) {
+        var classData = classesTrans.entityToDto(classEntity);
         var studentData = _.find(classEntity.students, function(student) {
             return (student.user.id === userId);
         });
 
-        var ravelloUsername = studentData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password;
+        var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+        var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
         appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(function(result) {
             if (result.status == 200) {
@@ -113,12 +128,13 @@ exports.vmAction = function(request, response) {
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUser(userId).then(function(classEntity) {
+        var classData = classesTrans.entityToDto(classEntity);
         var studentData = _.find(classEntity.students, function(student) {
             return (student.user.id === userId);
         });
 
-        var ravelloUsername = studentData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password;
+        var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+        var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
         appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(function(result) {
             if (result.status == 200) {
@@ -168,12 +184,13 @@ exports.vmVnc = function(request, response) {
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUser(userId).then(function(classEntity) {
+        var classData = classesTrans.entityToDto(classEntity);
         var studentData = _.find(classEntity.students, function(student) {
             return (student.user.id === userId);
         });
 
-        var ravelloUsername = studentData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password;
+        var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+        var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
         appsService.vmVnc(appId, vmId, ravelloUsername, ravelloPassword).then(function(result) {
             if (result.status === 200) {

@@ -8,9 +8,10 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
     '$state',
     'growl',
     'trng.common.utils.DateUtil',
-    'trng.services.AppsService',
+    'trng.trainer.training.classes.ClassModel',
     'classApps',
-    function ($log, $scope, $rootScope, $state, growl, dateUtil, appsService, classApps) {
+    'currentClass',
+    function ($log, $scope, $rootScope, $state, growl, dateUtil, classesModel, classApps, currentClass) {
 
         $scope.init = function () {
             $scope.apps = [];
@@ -111,9 +112,11 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                     ' for class ' + $scope.currentClass.name;
 
                 if (!app.creationTime) {
-                    appsService.createApp(name, description, app.blueprint.id, app.student.user.id).then(function(result) {
-                        _.assign(app, result.data);
-                    });
+                    classesModel.createAppForStudent(currentClass.id, name, description, app.blueprint.id, app.student.user.id).then(
+                        function(result) {
+                            _.assign(app, result);
+                        }
+                    );
                 } else {
                     growl.addInfoMessage("Application for student " + app.student.user.username +
                         " from blueprint [" + app.blueprint.name + "] already exists");

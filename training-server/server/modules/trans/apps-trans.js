@@ -55,7 +55,7 @@ exports.ravelloObjectToTrainerDto = function(app) {
     var numOfRunningVms = getNumOfRunningVms(app);
 
     return {
-        id: app.id,
+        ravelloId: app.id,
         name: app.name,
         blueprintId: app.baseBlueprintId,
         creationTime: new Date(app.creationTime),
