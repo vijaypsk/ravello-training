@@ -55,7 +55,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassEditContr
                 },
                 {
                     field: 'ravelloCredentials.username',
-                    displayName: 'Email'
+                    displayName: 'Ravello Email'
                 },
                 {
                     displayName: 'Actions',
