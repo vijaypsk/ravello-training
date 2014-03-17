@@ -1,8 +1,16 @@
 
 <div>
-    <button id="createAppBtn" class="btn btn-default" ng-click="createApp()"><i class="icon-rocket"></i> Create app</button>
-    <div id="appsDataGridDiv">
-        <div id="appsDataGrid" ng-grid="appsDataGrid"></div>
+    <div id="classAppsDiv" class="form-box">
+        <span class="block-title">Applications</span>
+
+        <button id="createAppBtn" class="btn btn-default" ng-click="createApp()"><i class="icon-rocket"></i> Create app</button>
+
+        <div id="appsDataGridDiv">
+            <div id="appsDataGrid" ng-grid="appsDataGrid"></div>
+        </div>
     </div>
-    <button id="backBtn" class="btn btn-default" ng-click="back()"><i class="icon-left-big"></i> Back</button>
+
+    <hr>
+
+    <button id="backBtn" class="btn btn-default pull-right" ng-click="back()"><i class="icon-left-big"></i> Back</button>
 </div>

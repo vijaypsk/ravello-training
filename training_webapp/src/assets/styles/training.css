@@ -66,6 +66,10 @@ html, body {
 
 }
 
+#classAppsDiv {
+    background-color: #F7F7F7;
+}
+
 #appsDataGridDiv {
     margin-top: 20px;
 }

@@ -54,12 +54,12 @@ angular.module('trng.trainer.training.classes').controller('singleClassEditContr
         $scope.initStudentsColumns = function () {
             $scope.studentsColumns = [
                 {
-                    field: 'user.username',
-                    displayName: 'User'
+                    field: 'user.fullName',
+                    displayName: 'Full name'
                 },
                 {
-                    field: 'ravelloCredentials.username',
-                    displayName: 'Ravello Email'
+                    field: 'user.username',
+                    displayName: 'Username'
                 },
                 {
                     displayName: 'Actions',
