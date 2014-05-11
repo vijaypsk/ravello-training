@@ -3,6 +3,7 @@
 var _ = require('lodash');
 
 var properties = require('../config/properties');
+var logger = require('../config/logger');
 
 var appsService = require('../services/apps-service');
 
@@ -51,19 +52,19 @@ exports.createApp = function(request, response) {
 
                         response.json(dto);
                     }).fail(function(error) {
-                        var message = "Could not save the new app [" + requestData.name + "] for the student, error: " + error;
-                        console.log(message);
+                        var message = "Could not save the new app [" + requestData.name + "] for the student";
+                        logger.error(error, message);
                         return response.send(401, message);
                     });
                 }).fail(function(error) {
-                    var message = "Could not publish new application [" + requestData.name + "], error: " + error;
-                    console.log(message);
+                    var message = "Could not publish new application [" + requestData.name + "]";
+                    logger.error(error, message);
                     return response.send(401, message);
                 });
             }
         ).fail(function(error) {
-            var message = "Could not create app with name [" + requestData.name + "], error: " + error;
-            console.log(message);
+            var message = "Could not create app with name [" + requestData.name + "]";
+            logger.error(error, message);
             response.send(401, message);
         });
     } else {
@@ -96,8 +97,8 @@ exports.appAction = function(request, response) {
                         ravelloPassword);
                 }
             } else {
-                var message = "Could not get app: " + appId + ", error: " + result.text;
-                console.log(message);
+                var message = "Could not get app: " + appId + ", error: " + result.ext;
+                logger.error(message);
                 response.send(result.status, message);
             }
         }).then(function(autoStopResult) {
@@ -105,13 +106,13 @@ exports.appAction = function(request, response) {
                 appsService.appAction(appId, action, ravelloUsername, ravelloPassword).then(function(result) {
                     response.send(result.status);
                 }).fail(function(error) {
-                    var message = "Could not perform action " + action + ", error: " + error;
-                    console.log(message);
+                    var message = "Could not perform action " + action;
+                    logger.error(error, message);
                     response.send(400, error);
                 });
             } else {
                 var message = "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text;
-                console.log(message);
+                logger.error(message);
                 response.send(400, message);
             }
         });
@@ -145,7 +146,7 @@ exports.vmAction = function(request, response) {
                 }
             } else {
                 var message = "Could not get app: " + appId + ", error: " + result.text;
-                console.log(message);
+                logger.error(message);
                 response.send(result.status, message);
             }
         }).then(function(autoStopResult) {
@@ -153,24 +154,24 @@ exports.vmAction = function(request, response) {
                     appsService.vmAction(appId, vmId, action, ravelloUsername, ravelloPassword).then(function(result) {
                         response.send(result.status);
                     }).fail(function(error) {
-                        var message = "Could not perform action " + action + ", error: " + error;
-                        console.log(message);
+                        var message = "Could not perform action " + action;
+                        logger.error(error, message);
                         response.send(400, error);
                     });
                 } else {
                     var message = "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text;
-                    console.log(message);
+                    logger.error(message);
                     response.send(400, message);
                 }
         }).fail(function(error) {
-            console.log(error);
-            response.send(400, error);
+            var message = "Could not get app [" + appId + "]";
+            logger.error(error, message);
+            response.send(400, message);
         });
     }).fail(function(error) {
         var message =
-            "Could not find the class associated with the logged in user: " + user.username +
-            ", error: " + error;
-        console.log(message);
+            "Could not find the class associated with the logged in user: " + user.username;
+        logger.error(error, message);
         response.send(404, message);
     });
 };
@@ -199,15 +200,14 @@ exports.vmVnc = function(request, response) {
                 response.send(result.status, result.text);
             }
         }).fail(function(error) {
-            var message = "Could not get the URL for the VNC, error: " + error;
-            console.log(message);
+            var message = "Could not get the URL for the VNC";
+            logger.error(error, message);
             response.send(400, error);
         });
     }).fail(function(error) {
         var message =
-            "Could not find the class associated with the logged in user: " + user.username +
-                ", error: " + error;
-        console.log(message);
+            "Could not find the class associated with the logged in user: " + user.username;
+        logger.error(error, message);
         response.send(404, message);
     });
 };

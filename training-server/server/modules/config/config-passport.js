@@ -4,6 +4,8 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
 
+var logger = require('./logger');
+
 var User = mongoose.model('User');
 
 module.exports = function() {
@@ -11,21 +13,21 @@ module.exports = function() {
         function(username, password, done) {
             User.findOne({ username: username }, function (err, user) {
                 if (err) {
-                    console.log("Error in login: " + err);
+                    logger.error(err, "Error in login");
                     return done(err);
                 }
 
                 if (!user) {
-                    console.log("No user was found that matches the given credentials");
+                    logger.warn("No user was found that matches the given credentials");
                     return done(null, false, { message: 'Incorrect username.' });
                 }
 
                 if (!user.validatePassword(password)) {
-                    console.log("The password is incorrect");
+                    logger.warn("The password is incorrect");
                     return done(null, false, { message: 'Incorrect password.' });
                 }
 
-                console.log("Login successful");
+                logger.info("Login successful");
                 return done(null, user);
             });
         }

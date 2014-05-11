@@ -2,6 +2,8 @@
 
 var _ = require('lodash');
 
+var logger = require('../config/logger');
+
 var usersDal = require('../dal/users-dal');
 var usersTrans = require('../trans/users-trans');
 
@@ -13,8 +15,8 @@ exports.getAllTrainers = function(request, response) {
 
         response.json(dtos);
     }).fail(function(error) {
-        var message = "Could not load trainers, error: " + error;
-        console.log(message);
+        var message = "Could not load trainers";
+        logger.error(error, message);
         response.send(404, message);
     });
 };
@@ -28,8 +30,8 @@ exports.saveTrainer = function(request, response) {
         var dto = usersTrans.entityToDto(trainerEntity);
         response.json(dto);
     }).fail(function(error) {
-        var message = "Could not save new trainer, error: " + error;
-        console.log(message);
+        var message = "Could not save new trainer";
+        logger.error(error, message);
         response.send(400, message);
     });
 };
@@ -45,8 +47,8 @@ exports.updateTrainer = function(request, response) {
         var dto = usersTrans.entityToDto(trainerEntity);
         response.json(dto);
     }).fail(function(error) {
-        var message = "Could not update trainer, error: " + error;
-        console.log(message);
+        var message = "Could not update trainer";
+        logger.error(error, message);
         response.send(400, message);
     });
 };
@@ -56,8 +58,8 @@ exports.deleteTrainer = function(request, response) {
     usersDal.deleteUser(trainerId).then(function(result) {
         response.send(200);
     }).fail(function(error) {
-        var message = "Could not delete trainer [" + trainerId + "], error: " + error;
-        console.log(message);
+        var message = "Could not delete trainer [" + trainerId + "]";
+        logger.error(error, message);
         response.send(404, message);
     });
 };

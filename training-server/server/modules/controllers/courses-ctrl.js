@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var q = require('q');
 
+var logger = require('../config/logger');
+
 var coursesDal = require('../dal/courses-dal');
 var classesDal = require('../dal/classes-dal');
 
@@ -44,15 +46,17 @@ exports.getCourses = function(request, response) {
                 course.blueprints = assignBlueprintsToCourse(course, bpResults);
                 courseDtos.push(course);
             }).fail(function(error) {
-                var message = "Could not get one of the course's blueprints, error: " + error;
-                console.log(message);
+                var message = "Could not get one of the course's blueprints";
+                logger.error(error, message);
                 response.send(404, message);
             });
         })).then(function(coursesResults) {
             response.json(courseDtos);
         });
     }).fail(function(error) {
-        console.log("Could not load courses, error: " + error);
+        var message = "Could not get one of the courses";
+        logger.error(error, message);
+        response.send(404, message);
     });
 };
 
@@ -79,16 +83,18 @@ exports.getCourse = function(request, response) {
                 course.blueprints = assignBlueprintsToCourse(course, bpResults);
                 response.json(course);
             }).fail(function(error) {
-                var message = "Could not get one of the course's blueprints, error: " + error;
-                console.log(message);
+                var message = "Could not get one of the course's blueprints";
+                logger.error(error, message);
                 response.send(404, message);
             });
         }).fail(function(error) {
-            console.log("Could not load course: " + courseId + ", error: " + error);
+            var message = "Could not load course: " + courseId;
+            logger.error(error, message);
+            response.send(404, message);
         });
     }).fail(function(error) {
-        var message = "Could not load app " + appId + ", error: " + error;
-        console.log(message);
+        var message = "Could not load class of user " + user.username;
+        logger.error(error, message);
         response.send(404, message);
     });
 };
@@ -98,8 +104,8 @@ exports.createCourse = function(request, response) {
         var course = coursesTrans.entityToDto(courseEntity);
         response.json(courseEntity);
     }).fail(function(error) {
-        var message = "Could not save course, error: " + error;
-        console.log(message);
+        var message = "Could not save course";
+        logger.error(error, message);
         response.send(400, message);
     });
 };
@@ -111,8 +117,8 @@ exports.updateCourse = function(request, response) {
     coursesDal.updateCourse(courseId, courseData).then(function(courseEntity) {
         response.send(200);
     }).fail(function(error) {
-        var message = "Could not update course, error: " + error;
-        console.log(message);
+        var message = "Could not update course";
+        logger.error(error, message);
         response.send(404, message);
     });
 };
@@ -123,8 +129,8 @@ exports.deleteCourse = function(request, response) {
     coursesDal.deleteCourse(courseId).then(function(courseEntity) {
         response.send(200);
     }).fail(function(error) {
-        var message = "Could not delete course, error: " + error;
-        console.log(message);
-        resopnse.send(404, message);
+        var message = "Could not delete course";
+        logger.error(error, message);
+        response.send(404, message);
     });
 };

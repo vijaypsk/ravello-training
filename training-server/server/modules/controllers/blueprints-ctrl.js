@@ -2,6 +2,8 @@
 
 var _ = require('lodash');
 
+var logger = require('../config/logger');
+
 var blueprintsService = require('../services/blueprints-service');
 var blueprintsTrans = require('../trans/blueprints-trans');
 
@@ -25,7 +27,7 @@ exports.getBlueprints = function(request, response) {
             }
         }).fail(function(error) {
             var message = "Could not get blueprints from Ravello";
-            console.log(message);
+            logger.error(error, message);
             response.send(404, message);
         });
     } else {

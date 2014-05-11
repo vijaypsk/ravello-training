@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var q = require('q');
 
+var logger = require('../config/logger');
+
 var coursesDal = require('../dal/courses-dal');
 var classesDal = require('../dal/classes-dal');
 
@@ -96,7 +98,9 @@ exports.getStudentClass = function(request, response) {
         var dto = singleStudentTrans.entityToDto(studentEntity, classEntity);
         response.json(dto);
     }).fail(function(error) {
-        response.send(404, "Could not find the class of student: " + user.username + ", error: " + error);
+        var message = "Could not find the class of student: " + user.username;
+        logger.error(error, message);
+        response.send(404, message);
     });
 };
 
@@ -133,14 +137,20 @@ exports.getStudentClassApps = function(request, response) {
                 response.json(appViewObjects);
 
             }).fail(function(error) {
-                response.send(404, "Could not get one of the apps of user: " + user.username + ", error: " + error);
-            } );
+                var message = "Could not get one of the apps of user: " + user.username;
+                logger.error(error, message);
+                response.send(404, message);
+            });
 
         }).fail(function(error) {
-            response.send(404, "Could not find the course of student: " + user.username + ", error: " + error);
+            var message = "Could not find the course of student: " + user.username;
+            logger.error(error, message);
+            response.send(404, message);
         });
     }).fail(function(error) {
-            response.send(404, "Could not find the class of student: " + user.username + ", error: " + error);
+        var message = "Could not find the class of student: " + user.username;
+        logger.error(error, message);
+        response.send(404, message);
     });
 };
 
@@ -173,13 +183,13 @@ exports.getAppVms = function(request, response) {
 
             response.json(appDto);
         }).fail(function(error) {
-            var message = "Could not get application deployment information, error: " + error;
-            console.log(message);
+            var message = "Could not get application deployment information";
+            logger.error(error, message);
             response.send(404, message);
-            });
+        });
     }).fail(function(error) {
-        var message = "Could not load app " + appId + ", error: " + error;
-        console.log(message);
+        var message = "Could not load app " + appId;
+        logger.error(error, message);
         response.send(404, message);
     });
 };

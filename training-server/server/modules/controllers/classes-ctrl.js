@@ -3,6 +3,8 @@
 var q = require('q');
 var _ = require('lodash');
 
+var logger = require('../config/logger');
+
 var classesDal = require('../dal/classes-dal');
 var usersDal = require('../dal/users-dal');
 
@@ -41,8 +43,8 @@ exports.getClasses = function(request, response) {
         });
         response.json(classesDtos);
     }).fail(function(error) {
-        var message = "Could not load classes, error: " + error;
-        console.log(message);
+        var message = "Could not load classes";
+        logger.error(error, message);
         response.send(404, message);
     });
 };
@@ -61,13 +63,13 @@ exports.getAllClassApps = function(request, response) {
         promise.then(function(result) {
             response.json(classDto);
         }).fail(function(error) {
-            var message = "Could not load one of the apps of one of the students in the class, error: " + error;
-            console.log(message);
+            var message = "Could not load one of the apps of one of the students in the class";
+            logger.error(error, message);
             response.send(404, message);
         });
     }).fail(function(error) {
-        var message = "Could not load applications of class, error: " + error;
-        console.log(message);
+        var message = "Could not load applications of class";
+            logger.error(error, message);
         response.send(404, message);
     });
 };
@@ -88,13 +90,13 @@ exports.createClass = function(request, response) {
             var dto = classesTrans.entityToDto(result);
             response.json(dto);
         }).fail(function(error) {
-            var message = "Could not save class, error: " + error;
-            console.log(message);
+            var message = "Could not save class";
+            logger.error(error, message);
             response.send(400, message);
         });
     }).fail(function(error) {
-        var message = "Could not save one of the users associated with the new class, error: " + error;
-        console.log(message);
+        var message = "Could not save one of the users associated with the new class";
+        logger.error(error, message);
         response.send(400, message);
     });
 };
@@ -121,12 +123,13 @@ exports.updateClass = function(request, response) {
                 response.json(dto);
             });
         }).fail(function(error) {
-            var message = "Could not save class, error: " + error;
-            console.log(message);
-            response.send(400, message);        });
+            var message = "Could not save class";
+            logger.error(error, message);
+            response.send(400, message);
+        });
     }).fail(function(error) {
-        var message = "Could not save one of the users associated with the new class, error: " + error;
-        console.log(message);
+        var message = "Could not save one of the users associated with the new class";
+        logger.error(error, message);
         response.send(400, message);
     });
 };
@@ -139,14 +142,14 @@ exports.deleteClass = function(request, response) {
             usersDal.findAndDelete(student.user.id).then(function(result) {
                 response.send(200);
             }).fail(function(error) {
-                var message = "Could not delete one of the users associated with the class, error: " + error;
-                console.log(message);
+                var message = "Could not delete one of the users associated with the class";
+                logger.error(error, message);
                 response.send(400, message);
             });
         });
     }).fail(function(error) {
-        var message = "Could not delete class, error: " + error;
-        console.log(message);
+        var message = "Could not delete class";
+        logger.error(error, message);
         response.send(404, message);
     });
 };

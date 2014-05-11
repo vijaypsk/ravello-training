@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var q = require('q');
 
+var logger = require('../config/logger');
+
 var usersTrans = require('../trans/users-trans');
 var usersDal = require('../dal/users-dal');
 
@@ -21,8 +23,8 @@ exports.updateProfile = function(request, response) {
         var returnedUser = usersTrans.entityToDto(persistedUser);
         response.json(returnedUser);
     }).fail(function(error) {
-        var message = "Could not update the admin profile, error: " + error;
-        console.log(message);
+        var message = "Could not update the admin profile";
+        logger.error(error, message);
         response.send(404, error);
     });
 };
