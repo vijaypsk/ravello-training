@@ -99,12 +99,12 @@ module.exports = function (grunt) {
         'Gruntfile.js',
         '<%= yeoman.app %>/{,*/}*.js'
       ],
-      test: {
-        options: {
-          jshintrc: 'test/.jshintrc'
-        },
-        src: ['test/spec/{,*/}*.js']
-      }
+//      test: {
+//        options: {
+//          jshintrc: 'test/.jshintrc'
+//        },
+//        src: ['test/spec/{,*/}*.js']
+//      }
     },
 
     // Empties folders to start fresh
@@ -363,7 +363,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
+//    'newer:jshint',
     'test',
     'build'
   ]);
