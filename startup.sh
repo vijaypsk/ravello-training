@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd /home/ubuntu/Workspace/ravello-training
+
 cd ./training-server
-naught start server.js &
+NODE_ENV="production" node server.js
 
