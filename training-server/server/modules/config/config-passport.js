@@ -27,7 +27,6 @@ module.exports = function() {
                     return done(null, false, { message: 'Incorrect password.' });
                 }
 
-                logger.info("Login successful");
                 return done(null, user);
             });
         }

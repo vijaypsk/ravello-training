@@ -2,30 +2,31 @@
 
 var bunyan = require("bunyan");
 
+var devStreams = [
+    {
+        stream: process.stderr,
+        level: "debug"
+    }
+];
+
+var productionStreams = [
+    {
+        path: 'ravello_training_server.log',
+        level: 'debug'
+    }
+];
+
 var devConfig = {
     name: "RavelloTrainingServer",
-    streams: [
-        {
-            stream: process.stderr,
-            level: "debug"
-        }
-    ]
+    streams: devStreams
 };
 
 var productionConfig = {
     name: "RavelloTrainingServer",
-    streams: [
-        {
-            path: 'ravello_training_server.log',
-            level: 'debug'
-        }
-    ]
+    streams: productionStreams
 };
 
 var logger = bunyan.createLogger(productionConfig);
 
 module.exports = logger;
-
-module.exports.config = productionConfig;
-module.exports.devConfig = devConfig;
 

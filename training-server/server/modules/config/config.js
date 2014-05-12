@@ -21,11 +21,10 @@ module.exports = function(app) {
 
         // Middleware
 
-        if (app.get('env') === 'development') {
-            app.use(require('express-bunyan-logger')(logger.devConfig));
-        } else {
-            app.use(require('express-bunyan-logger')(logger.config));
-        }
+        app.use(function(request, response, next) {
+            logger.info('Get request %s %s', request.method, request.url);
+            next();
+        });
 
         app.use(express.json());
         app.use(express.urlencoded());
