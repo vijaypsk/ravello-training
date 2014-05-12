@@ -6,8 +6,19 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "3.4.8",
+    "express": "~3.4.8",
     "jade": "*",
-    "datejs": "~1.0.0-beta"
+    "datejs": "~1.0.0-beta",
+    "lodash": "~2.4.1",
+    "q": "~1.0.1",
+    "passport": "~0.2.0",
+    "passport-http": "~0.2.2",
+    "mongoose": "~3.8.9",
+    "mongoose-q": "0.0.10",
+    "randy": "~1.4.3",
+    "superagent": "~0.18.0",
+    "bcrypt-nodejs": "0.0.3",
+    "bunyan": "~0.22.3",
+    "express-bunyan-logger": "~0.1.2"
   }
 }
