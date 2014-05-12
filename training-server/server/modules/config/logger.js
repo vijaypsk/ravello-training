@@ -25,3 +25,7 @@ var productionConfig = {
 var logger = bunyan.createLogger(productionConfig);
 
 module.exports = logger;
+
+module.exports.config = productionConfig;
+module.exports.devConfig = devConfig;
+

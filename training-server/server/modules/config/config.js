@@ -4,10 +4,13 @@ var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
-var usersModel = require('./../model/users-model');
-var classesModel = require('./../model/classes-model');
-var coursesModel = require('./../model/courses-model');
+// These requires must remain here, even though they are not used, in order to initialize the models.
+// They must also come before the other requires of the applicative modules, since these other modules depend on the models.
+require('./../model/users-model');
+require('./../model/classes-model');
+require('./../model/courses-model');
 
+var logger = require('./logger');
 var passportConfig = require('./config-passport');
 
 module.exports = function(app) {
@@ -17,7 +20,13 @@ module.exports = function(app) {
         app.set('port', process.env.PORT || 3000);
 
         // Middleware
-        app.use(require('express-bunyan-logger')());
+
+        if (app.get('env') === 'development') {
+            app.use(require('express-bunyan-logger')(logger.devConfig));
+        } else {
+            app.use(require('express-bunyan-logger')(logger.config));
+        }
+
         app.use(express.json());
         app.use(express.urlencoded());
         app.use(express.methodOverride());
