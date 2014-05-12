@@ -16,7 +16,7 @@ var productionConfig = {
     name: "RavelloTrainingServer",
     streams: [
         {
-            path: '/var/log/ravello_training_server.log',
+            path: 'ravello_training_server.log',
             level: 'debug'
         }
     ]
