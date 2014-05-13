@@ -80,6 +80,19 @@ exports.createApp = function(name, description, bpId, username, password) {
     return deferred.promise;
 };
 
+exports.deleteApp = function(appId, username, password) {
+    var deferred = q.defer();
+
+    request.
+        del(properties.baseUrl + "/services/applications/" + appId).
+        set('Content-Length', 0).
+        accept('application/json').
+        auth(username, password).
+        end(deferred.makeNodeResolver());
+
+    return deferred.promise;
+};
+
 exports.publishApp = function(appId, username, password) {
     var deferred = q.defer();
 

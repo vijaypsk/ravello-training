@@ -14,11 +14,15 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
     function ($log, $scope, $rootScope, $state, growl, dateUtil, classesModel, classApps, currentClass) {
 
         $scope.init = function () {
-            $scope.apps = [];
-
-            $scope.matchApps();
+            $scope.initData();
             $scope.initDates();
             $scope.initAppsDataGrid();
+        };
+
+        $scope.initData = function() {
+            $scope.apps = [];
+            $scope.selectedApps = [];
+            $scope.matchApps();
         };
 
         $scope.matchApps = function() {
@@ -85,8 +89,6 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
         };
 
         $scope.initAppsDataGrid = function() {
-            $scope.selectedApps = [];
-
             $scope.initAppsColumns();
 
             $scope.appsDataGrid = {
@@ -122,6 +124,23 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                         " from blueprint [" + app.blueprint.name + "] already exists");
                 }
             });
+        };
+
+        $scope.deleteApp = function() {
+            _.forEach($scope.selectedApps, function(app) {
+                app.creationTime && classesModel.deleteAppForStudent(app.ravelloId, $scope.currentClass.id, app.student.user.id).then(
+                    function(result) {
+                        classesModel.getClassApps($scope.currentClass.id).then(function(result) {
+                            classApps = result;
+                            $scope.initData();
+                        });
+                    }
+                );
+            });
+        };
+
+        $scope.isDeleteDisabled = function() {
+            return $scope.selectedApps.length <= 0 || !_.every($scope.selectedApps, 'creationTime');
         };
 
         $scope.init();

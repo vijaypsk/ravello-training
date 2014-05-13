@@ -20,6 +20,18 @@ angular.module('trng.proxies').factory('trng.proxies.AppsProxy', [
                 return promise;
             },
 
+            deleteApp: function(appId, userId) {
+                var requestConfig = {
+                    params: {
+                        studentId: userId
+                    }
+                };
+
+                var promise = $http.delete(config.baseUrl + '/rest/applications/' + appId, requestConfig);
+                trainingTracker.addPromise(promise);
+                return promise;
+            },
+
             startApp: function(appId) {
                 var promise = $http.post(config.baseUrl + '/rest/applications/' + appId + '/start');
                 trainingTracker.addPromise(promise);

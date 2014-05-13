@@ -9,6 +9,10 @@ angular.module('trng.services').factory('trng.services.AppsService', [
                 return appsProxy.createApp(appName, appDescription, blueprintId, userId);
             },
 
+            deleteApp: function(appId, userId) {
+                return appsProxy.deleteApp(appId, userId);
+            },
+
             startApp: function(appId) {
                 return appsProxy.startApp(appId);
             },

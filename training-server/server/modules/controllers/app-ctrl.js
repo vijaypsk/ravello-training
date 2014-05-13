@@ -72,6 +72,30 @@ exports.createApp = function(request, response) {
     }
 };
 
+exports.deleteApp = function(request, response) {
+    var user = request.user;
+
+    var appId = request.params.appId;
+    var studentId = request.query.studentId;
+
+    if (user.ravelloCredentials) {
+        var ravelloUsername = user.ravelloCredentials.username;
+        var ravelloPassword = user.ravelloCredentials.password;
+
+        appsService.deleteApp(appId, ravelloUsername, ravelloPassword).then(function(result) {
+            classesDal.deleteStudentApp(studentId, appId).then(function(persistedClass) {
+                response.send(200);
+            });
+        }).fail(function(error) {
+            var message = "Could not delete app [" + appId + "]";
+            logger.error(error, message);
+            response.send(404, message);
+        });
+    } else {
+        response.send(401, 'User does not have sufficient Ravello credentials');
+    }
+};
+
 exports.appAction = function(request, response) {
     var user = request.user;
     var userId = user.id;

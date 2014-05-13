@@ -4,6 +4,9 @@
         <span class="block-title">Applications</span>
 
         <button id="createAppBtn" class="btn btn-default" ng-click="createApp()"><i class="icon-rocket"></i> Create app</button>
+        <button id="deleteAppBtn" class="btn btn-danger" ng-click="deleteApp()" ng-disabled="isDeleteDisabled()">
+            <i class="icon-rocket"></i> Delete app
+        </button>
 
         <div id="appsDataGridDiv">
             <div id="appsDataGrid" ng-grid="appsDataGrid"></div>

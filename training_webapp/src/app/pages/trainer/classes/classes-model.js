@@ -163,6 +163,17 @@
 
                         return persistedApp;
                     });
+                },
+
+                deleteAppForStudent: function(appId, classId, userId) {
+                    return appsService.deleteApp(appId, userId).then(
+                        function(result) {
+                            var theClass = getClassById(classId);
+
+                            var matchingStudent = _.find(theClass.students, {'user.id': userId});
+                            matchingStudent && _.remove(matchingStudent.apps, {ravelloId: appId});
+                        }
+                    );
                 }
             };
 

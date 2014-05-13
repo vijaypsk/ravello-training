@@ -51,6 +51,24 @@ exports.updateStudentApp = function(userId, appId) {
     );
 };
 
+exports.deleteStudentApp = function(userId, appId) {
+    return TrainingClass.findOne({'students.user': new ObjectId(userId)}).execQ().then(
+        function(classEntity) {
+            var student = _.find(classEntity.students, function(currentStudent) {
+                return currentStudent.user == userId;
+            });
+
+            _.remove(student.apps, {ravelloId: appId});
+
+            var classData = classEntity.toJSON();
+            classData = _.omit(classData, '_id');
+            return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(function(result) {
+                return classEntity;
+            });
+        }
+    );
+};
+
 exports.deleteClass = function(classId) {
     return TrainingClass.findByIdAndRemove(classId).populate('students.user').execQ();
 };
