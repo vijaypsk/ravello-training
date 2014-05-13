@@ -7,6 +7,7 @@ Additional information about usage can be found [here](http://www.ravellosystems
 ## Architecture
 
 The product is composed of 3 parts:
+
 1. Client side (in AngularJS).
 2. Server to serve the static client files (served with grunt).
 3. Server for REST API, accessed by the client (launched with nodejs).
