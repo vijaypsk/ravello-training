@@ -26,8 +26,12 @@
                     <span>The blueprints chosen below will be used to create private environments for each student taking this course.</span>
                 </div>
 
-                <button id="addBlueprintBtn" class="btn btn-default" ng-click="addBlueprint()"><i class="icon-plus"></i> Add</button>
-                <button id="deleteBlueprinttBtn" class="btn btn-default" ng-click="deleteBlueprints()"><i class="icon-trash"></i> Delete</button>
+                <button id="addBlueprintBtn" class="btn btn-default" ng-click="addBlueprint()">
+                    <i class="fa fa-plus"></i> Add
+                </button>
+                <button id="deleteBlueprinttBtn" class="btn btn-default" ng-click="deleteBlueprints()">
+                    <i class="fa fa-trash-o"></i> Delete
+                </button>
 
                 <div id="blueprintsDataGridDiv" class="grid-table">
                     <div id="blueprintsDataGrid" ng-grid="blueprintsDataGrid"></div>

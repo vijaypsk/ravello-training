@@ -3,9 +3,11 @@
     <div id="classAppsDiv" class="form-box">
         <span class="block-title">Applications</span>
 
-        <button id="createAppBtn" class="btn btn-default" ng-click="createApp()"><i class="icon-rocket"></i> Create app</button>
+        <button id="createAppBtn" class="btn btn-default" ng-click="createApp()">
+            <i class="fa fa-rocket"></i> Create app
+        </button>
         <button id="deleteAppBtn" class="btn btn-danger" ng-click="deleteApp()" ng-disabled="isDeleteDisabled()">
-            <i class="icon-rocket"></i> Delete app
+            <i class="fa fa-trash-o"></i> Delete app
         </button>
 
         <div id="appsDataGridDiv">
@@ -15,5 +17,7 @@
 
     <hr>
 
-    <button id="backBtn" class="btn btn-default pull-right" ng-click="back()"><i class="icon-left-big"></i> Back</button>
+    <button id="backBtn" class="btn btn-default pull-right" ng-click="back()">
+        <i class="fa fa-arrow-left"></i> Back
+    </button>
 </div>

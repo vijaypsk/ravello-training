@@ -31,7 +31,13 @@ angular.module('trng.trainer.training.courses').controller('coursesController', 
                 },
                 {
                     displayName: 'Actions',
-                    cellTemplate: '<a href="" class="btn btn-small btn-link" ng-click="editCourse(row)"><i class="icon-pencil" /> Edit</a><a href="" class="btn btn-small btn-link" ng-click="deleteCourse(row)"><i class="icon-trash" /> Delete</a>'
+                    cellTemplate:
+                        '<a href="" class="btn btn-small btn-link" ng-click="editCourse(row)">' +
+                            '<i class="fa fa-pencil" /> Edit' +
+                        '</a>' +
+                        '<a href="" class="btn btn-small btn-link" ng-click="deleteCourse(row)">' +
+                            '<i class="fa fa-trash-o" /> Delete' +
+                        '</a>'
                 }
             ];
         };

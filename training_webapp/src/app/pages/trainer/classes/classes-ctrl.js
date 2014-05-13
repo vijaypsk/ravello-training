@@ -48,13 +48,13 @@ angular.module('trng.trainer.training.classes').controller('classesController', 
                     width: '25%',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="editClass(row)">' +
-                            '<i class="icon-pencil" /> Edit' +
+                            '<i class="fa fa-pencil" /> Edit' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="monitorClass(row)">' +
-                            '<i class="icon-desktop" /> Monitor' +
+                            '<i class="fa fa-desktop" /> Monitor' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="deleteClass(row)">' +
-                            '<i class="icon-trash" /> Delete' +
+                            '<i class="fa fa-trash-o" /> Delete' +
                         '</a>'
                 }
             ];

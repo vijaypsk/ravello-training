@@ -50,7 +50,7 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
                     displayName: 'Actions',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="configureBpPermission(row)">' +
-                            '<i class="icon-cog" /> Configure Permissions' +
+                            '<i class="fa fa-cog" /> Configure Permissions' +
                         '</a>'
                 }
             ];

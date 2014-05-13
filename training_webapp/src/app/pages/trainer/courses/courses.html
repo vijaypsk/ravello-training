@@ -2,8 +2,12 @@
     <h2>Courses</h2>
     <div id="coursesDiv">
         <div>
-            <button id="addCourseBtn" class="btn btn-default" ng-click="addCourse()"><i class="icon-plus"></i> Add</button>
-            <button id="deleteCoursesBtn" class="btn btn-default" ng-click="deleteCourses()"><i class="icon-trash"></i> Delete</button>
+            <button id="addCourseBtn" class="btn btn-default" ng-click="addCourse()">
+                <i class="fa fa-plus"></i> Add
+            </button>
+            <button id="deleteCoursesBtn" class="btn btn-default" ng-click="deleteCourses()">
+                <i class="fa fa-trash-o"></i> Delete
+            </button>
             <div id="coursesDataGridDiv">
                 <div id="coursesDataGrid" ng-grid="coursesDataGrid"></div>
             </div>

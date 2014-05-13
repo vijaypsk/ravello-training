@@ -29,10 +29,10 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
                     width: '25%',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="editTrainer(row)">' +
-                            '<i class="icon-pencil" /> Edit' +
+                            '<i class="fa fa-pencil" /> Edit' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="deleteTrainer(row)">' +
-                            '<i class="icon-trash" /> Delete' +
+                            '<i class="fa fa-trash-o" /> Delete' +
                         '</a>'
                 }
             ];

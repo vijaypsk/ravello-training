@@ -1,22 +1,31 @@
 <div id="studentSingleAppDiv" class="container">
     <div class="row">
         <div class="col-lg-1">
-            <button id="startBtn" class="btn btn-success" ng-click="startVm()" ng-disabled="startButtonDisabled()"><i class="icon-play"></i> Start</button>
+            <button id="startBtn" class="btn btn-success" ng-click="startVm()" ng-disabled="startButtonDisabled()">
+                <i class="fa fa-play"></i> Start
+            </button>
         </div>
         <div class="col-lg-1">
-            <button id="stopBtn" class="btn btn-danger" ng-click="stopVm()" ng-disabled="stopButtonDisabled()"><i class="icon-stop"></i> Stop</button>
+            <button id="stopBtn" class="btn btn-danger" ng-click="stopVm()" ng-disabled="stopButtonDisabled()">
+                <i class="fa fa-stop"></i> Stop
+            </button>
         </div>
         <div class="col-lg-2">
-            <button id="restartBtn" class="btn btn-info" ng-click="restartVm()"
-                    ng-disabled="restartButtonDisabled()"><i class="icon-cw"></i> Restart</button>
+            <button id="restartBtn" class="btn btn-info" ng-click="restartVm()" ng-disabled="restartButtonDisabled()">
+                <i class="fa fa-rotate-right"></i> Restart
+            </button>
         </div>
         <div class="col-lg-8 text-right">
-            <button id="refreshBtn" class="btn btn-default"  ng-click="refreshState()"><i class="icon-arrows-cw"></i> Refresh</button>
+            <button id="refreshBtn" class="btn btn-default"  ng-click="refreshState()">
+                <i class="fa fa-refresh"></i> Refresh
+            </button>
         </div>
     </div>
     <div class="row spacer"></div>
     <div id="studentVmsDataGird" ng-grid="studentVmsDataGird"></div>
     <div class="col-lg-1">
-        <button id="backBtn" class="btn btn-default" ng-click="back()"><i class="icon-left-big"></i> Back to Apps</button>
+        <button id="backBtn" class="btn btn-default" ng-click="back()">
+            <i class="fa fa-arrow-left"></i> Back to Apps
+        </button>
     </div>
 </div>

@@ -22,10 +22,10 @@
                 </div>
             </div>
             <div class="col-md-6">
-                 <label class="col-sm-3 control-label"><i class="icon-calendar "></i> Start date:</label>
+                 <label class="col-sm-3 control-label"><i class="fa fa-calendar"></i> Start date:</label>
                 <div class="col-sm-3"><ng-date ng-model="currentClass.startDate" placeholder="Pick Date" date-format="{{dateFormat}}"/></div>
 
-                <label class="col-sm-3 control-label"><i class="icon-calendar"></i> End date:</label>
+                <label class="col-sm-3 control-label"><i class="fa fa-calendar"></i> End date:</label>
                 <div class="col-sm-3"><ng-date ng-model="currentClass.endDate" placeholder="Pick Date" date-format="{{dateFormat}}"/></div>
             </div>
         </div>
@@ -66,7 +66,9 @@
     <div id="classStudentsDiv" class="form-box">
         <span class="block-title">Students</span>
 
-        <button id="addStudentBtn" class="btn btn-default" ng-click="addStudent()"><i class="icon-plus"></i> Add</button>
+        <button id="addStudentBtn" class="btn btn-default" ng-click="addStudent()">
+            <i class="fa fa-plus"></i> Add
+        </button>
 
         <div id="studentsDataGridDiv" class="grid-table">
             <div id="studentsDataGrid" ng-grid="studentsDataGrid"></div>

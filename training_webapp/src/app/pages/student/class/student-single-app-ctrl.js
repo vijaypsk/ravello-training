@@ -59,10 +59,10 @@ angular.module('trng.student').controller('studentAppController', [
                     enableCellEdit: false,
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
-                            '<i class="icon-plus"></i> More' +
+                            '<i class="fa fa-plus"></i> More' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="consoleVm(row)" ng-disabled="consoleButtonDisabled()">' +
-                            '<i class="icon-terminal"></i> Console' +
+                            '<i class="fa fa-terminal"></i> Console' +
                         '</a>'
                 }
             ];
