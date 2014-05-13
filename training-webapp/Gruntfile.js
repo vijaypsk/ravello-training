@@ -57,9 +57,9 @@ module.exports = function (grunt) {
         // The actual grunt server settings
         connect: {
             options: {
-                port: 80,
+                port: 8080,
                 // Change this to '0.0.0.0' to access the server from outside.
-                hostname: 'localhost',
+                hostname: '0.0.0.0',
                 livereload: 35729
             },
             proxies: [
@@ -75,7 +75,7 @@ module.exports = function (grunt) {
                 options: {
                     open: true,
                     base: [
-                        '.tmp', '<%= yeoman.approot %>'
+                        '<%= yeoman.dist %>'
                     ],
                     middleware: function (connect, options) {
                         var middlewares = [];
@@ -175,9 +175,9 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     src: [
-                        '<%= yeoman.dist %>/scripts/{,*/}*.js', '<%= yeoman.dist %>/assets/styles/{,*/}*.css',
-                        '<%= yeoman.dist %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-                        '<%= yeoman.dist %>/assets/fonts/*.{eot,svg,ttf,woff}'
+                        '<%= yeoman.dist %>/scripts/{,*/}*.js', '<%= yeoman.dist %>/assets/styles/{,*/}*.css'
+//                        '<%= yeoman.dist %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+//                        '<%= yeoman.dist %>/assets/fonts/*.{eot,svg,ttf,woff}'
                     ]
                 }
             }
@@ -373,7 +373,7 @@ module.exports = function (grunt) {
         }
 
         grunt.task.run([
-            'clean:server', 'configureProxies', 'concurrent:server', 'autoprefixer', 'connect:livereload',
+            'clean:server', 'configureProxies', 'autoprefixer', 'connect:livereload',
             'watch'
         ]);
     });
