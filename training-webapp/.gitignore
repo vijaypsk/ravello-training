@@ -2,4 +2,4 @@ target
 .settings
 pom.xml
 .idea/*
-node_modeuls
+node_modules/
