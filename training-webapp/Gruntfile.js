@@ -57,17 +57,52 @@ module.exports = function (grunt) {
         // The actual grunt server settings
         connect: {
             options: {
-                port: 9000,
+                port: 80,
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: 'localhost',
                 livereload: 35729
             },
+            proxies: [
+                {
+                    context: '/rest',
+                    host: 'localhost',
+                    port: 3000,
+                    https: false,
+                    changeOrigin: false
+                }
+            ],
             livereload: {
                 options: {
                     open: true,
                     base: [
                         '.tmp', '<%= yeoman.approot %>'
-                    ]
+                    ],
+                    middleware: function (connect, options) {
+                        var middlewares = [];
+
+                        if (!Array.isArray(options.base)) {
+                            options.base = [options.base];
+                        }
+
+                        // Setup the proxy
+                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
+
+                        // Serve static files
+                        options.base.forEach(function (base) {
+                            middlewares.push(connect.static(base));
+                        });
+
+                        /* middlewares.push(
+                         function(req, res, next) {
+                         req.setHeader('Access-Control-Allow-Origin', '*');
+                         req.setHeader('Access-Control-Allow-Methods', '*');
+                         res.setHeader('Access-Control-Allow-Origin', '*');
+                         res.setHeader('Access-Control-Allow-Methods', '*');
+                         next();
+                         });*/
+
+                        return middlewares;
+                    }
                 }
             },
             test: {
@@ -94,12 +129,12 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js', '<%= yeoman.app %>/{,*/}*.js'
             ],
-//      test: {
-//        options: {
-//          jshintrc: 'test/.jshintrc'
-//        },
-//        src: ['test/spec/{,*/}*.js']
-//      }
+            test: {
+                options: {
+                    jshintrc: 'test/.jshintrc'
+                },
+                src: ['test/spec/{,*/}*.js']
+            }
         },
 
         // Empties folders to start fresh
@@ -258,6 +293,20 @@ module.exports = function (grunt) {
                         src: [
                             'generated/*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.approot %>/libraries/font-awesome/fonts/',
+                        src: ['*.*'],
+                        dest: '<%= yeoman.dist %>/assets/fonts'
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.approot %>/libraries/bootstrap/dist/fonts/',
+                        src: ['*.*'],
+                        dest: '<%= yeoman.dist %>/assets/fonts'
                     }
                 ]
             },
@@ -324,7 +373,8 @@ module.exports = function (grunt) {
         }
 
         grunt.task.run([
-            'clean:server', 'concurrent:server', 'autoprefixer', 'connect:livereload', 'watch'
+            'clean:server', 'configureProxies', 'concurrent:server', 'autoprefixer', 'connect:livereload',
+            'watch'
         ]);
     });
 
@@ -343,7 +393,6 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('default', [
-//    'newer:jshint',
-        'test', 'build'
+        'build'
     ]);
 };

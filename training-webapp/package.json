@@ -1,8 +1,7 @@
 {
   "name": "ravello-training",
   "version": "0.0.0",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "grunt": "~0.4.1",
     "grunt-autoprefixer": "~0.4.0",
     "grunt-concurrent": "~0.4.1",
@@ -27,14 +26,17 @@
     "jshint-stylish": "~0.1.3",
     "load-grunt-tasks": "~0.2.0",
     "time-grunt": "~0.2.1",
-    "karma-ng-scenario": "~0.1.0",
+    "grunt-connect-proxy": "~0.1.10",
+    "requirejs": "~2.1.9"
+  },
+  "devDependencies": {
     "grunt-karma": "~0.6.2",
+    "karma-ng-scenario": "~0.1.0",
     "karma-chrome-launcher": "~0.1.2",
     "karma-script-launcher": "~0.1.0",
     "karma-firefox-launcher": "~0.1.2",
     "karma-html2js-preprocessor": "~0.1.0",
     "karma-jasmine": "~0.1.5",
-    "requirejs": "~2.1.9",
     "karma-requirejs": "~0.2.1",
     "karma-coffee-preprocessor": "~0.1.1",
     "karma-phantomjs-launcher": "~0.1.1",
@@ -45,6 +47,6 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt"
   }
 }

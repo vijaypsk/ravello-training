@@ -8,6 +8,7 @@
 
     <!-- 3rd party styles -->
 
+    <!-- build:css({.tmp,src}) assets/styles/modules.css -->
 	<link rel="stylesheet" type="text/css" href="libraries/ngQuickDate/dist/ng-quick-date.css" />
 	<link rel="stylesheet" type="text/css" href="libraries/ngQuickDate/dist/ng-quick-date-default-theme.css" />
 
@@ -23,13 +24,17 @@
     <link rel="stylesheet" type="text/css" href="libraries/dialogs/dialogs.min.css">
 
     <link rel="stylesheet" type="text/css" href="libraries/font-awesome/css/font-awesome.min.css">
+    <!-- endbuild -->
 
     <!-- App styles -->
 
+    <!-- build:css({.tmp,src}) assets/styles/main.css -->
     <link rel="stylesheet" type="text/css" href="assets/styles/training.css" />
+    <!-- endbuild -->
 
     <!-- 3rd party scripts -->
 
+    <!-- build:js scripts/modules.js -->
 	<script src='libraries/jquery/jquery.js'></script>
     <script src='libraries/angular/angular.js'></script>
     <script src='libraries/angular-cookies/angular-cookies.js'></script>
@@ -48,9 +53,11 @@
     <script src='libraries/angular-growl/build/angular-growl.js'></script>
     <script src='libraries/angular-sanitize/angular-sanitize.js'></script>
     <script src='libraries/dialogs/dialogs.js'></script>
+    <!-- endbuild -->
 
     <!-- App scripts -->
 
+    <!-- build:js scripts/scripts.js -->
     <script src='app/training-app.js'></script>
     <script src='app/training-main-ctrl.js'></script>
 
@@ -142,6 +149,7 @@
     <script src='app/pages/student/class/student-class-ctrl.js'></script>
     <script src='app/pages/student/class/student-single-app-ctrl.js'></script>
     <script src='app/pages/student/class/vm-details-ctrl.js'></script>
+    <!-- endbuild -->
 
 </head>
 
