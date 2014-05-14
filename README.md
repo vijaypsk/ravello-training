@@ -1,15 +1,15 @@
 # Ravello Training
 
-Workspace for the training portal provided by Ravello.
+Workspace for the Training Portal provided by Ravello.
 
-Additional information about usage can be found [here](http://www.ravellosystems.com/blog/virtual-training-labs-in-the-cloud/?mkt_tok=3RkMMJWWfF9wsRoku6jMZKXonjHpfsX56uooUKGylMI%2F0ER3fOvrPUfGjI4ATstnI%2BSLDwEYGJlv6SgFQ7jDMaNjz7gEXxU%3D)
+Additional information about the usage of the application can be found [here](http://www.ravellosystems.com/blog/virtual-training-labs-in-the-cloud/?mkt_tok=3RkMMJWWfF9wsRoku6jMZKXonjHpfsX56uooUKGylMI%2F0ER3fOvrPUfGjI4ATstnI%2BSLDwEYGJlv6SgFQ7jDMaNjz7gEXxU%3D).
 
 ## Architecture
 
-The product is composed of 3 parts:
+The application is composed of 3 parts:
 
 1. Client side (in AngularJS).
-2. Server to serve the static client files (served with grunt).
+2. Server to serve the static client files (launched with grunt).
 3. Server for REST API, accessed by the client (launched with nodejs).
 
 The two servers are separate.
@@ -25,6 +25,7 @@ The 'training-webapp' project holds the grunt configuration for running the 1st 
 
 - node
 - bower
+- grunt
 - mongoDB
 
 ### How to install?
@@ -33,11 +34,10 @@ The 'training-webapp' project holds the grunt configuration for running the 1st 
 1. cd training-webapp
 
 2. npm install  
-   Make sure your user has sufficient permissions, since some modules might be installed globally.
 
 3. bower install
 
-4. By default, the application is launched on port 80. If you would like to change it, you can do so in Gruntfile.js, in the 'connect.options' part.
+4. By default, the application is launched on port 8080. If you would like to change it, you can do so in the Gruntfile.js file, under the 'connect.options' property.
 
 5. grunt
 
@@ -50,16 +50,19 @@ The 'training-webapp' project holds the grunt configuration for running the 1st 
 In the root directory, run:  
 
 ```
-startup.sh
+startup_static_server.sh
+startup_rest_server.sh
 ```
 
-Now you can access the product at:  
+Now you can access the application locally at:  
 http://localhost:8080
+
+Or externally at:  
+http://hostname:8080
 
 ### Additional configuration
 
-In order to have the initial admin user available:  
-in the root directory, run:  
+To configure the application to it's initial state, run from the root directory:
 
 ```
 mongo training init_db.js
