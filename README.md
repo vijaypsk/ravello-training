@@ -30,7 +30,7 @@ The 'training-webapp' project holds the grunt configuration for running the 1st 
 
 ### How to install?
 
-#### client
+#### Static server (for client files)
 1. cd training-webapp
 
 2. npm install  
