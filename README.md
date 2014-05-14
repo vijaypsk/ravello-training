@@ -68,3 +68,5 @@ To configure the application to it's initial state, run from the root directory:
 mongo training init_db.js
 ```
 
+This will create the basic 'admin' user, with which you could create the other users of the application, and then start using its full funcionality.
+
