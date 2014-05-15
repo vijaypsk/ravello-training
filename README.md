@@ -6,18 +6,18 @@ Additional information about the usage of the application can be found [here](ht
 
 ## Architecture
 
-The application is composed of 3 parts:
+The application is composed of three parts:
 
 1. Client side (in AngularJS).
-2. Server to serve the static client files (launched with grunt).
-3. Server for REST API, accessed by the client (launched with nodejs).
+2. Static server, which serves the static client files (launched with Grunt).
+3. REST API server, which is accessed by the client (launched with nodejs).
 
-The two servers are separate.
-The client sends requests only to the 1st server, the one launched with grunt, which serves its static files.
-The REST calls are also sent to that server. It's that server's responsibility to redirect the requests to the REST server.
+The two servers are separated.
+The client sends requests only to the Web server that is launched with Grunt, which serves its static files.
+The REST calls are also sent to that server, which is responsible for redirecting the requests to the REST server.
 
-There are 2 projects in this codebase - 'training-webapp' for the client, and 'training-sever' for the REST server.
-The 'training-webapp' project holds the grunt configuration for running the 1st server (the static one).
+There are two projects in this codebase - 'training-webapp' for the client, and 'training-sever' for the REST server.
+The 'training-webapp' project holds the Grunt configuration for running the static server.
 
 ## Installing and running
 
@@ -39,7 +39,7 @@ The 'training-webapp' project holds the grunt configuration for running the 1st 
 
 4. By default, the application is launched on port 8080. If you would like to change it, you can do so in the Gruntfile.js file, under the 'connect.options' property.
 
-5. grunt
+5. Grunt
 
 #### REST server
 1. cd training-server
@@ -62,11 +62,11 @@ http://hostname:8080
 
 ### Additional configuration
 
-To configure the application to it's initial state, run from the root directory:
+To configure the application to its initial state, run from the root directory:
 
 ```
 mongo training init_db.js
 ```
 
-This will create the basic 'admin' user, with which you could create the other users of the application, and then start using its full funcionality.
+This creates the basic 'admin' user, with which you could create the other application users, and then start using its full functionality.
 
