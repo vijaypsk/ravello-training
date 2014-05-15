@@ -1,8 +1,8 @@
 # Ravello Training
 
-Workspace for the Training Portal provided by Ravello.
+This is a sample project for working with Ravello APIs, in order to create virtual training labs in the cloud 
 
-Additional information about the usage of the application can be found [here](http://www.ravellosystems.com/blog/virtual-training-labs-in-the-cloud/?mkt_tok=3RkMMJWWfF9wsRoku6jMZKXonjHpfsX56uooUKGylMI%2F0ER3fOvrPUfGjI4ATstnI%2BSLDwEYGJlv6SgFQ7jDMaNjz7gEXxU%3D).
+Additional information on this sample project can be found [here](http://www.ravellosystems.com/blog/virtual-training-labs-in-the-cloud/?mkt_tok=3RkMMJWWfF9wsRoku6jMZKXonjHpfsX56uooUKGylMI%2F0ER3fOvrPUfGjI4ATstnI%2BSLDwEYGJlv6SgFQ7jDMaNjz7gEXxU%3D).
 
 ## Architecture
 
@@ -23,7 +23,8 @@ The 'training-webapp' project holds the Grunt configuration for running the stat
 
 ### Prerequisites
 
-- node
+You need to have the following components installed:
+- nodejs
 - bower
 - grunt
 - mongoDB
