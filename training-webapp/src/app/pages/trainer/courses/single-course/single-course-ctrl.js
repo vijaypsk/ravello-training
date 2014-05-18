@@ -129,7 +129,11 @@ angular.module('trng.trainer.training.courses').controller('singleCourseControll
         };
 
         $scope.save = function() {
-            courseModel.save($scope.currentCourse);
+            return courseModel.save($scope.currentCourse).then(
+                function(result) {
+                    $state.go('^.courses');
+                }
+            );
         };
 
         $scope.back = function() {

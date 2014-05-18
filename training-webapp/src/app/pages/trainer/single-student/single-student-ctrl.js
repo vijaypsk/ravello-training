@@ -8,10 +8,11 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
     '$log',
     '$modal',
     '$window',
+    'trng.trainer.training.classes.ClassModel',
     'trng.trainer.students.StudentModel',
     'currentStudent',
     'currentClass',
-    function ($scope, $state, $stateParams, $log, $modal, $window, studentModel, currentStudent, currentClass) {
+    function ($scope, $state, $stateParams, $log, $modal, $window, classModel, studentModel, currentStudent, currentClass) {
 
         $scope.init = function () {
             $scope.currentStudent = currentStudent;
@@ -136,14 +137,17 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
                 $scope.currentClass.students.push(currentStudent);
             }
 
-            $scope.saveClass().then(function(persistedClass) {
-                // Also notice that if the student is a new one, then the student object held in the $scope
-                // has not id field. After the save, we need to assign the $scope student with the
-                // newly persisted student.
-                if (!existingStudent) {
-                    $scope.currentStudent = persistedClass.students[persistedClass.students.length - 1];
+            classModel.save($scope.currentClass).then(
+                function(persistedClass) {
+                    // Also notice that if the student is a new one, then the student object held in the $scope
+                    // has no id field. After the save, we need to assign the $scope student with the
+                    // newly persisted student.
+                    if (!existingStudent) {
+                        $scope.currentStudent = persistedClass.students[persistedClass.students.length - 1];
+                    }
+                    $state.go("trainer.training.single-class.edit-class", {classId: $scope.currentClass.id});
                 }
-            });
+            );
         };
 
         $scope.init();

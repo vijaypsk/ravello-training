@@ -44,6 +44,8 @@ angular.module('trng.admin.trainers').factory('trng.admin.trainers.trainersModel
                         trainers.push(persistedTrainer);
                     }
                 });
+
+                return promise;
             },
 
             deleteTrainer: function(trainerId) {

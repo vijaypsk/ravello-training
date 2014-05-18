@@ -112,7 +112,11 @@ angular.module('trng.trainer.training.classes').controller('singleClassEditContr
         };
 
         $scope.saveClass = function() {
-            return classModel.save($scope.currentClass);
+            return classModel.save($scope.currentClass).then(
+                function(result) {
+                    $state.go("trainer.training.classes");
+                }
+            );
         };
 
         $scope.back = function() {

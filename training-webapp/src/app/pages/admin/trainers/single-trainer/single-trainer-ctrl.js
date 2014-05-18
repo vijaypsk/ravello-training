@@ -4,15 +4,20 @@ angular.module('trng.admin.trainers').controller('adminSingleTrainerController',
     '$log',
     '$scope',
     '$window',
+    '$state',
     'trng.admin.trainers.trainersModel',
     'currentTrainer',
-    function($log, $scope, $window, trainersModel, currentTrainer) {
+    function($log, $scope, $window, $state, trainersModel, currentTrainer) {
         $scope.init = function() {
             $scope.currentTrainer = currentTrainer;
         };
 
         $scope.saveTrainer = function() {
-            return trainersModel.saveTrainer($scope.currentTrainer);
+            return trainersModel.saveTrainer($scope.currentTrainer).then(
+                function(result) {
+                    $state.go('^.trainers');
+                }
+            );
         };
 
         $scope.back = function() {
