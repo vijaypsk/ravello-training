@@ -75,6 +75,7 @@ angular.module('trng.trainer.training.courses').controller('singleCourseControll
                 var modalInstance = $modal.open({
                     templateUrl: 'app/pages/trainer/courses/single-course/add-blueprints.html',
                     controller: 'addBlueprintsController',
+                    windowClass: 'allBlueprintsPopup',
                     resolve: {
                         allBlueprints: function() {
                             return blueprints;

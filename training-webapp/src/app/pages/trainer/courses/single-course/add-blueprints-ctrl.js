@@ -61,7 +61,11 @@ angular.module('trng.trainer.training.courses').controller('addBlueprintsControl
                  selectedItems: $scope.courseBlueprints,
                  showSelectionCheckbox: true,
                  selectWithCheckboxOnly: true,
-                 enableColumnResize: true
+                 enableColumnResize: true,
+                 filterOptions: {
+                     filterText: ''
+                 },
+                 showFilter: true
              };
          };
 

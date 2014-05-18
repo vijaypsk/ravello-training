@@ -108,13 +108,19 @@ html, body {
 
 }
 
-#allBlueprintsDataGrid {
-    min-height: 300px;
-    width: 100%;
+/* Add blueprints popup */
+
+.allBlueprintsPopup .modal-dialog {
+    width: 900px;
 }
 
-#allBlueprintsDataGridDiv {
+.allBlueprintsPopup .modal-content {
+    height: 750px;
+}
 
+#allBlueprintsDataGrid {
+    min-height: 600px;
+    width: 100%;
 }
 
 /* Student in class */
