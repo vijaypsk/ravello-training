@@ -5,6 +5,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
     '$log',
     '$scope',
     '$rootScope',
+    '$q',
     '$state',
     'growl',
     '$dialogs',
@@ -12,17 +13,26 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
     'trng.trainer.training.classes.ClassModel',
     'classApps',
     'currentClass',
-    function ($log, $scope, $rootScope, $state, growl, $dialogs, dateUtil, classesModel, classApps, currentClass) {
+    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, dateUtil, classesModel, classApps, currentClass) {
 
         $scope.init = function () {
+            $scope.viewModel = {
+                apps: [],
+                selectedApps: []
+            };
+
             $scope.initData();
             $scope.initDates();
             $scope.initAppsDataGrid();
         };
 
         $scope.initData = function() {
-            $scope.apps = [];
-            $scope.selectedApps = [];
+            // This is kind of a voodoo to me currently - but it seems that changing the reference of the selectsApps array
+            // breaks the selection of the dataGrid. the apps array, on the contrary, must be changed by reference, in order
+            // for the dataGrid to be actually updated (as the watch on the array is based on reference or length).
+            $scope.viewModel.apps = [];
+            _.remove($scope.viewModel.selectedApps);
+
             $scope.matchApps();
         };
 
@@ -38,11 +48,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                 _.forEach($scope.currentClass.course.blueprints, function(currentBp) {
 
                     // Then, an app matching the current BP is searched for the specific student.
-                    var appViewObject = _.find(currentStudent.apps, function(currentApp) {
-                        return (
-                            currentApp && currentApp.hasOwnProperty('blueprintId') &&
-                            currentBp.id === currentApp.blueprintId);
-                    });
+                    var appViewObject = _.find(currentStudent.apps, {blueprintId: currentBp.id});
 
                     // If not found, an empty object is created, so that the app fields will be blank.
                     if (!appViewObject) {
@@ -54,7 +60,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                     appViewObject.student = studentViewObject;
                     appViewObject.blueprint = currentBp;
 
-                    $scope.apps.push(appViewObject);
+                    $scope.viewModel.apps.push(appViewObject);
                 });
             });
         };
@@ -64,7 +70,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
         };
 
         $scope.initAppsColumns = function() {
-            $scope.appsColumns = [
+            $scope.viewModel.appsColumns = [
                 {
                     field: 'student.user.username',
                     displayName: 'Student'
@@ -92,10 +98,10 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
         $scope.initAppsDataGrid = function() {
             $scope.initAppsColumns();
 
-            $scope.appsDataGrid = {
-                data: 'apps',
-                columnDefs: $scope.appsColumns,
-                selectedItems: $scope.selectedApps,
+            $scope.viewModel.appsDataGrid = {
+                data: 'viewModel.apps',
+                columnDefs: $scope.viewModel.appsColumns,
+                selectedItems: $scope.viewModel.selectedApps,
                 showSelectionCheckbox: true,
                 selectWithCheckboxOnly: true,
                 enableColumnResize: true
@@ -103,7 +109,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
         };
 
         $scope.createApp = function() {
-            _.forEach($scope.selectedApps, function(app) {
+            _.forEach($scope.viewModel.selectedApps, function(app) {
                 var name =
                     $scope.currentClass.name + '##' +
                     app.blueprint.name + '##' +
@@ -132,25 +138,24 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                 var dialog = $dialogs.confirm('Delete application', 'Are you sure you want to delete the selected applications?');
                 dialog.result.then(
                     function() {
-                        _.forEach($scope.selectedApps, function(app) {
-                            app.creationTime && classesModel.deleteAppForStudent(
-                                    app.ravelloId, $scope.currentClass.id, app.student.user.id).then(
-
-                                function(result) {
-                                    classesModel.getClassApps($scope.currentClass.id).then(function(result) {
-                                        classApps = result;
-                                        $scope.initData();
-                                    });
-                                }
-                            );
-                        });
+                        $q.all(_.map($scope.viewModel.selectedApps, function(app) {
+                            return app.creationTime && classesModel.deleteAppForStudent(
+                                    app.ravelloId, $scope.currentClass.id, app.student.user.id);
+                        })).then(
+                            function(result) {
+                                classesModel.getClassApps($scope.currentClass.id).then(function(result) {
+                                    classApps = result;
+                                    $scope.initData();
+                                });
+                            }
+                        );
                     }
                 );
             }
         };
 
         $scope.isDeleteDisabled = function() {
-            return $scope.selectedApps.length <= 0 || !_.every($scope.selectedApps, 'creationTime');
+            return $scope.viewModel.selectedApps.length <= 0 || !_.every($scope.viewModel.selectedApps, 'creationTime');
         };
 
         $scope.init();
