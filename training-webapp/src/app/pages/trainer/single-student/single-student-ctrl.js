@@ -126,6 +126,10 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
             });
         };
 
+        $scope.isConfigurePermissionsDisabled = function() {
+            return $scope.selectedBps && $scope.selectedBps.length <= 0;
+        };
+
         $scope.saveStudent = function() {
             // If the current student is a new student (find it using the id field),
             // then that student has to be added to the class list of students.
