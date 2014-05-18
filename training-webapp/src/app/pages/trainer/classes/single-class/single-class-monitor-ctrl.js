@@ -7,11 +7,12 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
     '$rootScope',
     '$state',
     'growl',
+    '$dialogs',
     'trng.common.utils.DateUtil',
     'trng.trainer.training.classes.ClassModel',
     'classApps',
     'currentClass',
-    function ($log, $scope, $rootScope, $state, growl, dateUtil, classesModel, classApps, currentClass) {
+    function ($log, $scope, $rootScope, $state, growl, $dialogs, dateUtil, classesModel, classApps, currentClass) {
 
         $scope.init = function () {
             $scope.initData();
@@ -127,16 +128,25 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
         };
 
         $scope.deleteApp = function() {
-            _.forEach($scope.selectedApps, function(app) {
-                app.creationTime && classesModel.deleteAppForStudent(app.ravelloId, $scope.currentClass.id, app.student.user.id).then(
-                    function(result) {
-                        classesModel.getClassApps($scope.currentClass.id).then(function(result) {
-                            classApps = result;
-                            $scope.initData();
+            if (!$scope.isDeleteDisabled()) {
+                var dialog = $dialogs.confirm('Delete application', 'Are you sure you want to delete the selected applications?');
+                dialog.result.then(
+                    function() {
+                        _.forEach($scope.selectedApps, function(app) {
+                            app.creationTime && classesModel.deleteAppForStudent(
+                                    app.ravelloId, $scope.currentClass.id, app.student.user.id).then(
+
+                                function(result) {
+                                    classesModel.getClassApps($scope.currentClass.id).then(function(result) {
+                                        classApps = result;
+                                        $scope.initData();
+                                    });
+                                }
+                            );
                         });
                     }
                 );
-            });
+            }
         };
 
         $scope.isDeleteDisabled = function() {
