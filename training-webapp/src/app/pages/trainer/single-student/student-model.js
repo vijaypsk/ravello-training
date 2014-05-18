@@ -44,7 +44,9 @@
                 },
 
                 createNewStudent: function(theClass) {
-                    var student = {};
+                    var student = {
+                        user: {}
+                    };
                     assignBlueprintsToStudent(theClass, student);
 
                     if (!theClass.students) {

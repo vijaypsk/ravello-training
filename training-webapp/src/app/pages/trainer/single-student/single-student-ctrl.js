@@ -8,11 +8,12 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
     '$log',
     '$modal',
     '$window',
+    'growl',
     'trng.trainer.training.classes.ClassModel',
     'trng.trainer.students.StudentModel',
     'currentStudent',
     'currentClass',
-    function ($scope, $state, $stateParams, $log, $modal, $window, classModel, studentModel, currentStudent, currentClass) {
+    function ($scope, $state, $stateParams, $log, $modal, $window, growl, classModel, studentModel, currentStudent, currentClass) {
 
         $scope.init = function () {
             $scope.currentStudent = currentStudent;
@@ -131,6 +132,20 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
         };
 
         $scope.saveStudent = function() {
+            var validationStatus = $scope.getValidationStatus();
+
+            if (!_.isEmpty(validationStatus)) {
+                var finalMessage = _.reduce(validationStatus, function(sum, current) {
+                    return sum += ", " + current;
+                });
+
+                finalMessage = "Could not save, please fill required fields: [" + finalMessage + "]";
+
+                growl.addErrorMessage(finalMessage);
+
+                return;
+            }
+
             // If the current student is a new student (find it using the id field),
             // then that student has to be added to the class list of students.
             var existingStudent = _.find($scope.currentClass.students, function(student) {
@@ -152,6 +167,18 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
                     $state.go("trainer.training.single-class.edit-class", {classId: $scope.currentClass.id});
                 }
             );
+        };
+
+        $scope.getValidationStatus = function() {
+            var validationStatus = [];
+
+            $scope.currentStudent.user && !$scope.currentStudent.user.firstName && validationStatus.push("First name");
+            $scope.currentStudent.user && !$scope.currentStudent.user.username && validationStatus.push("username");
+
+            !$scope.currentStudent.id && $scope.currentStudent.user &&
+                !$scope.currentStudent.user.password && validationStatus.push("password");
+
+            return validationStatus;
         };
 
         $scope.init();
