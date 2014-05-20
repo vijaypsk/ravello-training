@@ -94,13 +94,6 @@ angular.module('trng.trainer.training.classes').controller('singleClassEditContr
             $state.go('^.single-student', {classId: $scope.currentClass.id, studentId: studentId});
         };
 
-        $scope.deleteStudents = function() {
-            var dialog = $dialogs.confirm("Delete students", "Are you sure you want to delete the students?");
-            dialog.result.then(function(result) {
-                classModel.deleteStudents($scope.currentClass, $scope.selectedStudents);
-            });
-        };
-
         $scope.deleteStudent = function(studentToDelete) {
             var dialog = $dialogs.confirm("Delete student", "Are you sure you want to delete the student?");
             dialog.result.then(function(result) {
