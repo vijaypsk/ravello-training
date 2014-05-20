@@ -96,6 +96,9 @@ exports.createClass = function(request, response) {
         });
     }).fail(function(error) {
         var message = "Could not save one of the users associated with the new class";
+        if (error.message && error.message.indexOf("duplicate key") != -1) {
+            message += ": username already exists";
+        }
         logger.error(error, message);
         response.send(400, message);
     });
@@ -129,6 +132,9 @@ exports.updateClass = function(request, response) {
         });
     }).fail(function(error) {
         var message = "Could not save one of the users associated with the new class";
+        if (error.message && error.message.indexOf("duplicate key") != -1) {
+            message += ": username already exists";
+        }
         logger.error(error, message);
         response.send(400, message);
     });

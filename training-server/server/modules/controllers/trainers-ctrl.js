@@ -31,6 +31,9 @@ exports.saveTrainer = function(request, response) {
         response.json(dto);
     }).fail(function(error) {
         var message = "Could not save new trainer";
+        if (error.message && error.message.indexOf("duplicate key") != -1) {
+            message += ": username already exists";
+        }
         logger.error(error, message);
         response.send(400, message);
     });
