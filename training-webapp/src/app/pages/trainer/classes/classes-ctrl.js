@@ -36,12 +36,12 @@ angular.module('trng.trainer.training.classes').controller('classesController', 
                 {
                     field: 'startDate',
                     displayName: 'Start date',
-                    cellFilter: 'date:\'' + dateUtil.dateTimeFormat + '\''
+                    cellFilter: 'date:\'' + dateUtil.angular.dateTimeFormat + '\''
                 },
                 {
                     field: 'endDate',
                     displayName: 'End date',
-                    cellFilter: 'date:\'' + dateUtil.dateTimeFormat + '\''
+                    cellFilter: 'date:\'' + dateUtil.angular.dateTimeFormat + '\''
                 },
                 {
                     displayName: 'Actions',
@@ -51,7 +51,7 @@ angular.module('trng.trainer.training.classes').controller('classesController', 
                             '<i class="fa fa-pencil" /> Edit' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="monitorClass(row)">' +
-                            '<i class="fa fa-desktop" /> Monitor' +
+                            '<i class="fa fa-desktop" /> Applications' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="deleteClass(row)">' +
                             '<i class="fa fa-trash-o" /> Delete' +
