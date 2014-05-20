@@ -89,10 +89,25 @@
                 },
 
                 deleteClassById: function(classesList, classId) {
-                    classesService.deleteById(classId).then(
-                        function(result) {
-                            _.remove(classesList, {id: classId});
-                            classes = classesList;
+                    var theClass = getClassById(classId);
+
+                    var appsPromises = [];
+
+                    _.forEach(theClass.students, function(currentStudent) {
+                        _.forEach(currentStudent.apps, function(currentApp) {
+                            var promise = appsService.deleteApp(currentApp.ravelloId, currentStudent.user.id)
+                            appsPromises.push(promise);
+                        });
+                    });
+
+                    $q.all(appsPromises).then(
+                        function(results) {
+                            classesService.deleteById(classId).then(
+                                function(result) {
+                                    _.remove(classesList, {id: classId});
+                                    classes = classesList;
+                                }
+                            );
                         }
                     );
                 },
