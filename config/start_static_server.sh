@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/ubuntu/Workspace/ravello_training
+cd $RAVELLO_TRAINING_HOME
 cd ./training-webapp
 grunt serve
 
