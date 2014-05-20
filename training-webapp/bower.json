@@ -16,7 +16,7 @@
     "angular-bootstrap": "0.10.0",
     "datejs": "",
     "lodash": "2.4.1",
-    "ngQuickDate": "https://github.com/wolf-daniel/ngQuickDate.git#change_directive_name",
+    "ngQuickDate": "1.3.0",
     "angular-xeditable": "0.1.8",
     "angular-base64": "2.0.1",
     "angular-busy": "3.0.2",
