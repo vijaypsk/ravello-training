@@ -118,15 +118,9 @@ exports.getStudentClassApps = function(request, response) {
 
         coursesDal.getCourse(classEntity.courseId).then(function(course) {
 
-            var appsPromises = [];
-
-            _.forEach(studentData.apps, function(app) {
-                var promise = appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
-                appsPromises.push(promise);
-            });
-
-            q.all(appsPromises).then(function(appsResults) {
-
+            q.all(_.map(studentData.apps, function(app) {
+                return appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
+            })).then(function(appsResults) {
                 var appViewObjects = [];
 
                 _.forEach(appsResults, function(appResult) {
