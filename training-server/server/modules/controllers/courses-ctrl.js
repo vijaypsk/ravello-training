@@ -68,7 +68,7 @@ exports.getCourse = function(request, response) {
 
     // Notice that we expect the user here to be a student, i.e. we try to get its class so that we can
     // have its real Ravello credentials.
-    classesDal.getClassOfUser(userId).then(function(classEntity) {
+    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
 
         var studentData = classEntity.findStudentByUserId(userId);
 

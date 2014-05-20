@@ -20,6 +20,22 @@ exports.getClassOfUser = function(userId) {
     return TrainingClass.findOne({'students.user': new ObjectId(userId)}).populate('students.user').execQ();
 };
 
+exports.getClassOfUserForNow = function(userId) {
+    var now = Date.today().setTimeToNow();
+
+    return TrainingClass.findOne(
+        {
+            'students.user': new ObjectId(userId),
+            'startDate': {
+                '$lte': now
+            },
+            'endDate': {
+                '$gte': now
+            }
+        }
+    ).populate('students.user').execQ();
+};
+
 exports.createClass = function(classData) {
     var newClass = new TrainingClass(classData);
 

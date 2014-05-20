@@ -104,7 +104,7 @@ exports.appAction = function(request, response) {
     var action = request.params.action;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(function(classEntity) {
+    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
         var classData = classesTrans.entityToDto(classEntity);
         var studentData = _.find(classEntity.students, function(student) {
             return (student.user.id === userId);
@@ -152,7 +152,7 @@ exports.vmAction = function(request, response) {
     var action = request.params.action;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(function(classEntity) {
+    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
         var classData = classesTrans.entityToDto(classEntity);
         var studentData = _.find(classEntity.students, function(student) {
             return (student.user.id === userId);
@@ -208,7 +208,7 @@ exports.vmVnc = function(request, response) {
     var vmId = request.params.vmId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(function(classEntity) {
+    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
         var classData = classesTrans.entityToDto(classEntity);
         var studentData = _.find(classEntity.students, function(student) {
             return (student.user.id === userId);

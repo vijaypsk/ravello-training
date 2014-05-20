@@ -93,7 +93,7 @@ exports.getStudentClass = function(request, response) {
     var userId = user.id;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(function(classEntity) {
+    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
         var studentEntity = classEntity.findStudentByUserId(userId);
         var dto = singleStudentTrans.entityToDto(studentEntity, classEntity);
         response.json(dto);
@@ -109,7 +109,7 @@ exports.getStudentClassApps = function(request, response) {
     var userId = user.id;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(function(classEntity) {
+    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
         var classData = classesTrans.entityToDto(classEntity);
         var studentData = classEntity.findStudentByUserId(userId);
 
@@ -155,7 +155,7 @@ exports.getAppVms = function(request, response) {
     var appId = request.params.appId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(function(classEntity) {
+    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
         var classData = classesTrans.entityToDto(classEntity);
         var studentData = classEntity.findStudentByUserId(userId);
 
