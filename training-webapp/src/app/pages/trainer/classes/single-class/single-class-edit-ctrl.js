@@ -42,9 +42,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassEditContr
             // otherwise there might be problems rendering the view correctly.
             // Since the class is a copy of the originally loaded class, we know the reference is in fact
             // NOT a reference to the actual list of courses, so here the controller fixes that.
-            $scope.currentClass.course = _.find($scope.courses, function(course) {
-                return (course && course.hasOwnProperty('id') && course.id === $scope.currentClass.courseId);
-            });
+            $scope.currentClass.course = _.find($scope.courses, {id: $scope.currentClass.courseId});
         };
 
         $scope.initDates = function() {
