@@ -32,10 +32,10 @@ You need to have the following components installed:
 ### How to install?
 
 #### General
-1. Set the RAVELLO_TRAINING_HOME environment variable to the root directory of the project, i.e. :
+1. Set the RAVELLO_TRAINING_HOME environment variable to the root directory of the project, for example :
 
 ```
-export $RAVELLO_TRAINING_HOME=/home/myUser/ravello-training
+export RAVELLO_TRAINING_HOME=/home/myUser/ravello-training
 ```
 
 #### Static server (for client files)
