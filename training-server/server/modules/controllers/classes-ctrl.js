@@ -165,19 +165,27 @@ exports.updateClass = function(request, response) {
 exports.deleteClass = function(request, response) {
     var classId = request.params.classId;
 
-    classesDal.deleteClass(classId).then(function(deletedClass) {
-        _.forEach(deletedClass.students, function(student) {
-            usersDal.findAndDelete(student.user.id).then(function(result) {
-                response.send(200);
-            }).fail(function(error) {
-                var message = "Could not delete one of the users associated with the class";
-                logger.error(error, message);
-                response.send(400, message);
-            });
-        });
-    }).fail(function(error) {
-        var message = "Could not delete class";
-        logger.error(error, message);
-        response.send(404, message);
-    });
+    classesDal.deleteClass(classId).then(
+        function(deletedClass) {
+            return q.all(_.map(deletedClass.students, function(student) {
+                return usersDal.findAndDelete(student.user.id).fail(
+                    function(error) {
+                        var message = "Could not delete one of the users associated with the class";
+                        logger.error(error, message);
+                        response.send(400, message);
+                    }
+                );
+            }));
+        }
+    ).then(
+        function(result) {
+            response.send(200);
+        }
+    ).fail(
+        function(error) {
+            var message = "Could not delete class";
+            logger.error(error, message);
+            response.send(404, message);
+        }
+    );
 };
