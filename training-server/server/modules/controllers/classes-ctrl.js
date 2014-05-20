@@ -107,30 +107,52 @@ exports.createClass = function(request, response) {
 exports.updateClass = function(request, response) {
     var classId = request.params.classId;
     var classData = request.body;
+    var classEntityData = classesTrans.dtoToEntity(classData);
 
-    // We want to first update the students associated with the class, as users for the login process.
-    // We can't know if a student is a new one or an existing one, so we use 'update' which will create
-    // new users if they're not existing yet.
-    q.all(_.map(classData.students, function(student) {
-        student.user = usersTrans.dtoToEntity(student.user);
-        return usersDal.updateUser(student.user._id, student.user).then(function() {
-            return usersDal.getUser(student.user.username).then(function(persistedUser) {
-                student.user = persistedUser.id;
-            });
-        });
-    })).then(function() {
-        var classEntityData = classesTrans.dtoToEntity(classData);
-        classesDal.updateClass(classId, classEntityData).then(function() {
-            return classesDal.getClass(classId).then(function(result) {
-                var dto = classesTrans.entityToDto(result);
-                response.json(dto);
-            });
-        }).fail(function(error) {
-            var message = "Could not save class";
-            logger.error(error, message);
-            response.send(400, message);
-        });
-    }).fail(function(error) {
+    // 1st step is to delete the users for students that no longer exist in the new class data.
+    classesDal.getClass(classId).then(
+        function(persistedClass) {
+            return q.all(_.map(persistedClass.students, function(currentStudent) {
+                return !_.find(classData.students, {_id: currentStudent.id}) ?
+                    usersDal.deleteUser(currentStudent.user.id) :
+                    q.when();
+            })).then(
+                function() {
+                    // Then update the users for the students that remained in the class data.
+                    return q.all(_.map(classData.students, function(student) {
+                            student.user = usersTrans.dtoToEntity(student.user);
+                            return usersDal.updateUser(student.user._id, student.user).then(
+                                function() {
+                                    return usersDal.getUser(student.user.username).then(function(persistedUser) {
+                                        student.user = persistedUser.id;
+                                    });
+                                }
+                            );
+                    })).then(
+                        function() {
+                            // And at last, actually update the class.
+                            classesDal.updateClass(classId, classEntityData).then(
+                                function() {
+                                    return classesDal.getClass(classId).then(
+                                        function(result) {
+                                            var dto = classesTrans.entityToDto(result);
+                                            response.json(dto);
+                                        }
+                                    );
+                                }
+                            ).fail(
+                                function(error) {
+                                    var message = "Could not save class";
+                                    logger.error(error, message);
+                                    response.send(400, message);
+                                }
+                            );
+                        }
+                    );
+                }
+            );
+        }
+    ).fail(function(error) {
         var message = "Could not save one of the users associated with the new class";
         if (error.message && error.message.indexOf("duplicate key") != -1) {
             message += ": username already exists";
