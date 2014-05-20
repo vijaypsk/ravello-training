@@ -157,9 +157,7 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
 
             // If the current student is a new student (find it using the id field),
             // then that student has to be added to the class list of students.
-            var existingStudent = _.find($scope.currentClass.students, function(student) {
-                return student && student.id && student.id == $scope.currentStudent.id;
-            });
+            var existingStudent = _.find($scope.currentClass.students, {id: $scope.currentStudent.id});
 
             if (!existingStudent) {
                 $scope.currentClass.students.push(currentStudent);
@@ -174,6 +172,16 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
                         $scope.currentStudent = persistedClass.students[persistedClass.students.length - 1];
                     }
                     $state.go("trainer.training.single-class.edit-class", {classId: $scope.currentClass.id});
+                }
+            ).catch(
+                function(error) {
+                    // This is important - if a new student was added to the class, but saving it failed, it must be removed
+                    // from the class upon failure.
+                    // Alternatively, we could have added the student to the class only upon success, but this way, we wouldn't
+                    // have an updated class (with the newly added student) to save in the first place...
+                    if (!existingStudent) {
+                        $scope.currentClass.students.pop();
+                    }
                 }
             );
         };
