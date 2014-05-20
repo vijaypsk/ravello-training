@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('trng.trainer.training.courses').controller('coursesController', [
+angular.module('trng.trainer.training.courses').controller('trainerCoursesController', [
     '$scope',
     '$state',
     '$log',

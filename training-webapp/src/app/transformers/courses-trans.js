@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('trng.transformers').factory('trng.transformers.CoursesTransformer', [
-	'trng.transformers.GeneralTransformer',
-	function(generalTrans) {
+	function() {
 		var service = {
 			dtoToEntity: function(dto) {
 		        var entity = _.cloneDeep(dto);

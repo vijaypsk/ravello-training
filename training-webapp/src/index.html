@@ -30,16 +30,16 @@
 
     <!-- build:css({.tmp,src}) assets/styles/main.css -->
     <link rel="stylesheet" type="text/css" href="assets/styles/training.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/admin/trainers/trainers.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/trainer/classes/classes.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/trainer/courses/courses.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/trainer/courses/single-course/single-course.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/trainer/courses/single-course/add-blueprints.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/trainer/classes/single-class/single-class-settings.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/trainer/classes/single-class/single-class-monitor.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/trainer/single-student/single-student.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/student/class/student-app-list.css" />
-    <link rel="stylesheet" type="text/css" href="app/pages/student/class/student-single-app.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/admin/trainers/admin-trainers.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/trainer/classes/trainer-classes.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/trainer/courses/trainer-courses.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/trainer/courses/single-course/trainer-single-course.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/trainer/courses/single-course/trainer-add-blueprints.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/trainer/classes/single-class/trainer-single-class-settings.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/trainer/classes/single-class/trainer-single-class-monitor.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/trainer/single-student/trainer-single-student.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/student/student-class/student-apps/student-apps.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/student/student-class/student-single-app/student-single-app.css" />
     <!-- endbuild -->
 
     <!-- 3rd party scripts -->
@@ -68,24 +68,23 @@
     <!-- App scripts -->
 
     <!-- build:js scripts/scripts.js -->
-    <script src='app/training-app.js'></script>
-    <script src='app/training-main-ctrl.js'></script>
+    <script src='app/training-app-module.js'></script>
+    <script src='app/training-app-ctrl.js'></script>
 
     <script src='app/common/config.js'></script>
     <script src='app/common/error-handler.js'></script>
 
-    <script src='app/common/util/util.js'></script>
-    <script src='app/common/util/cloner.js'></script>
+    <script src='app/common/util/util-module.js'></script>
     <script src='app/common/util/date-util.js'></script>
 
     <script src='app/common/directives/common-directives.js'></script>
     <script src='app/common/directives/save-and-cancel/save-and-cancel-directive.js'></script>
 
-    <script src='app/common/directives/set-password/set-password.js'></script>
+    <script src='app/common/directives/set-password/set-password-module.js'></script>
     <script src='app/common/directives/set-password/set-password-directive.js'></script>
     <script src='app/common/directives/set-password/set-password-popup-ctrl.js'></script>
 
-    <script src='app/proxies/proxies.js'></script>
+    <script src='app/proxies/proxies-module.js'></script>
     <script src='app/proxies/login-proxy.js'></script>
     <script src='app/proxies/admin-proxy.js'></script>
     <script src='app/proxies/classes-proxy.js'></script>
@@ -95,17 +94,16 @@
     <script src='app/proxies/apps-proxy.js'></script>
     <script src='app/proxies/trainers-proxy.js'></script>
 
-    <script src='app/transformers/transformers.js'></script>
-    <script src='app/transformers/general-trans.js'></script>
+    <script src='app/transformers/trans-module.js'></script>
     <script src='app/transformers/classes-trans.js'></script>
     <script src='app/transformers/courses-trans.js'></script>
-    <script src='app/transformers/students-trans.js'></script>
+    <script src='app/transformers/student-trans.js'></script>
     <script src='app/transformers/blueprints-trans.js'></script>
-    <script src='app/transformers/single-student-trans.js'></script>
+    <script src='app/transformers/trainer-students-trans.js'></script>
     <script src='app/transformers/apps-trans.js'></script>
     <script src='app/transformers/trainers-trans.js'></script>
 
-    <script src='app/services/services.js'></script>
+    <script src='app/services/services-module.js'></script>
     <script src='app/services/login-service.js'></script>
     <script src='app/services/admin-service.js'></script>
     <script src='app/services/classes-service.js'></script>
@@ -119,46 +117,46 @@
     <script src='app/pages/login/login-ctrl.js'></script>
     <script src='app/pages/login/login-model.js'></script>
 
-    <script src='app/pages/admin/admin.js'></script>
+    <script src='app/pages/admin/admin-module.js'></script>
     <script src='app/pages/admin/admin-ctrl.js'></script>
 
-    <script src='app/pages/admin/profile/profile.js'></script>
-    <script src='app/pages/admin/profile/profile-ctrl.js'></script>
+    <script src='app/pages/admin/profile/admin-profile-module.js'></script>
+    <script src='app/pages/admin/profile/admin-profile-ctrl.js'></script>
 
-    <script src='app/pages/admin/trainers/trainers.js'></script>
-    <script src='app/pages/admin/trainers/trainers-model.js'></script>
-    <script src='app/pages/admin/trainers/trainers-ctrl.js'></script>
+    <script src='app/pages/admin/trainers/admin-trainers-module.js'></script>
+    <script src='app/pages/admin/trainers/admin-trainers-model.js'></script>
+    <script src='app/pages/admin/trainers/admin-trainers-ctrl.js'></script>
 
-    <script src='app/pages/admin/trainers/single-trainer/single-trainer-ctrl.js'></script>
+    <script src='app/pages/admin/trainers/single-trainer/admin-single-trainer-ctrl.js'></script>
 
-    <script src='app/pages/trainer/trainer.js'></script>
+    <script src='app/pages/trainer/trainer-module.js'></script>
 
-    <script src='app/pages/trainer/training/training.js'></script>
+    <script src='app/pages/trainer/training/training-module.js'></script>
 
-    <script src='app/pages/trainer/courses/courses.js'></script>
-    <script src='app/pages/trainer/courses/course-model.js'></script>
-    <script src='app/pages/trainer/courses/courses-ctrl.js'></script>
-    <script src='app/pages/trainer/courses/single-course/single-course-ctrl.js'></script>
-    <script src='app/pages/trainer/courses/single-course/add-blueprints-ctrl.js'></script>
+    <script src='app/pages/trainer/courses/trainer-courses-module.js'></script>
+    <script src='app/pages/trainer/courses/trainer-course-model.js'></script>
+    <script src='app/pages/trainer/courses/trainer-courses-ctrl.js'></script>
+    <script src='app/pages/trainer/courses/single-course/trainer-single-course-ctrl.js'></script>
+    <script src='app/pages/trainer/courses/single-course/trainer-add-blueprints-ctrl.js'></script>
 
-    <script src='app/pages/trainer/classes/classes.js'></script>
-    <script src='app/pages/trainer/classes/classes-ctrl.js'></script>
-    <script src='app/pages/trainer/classes/classes-model.js'></script>
-    <script src='app/pages/trainer/classes/single-class/single-class-edit-ctrl.js'></script>
-    <script src='app/pages/trainer/classes/single-class/single-class-monitor-ctrl.js'></script>
+    <script src='app/pages/trainer/classes/trainer-classes-module.js'></script>
+    <script src='app/pages/trainer/classes/trainer-classes-ctrl.js'></script>
+    <script src='app/pages/trainer/classes/trainer-classes-model.js'></script>
+    <script src='app/pages/trainer/classes/single-class/trainer-single-class-edit-ctrl.js'></script>
+    <script src='app/pages/trainer/classes/single-class/trainer-single-class-monitor-ctrl.js'></script>
 
-    <script src='app/pages/trainer/single-student/students.js'></script>
-    <script src='app/pages/trainer/single-student/student-model.js'></script>
-    <script src='app/pages/trainer/single-student/single-student-ctrl.js'></script>
-    <script src='app/pages/trainer/single-student/bp-permissions-ctrl.js'></script>
+    <script src='app/pages/trainer/single-student/trainer-students-module.js'></script>
+    <script src='app/pages/trainer/single-student/trainer-student-model.js'></script>
+    <script src='app/pages/trainer/single-student/trainer-single-student-ctrl.js'></script>
+    <script src='app/pages/trainer/single-student/trainer-bp-permissions-ctrl.js'></script>
 
-    <script src='app/pages/student/student.js'></script>
+    <script src='app/pages/student/student-module.js'></script>
     <script src='app/pages/student/student-resolver.js'></script>
     <script src='app/pages/student/student-ctrl.js'></script>
 
-    <script src='app/pages/student/class/student-class-ctrl.js'></script>
-    <script src='app/pages/student/class/student-single-app-ctrl.js'></script>
-    <script src='app/pages/student/class/vm-details-ctrl.js'></script>
+    <script src='app/pages/student/student-class/student-class-ctrl.js'></script>
+    <script src='app/pages/student/student-class/student-single-app/student-single-app-ctrl.js'></script>
+    <script src='app/pages/student/student-class/student-single-app/vm-details-ctrl.js'></script>
     <!-- endbuild -->
 
 </head>

@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('trng.trainer.students').controller('singleStudentController', [
+angular.module('trng.trainer.students').controller('trainerSingleStudentController', [
     '$scope',
     '$state',
     '$stateParams',
@@ -83,8 +83,8 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
 
         $scope.configurBpPermissions = function() {
             var modalInstance = $modal.open({
-                templateUrl: 'app/pages/trainer/single-student/bp-permissions.html',
-                controller: 'bpPermissionsController',
+                templateUrl: 'app/pages/trainer/single-student/trainer-bp-permissions.html',
+                controller: 'trainerBpPermissionsController',
                 resolve: {
                     bpPermissions: function() {
                         return {
@@ -122,8 +122,8 @@ angular.module('trng.trainer.students').controller('singleStudentController', [
             });
 
             var modalInstance = $modal.open({
-                templateUrl: 'app/pages/trainer/single-student/bp-permissions.html',
-                controller: 'bpPermissionsController',
+                templateUrl: 'app/pages/trainer/single-student/trainer-bp-permissions.html',
+                controller: 'trainerBpPermissionsController',
                 resolve: {
                     bpPermissions: function() {
                         return bpPermissions;

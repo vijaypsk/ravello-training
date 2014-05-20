@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('trng.transformers').factory('trng.transformers.ClassesTransformer', [
-	'trng.transformers.StudentsTransformer',
+	'trng.transformers.TrainerStudentsTransformer',
 	'trng.common.utils.DateUtil',
 	function(studentTrans, dateUtil) {
 

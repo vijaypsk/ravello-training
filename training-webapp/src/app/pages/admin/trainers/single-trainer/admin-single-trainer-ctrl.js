@@ -28,7 +28,7 @@ angular.module('trng.admin.trainers').controller('adminSingleTrainerController',
     }
 ]);
 
-var singleTrainerResolver = {
+var adminSingleTrainerResolver = {
     currentTrainer: [
         '$q',
         '$stateParams',

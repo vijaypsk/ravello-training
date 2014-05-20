@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('trng.trainer.training.classes').controller('singleClassEditController', [
+angular.module('trng.trainer.training.classes').controller('trainerSingleClassEditController', [
     '$scope',
     '$rootScope',
     '$state',

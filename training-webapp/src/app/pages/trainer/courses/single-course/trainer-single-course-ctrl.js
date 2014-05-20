@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('trng.trainer.training.courses').controller('singleCourseController', [
+angular.module('trng.trainer.training.courses').controller('trainerSingleCourseController', [
     '$scope',
     '$state',
     '$stateParams',
@@ -73,8 +73,8 @@ angular.module('trng.trainer.training.courses').controller('singleCourseControll
         $scope.addBlueprint = function() {
             blueprintsService.getAllBlueprints().then(function(blueprints) {
                 var modalInstance = $modal.open({
-                    templateUrl: 'app/pages/trainer/courses/single-course/add-blueprints.html',
-                    controller: 'addBlueprintsController',
+                    templateUrl: 'app/pages/trainer/courses/single-course/trainer-add-blueprints.html',
+                    controller: 'trainerAddBlueprintsController',
                     windowClass: 'allBlueprintsPopup',
                     resolve: {
                         allBlueprints: function() {

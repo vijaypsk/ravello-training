@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('trng.transformers').factory('trng.transformers.SingleStudentTransformer', [
+angular.module('trng.transformers').factory('trng.transformers.StudentTransformer', [
     'trng.common.utils.DateUtil',
     function(dateUtil) {
 

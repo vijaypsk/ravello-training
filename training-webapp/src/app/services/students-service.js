@@ -2,7 +2,7 @@
 
 angular.module('trng.services').factory('trng.services.StudentsService', [
 	'trng.proxies.StudentsProxy',
-	'trng.transformers.SingleStudentTransformer',
+	'trng.transformers.StudentTransformer',
 	'trng.transformers.AppsTransformer',
 	function(studentsProxy, studentsTrans, appsTrans) {
 		

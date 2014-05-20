@@ -10,23 +10,23 @@
             $stateProvider.
                 state('trainer.training.classes', {
                     url: '/classes',
-                    templateUrl: 'app/pages/trainer/classes/classes.html',
-                    controller: 'classesController',
+                    templateUrl: 'app/pages/trainer/classes/trainer-classes.html',
+                    controller: 'trainerClassesController',
                     resolve: classesResolver
                 }).state('trainer.training.courses', {
                     url: '/courses',
-                    templateUrl: 'app/pages/trainer/courses/courses.html',
-                    controller: 'coursesController',
+                    templateUrl: 'app/pages/trainer/courses/trainer-courses.html',
+                    controller: 'trainerCoursesController',
                     resolve: coursesResolver
                 }).state('trainer.training.single-class', {
                     url: '/single-class?classId',
-                    templateUrl: 'app/pages/trainer/classes/single-class/single-class.html',
-                    controller: 'singleClassEditController',
+                    templateUrl: 'app/pages/trainer/classes/single-class/trainer-single-class.html',
+                    controller: 'trainerSingleClassEditController',
                     resolve: singleClassEditResolver
                 }).state('trainer.training.single-course', {
                     url: '/single-course?courseId',
-                    templateUrl: 'app/pages/trainer/courses/single-course/single-course.html',
-                    controller: 'singleCourseController',
+                    templateUrl: 'app/pages/trainer/courses/single-course/trainer-single-course.html',
+                    controller: 'trainerSingleCourseController',
                     resolve: singleCourseResolver
                 });
         }

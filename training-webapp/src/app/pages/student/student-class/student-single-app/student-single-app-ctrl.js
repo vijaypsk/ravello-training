@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('trng.student').controller('studentAppController', [
+angular.module('trng.student').controller('studentSingleAppController', [
     '$log',
     '$scope',
     '$state',
@@ -90,8 +90,8 @@ angular.module('trng.student').controller('studentAppController', [
             });
 
             var modalInstance = $modal.open({
-                templateUrl: 'app/pages/student/class/vm-details.html',
-                controller: 'vmDetailsController',
+                templateUrl: 'app/pages/student/student-class/student-single-app/vm-details.html',
+                controller: 'studentVmDetailsController',
                 resolve: {
                     selectedVm: function() {
                         return selectedVm;

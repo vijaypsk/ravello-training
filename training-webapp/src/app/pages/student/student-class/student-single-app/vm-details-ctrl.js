@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('trng.student').controller('vmDetailsController', [
+angular.module('trng.student').controller('studentVmDetailsController', [
     '$log',
     '$scope',
     '$modalInstance',

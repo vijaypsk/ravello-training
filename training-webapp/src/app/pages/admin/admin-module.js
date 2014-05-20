@@ -15,18 +15,18 @@
                 $stateProvider.
                     state('admin.profile', {
                         url: '/profile',
-                        templateUrl: 'app/pages/admin/profile/profile.html',
+                        templateUrl: 'app/pages/admin/profile/admin-profile.html',
                         controller: 'adminProfileController'
                     }).state('admin.trainers', {
                         url: '/trainers',
-                        templateUrl: 'app/pages/admin/trainers/trainers.html',
+                        templateUrl: 'app/pages/admin/trainers/admin-trainers.html',
                         controller: 'adminTrainersController',
                         resolve: adminTrainerResolver
                     }).state('admin.single-trainer', {
                         url: '/single-trainer?trainerId',
-                        templateUrl: 'app/pages/admin/trainers/single-trainer/single-trainer.html',
+                        templateUrl: 'app/pages/admin/trainers/single-trainer/admin-single-trainer.html',
                         controller: 'adminSingleTrainerController',
-                        resolve: singleTrainerResolver
+                        resolve: adminSingleTrainerResolver
                     });
             }
         ]);

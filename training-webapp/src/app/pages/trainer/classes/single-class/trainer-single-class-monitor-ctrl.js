@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('trng.trainer.training.classes').controller('singleClassMonitorController', [
+angular.module('trng.trainer.training.classes').controller('trainerSingleClassMonitorController', [
     '$log',
     '$scope',
     '$rootScope',
