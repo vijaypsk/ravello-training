@@ -27,10 +27,7 @@
 
                 getClassById: function(classId) {
                     if (classesLoaded) {
-                        var deferred = $q.defer();
-                        var promise = deferred.promise;
-                        deferred.resolve(getClassById(classId));
-                        return promise;
+                        return $q.when(getClassById(classId));
                     }
 
                     return this.getAllClasses().then(function(result) {
@@ -40,35 +37,39 @@
 
                 getAllClasses: function () {
                     if (classesLoaded) {
-                        var deferred = $q.defer();
-                        var promise = deferred.promise;
-                        deferred.resolve(classes);
-                        return promise;
+                        return $q.when(classes);
                     }
 
                     // First get all of the classes themselves.
-                    return classesService.getAllClasses().
-                        then(function(result) {
+                    return classesService.getAllClasses().then(
+                        function(result) {
                             for (var i = 0; i < result.length; i++) {
                                 classes.push(result[i]);
                             }
-                        }).then(function(result) {
+                        }
+                    ).then(
+                        function(result) {
                             // Now that we have the classes, try to match them with their corresponding courses.
-                            return courseModel.getAllCourses().then(function(result) {
-                                _.forEach(classes, function(currentClass) {
-                                    if (currentClass && currentClass.hasOwnProperty('courseId')) {
-                                        // Getting a course is also a promise-based API.
-                                        courseModel.getCourseById(currentClass.courseId).then(function(matchingCourse) {
-                                            currentClass.course = matchingCourse;
-                                        });
-                                    }
-                                });
-                            });
-                        }).then(function(result) {
+                            return courseModel.getAllCourses().then(
+                                function(result) {
+                                    _.forEach(classes, function(currentClass) {
+                                        currentClass && currentClass.courseId &&
+                                        courseModel.getCourseById(currentClass.courseId).then(
+                                            function(matchingCourse) {
+                                                currentClass.course = matchingCourse;
+                                            }
+                                        );
+                                    });
+                                }
+                            );
+                        }
+                    ).then(
+                        function(result) {
                             // Only once the whole classes-courses-students mix is complete, mark the classes as loaded.
                             classesLoaded = true;
                             return classes;
-                        });
+                        }
+                    );
                 },
 
                 getClassApps: function(classId) {
@@ -76,13 +77,12 @@
                 },
 
                 deleteClassById: function(classesList, classId) {
-                    _.remove(classesList, function(currentClass) {
-                        return currentClass.hasOwnProperty('id') && currentClass.id === classId;
-                    });
-
-                    classes = classesList;
-
-                    classesService.deleteById(classId);
+                    classesService.deleteById(classId).then(
+                        function(result) {
+                            _.remove(classesList, {id: classId});
+                            classes = classesList;
+                        }
+                    );
                 },
 
                 deleteStudents: function(theClass, studentsToDelete) {
@@ -92,9 +92,7 @@
                 },
 
                 deleteStudent: function(theClass, studentId) {
-                    _.remove(theClass.students, function(currentStudent) {
-                        return currentStudent.hasOwnProperty('id') && currentStudent.id === studentId;
-                    });
+                    _.remove(theClass.students, {id: studentId});
                 },
 
                 save: function(theClass) {
@@ -106,25 +104,27 @@
                     exists = matchingClasses && matchingClasses.length > 0;
 
                     if (exists) {
-                        classes = _.map(classes, function(currentClass) {
-                            if (currentClass.id == theClass.id) {
-                                return theClass;
-                            }
-                            return currentClass;
-                        });
-
                         return classesService.update(classToSave).then(
                             function(persistedClass) {
                                 theClass.students = persistedClass.students;
+
+                                _.forEach(classes, function(currentClass, classIndex) {
+                                    if (currentClass.id == theClass.id) {
+                                        classes[classIndex] = theClass;
+                                    }
+                                });
+
                                 return theClass;
                             }
                         );
                     } else {
-                        classes.push(theClass);
                         return classesService.add(classToSave).then(
                             function(persistedClass) {
                                 theClass.id = persistedClass.id;
                                 theClass.students = persistedClass.students;
+
+                                classes.push(theClass);
+
                                 return theClass;
                             }
                         );
@@ -153,13 +153,8 @@
 
                         var theClass = getClassById(classId);
 
-                        var matchingStudent = _.find(theClass.students, function(student) {
-                            return student.user.id == userId;
-                        });
-
-                        if (matchingStudent) {
-                            matchingStudent.apps.push(persistedApp);
-                        }
+                        var matchingStudent = _.find(theClass.students, {'user.id': userId});
+                        matchingStudent && matchingStudent.apps.push(persistedApp);
 
                         return persistedApp;
                     });
