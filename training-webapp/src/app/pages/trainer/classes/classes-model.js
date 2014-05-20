@@ -22,6 +22,18 @@
                 return null;
             };
 
+            var findRemovedStudents = function(originalClass, newClass) {
+                var removedStudents = [];
+
+                _.forEach(originalClass.students, function(originalStudent) {
+                    if (!_.find(newClass.students, {id: originalStudent.id})) {
+                        removedStudents.push(originalStudent);
+                    }
+                });
+
+                return removedStudents;
+            };
+
             var model = {
                 classes: classes,
 
@@ -99,22 +111,40 @@
 
                     var classToSave = model.viewModelToDomainModel(theClass);
 
-                    var exists = false;
-                    var matchingClasses = _.where(classes, {id: theClass.id});
-                    exists = matchingClasses && matchingClasses.length > 0;
+                    var originalClass = _.find(classes, {id: theClass.id});
 
-                    if (exists) {
-                        return classesService.update(classToSave).then(
-                            function(persistedClass) {
-                                theClass.students = persistedClass.students;
+                    if (originalClass) {
+                        // So... this is kind of messy.
+                        // For an existing class, there might be students that were deleted.
+                        // First, delete the apps created for theses students.
+                        // Here we get all of these students (mathcing the current class with the original one),
+                        // and wait for the promises of deleting the apps of these students.
+                        var appsPromises = [];
 
-                                _.forEach(classes, function(currentClass, classIndex) {
-                                    if (currentClass.id == theClass.id) {
-                                        classes[classIndex] = theClass;
+                        var removedStudents = findRemovedStudents(originalClass, theClass);
+                        _.forEach(removedStudents, function(currentStudent) {
+                            _.forEach(currentStudent.apps, function(currentApp) {
+                                var promise = appsService.deleteApp(currentApp.ravelloId, currentStudent.user.id)
+                                appsPromises.push(promise);
+                            });
+                        });
+
+                        return $q.all(appsPromises).then(
+                            function(results) {
+                                // Continue to actually update the class only once the apps are deleted.
+                                return classesService.update(classToSave).then(
+                                    function(persistedClass) {
+                                        theClass.students = persistedClass.students;
+
+                                        _.forEach(classes, function(currentClass, classIndex) {
+                                            if (currentClass.id == theClass.id) {
+                                                classes[classIndex] = theClass;
+                                            }
+                                        });
+
+                                        return theClass;
                                     }
-                                });
-
-                                return theClass;
+                                );
                             }
                         );
                     } else {
@@ -153,7 +183,7 @@
 
                         var theClass = getClassById(classId);
 
-                        var matchingStudent = _.find(theClass.students, {'user.id': userId});
+                        var matchingStudent = _.find(theClass.students, {user: {id: userId}});
                         matchingStudent && matchingStudent.apps.push(persistedApp);
 
                         return persistedApp;
@@ -165,7 +195,7 @@
                         function(result) {
                             var theClass = getClassById(classId);
 
-                            var matchingStudent = _.find(theClass.students, {'user.id': userId});
+                            var matchingStudent = _.find(theClass.students, {user: {id: userId}});
                             matchingStudent && _.remove(matchingStudent.apps, {ravelloId: appId});
                         }
                     );

@@ -82,7 +82,7 @@ exports.deleteApp = function(request, response) {
         var ravelloUsername = user.ravelloCredentials.username;
         var ravelloPassword = user.ravelloCredentials.password;
 
-        appsService.deleteApp(appId, ravelloUsername, ravelloPassword).then(function(result) {
+        return appsService.deleteApp(appId, ravelloUsername, ravelloPassword).then(function(result) {
             classesDal.deleteStudentApp(studentId, appId).then(function(persistedClass) {
                 response.send(200);
             });
