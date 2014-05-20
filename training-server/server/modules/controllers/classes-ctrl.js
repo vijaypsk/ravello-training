@@ -14,6 +14,8 @@ var usersTrans = require('../trans/users-trans');
 
 var appsService = require('../services/apps-service');
 
+var classValidator = require('../validators/class-validator');
+
 /* --- Private functions --- */
 
 var matchClassWithApps = function(theClass, ravelloUsername, ravelloPassword) {
@@ -26,6 +28,22 @@ var matchClassWithApps = function(theClass, ravelloUsername, ravelloPassword) {
             });
         });
     }));
+};
+
+var validateClass = function(theClass) {
+    var validationStatuses = classValidator.validate(theClass);
+
+    if (!_.isEmpty(validationStatuses)) {
+        var failedValidations = _.pluck(_.filter(validationStatuses, {status: false}), 'message');
+
+        var finalMessage = _.reduce(failedValidations, function(sum, current) {
+            return sum += ", " + current.message;
+        });
+
+        return finalMessage;
+    }
+
+    return "";
 };
 
 /* --- Public functions --- */
@@ -77,6 +95,12 @@ exports.getAllClassApps = function(request, response) {
 exports.createClass = function(request, response) {
     var classData = request.body;
 
+    var finalValidationMessage = validateClass(classData);
+    if (finalValidationMessage != "") {
+        response.send(403, finalValidationMessage);
+        return;
+    }
+
     // We first have to save all of the students of this class separately, since we need a store
     // of users against which login will be made.
     q.all(_.map(classData.students, function(student) {
@@ -108,6 +132,12 @@ exports.updateClass = function(request, response) {
     var classId = request.params.classId;
     var classData = request.body;
     var classEntityData = classesTrans.dtoToEntity(classData);
+
+    var finalValidationMessage = validateClass(classEntityData);
+    if (finalValidationMessage != "") {
+        response.send(403, finalValidationMessage);
+        return;
+    }
 
     // 1st step is to delete the users for students that no longer exist in the new class data.
     classesDal.getClass(classId).then(
