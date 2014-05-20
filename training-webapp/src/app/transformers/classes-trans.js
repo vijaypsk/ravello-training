@@ -12,12 +12,12 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
                 entity.id = dto._id;
                 entity = _.omit(entity, '_id');
 
-                entity.students = _.map(entity.students, function(student) {
-                    return studentTrans.dtoToEntity(student);
+                entity.students = _.map(dto.students, function(studentDto) {
+                    return studentTrans.dtoToEntity(studentDto);
                 });
 
-                entity.startDate = Date.parse(entity.startDate);
-                entity.endDate = Date.parse(entity.endDate);
+                entity.startDate = new Date(dto.startDate);
+                entity.endDate = new Date(dto.endDate);
 
                 return entity;
 			},
@@ -25,18 +25,18 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
 			entityToDto: function(entity) {
                 var dto = _.cloneDeep(entity);
 
-                dto._id = dto.id;
+                dto._id = entity.id;
                 dto = _.omit(dto, 'id');
 
-                dto.students = _.map(dto.students, function(student) {
-                    return studentTrans.entityToDto(student);
+                dto.students = _.map(entity.students, function(studentEntity) {
+                    return studentTrans.entityToDto(studentEntity);
                 });
 
-                if (dto.startDate) {
-                    dto.startDate = dto.startDate.toString(dateUtil.dateFormat);
+                if (entity.startDate) {
+                    dto.startDate = entity.startDate.getTime();
                 }
-                if (dto.endDate) {
-                    dto.endDate = dto.endDate.toString(dateUtil.dateFormat);
+                if (entity.endDate) {
+                    dto.endDate = entity.endDate.getTime();
                 }
 
                 return dto;

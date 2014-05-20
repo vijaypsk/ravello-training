@@ -10,8 +10,8 @@ var usersTrans = require('./users-trans');
 exports.dtoToEntity = function(dto) {
     var entity = dto;
 
-    entity.startDate = Date.parse(entity.startDate);
-    entity.endDate = Date.parse(entity.endDate);
+    entity.startDate = new Date(dto.startDate);
+    entity.endDate = new Date(dto.endDate);
 
     return entity;
 };
@@ -20,10 +20,10 @@ exports.entityToDto = function(entityDocument) {
     var dto = entityDocument.toJSON();
 
     if (dto.startDate) {
-        dto.startDate = dto.startDate.toString(properties.dateFormat);
+        dto.startDate = dto.startDate.getTime();
     }
     if (dto.endDate) {
-        dto.endDate = dto.endDate.toString(properties.dateFormat);
+        dto.endDate = dto.endDate.getTime();
     }
 
     _.forEach(entityDocument.students, function(studentDocument) {

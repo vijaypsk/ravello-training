@@ -65,10 +65,6 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
             });
         };
 
-        $scope.initDates = function() {
-            $scope.dateFormat = dateUtil.dateFormat;
-        };
-
         $scope.initAppsColumns = function() {
             $scope.viewModel.appsColumns = [
                 {
@@ -86,7 +82,7 @@ angular.module('trng.trainer.training.classes').controller('singleClassMonitorCo
                 {
                     field: 'creationTime',
                     displayName: 'Creation Time',
-                    cellFilter: 'date:\'' + dateUtil.dateTimeFormat + '\''
+                    cellFilter: 'date:\'' + dateUtil.angular.dateTimeFormat + '\''
                 },
                 {
                     field: 'numOfRunningVms',

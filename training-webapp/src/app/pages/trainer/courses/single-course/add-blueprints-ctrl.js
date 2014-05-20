@@ -44,7 +44,7 @@ angular.module('trng.trainer.training.courses').controller('addBlueprintsControl
                  {
                      field: 'creationTime',
                      displayName: 'Creation time',
-                     cellFilter: 'date:\'' + dateUtil.dateTimeFormat + '\''
+                     cellFilter: 'date:\'' + dateUtil.angular.dateTimeFormat + '\''
                  },
                  {
                      field: 'owner',

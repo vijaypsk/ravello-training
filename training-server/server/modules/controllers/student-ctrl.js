@@ -94,6 +94,12 @@ exports.getStudentClass = function(request, response) {
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
+        if (!classEntity) {
+            logger.info("Could not find an active class for user [" + user.username + "]");
+            response.send(404, "You don't have a class that's taking place right now");
+            return;
+        }
+
         var studentEntity = classEntity.findStudentByUserId(userId);
         var dto = singleStudentTrans.entityToDto(studentEntity, classEntity);
         response.json(dto);
@@ -110,6 +116,12 @@ exports.getStudentClassApps = function(request, response) {
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
+        if (!classEntity) {
+            logger.info("Could not find an active class for user [" + user.username + "]");
+            response.send(404, "You don't have a class that's taking place right now");
+            return;
+        }
+
         var classData = classesTrans.entityToDto(classEntity);
         var studentData = classEntity.findStudentByUserId(userId);
 
@@ -156,6 +168,12 @@ exports.getAppVms = function(request, response) {
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
+        if (!classEntity) {
+            logger.info("Could not find an active class for user [" + user.username + "]");
+            response.send(404, "You don't have a class that's taking place right now");
+            return;
+        }
+
         var classData = classesTrans.entityToDto(classEntity);
         var studentData = classEntity.findStudentByUserId(userId);
 

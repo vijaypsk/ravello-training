@@ -46,9 +46,9 @@ angular.module('trng.trainer.training.classes').controller('singleClassEditContr
         };
 
         $scope.initDates = function() {
-            $scope.dateFormat = dateUtil.dateFormat;
-            $scope.timeFormat = dateUtil.timeFormat;
-            $scope.dateTimeFormat = dateUtil.dateTimeFormat;
+            $scope.dateFormat = dateUtil.angular.dateFormat;
+            $scope.timeFormat = dateUtil.angular.timeFormat;
+            $scope.dateTimeFormat = dateUtil.angular.dateTimeFormat;
         };
 
         $scope.initStudentsColumns = function () {
