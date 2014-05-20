@@ -1,6 +1,6 @@
 
 <div>
-    <div id="classAppsDiv" class="form-box">
+    <div id="classAppsDiv" class="form-box class-apps">
         <span class="block-title">Applications</span>
 
         <button id="createAppBtn" class="btn btn-default" ng-click="createApp()">
@@ -10,8 +10,8 @@
             <i class="fa fa-trash-o"></i> Delete app
         </button>
 
-        <div id="appsDataGridDiv">
-            <div id="appsDataGrid" ng-grid="viewModel.appsDataGrid"></div>
+        <div id="appsDataGridDiv" class="class-apps-data-grid-div">
+            <div id="appsDataGrid" class="class-apps-data-grid" ng-grid="viewModel.appsDataGrid"></div>
         </div>
     </div>
 

@@ -1,0 +1,12 @@
+
+.class-students-div {
+    background-color: #F7F7F7;
+}
+
+.class-students-div > span {
+    margin-bottom: 20px;
+}
+
+.students-data-grid {
+    height: 300px;
+}

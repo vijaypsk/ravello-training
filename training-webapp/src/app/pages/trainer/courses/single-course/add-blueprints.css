@@ -1,0 +1,13 @@
+
+.allBlueprintsPopup .modal-dialog {
+    width: 900px;
+}
+
+.allBlueprintsPopup .modal-content {
+    height: 750px;
+}
+
+.all-bps-data-grid {
+    min-height: 600px;
+    width: 100%;
+}

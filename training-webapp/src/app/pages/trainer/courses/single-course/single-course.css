@@ -1,0 +1,12 @@
+
+.trainer-course-blueprints {
+    background-color: #F7F7F7;
+}
+
+.trainer-course-blueprints > div:first-of-type {
+    margin-bottom: 20px;
+}
+
+.trainer-bps-data-grid {
+    height: 300px;
+}
