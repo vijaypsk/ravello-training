@@ -166,8 +166,14 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
 
             ClassesService.saveOrUpdate($scope.currentClass).then(
                 function(persistedClass) {
-//                    _.last($scope.currentClass.students).id = _.last(persistedClass.students).id;
-//                    $scope.currentClass = persistedClass;
+                    // IMPORTANT!!
+                    // This is a tricky part: this controller in fact is a child (in the scope hierarchy) of the
+                    // trainerSingleClassEditController. This means that $scope.currentClass here is in fact the very
+                    // same class edited in that trainerSingleClassEditController. When we navigate back to the state
+                    // of the single class edit, the controller and resolver WON'T be re-launched (because they are already
+                    // part of the scope hierarchy at this point), so the way to effect the edited class from the changes here
+                    // (i.e. the edited student), we have to actually change the $scope.currentClass, and do so without
+                    // breaking the reference. That's why we use merge here... :)
                     _.merge($scope.currentClass, persistedClass);
                     $state.go(StatesNames.trainer.training.singleClass.editClass.name, {classId: $scope.currentClass.id});
                 }
