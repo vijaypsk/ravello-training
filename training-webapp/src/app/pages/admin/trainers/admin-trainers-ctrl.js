@@ -82,11 +82,3 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
     }
 ]);
 
-var adminTrainerResolver = {
-    trainers: [
-        'AdminTrainerModel',
-        function(AdminTrainerModel) {
-            return _.cloneDeep(AdminTrainerModel.getAllTrainers());
-        }
-    ]
-};

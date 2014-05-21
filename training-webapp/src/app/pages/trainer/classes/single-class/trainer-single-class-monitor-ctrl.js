@@ -157,13 +157,3 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
         $scope.init();
     }
 ]);
-
-var singleClassMonitorResolver = {
-    classApps: [
-        'currentClass',
-        'ClassModel',
-        function(currentClass, ClassModel) {
-            return ClassModel.getClassApps(currentClass.id);
-        }
-    ]
-};
