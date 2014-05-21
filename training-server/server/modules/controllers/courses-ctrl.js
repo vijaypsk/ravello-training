@@ -87,7 +87,10 @@ exports.updateCourse = function(request, response) {
     var courseData = request.body;
 
     coursesDal.updateCourse(courseId, courseData).then(function(courseEntity) {
-        response.send(200);
+        coursesDal.getCourse(courseId).then(function(result) {
+            var dto = coursesTrans.entityToDto(result);
+            response.json(dto);
+        });
     }).fail(function(error) {
         var message = "Could not update course";
         logger.error(error, message);
