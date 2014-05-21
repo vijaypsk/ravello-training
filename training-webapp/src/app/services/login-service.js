@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('trng.services').factory('trng.services.LoginService', [
-    'trng.proxies.LoginProxy',
-	function(loginProxy) {
+angular.module('trng.services').factory('LoginService', [
+    'LoginProxy',
+	function(LoginProxy) {
 
 		var service = {
             login: function(username, password) {
-                return loginProxy.login(username, password).then(
+                return LoginProxy.login(username, password).then(
                     function(result) {
                         var dto = result.data;
 
@@ -21,4 +21,5 @@ angular.module('trng.services').factory('trng.services.LoginService', [
         };
 		
 		return service;
-}]);
+    }
+]);

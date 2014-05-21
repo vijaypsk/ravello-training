@@ -1,16 +1,16 @@
 
 'use strict';
 
-angular.module('trng.login').factory('loginModel', [
+angular.module('trng.login').factory('LoginModel', [
     '$state',
     '$cookieStore',
-    'trng.services.LoginService',
-    function($state, $cookieStore, loginService) {
+    'LoginService',
+    function($state, $cookieStore, LoginService) {
         var model = {
             user: null,
 
             login: function(username, password) {
-                return loginService.login(username, password).then(function(result) {
+                return LoginService.login(username, password).then(function(result) {
                     if (result.role) {
                         model.user = result;
 

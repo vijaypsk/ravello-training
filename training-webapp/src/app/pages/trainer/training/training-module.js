@@ -2,13 +2,18 @@
 
 (function(angular) {
     angular.module('trng.trainer.training.main', [
-        'ui.router', 'trng.trainer.training.courses', 'trng.trainer.training.classes']).config([
+        'ui.router',
+        'trng.trainer.training.courses',
+        'trng.trainer.training.classes'
+    ]);
+
+    angular.module('trng.trainer.training.main').config([
         '$urlRouterProvider',
         '$stateProvider',
         function($urlRouterProvider, $stateProvider) {
 
-            $stateProvider.
-                state('trainer.training.classes', {
+            $stateProvider
+                .state('trainer.training.classes', {
                     url: '/classes',
                     templateUrl: 'app/pages/trainer/classes/trainer-classes.html',
                     controller: 'trainerClassesController',

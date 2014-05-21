@@ -8,12 +8,12 @@ angular.module('trng.student').controller('studentSingleAppController', [
     '$window',
     '$timeout',
     '$dialogs',
-    'app.config',
-    'trng.services.AppsService',
-    'trng.services.StudentsService',
+    'CommonConstants',
+    'AppsService',
+    'StudentsService',
     'student',
     'currentApp',
-    function ($log, $scope, $state, $modal, $window, $timeout, $dialogs, config, appsSerivce, studentsService,
+    function ($log, $scope, $state, $modal, $window, $timeout, $dialogs, CommonConstants, AppsService, StudentsService,
               student, currentApp) {
 
         $scope.init = function() {
@@ -102,7 +102,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
 
         $scope.startVm = function() {
             _.forEach($scope.selectedVms, function(vm) {
-                appsSerivce.startVm(currentApp.id, vm.id).then(function(result) {
+                AppsService.startVm(currentApp.id, vm.id).then(function(result) {
                     if (result.status === 202) {
                         $scope.refreshState();
                     } else {
@@ -116,7 +116,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
             var dialog = $dialogs.confirm("Stop VMs", "Are you sure you want to stop the VMs?");
             dialog.result.then(function(result) {
                 _.forEach($scope.selectedVms, function(vm) {
-                    appsSerivce.stopVm(currentApp.id, vm.id).then(function(result) {
+                    AppsService.stopVm(currentApp.id, vm.id).then(function(result) {
                         if (result.status === 202) {
                             $scope.refreshState();
                         } else {
@@ -131,7 +131,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
             var dialog = $dialogs.confirm("Restart VMs", "Are you sure you want to restart the VMs?");
             dialog.result.then(function(result) {
                 _.forEach($scope.selectedVms, function(vm) {
-                    appsSerivce.restartVm(currentApp.id, vm.id).then(function(result) {
+                    AppsService.restartVm(currentApp.id, vm.id).then(function(result) {
                         if (result.status === 202) {
                             $scope.refreshState();
                         } else {
@@ -144,7 +144,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
 
         $scope.consoleVm = function(vm) {
             var vmId = vm.getProperty('id');
-            appsSerivce.consoleVm($scope.currentApp.id, vmId).then(function(result) {
+            AppsService.consoleVm($scope.currentApp.id, vmId).then(function(result) {
                 if (result.status === 200) {
                     var vncUrl = result.data;
                     $window.open(vncUrl);
@@ -180,7 +180,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
         };
 
         $scope.refreshState = function (track) {
-            return studentsService.getStudentClassSingleApp(student._id, student['userClass']['_id'],
+            return StudentsService.getStudentClassSingleApp(student._id, student['userClass']['_id'],
                     $scope.currentApp.id, track).
                 then(function (result) {
                     _.forEach($scope.currentApp.vms, function(vm) {
@@ -201,7 +201,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
                     $scope.refreshState(false);
                     $scope.autoRefresh();
                 }
-            }, config.autoRefreshDuration);
+            }, CommonConstants.autoRefreshDuration);
         };
 
         $scope.back = function() {
@@ -221,8 +221,8 @@ angular.module('trng.student').controller('studentSingleAppController', [
 
 var studentAppResolver = {
     currentApp: [
-        '$q', '$stateParams', 'trng.services.StudentsService', 'student',
-        function($q, $stateParams, studentsService, student) {
+        '$q', '$stateParams', 'StudentsService', 'student',
+        function($q, $stateParams, StudentsService, student) {
             var appId = $stateParams.appId;
 
             if (!appId || !student) {
@@ -231,7 +231,7 @@ var studentAppResolver = {
                 return deferred.promise;
             }
 
-            return studentsService.getStudentClassSingleApp(student._id, student.userClass._id, appId);
+            return StudentsService.getStudentClassSingleApp(student._id, student.userClass._id, appId);
         }
     ]
 };

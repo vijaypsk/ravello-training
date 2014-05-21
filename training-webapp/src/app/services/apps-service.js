@@ -1,42 +1,43 @@
 'use strict';
 
-angular.module('trng.services').factory('trng.services.AppsService', [
-	'trng.proxies.AppsProxy',
-	function(appsProxy) {
+angular.module('trng.services').factory('AppsService', [
+	'AppsProxy',
+	function(AppsProxy) {
 
 		var service = {
             createApp: function(appName, appDescription, blueprintId, userId) {
-                return appsProxy.createApp(appName, appDescription, blueprintId, userId);
+                return AppsProxy.createApp(appName, appDescription, blueprintId, userId);
             },
 
             deleteApp: function(appId, userId) {
-                return appsProxy.deleteApp(appId, userId);
+                return AppsProxy.deleteApp(appId, userId);
             },
 
             startApp: function(appId) {
-                return appsProxy.startApp(appId);
+                return AppsProxy.startApp(appId);
             },
 
             stopApp: function(appId) {
-                return appsProxy.stopApp(appId);
+                return AppsProxy.stopApp(appId);
             },
 
             startVm: function(appId, vmId) {
-                return appsProxy.startVm(appId, vmId);
+                return AppsProxy.startVm(appId, vmId);
             },
 
             stopVm: function(appId, vmId) {
-                return appsProxy.stopVm(appId, vmId);
+                return AppsProxy.stopVm(appId, vmId);
             },
 
             restartVm: function(appId, vmId) {
-                return appsProxy.restartVm(appId, vmId);
+                return AppsProxy.restartVm(appId, vmId);
             },
 
             consoleVm: function(appId, vmId) {
-                return appsProxy.consoleVm(appId, vmId);
+                return AppsProxy.consoleVm(appId, vmId);
             }
         };
 		
 		return service;
-}]);
+    }
+]);

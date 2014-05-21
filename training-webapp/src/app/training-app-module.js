@@ -2,60 +2,57 @@
 
 (function (angular) {
     angular.module('trng.app', [
-            'trng.config',
-            'trng.login',
-            'trng.admin',
-            'trng.trainer',
-            'trng.student',
-            'trng.error',
-            'ui.router',
-            'ngAnimate',
-            'ajoslin.promise-tracker',
-            'cgBusy',
-            'angular-growl',
-            'ngSanitize',
-            'dialogs'
-        ]).config([
-            '$urlRouterProvider',
-            '$stateProvider',
-            '$httpProvider',
-            'growlProvider',
-            'app.config',
-            function ($urlRouterProvider, $stateProvider, $httpProvider, growlProvider, config) {
+        'trng.config',
+        'trng.login',
+        'trng.admin',
+        'trng.trainer',
+        'trng.student',
+        'trng.interceptors',
+        'trng.trackers',
+        'ui.router',
+        'ngAnimate',
+        'ajoslin.promise-tracker',
+        'cgBusy',
+        'angular-growl',
+        'ngSanitize',
+        'dialogs'
+    ]);
 
-                // Routes configuration.
+    angular.module('trng.app').config([
+        '$urlRouterProvider',
+        '$stateProvider',
+        '$httpProvider',
+        'growlProvider',
+        'CommonConstants',
+        function ($urlRouterProvider, $stateProvider, $httpProvider, growlProvider, CommonConstants) {
 
-                $stateProvider.
-                    state('login', {
-                        url: '/login',
-                        templateUrl: 'app/pages/login/login.html',
-                        controller: 'loginController'
-                    }).state('admin', {
-                        url: '/admin',
-                        templateUrl: 'app/pages/admin/admin.html'
-                    }).state('trainer', {
-                        url: '/trainer',
-                        templateUrl: 'app/pages/trainer/trainer.html'
-                    }).state('student', {
-                        url: '/student',
-                        templateUrl: 'app/pages/student/student.html',
-                        controller: 'studentController',
-                        resolve: studentResolver
-                    });
+            // Routes configuration.
 
-                // HTTP configurations.
+            $stateProvider.
+                state('login', {
+                    url: '/login',
+                    templateUrl: 'app/pages/login/login.html',
+                    controller: 'loginController'
+                }).state('admin', {
+                    url: '/admin',
+                    templateUrl: 'app/pages/admin/admin.html'
+                }).state('trainer', {
+                    url: '/trainer',
+                    templateUrl: 'app/pages/trainer/trainer.html'
+                }).state('student', {
+                    url: '/student',
+                    templateUrl: 'app/pages/student/student.html',
+                    controller: 'studentController',
+                    resolve: studentResolver
+                });
 
-                $httpProvider.defaults.useXDomain = true;
+            // HTTP configurations.
 
-                // Growl configurations.
+            $httpProvider.defaults.useXDomain = true;
 
-                growlProvider.globalTimeToLive(config.messagesCloseTime);
-            }
-        ]).factory('trainingTracker', [
-            'promiseTracker',
-            function(promiseTracker) {
-                var trainingTracker = promiseTracker('trainingTracker');
-                return trainingTracker;
-            }
-        ]);
+            // Growl configurations.
+
+            growlProvider.globalTimeToLive(CommonConstants.messagesCloseTime);
+        }
+    ]);
 })(angular);

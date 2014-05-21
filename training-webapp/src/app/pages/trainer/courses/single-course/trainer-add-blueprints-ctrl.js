@@ -4,79 +4,79 @@ angular.module('trng.trainer.training.courses').controller('trainerAddBlueprints
     '$scope',
     '$log',
     '$modalInstance',
-    'trng.common.utils.DateUtil',
+    'DateUtil',
     'allBlueprints',
     'courseBlueprints',
-     function($scope, $log, $modalInstance, dateUtil, allBlueprints, courseBlueprints) {
+    function ($scope, $log, $modalInstance, DateUtil, allBlueprints, courseBlueprints) {
 
-         $scope.init = function() {
-             $scope.initBlueprints();
-             $scope.initBlueprintsDataGrid();
-         };
+        $scope.init = function () {
+            $scope.initBlueprints();
+            $scope.initBlueprintsDataGrid();
+        };
 
-         $scope.initBlueprints = function() {
-             $scope.allBlueprints = _.cloneDeep(allBlueprints);
+        $scope.initBlueprints = function () {
+            $scope.allBlueprints = _.cloneDeep(allBlueprints);
 
-             $scope.courseBlueprints = [];
+            $scope.courseBlueprints = [];
 
-             _.forEach(courseBlueprints, function(selectedBp) {
-                var matchingBp = _.find($scope.allBlueprints, function(bp) {
+            _.forEach(courseBlueprints, function (selectedBp) {
+                var matchingBp = _.find($scope.allBlueprints, function (bp) {
                     return (bp && selectedBp && bp.hasOwnProperty('id') && selectedBp.hasOwnProperty('id') &&
                         bp.id === selectedBp.id);
                 });
 
-                 if (matchingBp) {
-                     $scope.courseBlueprints.push(matchingBp);
-                 }
-             });
-         };
+                if (matchingBp) {
+                    $scope.courseBlueprints.push(matchingBp);
+                }
+            });
+        };
 
-         $scope.initBlueprintsColumns = function () {
-             $scope.allBlueprintsColumns = [
-                 {
-                     field: 'name',
-                     displayName: 'name'
-                 },
-                 {
-                     field: 'description',
-                     displayName: 'description'
-                 },
-                 {
-                     field: 'creationTime',
-                     displayName: 'Creation time',
-                     cellFilter: 'date:\'' + dateUtil.angular.dateTimeFormat + '\''
-                 },
-                 {
-                     field: 'owner',
-                     displayName: 'owner'
-                 }
-             ];
-         };
+        $scope.initBlueprintsColumns = function () {
+            $scope.allBlueprintsColumns = [
+                {
+                    field: 'name',
+                    displayName: 'name'
+                },
+                {
+                    field: 'description',
+                    displayName: 'description'
+                },
+                {
+                    field: 'creationTime',
+                    displayName: 'Creation time',
+                    cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
+                },
+                {
+                    field: 'owner',
+                    displayName: 'owner'
+                }
+            ];
+        };
 
-         $scope.initBlueprintsDataGrid = function () {
-             $scope.initBlueprintsColumns();
-             $scope.allBlueprintsDataGrid = {
-                 data: 'allBlueprints',
-                 columnDefs: $scope.allBlueprintsColumns,
-                 selectedItems: $scope.courseBlueprints,
-                 showSelectionCheckbox: true,
-                 selectWithCheckboxOnly: true,
-                 enableColumnResize: true,
-                 filterOptions: {
-                     filterText: ''
-                 },
-                 showFilter: true
-             };
-         };
+        $scope.initBlueprintsDataGrid = function () {
+            $scope.initBlueprintsColumns();
+            $scope.allBlueprintsDataGrid = {
+                data: 'allBlueprints',
+                columnDefs: $scope.allBlueprintsColumns,
+                selectedItems: $scope.courseBlueprints,
+                showSelectionCheckbox: true,
+                selectWithCheckboxOnly: true,
+                enableColumnResize: true,
+                filterOptions: {
+                    filterText: ''
+                },
+                showFilter: true
+            };
+        };
 
-         $scope.ok = function() {
-             $modalInstance.close($scope.courseBlueprints);
-         };
+        $scope.ok = function () {
+            $modalInstance.close($scope.courseBlueprints);
+        };
 
-         $scope.cancel = function() {
-             $modalInstance.dismiss('cancel');
-         };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
 
-         $scope.init();
-     }
-    ]);
+        $scope.init();
+    }
+]);

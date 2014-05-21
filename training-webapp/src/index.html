@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html cg-busy="{tracker:'trainingTracker'}">
+<html cg-busy="{tracker:'TrainingMainTracker'}">
 <head>
 	<meta charset="UTF-8">
 	<title>Ravello Training</title>
@@ -71,11 +71,17 @@
     <script src='app/training-app-module.js'></script>
     <script src='app/training-app-ctrl.js'></script>
 
-    <script src='app/common/config.js'></script>
-    <script src='app/common/error-handler.js'></script>
+    <script src='app/common/config/config-module.js'></script>
+    <script src='app/common/config/common-constants.js'></script>
+
+    <script src='app/common/interceptors/interceptors-module.js'></script>
+    <script src='app/common/interceptors/http-general-interceptor.js'></script>
 
     <script src='app/common/util/util-module.js'></script>
     <script src='app/common/util/date-util.js'></script>
+
+    <script src='app/common/trackers/tracker-module.js'></script>
+    <script src='app/common/trackers/main-tracker.js'></script>
 
     <script src='app/common/directives/common-directives.js'></script>
     <script src='app/common/directives/save-and-cancel/save-and-cancel-directive.js'></script>
@@ -113,7 +119,7 @@
     <script src='app/services/apps-service.js'></script>
     <script src='app/services/trainers-service.js'></script>
 
-    <script src='app/pages/login/login.js'></script>
+    <script src='app/pages/login/login-module.js'></script>
     <script src='app/pages/login/login-ctrl.js'></script>
     <script src='app/pages/login/login-model.js'></script>
 

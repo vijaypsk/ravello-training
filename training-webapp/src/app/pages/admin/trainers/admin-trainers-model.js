@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('trng.admin.trainers').factory('trng.admin.trainers.trainersModel', [
+angular.module('trng.admin.trainers').factory('AdminTrainerModel', [
     '$q',
-    'trng.services.TrainersService',
-    function($q, trainersService) {
+    'TrainersService',
+    function($q, TrainersService) {
 
         var trainers = [];
 
@@ -11,7 +11,7 @@ angular.module('trng.admin.trainers').factory('trng.admin.trainers.trainersModel
             trainers: trainers,
 
             getAllTrainers: function() {
-                return trainersService.getAllTrainers().then(function(entities) {
+                return TrainersService.getAllTrainers().then(function(entities) {
                     trainers = _.map(entities, function(currentEntity) {
                         return _.cloneDeep(currentEntity);
                     });
@@ -27,9 +27,9 @@ angular.module('trng.admin.trainers').factory('trng.admin.trainers.trainersModel
 
                 var promise;
                 if (existingTrainer) {
-                    promise = trainersService.updateTrainer(trainer.id, trainer);
+                    promise = TrainersService.updateTrainer(trainer.id, trainer);
                 } else {
-                    promise = trainersService.saveTrainer(trainer);
+                    promise = TrainersService.saveTrainer(trainer);
                 }
 
                 promise.then(function(persistedTrainer) {
@@ -49,7 +49,7 @@ angular.module('trng.admin.trainers').factory('trng.admin.trainers.trainersModel
             },
 
             deleteTrainer: function(trainerId) {
-                return trainersService.deleteTrainer(trainerId).then(function(result) {
+                return TrainersService.deleteTrainer(trainerId).then(function(result) {
                     var removedTrainers = _.remove(trainers, function(currentTrainer) {
                         return (currentTrainer && currentTrainer.id == trainerId);
                     });

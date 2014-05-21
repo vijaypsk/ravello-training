@@ -1,27 +1,27 @@
 'use strict';
 
-angular.module('trng.proxies').factory('trng.proxies.StudentsProxy', [
+angular.module('trng.proxies').factory('StudentsProxy', [
     '$http',
     '$q',
-    'app.config',
-    'trainingTracker',
-    function($http, $q, config, trainingTracker) {
+    'CommonConstants',
+    'TrainingMainTracker',
+    function($http, $q, CommonConstants, TrainingMainTracker) {
         var service = {
             getStudent: function(studentId) {
-                var promise = $http.get(config.baseUrl + '/rest/students/' + studentId);
-                trainingTracker.addPromise(promise);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' + studentId);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             getStudentClass: function(studentId, classId) {
-                var promise = $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId);
-                trainingTracker.addPromise(promise);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' + studentId + '/class/' + classId);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             getStudentClassApps: function(studentId, classId) {
-                var promise = $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps');
-                trainingTracker.addPromise(promise);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps');
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
@@ -31,10 +31,10 @@ angular.module('trng.proxies').factory('trng.proxies.StudentsProxy', [
                     track = true;
                 }
 
-                var promise = $http.get(config.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps/' + appId);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps/' + appId);
 
                 if (track) {
-                    trainingTracker.addPromise(promise);
+                    TrainingMainTracker.addPromise(promise);
                 }
 
                 return promise;

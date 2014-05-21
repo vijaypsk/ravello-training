@@ -1,9 +1,8 @@
 'use strict';
 
-angular.module('trng.transformers').factory('trng.transformers.ClassesTransformer', [
-	'trng.transformers.TrainerStudentsTransformer',
-	'trng.common.utils.DateUtil',
-	function(studentTrans, dateUtil) {
+angular.module('trng.transformers').factory('ClassesTransformer', [
+	'TrainerStudentsTransformer',
+	function(studentTrans) {
 
         var service = {
 			dtoToEntity: function(dto) {
@@ -44,4 +43,5 @@ angular.module('trng.transformers').factory('trng.transformers.ClassesTransforme
 		};
 		
 		return service;
-}]);
+    }
+]);

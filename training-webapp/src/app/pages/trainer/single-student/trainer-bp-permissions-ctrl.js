@@ -1,7 +1,10 @@
 'use strict';
 
-angular.module('trng.trainer.students').controller('trainerBpPermissionsController',
-    ['$scope', '$log', '$modalInstance', 'bpPermissions',
+angular.module('trng.trainer.students').controller('trainerBpPermissionsController', [
+    '$scope',
+    '$log',
+    '$modalInstance',
+    'bpPermissions',
     function($scope, $log, $modalInstance, bpPermissions) {
 
         $scope.init = function() {

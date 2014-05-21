@@ -1,18 +1,18 @@
 'use strict';
 
-angular.module('trng.transformers').factory('trng.transformers.StudentTransformer', [
-    'trng.common.utils.DateUtil',
-    function(dateUtil) {
+angular.module('trng.transformers').factory('StudentTransformer', [
+    'DateUtil',
+    function(DateUtil) {
 
         var service = {
 			dtoToEntity: function(dto) {
 		        var entity = _.cloneDeep(dto);
 
                 if (dto.userClass.startDate) {
-                    entity.userClass.startDate = new Date(dto.userClass.startDate).toString(dateUtil.dateJs.dateTimeFormat);
+                    entity.userClass.startDate = new Date(dto.userClass.startDate).toString(DateUtil.dateJs.dateTimeFormat);
                 }
                 if (dto.userClass.endDate) {
-                    entity.userClass.endDate = new Date(dto.userClass.endDate).toString(dateUtil.dateJs.dateTimeFormat);
+                    entity.userClass.endDate = new Date(dto.userClass.endDate).toString(DateUtil.dateJs.dateTimeFormat);
                 }
 
                 return entity;
@@ -33,4 +33,5 @@ angular.module('trng.transformers').factory('trng.transformers.StudentTransforme
 		};
 		
 		return service;
-}]);
+    }
+]);

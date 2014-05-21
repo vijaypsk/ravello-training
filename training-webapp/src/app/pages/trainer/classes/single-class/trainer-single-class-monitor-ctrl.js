@@ -9,11 +9,11 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
     '$state',
     'growl',
     '$dialogs',
-    'trng.common.utils.DateUtil',
-    'trng.trainer.training.classes.ClassModel',
+    'DateUtil',
+    'ClassModel',
     'classApps',
     'currentClass',
-    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, dateUtil, classesModel, classApps, currentClass) {
+    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, DateUtil, ClassModel, classApps, currentClass) {
 
         $scope.init = function () {
             $scope.viewModel = {
@@ -82,7 +82,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                 {
                     field: 'creationTime',
                     displayName: 'Creation Time',
-                    cellFilter: 'date:\'' + dateUtil.angular.dateTimeFormat + '\''
+                    cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
                 },
                 {
                     field: 'numOfRunningVms',
@@ -117,7 +117,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                     ' for class ' + $scope.currentClass.name;
 
                 if (!app.creationTime) {
-                    classesModel.createAppForStudent(currentClass.id, name, description, app.blueprint.id, app.student.user.id).then(
+                    ClassModel.createAppForStudent(currentClass.id, name, description, app.blueprint.id, app.student.user.id).then(
                         function(result) {
                             _.assign(app, result);
                         }
@@ -135,11 +135,11 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                 dialog.result.then(
                     function() {
                         $q.all(_.map($scope.viewModel.selectedApps, function(app) {
-                            return app.creationTime && classesModel.deleteAppForStudent(
+                            return app.creationTime && ClassModel.deleteAppForStudent(
                                     app.ravelloId, $scope.currentClass.id, app.student.user.id);
                         })).then(
                             function(result) {
-                                classesModel.getClassApps($scope.currentClass.id).then(function(result) {
+                                ClassModel.getClassApps($scope.currentClass.id).then(function(result) {
                                     classApps = result;
                                     $scope.initData();
                                 });
@@ -161,9 +161,9 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 var singleClassMonitorResolver = {
     classApps: [
         'currentClass',
-        'trng.trainer.training.classes.ClassModel',
-        function(currentClass, classModel) {
-            return classModel.getClassApps(currentClass.id);
+        'ClassModel',
+        function(currentClass, ClassModel) {
+            return ClassModel.getClassApps(currentClass.id);
         }
     ]
 };

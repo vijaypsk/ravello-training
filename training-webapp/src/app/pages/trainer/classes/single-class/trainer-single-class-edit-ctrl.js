@@ -9,14 +9,14 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
     '$log',
     '$window',
     '$dialogs',
-    'trng.trainer.training.classes.ClassModel',
-    'trng.services.ClassesService',
-    'trng.trainer.training.courses.CourseModel',
-    'trng.common.utils.DateUtil',
+    'ClassModel',
+    'ClassesService',
+    'CourseModel',
+    'DateUtil',
     'currentClass',
     'courses',
-    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, classModel, classesService,
-              courseModel, dateUtil, currentClass, courses) {
+    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, ClassModel, ClassesService,
+              CourseModel, DateUtil, currentClass, courses) {
 
         $scope.init = function () {
             $scope.apps = [];
@@ -46,9 +46,9 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
         };
 
         $scope.initDates = function() {
-            $scope.dateFormat = dateUtil.angular.dateFormat;
-            $scope.timeFormat = dateUtil.angular.timeFormat;
-            $scope.dateTimeFormat = dateUtil.angular.dateTimeFormat;
+            $scope.dateFormat = DateUtil.angular.dateFormat;
+            $scope.timeFormat = DateUtil.angular.timeFormat;
+            $scope.dateTimeFormat = DateUtil.angular.dateTimeFormat;
         };
 
         $scope.initStudentsColumns = function () {
@@ -100,12 +100,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
             var dialog = $dialogs.confirm("Delete student", "Are you sure you want to delete the student?");
             dialog.result.then(function(result) {
                 var studentId = studentToDelete.getProperty('id');
-                classModel.deleteStudent($scope.currentClass, studentId);
+                ClassModel.deleteStudent($scope.currentClass, studentId);
             });
         };
 
         $scope.saveClass = function() {
-            return classModel.save($scope.currentClass).then(
+            return ClassModel.save($scope.currentClass).then(
                 function(result) {
                     $state.go("trainer.training.classes");
                 }
@@ -126,8 +126,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 
 
 var singleClassEditResolver = {
-    currentClass: ['$q', '$stateParams', 'trng.trainer.training.classes.ClassModel',
-        function($q, $stateParams, classModel) {
+    currentClass: ['$q', '$stateParams', 'ClassModel',
+        function($q, $stateParams, ClassModel) {
             var classId = $stateParams['classId'];
 
             if (!classId) {
@@ -136,15 +136,15 @@ var singleClassEditResolver = {
                 return deferred.promise;
             }
 
-            return classModel.getClassById(classId).then(function(result) {
+            return ClassModel.getClassById(classId).then(function(result) {
                 return _.cloneDeep(result);
             });
         }
     ],
 
-    courses: ['trng.trainer.training.courses.CourseModel',
-        function(courseModel) {
-            return courseModel.getAllCourses();
+    courses: ['CourseModel',
+        function(CourseModel) {
+            return CourseModel.getAllCourses();
         }
     ]
 };

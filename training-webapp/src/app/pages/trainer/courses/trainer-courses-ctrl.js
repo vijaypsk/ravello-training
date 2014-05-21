@@ -6,9 +6,9 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
     '$state',
     '$log',
     '$dialogs',
-    'trng.trainer.training.courses.CourseModel',
+    'CourseModel',
     'courses',
-    function ($scope, $state, $log, $dialogs,  courseModel, courses) {
+    function ($scope, $state, $log, $dialogs,  CourseModel, courses) {
 
         $scope.init = function() {
             $scope.initCourses();
@@ -69,7 +69,7 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
             var dialog = $dialogs.confirm("Delete courses", "Are you sure you want to delete the courses?");
             dialog.result.then(function(result) {
                 var courseId = courseToDelete.getProperty('id');
-                courseModel.deleteCourseById($scope.courses, courseId);
+                CourseModel.deleteCourseById($scope.courses, courseId);
             });
         };
 
@@ -77,7 +77,7 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
             var dialog = $dialogs.confirm("Delete course", "Are you sure you want to delete the course?");
             dialog.result.then(function(result) {
                 _.forEach($scope.selectedCourses, function(currentCourse) {
-                    courseModel.deleteCourseById($scope.courses, currentCourse.id);
+                    CourseModel.deleteCourseById($scope.courses, currentCourse.id);
                 });
             });
         };
@@ -87,10 +87,13 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
 ]);
 
 var coursesResolver = {
-    courses: ['$q', 'trng.trainer.training.courses.CourseModel', function($q, courseModel) {
-        return courseModel.getAllCourses().
-            then(function(result) {
-                return _.cloneDeep(result);
-            });
-    }]
+    courses: [
+        '$q', 'CourseModel',
+        function($q, CourseModel) {
+            return CourseModel.getAllCourses().
+                then(function(result) {
+                    return _.cloneDeep(result);
+                });
+        }
+    ]
 };

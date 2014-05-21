@@ -9,11 +9,11 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
     '$modal',
     '$window',
     'growl',
-    'trng.trainer.training.classes.ClassModel',
-    'trng.trainer.students.StudentModel',
+    'ClassModel',
+    'StudentModel',
     'currentStudent',
     'currentClass',
-    function ($scope, $state, $stateParams, $log, $modal, $window, growl, classModel, studentModel, currentStudent, currentClass) {
+    function ($scope, $state, $stateParams, $log, $modal, $window, growl, ClassModel, StudentModel, currentStudent, currentClass) {
 
         $scope.init = function () {
             $scope.currentStudent = currentStudent;
@@ -163,7 +163,7 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
                 $scope.currentClass.students.push(currentStudent);
             }
 
-            classModel.save($scope.currentClass).then(
+            ClassModel.save($scope.currentClass).then(
                 function(persistedClass) {
                     // Also notice that if the student is a new one, then the student object held in the $scope
                     // has no id field. After the save, we need to assign the $scope student with the
@@ -204,14 +204,14 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
 
 var singleStudentResolver = {
     currentStudent: [
-        '$stateParams', 'trng.trainer.students.StudentModel', 'currentClass',
-        function($stateParams, studentModel, currentClass) {
+        '$stateParams', 'StudentModel', 'currentClass',
+        function($stateParams, StudentModel, currentClass) {
             var studentId = $stateParams.studentId;
 
             if (studentId) {
-                return studentModel.getStudent(currentClass, studentId);
+                return StudentModel.getStudent(currentClass, studentId);
             } else {
-                return studentModel.createNewStudent(currentClass);
+                return StudentModel.createNewStudent(currentClass);
             }
         }
     ]

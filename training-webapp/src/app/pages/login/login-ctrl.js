@@ -3,8 +3,8 @@
 angular.module('trng.login').controller('loginController', [
     '$scope',
     '$timeout',
-    'loginModel',
-    function($scope, $timeout, loginModel) {
+    'LoginModel',
+    function($scope, $timeout, LoginModel) {
         $scope.init = function() {
             $scope.loginErrorMessages = [];
             $scope.initAutofillHandlers();
@@ -36,7 +36,7 @@ angular.module('trng.login').controller('loginController', [
         };
 
         $scope.login = function() {
-            loginModel.login($scope.username, $scope.password).then(function(result) {
+            LoginModel.login($scope.username, $scope.password).then(function(result) {
                 $scope.loginErrorMessages = [];
             }).catch(function(error) {
                 $scope.loginErrorMessages = [];

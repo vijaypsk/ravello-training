@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('trng.transformers').factory('trng.transformers.AppsTransformer', [
+angular.module('trng.transformers').factory('AppsTransformer', [
 	function() {
 
         var service = {
@@ -16,4 +16,5 @@ angular.module('trng.transformers').factory('trng.transformers.AppsTransformer',
 		};
 		
 		return service;
-}]);
+    }
+]);

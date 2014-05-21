@@ -2,10 +2,10 @@
 
 var studentResolver = {
     student: [
-        'trng.services.StudentsService',
-        'loginModel',
-        function(studentsService, loginModel) {
-            return studentsService.getStudent(loginModel.user.id);
+        'StudentsService',
+        'LoginModel',
+        function(StudentsService, LoginModel) {
+            return StudentsService.getStudent(LoginModel.user.id);
         }
     ]
 };

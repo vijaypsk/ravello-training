@@ -5,15 +5,15 @@ angular.module('trng.app').controller('MainController', [
     '$cookieStore',
     '$state',
     '$dialogs',
-    'loginModel',
-    function ($scope, $cookieStore, $state, $dialogs, loginModel) {
+    'LoginModel',
+    function ($scope, $cookieStore, $state, $dialogs, LoginModel) {
         $scope.initApp = function() {
             var userAuthData = $cookieStore.get('userAuthData');
 
             if (userAuthData && userAuthData.hasOwnProperty('username') &&
                 userAuthData.hasOwnProperty('password')) {
 
-                loginModel.login(userAuthData.username, userAuthData.password).catch(
+                LoginModel.login(userAuthData.username, userAuthData.password).catch(
                     function(error) {
                         $state.go("login");
                     }

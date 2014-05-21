@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('trng.proxies').factory('trng.proxies.AppsProxy', [
+angular.module('trng.proxies').factory('AppsProxy', [
     '$http',
     '$q',
-    'app.config',
-    'trainingTracker',
-    function($http, $q, config, trainingTracker) {
+    'CommonConstants',
+    'TrainingMainTracker',
+    function($http, $q, CommonConstants, TrainingMainTracker) {
         var service = {
             createApp: function(appName, appDescription, blueprintId, userId) {
                 var dto = {
@@ -15,8 +15,8 @@ angular.module('trng.proxies').factory('trng.proxies.AppsProxy', [
                     userId: userId
                 };
 
-                var promise = $http.post(config.baseUrl + '/rest/applications', dto);
-                trainingTracker.addPromise(promise);
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications', dto);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
@@ -27,44 +27,44 @@ angular.module('trng.proxies').factory('trng.proxies.AppsProxy', [
                     }
                 };
 
-                var promise = $http.delete(config.baseUrl + '/rest/applications/' + appId, requestConfig);
-                trainingTracker.addPromise(promise);
+                var promise = $http.delete(CommonConstants.baseUrl + '/rest/applications/' + appId, requestConfig);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             startApp: function(appId) {
-                var promise = $http.post(config.baseUrl + '/rest/applications/' + appId + '/start');
-                trainingTracker.addPromise(promise);
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/start');
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             stopApp: function(appId) {
-                var promise = $http.post(config.baseUrl + '/rest/applications/' + appId + '/stop');
-                trainingTracker.addPromise(promise);
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/stop');
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             startVm: function(appId, vmId) {
-                var promise = $http.post(config.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/start");
-                trainingTracker.addPromise(promise);
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/start");
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             stopVm: function(appId, vmId) {
-                var promise = $http.post(config.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/stop");
-                trainingTracker.addPromise(promise);
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/stop");
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             restartVm: function(appId, vmId) {
-                var promise = $http.post(config.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/restart");
-                trainingTracker.addPromise(promise);
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/restart");
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             consoleVm: function(appId, vmId) {
-                var promise = $http.get(config.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/vncUrl");
-                trainingTracker.addPromise(promise);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/vncUrl");
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             }
         };

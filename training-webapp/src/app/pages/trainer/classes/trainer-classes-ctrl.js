@@ -7,12 +7,12 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
     '$state',
     '$log',
     '$dialogs',
-    'trng.trainer.training.classes.ClassModel',
-    'trng.services.ClassesService',
-    'trng.trainer.training.courses.CourseModel',
-    'trng.common.utils.DateUtil',
+    'ClassModel',
+    'ClassesService',
+    'CourseModel',
+    'DateUtil',
     'classes',
-    function ($scope, $rootScope, $state, $log, $dialogs, classModel, classesService, courseModel, dateUtil, classes) {
+    function ($scope, $rootScope, $state, $log, $dialogs, ClassModel, ClassesService, CourseModel, DateUtil, classes) {
 
         $scope.init = function () {
             $scope.initClassesDataGrid();
@@ -36,12 +36,12 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
                 {
                     field: 'startDate',
                     displayName: 'Start date',
-                    cellFilter: 'date:\'' + dateUtil.angular.dateTimeFormat + '\''
+                    cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
                 },
                 {
                     field: 'endDate',
                     displayName: 'End date',
-                    cellFilter: 'date:\'' + dateUtil.angular.dateTimeFormat + '\''
+                    cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
                 },
                 {
                     displayName: 'Actions',
@@ -92,7 +92,7 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
             var dialog = $dialogs.confirm("Delete classes", "Are you sure you want to delete the classes?");
             dialog.result.then(function(result) {
                 _.forEach($scope.selectedClasses, function(currentClass) {
-                    classModel.deleteClassById($scope.classes, currentClass.id);
+                    ClassModel.deleteClassById($scope.classes, currentClass.id);
                 });
             });
         };
@@ -101,7 +101,7 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
             var dialog = $dialogs.confirm("Delete class", "Are you sure you want to delete the class?");
             dialog.result.then(function(result) {
                 var classId = classToDelete.getProperty('id');
-                classModel.deleteClassById($scope.classes, classId);
+                ClassModel.deleteClassById($scope.classes, classId);
             });
         };
 
@@ -110,9 +110,9 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
 ]);
 
 var classesResolver = {
-    classes: ['$q', 'trng.trainer.training.classes.ClassModel',
-        function($q, classModel) {
-            return classModel.getAllClasses().
+    classes: ['$q', 'ClassModel',
+        function($q, ClassModel) {
+            return ClassModel.getAllClasses().
                 then(function (result) {
                     return _.cloneDeep(result);
                 });

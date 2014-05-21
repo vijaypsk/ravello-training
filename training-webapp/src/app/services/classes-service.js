@@ -1,19 +1,19 @@
 'use strict';
 
-angular.module('trng.services').factory('trng.services.ClassesService', [
-	'trng.proxies.ClassesProxy',
-	'trng.transformers.ClassesTransformer',
-	function(classesProxy, classesTrans) {
+angular.module('trng.services').factory('ClassesService', [
+	'ClassesProxy',
+	'ClassesTransformer',
+	function(ClassesProxy, ClassesTrans) {
 		
 		var service = {
 			getAllClasses: function() {
-				var promise = classesProxy.getAllClasses();
+				var promise = ClassesProxy.getAllClasses();
 
 				var classEntities = [];
 
 				return promise.then(function(result) {
                     _.forEach(result.data, function(currentClassDto) {
-						var currentClassEntity = classesTrans.dtoToEntity(currentClassDto);
+						var currentClassEntity = ClassesTrans.dtoToEntity(currentClassDto);
                         classEntities.push(currentClassEntity);
 
                     });
@@ -22,37 +22,38 @@ angular.module('trng.services').factory('trng.services.ClassesService', [
             },
 
             getClassApps: function(classId) {
-                return classesProxy.getClassApps(classId).then(function(result) {
-                    return classesTrans.dtoToEntity(result.data);
+                return ClassesProxy.getClassApps(classId).then(function(result) {
+                    return ClassesTrans.dtoToEntity(result.data);
                 });
             },
 
             add: function(entity) {
-                var dto = classesTrans.entityToDto(entity);
-                return classesProxy.add(dto).then(
+                var dto = ClassesTrans.entityToDto(entity);
+                return ClassesProxy.add(dto).then(
                     function(result) {
-                        return classesTrans.dtoToEntity(result.data);
+                        return ClassesTrans.dtoToEntity(result.data);
                     });
             },
 
             update: function(entity) {
-                var dto = classesTrans.entityToDto(entity);
-                return classesProxy.update(dto).then(
+                var dto = ClassesTrans.entityToDto(entity);
+                return ClassesProxy.update(dto).then(
                     function(result) {
-                        return classesTrans.dtoToEntity(result.data);
+                        return ClassesTrans.dtoToEntity(result.data);
                     }
                 );
             },
 
             delete: function(entity) {
-                var dto = classesTrans.entityToDto(entity);
-                return classesProxy.delete(dto);
+                var dto = ClassesTrans.entityToDto(entity);
+                return ClassesProxy.delete(dto);
             },
 
             deleteById: function(entityId) {
-                return classesProxy.deleteById(entityId);
+                return ClassesProxy.deleteById(entityId);
             }
 		};
 		
 		return service;
-}]);
+    }
+]);

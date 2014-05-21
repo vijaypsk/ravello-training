@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.trainer.students').factory('trng.trainer.students.StudentModel', [
+    angular.module('trng.trainer.students').factory('StudentModel', [
         '$q',
         '$log',
         function ($q, $log) {
@@ -67,8 +67,9 @@
 
                     return student;
                 }
-        };
+            };
 
             return model;
-        }]);
+        }
+    ]);
 })(angular);

@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('trng.proxies').factory('trng.proxies.AdminProxy', [
+angular.module('trng.proxies').factory('AdminProxy', [
     '$http',
     '$q',
-    'app.config',
-    'trainingTracker',
-    function($http, $q, config, trainingTracker) {
+    'CommonConstants',
+    'TrainingMainTracker',
+    function($http, $q, CommonConstants, TrainingMainTracker) {
         var service = {
             updateProfile: function(username, password) {
                 var dto = {
@@ -13,8 +13,8 @@ angular.module('trng.proxies').factory('trng.proxies.AdminProxy', [
                     password: password
                 };
 
-                var promise = $http.post(config.baseUrl + '/rest/admin/profile', dto);
-                trainingTracker.addPromise(promise);
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/admin/profile', dto);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             }
         };

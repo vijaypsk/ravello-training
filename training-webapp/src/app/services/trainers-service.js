@@ -1,37 +1,38 @@
 'use strict';
 
-angular.module('trng.services').factory('trng.services.TrainersService', [
-	'trng.proxies.TrainersProxy',
-	'trng.transformers.TrainersTransformer',
-	function(trainersProxy, trainersTrans) {
+angular.module('trng.services').factory('TrainersService', [
+	'TrainersProxy',
+	'TrainersTransformer',
+	function(TrainersProxy, TrainersTrans) {
 
 		var service = {
             getAllTrainers: function() {
-                return trainersProxy.getAllTrainers().then(function(result) {
+                return TrainersProxy.getAllTrainers().then(function(result) {
                     return _.map(result.data, function(dto) {
-                        return trainersTrans.dtoToEntity(dto);
+                        return TrainersTrans.dtoToEntity(dto);
                     });
                 });
             },
 
             saveTrainer: function(dto) {
-                return trainersProxy.saveTrainer(dto).then(function(result) {
-                    return trainersTrans.dtoToEntity(result.data);
+                return TrainersProxy.saveTrainer(dto).then(function(result) {
+                    return TrainersTrans.dtoToEntity(result.data);
                 });
             },
 
             updateTrainer: function(trainerId, dto) {
-                return trainersProxy.updateTrainer(trainerId, dto).then(function(result) {
-                    return trainersTrans.dtoToEntity(result.data);
+                return TrainersProxy.updateTrainer(trainerId, dto).then(function(result) {
+                    return TrainersTrans.dtoToEntity(result.data);
                 });
             },
 
             deleteTrainer: function(trainerId) {
-                return trainersProxy.deleteTrainer(trainerId).then(function(result) {
-                    return trainersTrans.dtoToEntity(result.data);
+                return TrainersProxy.deleteTrainer(trainerId).then(function(result) {
+                    return TrainersTrans.dtoToEntity(result.data);
                 });
             }
         };
 		
 		return service;
-}]);
+    }
+]);

@@ -4,11 +4,11 @@ angular.module('trng.student').controller('studentClassController', [
     '$log',
     '$scope',
     '$state',
-    'trng.services.AppsService',
+    'AppsService',
     'student',
     'course',
     'apps',
-    function($log, $scope, $state, appsService, student, course, apps) {
+    function($log, $scope, $state, AppsService, student, course, apps) {
         $scope.init = function() {
             $scope.name = student.firstName + ' ' + student.surname;
             $scope.student = student;
@@ -73,13 +73,13 @@ angular.module('trng.student').controller('studentClassController', [
 
 var studentClassResolver = {
     course: [
-        '$q', 'trng.services.CoursesService', 'student',
-        function($q, coursesService, student) {
+        '$q', 'CoursesService', 'student',
+        function($q, CoursesService, student) {
             if (student.hasOwnProperty('userClass') &&
                 student.userClass.hasOwnProperty('courseId')) {
 
                 var courseId = student.userClass.courseId;
-                return coursesService.getCourseById(courseId);
+                return CoursesService.getCourseById(courseId);
             }
 
             var deferred = $q.defer();
@@ -89,9 +89,9 @@ var studentClassResolver = {
     ],
 
     apps: [
-        '$log', 'trng.services.StudentsService', 'student',
-        function($log, studentsService, student) {
-            return studentsService.getStudentClassApps(student._id, student.userClass._id);
+        '$log', 'StudentsService', 'student',
+        function($log, StudentsService, student) {
+            return StudentsService.getStudentClassApps(student._id, student.userClass._id);
         }
     ]
 };

@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('trng.proxies').factory('trng.proxies.BlueprintsProxy', [
+angular.module('trng.proxies').factory('BlueprintsProxy', [
     '$http',
     '$q',
-    'app.config',
-    'trainingTracker',
-    function($http, $q, config, trainingTracker) {
+    'CommonConstants',
+    'TrainingMainTracker',
+    function($http, $q, CommonConstants, TrainingMainTracker) {
         return {
             getAllBlueprints: function() {
-                var promise = $http.get(config.baseUrl + '/rest/blueprints');
-                trainingTracker.addPromise(promise);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/blueprints');
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             }
         };

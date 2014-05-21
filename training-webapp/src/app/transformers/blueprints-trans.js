@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('trng.transformers').factory('trng.transformers.BlueprintsTransformer', [
+angular.module('trng.transformers').factory('BlueprintsTransformer', [
 	function() {
         var service = {
 			dtoToEntity: function(dto) {
@@ -15,4 +15,5 @@ angular.module('trng.transformers').factory('trng.transformers.BlueprintsTransfo
 		};
 		
 		return service;
-}]);
+    }
+]);

@@ -1,9 +1,11 @@
 'use strict';
 
 (function (angular) {
-    angular.module('trng.trainer.training.courses').factory('trng.trainer.training.courses.CourseModel', [
-        '$q', '$log', 'trng.services.CoursesService',
-        function ($q, $log, coursesService) {
+    angular.module('trng.trainer.training.courses').factory('CourseModel', [
+        '$q',
+        '$log',
+        'CoursesService',
+        function ($q, $log, CoursesService) {
 
             var coursesLoaded = false;
 
@@ -44,7 +46,7 @@
                         return promise;
                     }
 
-                    return coursesService.getAllCourses().
+                    return CoursesService.getAllCourses().
                         then(function(result) {
                             for (var i = 0; i < result.length; i++) {
                                 courses.push(result[i]);
@@ -89,7 +91,7 @@
 
                     courses = coursesList;
 
-                    coursesService.deleteById(courseId);
+                    CoursesService.deleteById(courseId);
                 },
 
                 save: function(courseToSave) {
@@ -104,10 +106,10 @@
                             }
                             return currentCourse;
                         });
-                        return coursesService.update(courseToSave);
+                        return CoursesService.update(courseToSave);
                     } else {
                         courses.push(courseToSave);
-                        return coursesService.add(courseToSave).then(function(persistedCourse) {
+                        return CoursesService.add(courseToSave).then(function(persistedCourse) {
                             courseToSave.id = persistedCourse.id;
                         });
                     }
@@ -121,5 +123,6 @@
             };
 
             return model;
-        }]);
+        }
+    ]);
 })(angular);

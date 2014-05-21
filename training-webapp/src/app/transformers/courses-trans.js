@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('trng.transformers').factory('trng.transformers.CoursesTransformer', [
+angular.module('trng.transformers').factory('CoursesTransformer', [
 	function() {
 		var service = {
 			dtoToEntity: function(dto) {
@@ -23,4 +23,5 @@ angular.module('trng.transformers').factory('trng.transformers.CoursesTransforme
 		};
 		
 		return service;
-}]);
+    }
+]);

@@ -5,15 +5,15 @@ angular.module('trng.admin.trainers').controller('adminSingleTrainerController',
     '$scope',
     '$window',
     '$state',
-    'trng.admin.trainers.trainersModel',
+    'AdminTrainerModel',
     'currentTrainer',
-    function($log, $scope, $window, $state, trainersModel, currentTrainer) {
+    function($log, $scope, $window, $state, AdminTrainerModel, currentTrainer) {
         $scope.init = function() {
             $scope.currentTrainer = currentTrainer;
         };
 
         $scope.saveTrainer = function() {
-            return trainersModel.saveTrainer($scope.currentTrainer).then(
+            return AdminTrainerModel.saveTrainer($scope.currentTrainer).then(
                 function(result) {
                     $state.go('^.trainers');
                 }
@@ -32,8 +32,8 @@ var adminSingleTrainerResolver = {
     currentTrainer: [
         '$q',
         '$stateParams',
-        'trng.admin.trainers.trainersModel',
-        function($q, $stateParams, trainersModel) {
+        'AdminTrainerModel',
+        function($q, $stateParams, AdminTrainerModel) {
             var trainerId = $stateParams.trainerId;
 
             if (!trainerId) {
@@ -42,7 +42,7 @@ var adminSingleTrainerResolver = {
                 return deferred.promise;
             }
 
-            return trainersModel.getAllTrainers().then(function(trainers) {
+            return AdminTrainerModel.getAllTrainers().then(function(trainers) {
                 return _.find(trainers, function(currentTrainer) {
                     return currentTrainer.id == trainerId;
                 });

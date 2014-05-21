@@ -1,45 +1,45 @@
 'use strict';
 
-angular.module('trng.proxies').factory('trng.proxies.CoursesProxy', [
+angular.module('trng.proxies').factory('CoursesProxy', [
     '$http',
     '$q',
-    'app.config',
-    'trainingTracker',
-    function($http, $q, config, trainingTracker) {
+    'CommonConstants',
+    'TrainingMainTracker',
+    function($http, $q, CommonConstants, TrainingMainTracker) {
         var service = {
             getAllCourses: function() {
-                var promise = $http.get(config.baseUrl + '/rest/courses');
-                trainingTracker.addPromise(promise);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/courses');
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             getCourseById: function(courseId) {
-                var promise = $http.get(config.baseUrl + '/rest/courses/' + courseId);
-                trainingTracker.addPromise(promise);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/courses/' + courseId);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             add: function(courseToSave) {
-                var promise = $http.post(config.baseUrl + '/rest/courses', courseToSave);
-                trainingTracker.addPromise(promise);
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/courses', courseToSave);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             update: function(courseToSave) {
-                var promise = $http.put(config.baseUrl + '/rest/courses/' + courseToSave._id, courseToSave);
-                trainingTracker.addPromise(promise);
+                var promise = $http.put(CommonConstants.baseUrl + '/rest/courses/' + courseToSave._id, courseToSave);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             delete: function(courseToDelete) {
-                var promise = $http.delete(config.baseUrl + '/rest/courses/' + courseToDelete._id);
-                trainingTracker.addPromise(promise);
+                var promise = $http.delete(CommonConstants.baseUrl + '/rest/courses/' + courseToDelete._id);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             deleteById: function(courseId) {
-                var promise = $http.delete(config.baseUrl + '/rest/courses/' + courseId);
-                trainingTracker.addPromise(promise);
+                var promise = $http.delete(CommonConstants.baseUrl + '/rest/courses/' + courseId);
+                TrainingMainTracker.addPromise(promise);
                 return promise;
             }
         };
