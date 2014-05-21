@@ -13,7 +13,7 @@ var setDefaultValues = function(user) {
     }
 };
 
-exports.dtoToEntity = function(dto) {
+exports.ravelloDtoToEntity = function(dto) {
     var entity = _.cloneDeep(dto);
 
     setDefaultValues(entity);

@@ -7,17 +7,13 @@ angular.module('trng.services').factory('CoursesService', [
 		
 		var service = {
 			getAllCourses: function() {
-				var promise = CoursesProxy.getAllCourses();
-
-                var courseEntities = [];
-
-                return promise.then(function(result) {
-                    _.forEach(result.data, function(currentLabDto) {
-						var currentLabEntity = CoursesTrans.dtoToEntity(currentLabDto);
-                        courseEntities.push(currentLabEntity);
-                    });
-                    return courseEntities;
-				});
+                return CoursesProxy.getAllCourses().then(
+                    function(result) {
+                        return _.map(result.data, function(dto) {
+                            return CoursesTrans.dtoToEntity(dto);
+                        });
+                    }
+                );
 			},
 
             getCourseById: function(courseId) {
@@ -49,6 +45,26 @@ angular.module('trng.services').factory('CoursesService', [
 
             deleteById: function(entityId) {
                 return CoursesProxy.deleteById(entityId);
+            },
+
+            saveOrUpdate: function(entity) {
+                var dto = CoursesTrans.entityToDto(entity);
+
+                if (!entity.id) {
+                    return CoursesProxy.add(dto).then(
+                        function(result) {
+                            var persistedDto = result.data;
+                            entity.id = persistedDto.id;
+                            return CoursesTrans.dtoToEntity(persistedDto);
+                        }
+                    );
+                }
+
+                return CoursesProxy.update(dto).then(
+                    function(result) {
+                        return CoursesTrans.dtoToEntity(result.data);
+                    }
+                );
             }
         };
 		

@@ -2,9 +2,8 @@
 
 var _ = require('lodash');
 
-exports.dtoToEntity = function(dto) {
-    var entity = _.pick(dto, 'id', 'name', 'creationTime', 'owner');
-    entity.creationTime = new Date(dto.creationTime);
+exports.ravelloDtoToEntity = function(ravelloDto) {
+    var entity = _.pick(ravelloDto, 'id', 'name', 'creationTime', 'owner');
+    entity.creationTime = new Date(ravelloDto.creationTime);
     return entity;
 };
-

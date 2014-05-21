@@ -6,10 +6,13 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
     '$state',
     '$log',
     '$dialogs',
+    '$q',
     'StatesNames',
-    'CourseModel',
+    'CoursesService',
     'courses',
-    function ($scope, $state, $log, $dialogs, StatesNames, CourseModel, courses) {
+    function ($scope, $state, $log, $dialogs, $q, StatesNames, CoursesService, courses) {
+
+        /* --- Public functions --- */
 
         $scope.init = function() {
             $scope.initCourses();
@@ -68,20 +71,32 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
 
         $scope.deleteCourse = function(courseToDelete) {
             var dialog = $dialogs.confirm("Delete courses", "Are you sure you want to delete the courses?");
-            dialog.result.then(function(result) {
+            return dialog.result.then(function(result) {
                 var courseId = courseToDelete.getProperty('id');
-                CourseModel.deleteCourseById($scope.courses, courseId);
+                return CoursesService.deleteById(courseId).then(fetchCourses);
             });
         };
 
         $scope.deleteCourses = function() {
             var dialog = $dialogs.confirm("Delete course", "Are you sure you want to delete the course?");
-            dialog.result.then(function(result) {
-                _.forEach($scope.selectedCourses, function(currentCourse) {
-                    CourseModel.deleteCourseById($scope.courses, currentCourse.id);
-                });
+            return dialog.result.then(function(result) {
+                return $q.all(_.map($scope.selectedCourses, function(currentCourse) {
+                    return CoursesService.deleteById(currentCourse.id);
+                })).then(fetchCourses);
             });
         };
+
+        /* --- Private functions --- */
+
+        function fetchCourses() {
+            return CoursesService.getAllCourses().then(
+                function(courses) {
+                    $scope.courses = _.cloneDeep(courses);
+                }
+            );
+        }
+
+        /* --- Init --- */
 
         $scope.init();
     }

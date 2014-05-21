@@ -10,11 +10,10 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
     '$window',
     'growl',
     'StatesNames',
-    'ClassModel',
-    'StudentModel',
+    'ClassesService',
     'currentStudent',
     'currentClass',
-    function ($scope, $state, $stateParams, $log, $modal, $window, growl, StatesNames, ClassModel, StudentModel, currentStudent,
+    function ($scope, $state, $stateParams, $log, $modal, $window, growl, StatesNames, ClassesService, currentStudent,
               currentClass) {
 
         $scope.init = function () {
@@ -165,14 +164,11 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
                 $scope.currentClass.students.push(currentStudent);
             }
 
-            ClassModel.save($scope.currentClass).then(
+            ClassesService.saveOrUpdate($scope.currentClass).then(
                 function(persistedClass) {
-                    // Also notice that if the student is a new one, then the student object held in the $scope
-                    // has no id field. After the save, we need to assign the $scope student with the
-                    // newly persisted student.
-                    if (!existingStudent) {
-                        $scope.currentStudent = persistedClass.students[persistedClass.students.length - 1];
-                    }
+//                    _.last($scope.currentClass.students).id = _.last(persistedClass.students).id;
+//                    $scope.currentClass = persistedClass;
+                    _.merge($scope.currentClass, persistedClass);
                     $state.go(StatesNames.trainer.training.singleClass.editClass.name, {classId: $scope.currentClass.id});
                 }
             ).catch(

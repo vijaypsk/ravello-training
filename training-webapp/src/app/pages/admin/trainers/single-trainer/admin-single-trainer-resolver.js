@@ -4,21 +4,19 @@ var adminSingleTrainerResolver = {
     currentTrainer: [
         '$q',
         '$stateParams',
-        'AdminTrainerModel',
-        function($q, $stateParams, AdminTrainerModel) {
+        'TrainersService',
+        function($q, $stateParams, TrainersService) {
             var trainerId = $stateParams.trainerId;
 
             if (!trainerId) {
-                var deferred = $q.defer();
-                deferred.resolve({});
-                return deferred.promise;
+                return $q.when({});
             }
 
-            return AdminTrainerModel.getAllTrainers().then(function(trainers) {
-                return _.find(trainers, function(currentTrainer) {
-                    return currentTrainer.id == trainerId;
-                });
-            });
+            return TrainersService.getTrainerById(trainerId).then(
+                function(trainer) {
+                    return _.cloneDeep(trainer);
+                }
+            );
         }
     ]
 };

@@ -9,12 +9,12 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
     '$modal',
     '$log',
     'StatesNames',
-    'CourseModel',
+    'CoursesService',
     'BlueprintsService',
     'DateUtil',
     'currentCourse',
-    function ($scope, $state, $stateParams, $window, $modal, $log, StatesNames, CourseModel, BlueprintsService, DateUtil,
-              currentCourse) {
+    function ($scope, $state, $stateParams, $window, $modal, $log, StatesNames, CoursesService, BlueprintsService,
+              DateUtil, currentCourse) {
 
         $scope.init = function () {
             $scope.initCourse();
@@ -122,18 +122,18 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
 
         $scope.deleteBlueprints = function() {
             _.forEach($scope.selectedBlueprints, function(currentBp) {
-                CourseModel.deleteBlueprintById($scope.currentCourse, currentBp['id']);
+                _.remove($scope.currentCourse.blueprints, {id: currentBp.id});
             });
         };
 
         $scope.deleteBlueprint = function(bpToDelete) {
             var bpId = bpToDelete.getProperty('id');
-            CourseModel.deleteBlueprintById($scope.currentCourse, bpId);
+            _.remove($scope.currentCourse.blueprints, {id: bpId});
         };
 
         $scope.save = function() {
-            return CourseModel.save($scope.currentCourse).then(
-                function(result) {
+            return CoursesService.saveOrUpdate($scope.currentCourse).then(
+                function(persistedCourse) {
                     $state.go(StatesNames.trainer.training.courses.name);
                 }
             );

@@ -10,12 +10,15 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
     'growl',
     '$dialogs',
     'DateUtil',
-    'ClassModel',
+    'ClassesService',
+    'AppsService',
     'classApps',
     'currentClass',
-    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, DateUtil, ClassModel, classApps, currentClass) {
+    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, DateUtil, ClassesService, AppsService, classApps, currentClass) {
 
         $scope.init = function () {
+            $scope.currentClass = currentClass;
+            
             $scope.viewModel = {
                 apps: [],
                 selectedApps: []
@@ -105,23 +108,19 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
         };
 
         $scope.createApp = function() {
-            _.forEach($scope.viewModel.selectedApps, function(app) {
-                var name =
+            return _.map($scope.viewModel.selectedApps, function(app) {
+                var appName =
                     $scope.currentClass.name + '##' +
                     app.blueprint.name + '##' +
                     app.student.user.username;
 
-                var description =
+                var appDesc =
                     'App for student ' + app.student.user.username +
                     ' from BP ' + app.blueprint.name +
                     ' for class ' + $scope.currentClass.name;
 
                 if (!app.creationTime) {
-                    ClassModel.createAppForStudent(currentClass.id, name, description, app.blueprint.id, app.student.user.id).then(
-                        function(result) {
-                            _.assign(app, result);
-                        }
-                    );
+                    return AppsService.createApp(appName, appDesc, app.blueprint.id, app.student.user.id).then(fetchClassApps);
                 } else {
                     growl.addInfoMessage("Application for student " + app.student.user.username +
                         " from blueprint [" + app.blueprint.name + "] already exists");
@@ -132,19 +131,11 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
         $scope.deleteApp = function() {
             if (!$scope.isDeleteDisabled()) {
                 var dialog = $dialogs.confirm('Delete application', 'Are you sure you want to delete the selected applications?');
-                dialog.result.then(
+                return dialog.result.then(
                     function() {
-                        $q.all(_.map($scope.viewModel.selectedApps, function(app) {
-                            return app.creationTime && ClassModel.deleteAppForStudent(
-                                    app.ravelloId, $scope.currentClass.id, app.student.user.id);
-                        })).then(
-                            function(result) {
-                                ClassModel.getClassApps($scope.currentClass.id).then(function(result) {
-                                    classApps = result;
-                                    $scope.initData();
-                                });
-                            }
-                        );
+                        return $q.all(_.map($scope.viewModel.selectedApps, function(app) {
+                            return app.creationTime && AppsService.deleteApp(app.ravelloId, app.student.user.id);
+                        })).then(fetchClassApps);
                     }
                 );
             }
@@ -153,6 +144,19 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
         $scope.isDeleteDisabled = function() {
             return $scope.viewModel.selectedApps.length <= 0 || !_.every($scope.viewModel.selectedApps, 'creationTime');
         };
+
+        /* --- Private functions --- */
+
+        function fetchClassApps() {
+            ClassesService.getClassApps($scope.currentClass.id).then(
+                function(result) {
+                    classApps = result;
+                    $scope.initData();
+                }
+            );
+        }
+
+        /* --- Init --- */
 
         $scope.init();
     }

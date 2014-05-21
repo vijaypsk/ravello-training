@@ -7,7 +7,7 @@ var properties = require('../config/properties');
 
 var usersTrans = require('./users-trans');
 
-exports.dtoToEntity = function(dto) {
+exports.ravelloDtoToEntity = function(dto) {
     var entity = dto;
 
     entity.startDate = new Date(dto.startDate);
@@ -28,9 +28,8 @@ exports.entityToDto = function(entityDocument) {
 
     _.forEach(entityDocument.students, function(studentDocument) {
         var matchingstudentDto = _.find(dto.students, function(studentDto) {
-            return studentDto._id == studentDocument.id;
+            return studentDto._id && studentDto._id == studentDocument.id;
         });
-
         matchingstudentDto.user = usersTrans.entityToDto(studentDocument.user);
     });
 

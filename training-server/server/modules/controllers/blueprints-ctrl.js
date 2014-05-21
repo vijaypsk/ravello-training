@@ -20,7 +20,7 @@ exports.getBlueprints = function(request, response) {
                 response.send(result.status, result.text);
             } else {
                 var dtos = _.map(result.body, function(bpDto) {
-                    return blueprintsTrans.dtoToEntity(bpDto);
+                    return blueprintsTrans.ravelloDtoToEntity(bpDto);
                 });
 
                 response.json(dtos);

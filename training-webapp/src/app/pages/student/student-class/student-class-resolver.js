@@ -2,18 +2,11 @@
 
 var studentClassResolver = {
     course: [
-        '$q', 'CoursesService', 'student',
-        function($q, CoursesService, student) {
-            if (student.hasOwnProperty('userClass') &&
-                student.userClass.hasOwnProperty('courseId')) {
-
-                var courseId = student.userClass.courseId;
-                return CoursesService.getCourseById(courseId);
-            }
-
-            var deferred = $q.defer();
-            deferred.reject("Could not find student or the course of the student's class");
-            return deferred.promise;
+        '$q', 'StudentsService', 'student',
+        function($q, StudentsService, student) {
+            return student && student.userClass && student.userClass.courseId ?
+                StudentsService.getStudentCourse(student._id, student.userClass.courseId) :
+                $q.reject("Could not find student or the course of the student's class");
         }
     ],
 

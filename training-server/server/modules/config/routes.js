@@ -42,6 +42,10 @@ module.exports = function(app) {
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['ADMIN']),
         trainersController.getAllTrainers);
+    app.get('/rest/admin/trainers/:trainerId',
+        passport.authenticate('basic', authConfig),
+        authorization.isAuthorized(['ADMIN']),
+        trainersController.getTrainer);
     app.post('/rest/admin/trainers',
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['ADMIN']),
@@ -60,6 +64,10 @@ module.exports = function(app) {
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['TRAINER']),
         classesController.getClasses);
+    app.get('/rest/classes/:classId',
+        passport.authenticate('basic', authConfig),
+        authorization.isAuthorized(['TRAINER']),
+        classesController.getClass);
     app.get('/rest/classes/:classId/apps',
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['TRAINER']),
@@ -84,7 +92,7 @@ module.exports = function(app) {
         coursesController.getCourses);
     app.get('/rest/courses/:courseId',
         passport.authenticate('basic', authConfig),
-        authorization.isAuthorized(['TRAINER', 'STUDENT']),
+        authorization.isAuthorized(['TRAINER']),
         coursesController.getCourse);
     app.post('/rest/courses',
         passport.authenticate('basic', authConfig),
@@ -118,6 +126,10 @@ module.exports = function(app) {
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['STUDENT']),
         studentController.getAppVms);
+    app.get('/rest/students/:studentId/course/:courseId',
+        passport.authenticate('basic', authConfig),
+        authorization.isAuthorized(['STUDENT']),
+        studentController.getStudentCourse);
 
     // App route.
     app.post('/rest/applications',

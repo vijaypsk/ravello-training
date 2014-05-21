@@ -2,14 +2,14 @@
 
 var singleStudentResolver = {
     currentStudent: [
-        '$stateParams', 'StudentModel', 'currentClass',
-        function($stateParams, StudentModel, currentClass) {
+        '$stateParams', 'ClassesService', 'currentClass',
+        function($stateParams, ClassesService, currentClass) {
             var studentId = $stateParams.studentId;
 
             if (studentId) {
-                return StudentModel.getStudent(currentClass, studentId);
+                return ClassesService.getStudent(currentClass, studentId);
             } else {
-                return StudentModel.createNewStudent(currentClass);
+                return ClassesService.createNewStudent(currentClass);
             }
         }
     ]

@@ -6,9 +6,9 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
     '$state',
     '$dialogs',
     'StatesNames',
-    'AdminTrainerModel',
+    'TrainersService',
     'trainers',
-    function($log, $scope, $state, $dialogs, StatesNames, AdminTrainerModel, trainers) {
+    function($log, $scope, $state, $dialogs, StatesNames, TrainersService, trainers) {
 
         $scope.init = function() {
             $scope.trainers = trainers;
@@ -64,17 +64,17 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
 
         $scope.deleteTrainer = function(trainerToDelete) {
             var dialog = $dialogs.confirm("Delete trainer", "Are you sure you want to delete the trainer?");
-            dialog.result.then(function(result) {
+            return dialog.result.then(function(result) {
                 var trainerId = trainerToDelete.getProperty('id');
-                AdminTrainerModel.deleteTrainer(trainerId);
+                return TrainersService.deleteTrainer(trainerId);
             });
         };
 
         $scope.deleteTrainers = function() {
             var dialog = $dialogs.confirm("Delete trainers", "Are you sure you want to delete the trainers?");
-            dialog.result.then(function(result) {
-                _.forEach($scope.selectedTrainers, function(trainer) {
-                    AdminTrainerModel.deleteTrainer(trainer.id);
+            return dialog.result.then(function(result) {
+                return _.map($scope.selectedTrainers, function(trainer) {
+                    return TrainersService.deleteTrainer(trainer.id);
                 });
             });
         };

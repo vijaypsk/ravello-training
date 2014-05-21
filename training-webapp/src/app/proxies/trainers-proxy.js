@@ -12,19 +12,25 @@ angular.module('trng.proxies').factory('TrainersProxy', [
                 return promise;
             },
 
-            saveTrainer: function(dto) {
+            getTrainerById: function(trainerId) {
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/admin/trainers/' + trainerId);
+                TrainingMainTracker.addPromise(promise);
+                return promise;
+            },
+
+            add: function(dto) {
                 var promise = $http.post(CommonConstants.baseUrl + '/rest/admin/trainers', dto);
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
-            updateTrainer: function(trainerId, dto) {
-                var promise = $http.put(CommonConstants.baseUrl + '/rest/admin/trainers/' + trainerId, dto);
+            update: function(dto) {
+                var promise = $http.put(CommonConstants.baseUrl + '/rest/admin/trainers/' + dto._id, dto);
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
-            deleteTrainer: function(trainerId) {
+            delete: function(trainerId) {
                 var promise = $http.delete(CommonConstants.baseUrl + '/rest/admin/trainers/' + trainerId);
                 TrainingMainTracker.addPromise(promise);
                 return promise;

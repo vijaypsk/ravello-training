@@ -10,17 +10,16 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
     '$window',
     '$dialogs',
     'StatesNames',
-    'ClassModel',
     'ClassesService',
-    'CourseModel',
     'DateUtil',
     'currentClass',
     'courses',
-    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, StatesNames, ClassModel, ClassesService,
-              CourseModel, DateUtil, currentClass, courses) {
+    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, StatesNames, ClassesService,
+              DateUtil, currentClass, courses) {
 
         $scope.init = function () {
             $scope.apps = [];
+            $scope.courses = courses;
 
             $scope.initClass();
             $scope.initDates();
@@ -29,21 +28,10 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 
         $scope.initClass = function() {
             $scope.currentClass = currentClass;
-            $scope.matchCourses();
 
             $scope.isRavelloCredentials =
                 (!$scope.currentClass.ravelloCredentials ||
                 (!$scope.currentClass.ravelloCredentials.username && !$scope.currentClass.ravelloCredentials.password));
-        };
-
-        $scope.matchCourses = function() {
-            $scope.courses = courses;
-
-            // The course reference inside the class should be a reference to the actual list of courses,
-            // otherwise there might be problems rendering the view correctly.
-            // Since the class is a copy of the originally loaded class, we know the reference is in fact
-            // NOT a reference to the actual list of courses, so here the controller fixes that.
-            $scope.currentClass.course = _.find($scope.courses, {id: $scope.currentClass.courseId});
         };
 
         $scope.initDates = function() {
@@ -101,12 +89,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
             var dialog = $dialogs.confirm("Delete student", "Are you sure you want to delete the student?");
             dialog.result.then(function(result) {
                 var studentId = studentToDelete.getProperty('id');
-                ClassModel.deleteStudent($scope.currentClass, studentId);
+                _.remove($scope.currentClass.students, {id: studentId});
             });
         };
 
         $scope.saveClass = function() {
-            return ClassModel.save($scope.currentClass).then(
+            return ClassesService.saveOrUpdate($scope.currentClass).then(
                 function(result) {
                     $state.go(StatesNames.trainer.training.classes.name);
                 }

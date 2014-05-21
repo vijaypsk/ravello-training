@@ -17,7 +17,7 @@ exports.updateProfile = function(request, response) {
     userDto.username = request.body.username;
     userDto.password = request.body.password;
 
-    var user = usersTrans.dtoToEntity(userDto);
+    var user = usersTrans.ravelloDtoToEntity(userDto);
 
     usersDal.updateUser(userEntity.id, user).then(function(persistedUser) {
         var returnedUser = usersTrans.entityToDto(persistedUser);

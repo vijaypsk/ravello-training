@@ -21,9 +21,23 @@ exports.getAllTrainers = function(request, response) {
     });
 };
 
+
+exports.getTrainer = function(request, response) {
+    var trainerId = request.params.trainerId;
+
+    usersDal.getUserById(trainerId).then(function(entity) {
+        var dto = usersTrans.entityToDto(entity);
+        response.json(dto);
+    }).fail(function(error) {
+        var message = "Could not load trainer [" + trainerId + "]";
+        logger.error(error, message);
+        response.send(404, message);
+    });
+};
+
 exports.saveTrainer = function(request, response) {
     var newTrainerDto = request.body;
-    var newTrainerData = usersTrans.dtoToEntity(newTrainerDto);
+    var newTrainerData = usersTrans.ravelloDtoToEntity(newTrainerDto);
     newTrainerData.role = 'TRAINER';
 
     usersDal.createUser(newTrainerData).then(function(trainerEntity) {
@@ -43,7 +57,7 @@ exports.updateTrainer = function(request, response) {
     var trainerId = request.params.trainerId;
 
     var newTrainerDto = request.body;
-    var newTrainerData = usersTrans.dtoToEntity(newTrainerDto);
+    var newTrainerData = usersTrans.ravelloDtoToEntity(newTrainerDto);
     newTrainerData.role = 'TRAINER';
 
     usersDal.updateUser(trainerId, newTrainerData).then(function(trainerEntity) {

@@ -48,7 +48,7 @@ TrainingClassSchema.methods = {
     }
 };
 
-TrainingClassSchema.statics.dtoToEntity = function(dto) {
+TrainingClassSchema.statics.ravelloDtoToEntity = function(dto) {
     var entity = dto;
 
     _.forEach(entity.students, function(student) {

@@ -7,7 +7,11 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var User = mongoose.model('User');
 
-exports.getUser = function(username) {
+exports.getUserById = function(id) {
+    return User.findByIdQ(id);
+};
+
+exports.getUserByUsername = function(username) {
     return User.findOneQ({username: username});
 };
 

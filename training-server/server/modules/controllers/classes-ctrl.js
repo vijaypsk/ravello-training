@@ -50,11 +50,10 @@ var validateClass = function(theClass) {
 
 exports.getClasses = function(request, response) {
     var user = request.user;
+
     var ravelloUsername = user.ravelloCredentials.username;
     var ravelloPassword = user.ravelloCredentials.password;
 
-    // Okay, there are many async calls here, so stick with me.
-    // First, well, we get the classes entities.
     classesDal.getClasses().then(function(classes) {
         var classesDtos = _.map(classes, function(classEntity) {
             return classesTrans.entityToDto(classEntity);
@@ -67,8 +66,27 @@ exports.getClasses = function(request, response) {
     });
 };
 
+exports.getClass = function(request, response) {
+    var user = request.user;
+
+    var ravelloUsername = user.ravelloCredentials.username;
+    var ravelloPassword = user.ravelloCredentials.password;
+
+    var classId = request.params.classId;
+
+    classesDal.getClass(classId).then(function(classEntity) {
+        var classDto = classesTrans.entityToDto(classEntity);
+        response.json(classDto);
+    }).fail(function(error) {
+        var message = "Could not load class [" + classId + "]";
+        logger.error(error, message);
+        response.send(404, message);
+    });
+};
+
 exports.getAllClassApps = function(request, response) {
     var user = request.user;
+
     var ravelloUsername = user.ravelloCredentials.username;
     var ravelloPassword = user.ravelloCredentials.password;
 
@@ -104,12 +122,12 @@ exports.createClass = function(request, response) {
     // We first have to save all of the students of this class separately, since we need a store
     // of users against which login will be made.
     q.all(_.map(classData.students, function(student) {
-        student.user = usersTrans.dtoToEntity(student.user);
+        student.user = usersTrans.ravelloDtoToEntity(student.user);
         return usersDal.createUser(student.user).then(function(persistedUser) {
             student.user = persistedUser.id;
         });
     })).then(function() {
-        var classEntityData = classesTrans.dtoToEntity(classData);
+        var classEntityData = classesTrans.ravelloDtoToEntity(classData);
         classesDal.createClass(classEntityData).then(function(result) {
             var dto = classesTrans.entityToDto(result);
             response.json(dto);
@@ -129,9 +147,11 @@ exports.createClass = function(request, response) {
 };
 
 exports.updateClass = function(request, response) {
+    var user = request.user;
+
     var classId = request.params.classId;
     var classData = request.body;
-    var classEntityData = classesTrans.dtoToEntity(classData);
+    var classEntityData = classesTrans.ravelloDtoToEntity(classData);
 
     var finalValidationMessage = validateClass(classEntityData);
     if (finalValidationMessage != "") {
@@ -139,21 +159,39 @@ exports.updateClass = function(request, response) {
         return;
     }
 
-    // 1st step is to delete the users for students that no longer exist in the new class data.
+    if (!user.ravelloCredentials) {
+        response.send(401, 'User does not have Ravello credentials');
+        return;
+    }
+
+    var ravelloUsername = user.ravelloCredentials.username;
+    var ravelloPassword = user.ravelloCredentials.password;
+
+    // 1st step is to delete the users and apps for students that no longer exist in the new class data.
     classesDal.getClass(classId).then(
         function(persistedClass) {
-            return q.all(_.map(persistedClass.students, function(currentStudent) {
-                return !_.find(classData.students, {_id: currentStudent.id}) ?
-                    usersDal.deleteUser(currentStudent.user.id) :
-                    q.when();
-            })).then(
+            var prePromises = [];
+
+            _.forEach(persistedClass.students, function(currentStudent) {
+                // All of the students that were in the persisted class, but not in the new one - delete their corresponding
+                // user and apps.
+                if (!_.find(classData.students, {_id: currentStudent.id})) {
+                    prePromises.push(usersDal.deleteUser(currentStudent.user.id));
+
+                    _.forEach(currentStudent.apps, function(currentApp) {
+                        prePromises.push(appsService.deleteApp(currentApp.ravelloId, ravelloUsername, ravelloPassword));
+                    });
+                }
+            });
+
+            return q.all(prePromises).then(
                 function() {
                     // Then update the users for the students that remained in the class data.
                     return q.all(_.map(classData.students, function(student) {
-                            student.user = usersTrans.dtoToEntity(student.user);
+                            student.user = usersTrans.ravelloDtoToEntity(student.user);
                             return usersDal.updateUser(student.user._id, student.user).then(
                                 function() {
-                                    return usersDal.getUser(student.user.username).then(function(persistedUser) {
+                                    return usersDal.getUserByUsername(student.user.username).then(function(persistedUser) {
                                         student.user = persistedUser.id;
                                     });
                                 }
@@ -193,19 +231,38 @@ exports.updateClass = function(request, response) {
 };
 
 exports.deleteClass = function(request, response) {
+    var user = request.user;
+
+    if (!user.ravelloCredentials) {
+        response.send(401, 'User does not have Ravello credentials');
+        return;
+    }
+
+    var ravelloUsername = user.ravelloCredentials.username;
+    var ravelloPassword = user.ravelloCredentials.password;
+
     var classId = request.params.classId;
 
     classesDal.deleteClass(classId).then(
         function(deletedClass) {
-            return q.all(_.map(deletedClass.students, function(student) {
-                return usersDal.findAndDelete(student.user.id).fail(
+            var prePromises = [];
+
+            _.forEach(deletedClass.students, function(student) {
+                var userPromise = usersDal.findAndDelete(student.user.id).fail(
                     function(error) {
                         var message = "Could not delete one of the users associated with the class";
                         logger.error(error, message);
                         response.send(400, message);
                     }
                 );
-            }));
+                prePromises.push(userPromise);
+
+                _.forEach(student.apps, function(currentApp) {
+                    prePromises.push(appsService.deleteApp(currentApp.ravelloId, ravelloUsername, ravelloPassword));
+                });
+            });
+
+            return q.all(prePromises);
         }
     ).then(
         function(result) {

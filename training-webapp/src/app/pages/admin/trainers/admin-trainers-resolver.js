@@ -2,9 +2,13 @@
 
 var adminTrainerResolver = {
     trainers: [
-        'AdminTrainerModel',
-        function(AdminTrainerModel) {
-            return _.cloneDeep(AdminTrainerModel.getAllTrainers());
+        'TrainersService',
+        function(TrainersService) {
+            return TrainersService.getAllTrainers().then(
+                function(trainers) {
+                    return _.cloneDeep(trainers);
+                }
+            );
         }
     ]
 };

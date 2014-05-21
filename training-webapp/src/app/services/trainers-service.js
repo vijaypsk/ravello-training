@@ -14,22 +14,48 @@ angular.module('trng.services').factory('TrainersService', [
                 });
             },
 
+            getTrainerById: function(trainerId) {
+                return TrainersProxy.getTrainerById(trainerId).then(function(result) {
+                    return TrainersTrans.dtoToEntity(result.data);
+                });
+            },
+
             saveTrainer: function(dto) {
-                return TrainersProxy.saveTrainer(dto).then(function(result) {
+                return TrainersProxy.add(dto).then(function(result) {
                     return TrainersTrans.dtoToEntity(result.data);
                 });
             },
 
             updateTrainer: function(trainerId, dto) {
-                return TrainersProxy.updateTrainer(trainerId, dto).then(function(result) {
+                return TrainersProxy.update(dto).then(function(result) {
                     return TrainersTrans.dtoToEntity(result.data);
                 });
             },
 
             deleteTrainer: function(trainerId) {
-                return TrainersProxy.deleteTrainer(trainerId).then(function(result) {
+                return TrainersProxy.delete(trainerId).then(function(result) {
                     return TrainersTrans.dtoToEntity(result.data);
                 });
+            },
+
+            saveOrUpdate: function(entity) {
+                var dto = TrainersTrans.entityToDto(entity);
+
+                if (!entity.id) {
+                    return TrainersProxy.add(dto).then(
+                        function(result) {
+                            var persistedDto = result.data;
+                            entity.id = persistedDto.id;
+                            return TrainersTrans.dtoToEntity(persistedDto);
+                        }
+                    );
+                }
+
+                return TrainersProxy.update(dto).then(
+                    function(result) {
+                        return TrainersTrans.dtoToEntity(result.data);
+                    }
+                );
             }
         };
 		

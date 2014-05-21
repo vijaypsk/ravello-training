@@ -6,27 +6,11 @@ var q = require('q');
 var logger = require('../config/logger');
 
 var coursesDal = require('../dal/courses-dal');
-var classesDal = require('../dal/classes-dal');
 
 var blueprintsService = require('../services/blueprints-service');
+var coursesService = require('../services/courses-service');
 
 var coursesTrans = require('../trans/courses-trans');
-var blueprintsTrans = require('../trans/blueprints-trans');
-
-var assignBlueprintsToCourse = function(course, bpDtos) {
-    return _.map(course.blueprints, function(currentBp) {
-        var matchingBp = _.find(bpDtos, function(bpResult) {
-            return (bpResult.body.id == currentBp.id);
-        });
-
-        if (!matchingBp) {
-            return currentBp;
-        }
-
-        var convertedBp = blueprintsTrans.dtoToEntity(matchingBp.body);
-        return _.assign(currentBp, convertedBp);
-    });
-};
 
 exports.getCourses = function(request, response) {
     var user = request.user;
@@ -43,7 +27,7 @@ exports.getCourses = function(request, response) {
             return q.all(_.map(course.blueprints, function(bp) {
                 return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
             })).then(function(bpResults) {
-                course.blueprints = assignBlueprintsToCourse(course, bpResults);
+                course.blueprints = coursesService.assignBlueprintsToCourse(course, bpResults);
                 courseDtos.push(course);
             }).fail(function(error) {
                 var message = "Could not get one of the course's blueprints";
@@ -61,39 +45,27 @@ exports.getCourses = function(request, response) {
 };
 
 exports.getCourse = function(request, response) {
+    var user = request.user;
+
     var courseId = request.params.courseId;
 
-    var user = request.user;
-    var userId = user.id;
+    var ravelloUsername = user.ravelloCredentials.username;
+    var ravelloPassword = user.ravelloCredentials.password;
 
-    // Notice that we expect the user here to be a student, i.e. we try to get its class so that we can
-    // have its real Ravello credentials.
-    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
-
-        var studentData = classEntity.findStudentByUserId(userId);
-
-        var ravelloUsername = studentData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password;
-
-        coursesDal.getCourse(courseId).then(function(courseEntity) {
-            var course = coursesTrans.entityToDto(courseEntity);
-            q.all(_.map(course.blueprints, function(bp) {
-                return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
-            })).then(function(bpResults) {
-                course.blueprints = assignBlueprintsToCourse(course, bpResults);
-                response.json(course);
-            }).fail(function(error) {
-                var message = "Could not get one of the course's blueprints";
-                logger.error(error, message);
-                response.send(404, message);
-            });
+    coursesDal.getCourse(courseId).then(function(courseEntity) {
+        var courseDto = coursesTrans.entityToDto(courseEntity);
+        return q.all(_.map(courseDto.blueprints, function(bp) {
+            return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
+        })).then(function(bpResults) {
+            courseDto.blueprints = coursesService.assignBlueprintsToCourse(courseDto, bpResults);
+            response.json(courseDto);
         }).fail(function(error) {
-            var message = "Could not load course: " + courseId;
+            var message = "Could not get one of the course's blueprints";
             logger.error(error, message);
             response.send(404, message);
         });
     }).fail(function(error) {
-        var message = "Could not load class of user " + user.username;
+        var message = "Could not get course [" + courseId + "]";
         logger.error(error, message);
         response.send(404, message);
     });

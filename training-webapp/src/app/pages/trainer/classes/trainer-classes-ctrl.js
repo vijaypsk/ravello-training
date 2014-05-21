@@ -6,14 +6,14 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
     '$rootScope',
     '$state',
     '$log',
+    '$q',
     '$dialogs',
     'StatesNames',
-    'ClassModel',
     'ClassesService',
-    'CourseModel',
+    'AppsService',
     'DateUtil',
     'classes',
-    function ($scope, $rootScope, $state, $log, $dialogs, StatesNames, ClassModel, ClassesService, CourseModel, DateUtil, classes) {
+    function ($scope, $rootScope, $state, $log, $q, $dialogs, StatesNames, ClassesService, AppsService, DateUtil, classes) {
 
         $scope.init = function () {
             $scope.initClassesDataGrid();
@@ -91,20 +91,40 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
 
         $scope.deleteClasses = function () {
             var dialog = $dialogs.confirm("Delete classes", "Are you sure you want to delete the classes?");
-            dialog.result.then(function(result) {
-                _.forEach($scope.selectedClasses, function(currentClass) {
-                    ClassModel.deleteClassById($scope.classes, currentClass.id);
+            return dialog.result.then(function(result) {
+                return _.map($scope.selectedClasses, function(currentClass) {
+                    return deleteClassById(currentClass);
                 });
             });
         };
 
-        $scope.deleteClass = function(classToDelete) {
+        $scope.deleteClass = function(classRow) {
             var dialog = $dialogs.confirm("Delete class", "Are you sure you want to delete the class?");
-            dialog.result.then(function(result) {
-                var classId = classToDelete.getProperty('id');
-                ClassModel.deleteClassById($scope.classes, classId);
+            return dialog.result.then(function(result) {
+                var classId = classRow.getProperty('id');
+                var theClass = _.find($scope.classes, {id: classId});
+                return deleteClassById(theClass);
             });
         };
+
+        /* --- Private functions --- */
+
+        function fetchClasses() {
+            return ClassesService.getAllClasses().then(
+                function(classes) {
+                    $scope.classes = _.cloneDeep(classes);
+                    return classes;
+                }
+            );
+        }
+
+        function deleteClassById(theClass) {
+            return ClassesService.deleteById(theClass.id).then(
+                function(result) {
+                    return fetchClasses();
+                }
+            );
+        }
 
         $scope.init();
     }

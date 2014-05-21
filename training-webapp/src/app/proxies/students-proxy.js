@@ -38,6 +38,12 @@ angular.module('trng.proxies').factory('StudentsProxy', [
                 }
 
                 return promise;
+            },
+
+            getStudentCourse: function(studentId, courseId) {
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' + studentId + '/course/' + courseId);
+                TrainingMainTracker.addPromise(promise);
+                return promise;
             }
         };
 

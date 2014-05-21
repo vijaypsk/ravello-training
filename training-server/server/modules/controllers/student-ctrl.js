@@ -9,10 +9,13 @@ var coursesDal = require('../dal/courses-dal');
 var classesDal = require('../dal/classes-dal');
 
 var classesTrans = require('../trans/classes-trans');
+var coursesTrans = require('../trans/courses-trans');
 var appsTrans = require('../trans/apps-trans');
 var singleStudentTrans = require('../trans/single-student-trans');
 
 var appsService = require('../services/apps-service');
+var blueprintsService = require('../services/blueprints-service');
+var coursesService = require('../services/courses-service');
 
 /* --- Private functions --- */
 
@@ -201,6 +204,49 @@ exports.getAppVms = function(request, response) {
         });
     }).fail(function(error) {
         var message = "Could not load app " + appId;
+        logger.error(error, message);
+        response.send(404, message);
+    });
+};
+
+exports.getStudentCourse = function(request, response) {
+    var user = request.user;
+    var userId = user.id;
+
+    var courseId = request.params.courseId;
+
+    // When the user logs in, we first need to find the class associated with that user.
+    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
+        if (!classEntity) {
+            logger.info("Could not find an active class for user [" + user.username + "]");
+            response.send(404, "You don't have a class that's taking place right now");
+            return;
+        }
+
+        var studentData = classEntity.findStudentByUserId(userId);
+
+        var ravelloUsername = studentData.ravelloCredentials.username;
+        var ravelloPassword = studentData.ravelloCredentials.password;
+
+        coursesDal.getCourse(courseId).then(function(courseEntity) {
+            var course = coursesTrans.entityToDto(courseEntity);
+            q.all(_.map(course.blueprints, function(bp) {
+                    return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
+                })).then(function(bpResults) {
+                    course.blueprints = coursesService.assignBlueprintsToCourse(course, bpResults);
+                    response.json(course);
+                }).fail(function(error) {
+                    var message = "Could not get one of the course's blueprints";
+                    logger.error(error, message);
+                    response.send(404, message);
+                });
+        }).fail(function(error) {
+            var message = "Could not load course: " + courseId;
+            logger.error(error, message);
+            response.send(404, message);
+        });
+    }).fail(function(error) {
+        var message = "Could not load class of user " + user.username;
         logger.error(error, message);
         response.send(404, message);
     });

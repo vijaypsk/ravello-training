@@ -4,7 +4,8 @@ angular.module('trng.services').factory('StudentsService', [
 	'StudentsProxy',
 	'StudentTransformer',
 	'AppsTransformer',
-	function(StudentsProxy, StudentsTrans, AppsTrans) {
+	'CoursesTransformer',
+	function(StudentsProxy, StudentsTrans, AppsTrans, CoursesTrans) {
 		
 		var service = {
 			getStudent: function(studentId) {
@@ -35,6 +36,14 @@ angular.module('trng.services').factory('StudentsService', [
                         return AppsTrans.dtoToEntity(result.data);
                     }
                 )
+            },
+
+            getStudentCourse: function(studentId, courseId) {
+                return StudentsProxy.getStudentCourse(studentId, courseId).then(
+                    function(result) {
+                        return CoursesTrans.dtoToEntity(result.data);
+                    }
+                );
             }
         };
 		
