@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('trng.admin').controller('adminController', [
+angular.module('trng.admin').controller('AdminController', [
     '$rootScope',
     '$scope',
     '$state',
     'LoginModel',
-    function($rootScope, $scope, $state, LoginModel) {
+    'StatesNames',
+    function($rootScope, $scope, $state, LoginModel, StatesNames) {
         $scope.init = function() {
-            $scope.handleRole();
         };
 
         $scope.handleRole = function() {
@@ -17,6 +17,14 @@ angular.module('trng.admin').controller('adminController', [
                         event.preventDefault();
                     }
                 });
+        };
+
+        $scope.navigateToProfile = function() {
+            $state.go(StatesNames.admin.profile.name);
+        };
+
+        $scope.navigateToTrainers = function() {
+            $state.go(StatesNames.admin.trainers.name);
         };
 
         $scope.init();

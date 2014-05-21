@@ -8,11 +8,13 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
     '$window',
     '$modal',
     '$log',
+    'StatesNames',
     'CourseModel',
     'BlueprintsService',
     'DateUtil',
     'currentCourse',
-    function ($scope, $state, $stateParams, $window, $modal, $log, CourseModel, BlueprintsService, DateUtil, currentCourse) {
+    function ($scope, $state, $stateParams, $window, $modal, $log, StatesNames, CourseModel, BlueprintsService, DateUtil,
+              currentCourse) {
 
         $scope.init = function () {
             $scope.initCourse();
@@ -132,7 +134,7 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
         $scope.save = function() {
             return CourseModel.save($scope.currentCourse).then(
                 function(result) {
-                    $state.go('^.courses');
+                    $state.go(StatesNames.trainer.training.courses.name);
                 }
             );
         };

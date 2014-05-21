@@ -9,13 +9,14 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
     '$log',
     '$window',
     '$dialogs',
+    'StatesNames',
     'ClassModel',
     'ClassesService',
     'CourseModel',
     'DateUtil',
     'currentClass',
     'courses',
-    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, ClassModel, ClassesService,
+    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, StatesNames, ClassModel, ClassesService,
               CourseModel, DateUtil, currentClass, courses) {
 
         $scope.init = function () {
@@ -88,12 +89,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
         };
 
         $scope.addStudent = function() {
-            $state.go('^.single-student', {classId: $scope.currentClass.id});
+            $state.go(StatesNames.trainer.training.singleClass.singleStudent.name, {classId: $scope.currentClass.id});
         };
 
         $scope.editStudent = function(studentToEdit) {
             var studentId = studentToEdit.getProperty('id');
-            $state.go('^.single-student', {classId: $scope.currentClass.id, studentId: studentId});
+            $state.go(StatesNames.trainer.training.singleClass.singleStudent.name, {classId: $scope.currentClass.id, studentId: studentId});
         };
 
         $scope.deleteStudent = function(studentToDelete) {
@@ -107,7 +108,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
         $scope.saveClass = function() {
             return ClassModel.save($scope.currentClass).then(
                 function(result) {
-                    $state.go("trainer.training.classes");
+                    $state.go(StatesNames.trainer.training.classes.name);
                 }
             );
         };
@@ -117,7 +118,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
         };
 
         $scope.addToEdit = function() {
-            $state.go('^.edit-class');
+            $state.go(StatesNames.trainer.training.singleClass.editClass.name);
         };
 
         $scope.init();

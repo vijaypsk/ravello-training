@@ -6,9 +6,10 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
     '$state',
     '$log',
     '$dialogs',
+    'StatesNames',
     'CourseModel',
     'courses',
-    function ($scope, $state, $log, $dialogs,  CourseModel, courses) {
+    function ($scope, $state, $log, $dialogs, StatesNames, CourseModel, courses) {
 
         $scope.init = function() {
             $scope.initCourses();
@@ -57,12 +58,12 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
         };
 
         $scope.addCourse = function() {
-            $state.go('^.single-course');
+            $state.go(StatesNames.trainer.training.singleCourse.name);
         };
 
         $scope.editCourse = function(courseToEdit) {
             var courseId = courseToEdit.getProperty('id');
-            $state.go('^.single-course', {courseId: courseId});
+            $state.go(StatesNames.trainer.training.singleCourse.name, {courseId: courseId});
         };
 
         $scope.deleteCourse = function(courseToDelete) {

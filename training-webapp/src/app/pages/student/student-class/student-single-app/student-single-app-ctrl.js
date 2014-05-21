@@ -9,12 +9,13 @@ angular.module('trng.student').controller('studentSingleAppController', [
     '$timeout',
     '$dialogs',
     'CommonConstants',
+    'StatesNames',
     'AppsService',
     'StudentsService',
     'student',
     'currentApp',
-    function ($log, $scope, $state, $modal, $window, $timeout, $dialogs, CommonConstants, AppsService, StudentsService,
-              student, currentApp) {
+    function ($log, $scope, $state, $modal, $window, $timeout, $dialogs, CommonConstants, StatesNames, AppsService,
+                            StudentsService, student, currentApp) {
 
         $scope.init = function() {
             $scope.currentApp = currentApp;
@@ -210,7 +211,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
         };
 
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-            if (fromState && fromState.name === 'student.class.single-app') {
+            if (fromState && fromState.name === StatesNames.student.studentClass.singleApp.name) {
                 $scope.shouldAutoRefresh = false;
             }
         });

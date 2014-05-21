@@ -5,9 +5,10 @@ angular.module('trng.admin.trainers').controller('adminSingleTrainerController',
     '$scope',
     '$window',
     '$state',
+    'StatesNames',
     'AdminTrainerModel',
     'currentTrainer',
-    function($log, $scope, $window, $state, AdminTrainerModel, currentTrainer) {
+    function($log, $scope, $window, $state, StatesNames, AdminTrainerModel, currentTrainer) {
         $scope.init = function() {
             $scope.currentTrainer = currentTrainer;
         };
@@ -15,7 +16,7 @@ angular.module('trng.admin.trainers').controller('adminSingleTrainerController',
         $scope.saveTrainer = function() {
             return AdminTrainerModel.saveTrainer($scope.currentTrainer).then(
                 function(result) {
-                    $state.go('^.trainers');
+                    $state.go(StatesNames.admin.trainers.name);
                 }
             );
         };

@@ -5,8 +5,9 @@ angular.module('trng.app').controller('MainController', [
     '$cookieStore',
     '$state',
     '$dialogs',
+    'StatesNames',
     'LoginModel',
-    function ($scope, $cookieStore, $state, $dialogs, LoginModel) {
+    function ($scope, $cookieStore, $state, $dialogs, StatesNames, LoginModel) {
         $scope.initApp = function() {
             var userAuthData = $cookieStore.get('userAuthData');
 
@@ -15,11 +16,11 @@ angular.module('trng.app').controller('MainController', [
 
                 LoginModel.login(userAuthData.username, userAuthData.password).catch(
                     function(error) {
-                        $state.go("login");
+                        $state.go(StatesNames.login.name);
                     }
                 );
             } else {
-                $state.go("login");
+                $state.go(StatesNames.login.name);
             }
         };
 
@@ -27,7 +28,7 @@ angular.module('trng.app').controller('MainController', [
             var dialog = $dialogs.confirm('Confirm logout', 'Are you sure you want to logout?');
             dialog.result.then(function(result) {
                 $cookieStore.remove('userAuthData');
-                $state.go('login');
+                $state.go(StatesNames.login.name);
             });
         };
 

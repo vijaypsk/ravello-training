@@ -5,9 +5,10 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
     '$scope',
     '$state',
     '$dialogs',
+    'StatesNames',
     'AdminTrainerModel',
     'trainers',
-    function($log, $scope, $state, $dialogs, AdminTrainerModel, trainers) {
+    function($log, $scope, $state, $dialogs, StatesNames, AdminTrainerModel, trainers) {
 
         $scope.init = function() {
             $scope.trainers = trainers;
@@ -53,12 +54,12 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
         };
 
         $scope.addTrainer = function() {
-            $state.go('^.single-trainer');
+            $state.go(StatesNames.admin.singleTrainer.name);
         };
 
         $scope.editTrainer = function(trainerToEdit) {
             var trainerId = trainerToEdit.getProperty('id');
-            $state.go('^.single-trainer', {trainerId: trainerId});
+            $state.go(StatesNames.admin.singleTrainer.name, {trainerId: trainerId});
         };
 
         $scope.deleteTrainer = function(trainerToDelete) {

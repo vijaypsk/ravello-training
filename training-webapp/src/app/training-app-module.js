@@ -24,22 +24,25 @@
         '$httpProvider',
         'growlProvider',
         'CommonConstants',
-        function ($urlRouterProvider, $stateProvider, $httpProvider, growlProvider, CommonConstants) {
+        'StatesNames',
+        function ($urlRouterProvider, $stateProvider, $httpProvider, growlProvider, CommonConstants, StatesNames) {
 
             // Routes configuration.
 
             $stateProvider.
-                state('login', {
+                state(StatesNames.login.name, {
                     url: '/login',
                     templateUrl: 'app/pages/login/login.html',
                     controller: 'loginController'
-                }).state('admin', {
+                }).state(StatesNames.admin.name, {
                     url: '/admin',
-                    templateUrl: 'app/pages/admin/admin.html'
-                }).state('trainer', {
+                    templateUrl: 'app/pages/admin/admin.html',
+                    controller: 'AdminController'
+                }).state(StatesNames.trainer.name, {
                     url: '/trainer',
-                    templateUrl: 'app/pages/trainer/trainer.html'
-                }).state('student', {
+                    templateUrl: 'app/pages/trainer/trainer.html',
+                    controller: 'TrainerController'
+                }).state(StatesNames.student.name, {
                     url: '/student',
                     templateUrl: 'app/pages/student/student.html',
                     controller: 'studentController',

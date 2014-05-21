@@ -4,11 +4,12 @@ angular.module('trng.student').controller('studentClassController', [
     '$log',
     '$scope',
     '$state',
+    'StatesNames',
     'AppsService',
     'student',
     'course',
     'apps',
-    function($log, $scope, $state, AppsService, student, course, apps) {
+    function($log, $scope, $state, StatesNames, AppsService, student, course, apps) {
         $scope.init = function() {
             $scope.name = student.firstName + ' ' + student.surname;
             $scope.student = student;
@@ -64,7 +65,7 @@ angular.module('trng.student').controller('studentClassController', [
 
         $scope.view = function(appToView) {
             var appId = appToView.getProperty("id");
-            $state.go("^.single-app", {appId: appId});
+            $state.go(StatesNames.student.studentClass.singleApp.name, {appId: appId});
         };
 
         $scope.init();

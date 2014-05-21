@@ -9,11 +9,13 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
     '$modal',
     '$window',
     'growl',
+    'StatesNames',
     'ClassModel',
     'StudentModel',
     'currentStudent',
     'currentClass',
-    function ($scope, $state, $stateParams, $log, $modal, $window, growl, ClassModel, StudentModel, currentStudent, currentClass) {
+    function ($scope, $state, $stateParams, $log, $modal, $window, growl, StatesNames, ClassModel, StudentModel, currentStudent,
+              currentClass) {
 
         $scope.init = function () {
             $scope.currentStudent = currentStudent;
@@ -171,7 +173,7 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
                     if (!existingStudent) {
                         $scope.currentStudent = persistedClass.students[persistedClass.students.length - 1];
                     }
-                    $state.go("trainer.training.single-class.edit-class", {classId: $scope.currentClass.id});
+                    $state.go(StatesNames.trainer.training.singleClass.editClass.name, {classId: $scope.currentClass.id});
                 }
             ).catch(
                 function(error) {

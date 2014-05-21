@@ -2,23 +2,27 @@
 
 (function (angular) {
     angular.module('trng.student', [
-        'trng.services']).
-    config([
+        'trng.config',
+        'trng.services'
+    ]);
+
+    angular.module('trng.student').config([
         '$urlRouterProvider',
         '$stateProvider',
-        function($urlRouterProvider, $stateProvider) {
+        'StatesNames',
+        function($urlRouterProvider, $stateProvider, StatesNames) {
             $stateProvider.
-                state('student.class', {
+                state(StatesNames.student.studentClass.name, {
                     url: '/class',
                     templateUrl: 'app/pages/student/student-class/student-class.html',
                     controller: 'studentClassController',
                     resolve: studentClassResolver
-                }).state('student.class.single-app', {
+                }).state(StatesNames.student.studentClass.singleApp.name, {
                     url: '/single-app?appId',
                     templateUrl: 'app/pages/student/student-class/student-single-app/student-single-app.html',
                     controller: 'studentSingleAppController',
                     resolve: studentSingleAppResolver
-                }).state('student.class.apps-list', {
+                }).state(StatesNames.student.studentClass.appsList.name, {
                     url: '/apps',
                     templateUrl: 'app/pages/student/student-class/student-apps/student-apps.html',
                     controller: 'studentClassController'

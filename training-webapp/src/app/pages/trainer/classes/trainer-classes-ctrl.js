@@ -7,12 +7,13 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
     '$state',
     '$log',
     '$dialogs',
+    'StatesNames',
     'ClassModel',
     'ClassesService',
     'CourseModel',
     'DateUtil',
     'classes',
-    function ($scope, $rootScope, $state, $log, $dialogs, ClassModel, ClassesService, CourseModel, DateUtil, classes) {
+    function ($scope, $rootScope, $state, $log, $dialogs, StatesNames, ClassModel, ClassesService, CourseModel, DateUtil, classes) {
 
         $scope.init = function () {
             $scope.initClassesDataGrid();
@@ -75,17 +76,17 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
         };
 
         $scope.addClass = function () {
-            $state.go('^.single-class.add-class');
+            $state.go(StatesNames.trainer.training.singleClass.addClass.name);
         };
 
         $scope.editClass = function (theClass) {
             var classId = theClass.getProperty('id');
-            $state.go('^.single-class.edit-class', {classId: classId});
+            $state.go(StatesNames.trainer.training.singleClass.editClass.name, {classId: classId});
         };
 
         $scope.monitorClass = function (theClass) {
             var classId = theClass.getProperty('id');
-            $state.go('^.single-class.monitor-class', {classId: classId});
+            $state.go(StatesNames.trainer.training.singleClass.monitorClass.name, {classId: classId});
         };
 
         $scope.deleteClasses = function () {
