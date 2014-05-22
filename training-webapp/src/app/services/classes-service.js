@@ -1,10 +1,13 @@
 'use strict';
 
 angular.module('trng.services').factory('ClassesService', [
+	'$q',
 	'ClassesProxy',
 	'ClassesTransformer',
-	'StudentsService',
-	function(ClassesProxy, ClassesTrans, StudentsService) {
+	'AppsService',
+	function($q, ClassesProxy, ClassesTrans, AppsService) {
+
+        var cachedClasses = null;
 
         var classViewModelToDomainModel = function(theClass) {
             var courseId = theClass.course.id;
@@ -56,16 +59,26 @@ angular.module('trng.services').factory('ClassesService', [
 
         var service = {
 			getAllClasses: function() {
+                if (cachedClasses) {
+                    return $q.when(cachedClasses);
+                }
+
 				return ClassesProxy.getAllClasses().then(
                     function(result) {
-                        return _.map(result.data, function(currentClassDto) {
+                        cachedClasses = _.map(result.data, function(currentClassDto) {
                             return ClassesTrans.dtoToEntity(currentClassDto);
                         });
+                        return cachedClasses;
                     }
                 );
             },
 
             getClassById: function(classId) {
+                if (cachedClasses) {
+                    var theClass = _.find(cachedClasses, {id: classId});
+                    return $q.when(theClass);
+                }
+
                 return ClassesProxy.getClassById(classId).then(
                     function(result) {
                         return ClassesTrans.dtoToEntity(result.data);
@@ -83,7 +96,9 @@ angular.module('trng.services').factory('ClassesService', [
                 var dto = ClassesTrans.entityToDto(entity);
                 return ClassesProxy.add(dto).then(
                     function(result) {
-                        return ClassesTrans.dtoToEntity(result.data);
+                        var persistedClassEntity = ClassesTrans.dtoToEntity(result.data);
+                        cachedClasses && cachedClasses.push(persistedClassEntity);
+                        return persistedClassEntity;
                     });
             },
 
@@ -91,18 +106,36 @@ angular.module('trng.services').factory('ClassesService', [
                 var dto = ClassesTrans.entityToDto(entity);
                 return ClassesProxy.update(dto).then(
                     function(result) {
-                        return ClassesTrans.dtoToEntity(result.data);
+                        var persistedEntity = ClassesTrans.dtoToEntity(result.data);
+
+                        cachedClasses && _.forEach(cachedClasses, function(currentClass, classIndex) {
+                            if (currentClass.id == persistedEntity.id) {
+                                cachedClasses[classIndex] = persistedEntity;
+                            }
+                        });
+
+                        return persistedEntity;
                     }
                 );
             },
 
             delete: function(entity) {
                 var dto = ClassesTrans.entityToDto(entity);
-                return ClassesProxy.delete(dto);
+                return ClassesProxy.delete(dto).then(
+                    function(result) {
+                        cachedClasses && _.remove(cachedClasses, {id: entity.id});
+                        return result;
+                    }
+                );
             },
 
             deleteById: function(entityId) {
-                return ClassesProxy.deleteById(entityId);
+                return ClassesProxy.deleteById(entityId).then(
+                    function(result) {
+                        cachedClasses && _.remove(cachedClasses, {id: entityId});
+                        return result;
+                    }
+                );
             },
 
             saveOrUpdate: function(entity) {
@@ -113,14 +146,24 @@ angular.module('trng.services').factory('ClassesService', [
                         function(result) {
                             var persistedDto = result.data;
                             entity.id = persistedDto.id;
-                            return ClassesTrans.dtoToEntity(persistedDto);
+                            var persistedEntity = ClassesTrans.dtoToEntity(persistedDto);
+                            cachedClasses && cachedClasses.push(persistedEntity);
+                            return persistedEntity;
                         }
                     );
                 }
 
                 return ClassesProxy.update(dto).then(
                     function(result) {
-                        return ClassesTrans.dtoToEntity(result.data);
+                        var persistedEntity = ClassesTrans.dtoToEntity(result.data);
+
+                        cachedClasses && _.forEach(cachedClasses, function(currentClass, classIndex) {
+                            if (currentClass.id == persistedEntity.id) {
+                                cachedClasses[classIndex] = persistedEntity;
+                            }
+                        });
+
+                        return persistedEntity;
                     }
                 );
             },
@@ -143,6 +186,41 @@ angular.module('trng.services').factory('ClassesService', [
                 }
 
                 return student;
+            },
+
+            // It's important to create apps for students via the ClassesService, since such an action really affects
+            // the student, and hence the class, and therefore should happen from here (technically, it's important to update
+            // the cache after a newly app is created for a student in a class).
+            // The same goes for deleting an app of course.
+
+            createAppForStudent: function(classId, studentUserId, appName, appDesc, blueprintId) {
+                return AppsService.createApp(appName, appDesc, blueprintId, studentUserId).then(
+                    function(appDto) {
+                        if (cachedClasses) {
+                            var theClass = _.find(cachedClasses, {id: classId});
+                            if (theClass) {
+                                var student = _.find(theClass.students, {user: {id: studentUserId}});
+                                student && student.apps.push(appDto);
+                                return appDto;
+                            }
+                        }
+                    }
+                );
+            },
+            
+            deleteAppForStudent: function(classId, studentUserId, appRavelloId) {
+                return AppsService.deleteApp(appRavelloId, studentUserId).then(
+                    function(result) {
+                        if (cachedClasses) {
+                            var theClass = _.find(cachedClasses, {id: classId});
+                            if (theClass) {
+                                var student = _.find(theClass.students, {user: {id: studentUserId}});
+                                student && _.remove(student.apps, {ravelloId: appRavelloId.toString()});
+                                return result;
+                            }
+                        }
+                    }
+                );
             }
 		};
 		

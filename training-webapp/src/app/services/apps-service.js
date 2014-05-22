@@ -2,11 +2,16 @@
 
 angular.module('trng.services').factory('AppsService', [
 	'AppsProxy',
-	function(AppsProxy) {
+	'AppsTransformer',
+	function(AppsProxy, AppsTrans) {
 
 		var service = {
             createApp: function(appName, appDescription, blueprintId, userId) {
-                return AppsProxy.createApp(appName, appDescription, blueprintId, userId);
+                return AppsProxy.createApp(appName, appDescription, blueprintId, userId).then(
+                    function(result) {
+                        return AppsTrans.dtoToEntity(result.data);
+                    }
+                );
             },
 
             deleteApp: function(appId, userId) {

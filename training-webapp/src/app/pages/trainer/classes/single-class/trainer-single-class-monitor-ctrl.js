@@ -120,7 +120,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                     ' for class ' + $scope.currentClass.name;
 
                 if (!app.creationTime) {
-                    return AppsService.createApp(appName, appDesc, app.blueprint.id, app.student.user.id).then(fetchClassApps);
+                    ClassesService.createAppForStudent($scope.currentClass.id, app.student.user.id, appName, appDesc,
+                        app.blueprint.id).then(fetchClassApps);
                 } else {
                     growl.addInfoMessage("Application for student " + app.student.user.username +
                         " from blueprint [" + app.blueprint.name + "] already exists");
@@ -134,7 +135,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                 return dialog.result.then(
                     function() {
                         return $q.all(_.map($scope.viewModel.selectedApps, function(app) {
-                            return app.creationTime && AppsService.deleteApp(app.ravelloId, app.student.user.id);
+                            return app.creationTime &&
+                                ClassesService.deleteAppForStudent($scope.currentClass.id, app.student.user.id, app.ravelloId);
                         })).then(fetchClassApps);
                     }
                 );
