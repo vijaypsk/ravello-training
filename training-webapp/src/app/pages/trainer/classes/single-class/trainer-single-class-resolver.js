@@ -1,6 +1,6 @@
 'use strict';
 
-var singleClassEditResolver = {
+var singleClassResolver = {
     currentClass: [
         '$q', '$stateParams', 'ClassesService', 'CoursesService',
         function ($q, $stateParams, ClassesService, CoursesService) {

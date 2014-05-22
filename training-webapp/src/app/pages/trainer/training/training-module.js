@@ -29,7 +29,7 @@
                     url: '/single-class?classId',
                     templateUrl: 'app/pages/trainer/classes/single-class/trainer-single-class.html',
                     controller: 'trainerSingleClassEditController',
-                    resolve: singleClassEditResolver
+                    resolve: singleClassResolver
                 }).state(StatesNames.trainer.training.singleCourse.name, {
                     url: '/single-course?courseId',
                     templateUrl: 'app/pages/trainer/courses/single-course/trainer-single-course.html',
