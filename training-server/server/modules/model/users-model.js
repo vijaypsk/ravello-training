@@ -9,7 +9,10 @@ var UsersSchema = mongoose.Schema(
     {
         firstName: String,
         surname: String,
-        username: String,
+        username: {
+            type: String,
+            unique: true
+        },
         password: String,
         role: String,
         ravelloCredentials: {
