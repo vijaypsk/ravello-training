@@ -12,10 +12,13 @@
         '$stateProvider',
         'StatesNames',
         function($urlRouterProvider, $stateProvider, StatesNames) {
+            $urlRouterProvider.when("/trainer", "/trainer/training");
+
             $stateProvider.
                 state(StatesNames.trainer.training.name, {
                     url: '/training',
-                    templateUrl: 'app/pages/trainer/training/training.html'
+                    templateUrl: 'app/pages/trainer/training/training.html',
+                    controller: 'trainerTrainingController'
                 });
         }
     ]);
