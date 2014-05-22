@@ -39,9 +39,11 @@ exports.getClassOfUserForNow = function(userId) {
 exports.createClass = function(classData) {
     var newClass = new TrainingClass(classData);
 
-    return newClass.saveQ().then(function(entity) {
-        return entity.populateQ('students.user');
-    });
+    return newClass.saveQ().then(
+        function(entity) {
+            return entity.populateQ('students.user');
+        }
+    );
 };
 
 exports.updateClass = function(classId, classData) {
@@ -60,9 +62,11 @@ exports.updateStudentApp = function(userId, appId) {
 
             var classData = classEntity.toJSON();
             classData = _.omit(classData, '_id');
-            return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(function(result) {
-                return classEntity;
-            });
+            return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(
+                function(result) {
+                    return classEntity;
+                }
+            );
         }
     );
 };
@@ -78,9 +82,11 @@ exports.deleteStudentApp = function(userId, appId) {
 
             var classData = classEntity.toJSON();
             classData = _.omit(classData, '_id');
-            return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(function(result) {
-                return classEntity;
-            });
+            return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(
+                function(result) {
+                    return classEntity;
+                }
+            );
         }
     );
 };

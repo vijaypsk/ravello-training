@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 var determineAppDisplayName = function(course, bpId) {
     var matchingBp = _.find(course.blueprints, function(bp) {
-        return bp.id = bpId;
+        return bp.id == bpId;
     });
 
     if (matchingBp) {

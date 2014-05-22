@@ -96,21 +96,25 @@ exports.getStudentClass = function(request, response) {
     var userId = user.id;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
-        if (!classEntity) {
-            logger.info("Could not find an active class for user [" + user.username + "]");
-            response.send(404, "You don't have a class that's taking place right now");
-            return;
-        }
+    classesDal.getClassOfUserForNow(userId).then(
+        function(classEntity) {
+            if (!classEntity) {
+                logger.info("Could not find an active class for user [" + user.username + "]");
+                response.send(404, "You don't have a class that's taking place right now");
+                return;
+            }
 
-        var studentEntity = classEntity.findStudentByUserId(userId);
-        var dto = singleStudentTrans.entityToDto(studentEntity, classEntity);
-        response.json(dto);
-    }).fail(function(error) {
-        var message = "Could not find the class of student: " + user.username;
-        logger.error(error, message);
-        response.send(404, message);
-    });
+            var studentEntity = classEntity.findStudentByUserId(userId);
+            var dto = singleStudentTrans.entityToDto(studentEntity, classEntity);
+            response.json(dto);
+        }
+    ).fail(
+        function(error) {
+            var message = "Could not find the class of student: " + user.username;
+            logger.error(error, message);
+            response.send(404, message);
+        }
+    );
 };
 
 exports.getStudentClassApps = function(request, response) {
@@ -118,49 +122,58 @@ exports.getStudentClassApps = function(request, response) {
     var userId = user.id;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
-        if (!classEntity) {
-            logger.info("Could not find an active class for user [" + user.username + "]");
-            response.send(404, "You don't have a class that's taking place right now");
-            return;
+    classesDal.getClassOfUserForNow(userId).then(
+        function(classEntity) {
+            if (!classEntity) {
+                logger.info("Could not find an active class for user [" + user.username + "]");
+                response.send(404, "You don't have a class that's taking place right now");
+                return;
+            }
+
+            var classData = classesTrans.entityToDto(classEntity);
+            var studentData = classEntity.findStudentByUserId(userId);
+
+            var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+            var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
+
+            return coursesDal.getCourse(classEntity.courseId).then(
+                function(course) {
+                    return q.all(_.map(studentData.apps, function(app) {
+                        return appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
+                    })).then(
+                        function(appsResults) {
+                            var appViewObjects = [];
+
+                            _.forEach(appsResults, function(appResult) {
+                                var appViewObject = appsTrans.ravelloObjectToStudentDto(course, appResult.body);
+                                appViewObjects.push(appViewObject);
+                            });
+
+                            response.json(appViewObjects);
+                        }
+                    ).fail(
+                        function(error) {
+                            var message = "Could not get one of the apps of user: " + user.username;
+                            logger.error(error, message);
+                            response.send(404, message);
+                        }
+                    );
+                }
+            ).fail(
+                function(error) {
+                    var message = "Could not find the course of student: " + user.username;
+                    logger.error(error, message);
+                    response.send(404, message);
+                }
+            );
         }
-
-        var classData = classesTrans.entityToDto(classEntity);
-        var studentData = classEntity.findStudentByUserId(userId);
-
-        var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
-
-        coursesDal.getCourse(classEntity.courseId).then(function(course) {
-
-            q.all(_.map(studentData.apps, function(app) {
-                return appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
-            })).then(function(appsResults) {
-                var appViewObjects = [];
-
-                _.forEach(appsResults, function(appResult) {
-                    var appViewObject = appsTrans.ravelloObjectToStudentDto(course, appResult.body);
-                    appViewObjects.push(appViewObject);
-                });
-
-                response.json(appViewObjects);
-
-            }).fail(function(error) {
-                var message = "Could not get one of the apps of user: " + user.username;
-                logger.error(error, message);
-                response.send(404, message);
-            });
-
-        }).fail(function(error) {
-            var message = "Could not find the course of student: " + user.username;
+    ).fail(
+        function(error) {
+            var message = "Could not find the class of student: " + user.username;
             logger.error(error, message);
             response.send(404, message);
-        });
-    }).fail(function(error) {
-        var message = "Could not find the class of student: " + user.username;
-        logger.error(error, message);
-        response.send(404, message);
-    });
+        }
+    );
 };
 
 exports.getAppVms = function(request, response) {
@@ -170,43 +183,51 @@ exports.getAppVms = function(request, response) {
     var appId = request.params.appId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
-        if (!classEntity) {
-            logger.info("Could not find an active class for user [" + user.username + "]");
-            response.send(404, "You don't have a class that's taking place right now");
-            return;
+    classesDal.getClassOfUserForNow(userId).then(
+        function(classEntity) {
+            if (!classEntity) {
+                logger.info("Could not find an active class for user [" + user.username + "]");
+                response.send(404, "You don't have a class that's taking place right now");
+                return;
+            }
+
+            var classData = classesTrans.entityToDto(classEntity);
+            var studentData = classEntity.findStudentByUserId(userId);
+
+            var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+            var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
+
+            appsService.getApp(appId, ravelloUsername, ravelloPassword).then(
+                function(appResult) {
+                    var app = appResult.body;
+
+                    var vms = _.map(app.deployment.vms, function(vm) {
+                        return createVmViewObject(vm);
+                    });
+
+                    var appDto = {
+                        id: app.id,
+                        blueprintId: app.baseBlueprintId,
+                        vms: vms
+                    };
+
+                    response.json(appDto);
+                }
+            ).fail(
+                function(error) {
+                    var message = "Could not get application deployment information";
+                    logger.error(error, message);
+                    response.send(404, message);
+                }
+            );
         }
-
-        var classData = classesTrans.entityToDto(classEntity);
-        var studentData = classEntity.findStudentByUserId(userId);
-
-        var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
-
-        appsService.getApp(appId, ravelloUsername, ravelloPassword).then(function(appResult) {
-            var app = appResult.body;
-
-            var vms = _.map(app.deployment.vms, function(vm) {
-                return createVmViewObject(vm);
-            });
-
-            var appDto = {
-                id: app.id,
-                blueprintId: app.baseBlueprintId,
-                vms: vms
-            };
-
-            response.json(appDto);
-        }).fail(function(error) {
-            var message = "Could not get application deployment information";
+    ).fail(
+        function(error) {
+            var message = "Could not load app " + appId;
             logger.error(error, message);
             response.send(404, message);
-        });
-    }).fail(function(error) {
-        var message = "Could not load app " + appId;
-        logger.error(error, message);
-        response.send(404, message);
-    });
+        }
+    );
 };
 
 exports.getStudentCourse = function(request, response) {
@@ -216,38 +237,50 @@ exports.getStudentCourse = function(request, response) {
     var courseId = request.params.courseId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(function(classEntity) {
-        if (!classEntity) {
-            logger.info("Could not find an active class for user [" + user.username + "]");
-            response.send(404, "You don't have a class that's taking place right now");
-            return;
-        }
+    classesDal.getClassOfUserForNow(userId).then(
+        function(classEntity) {
+            if (!classEntity) {
+                logger.info("Could not find an active class for user [" + user.username + "]");
+                response.send(404, "You don't have a class that's taking place right now");
+                return;
+            }
 
-        var studentData = classEntity.findStudentByUserId(userId);
+            var studentData = classEntity.findStudentByUserId(userId);
 
-        var ravelloUsername = studentData.ravelloCredentials.username;
-        var ravelloPassword = studentData.ravelloCredentials.password;
+            var ravelloUsername = studentData.ravelloCredentials.username;
+            var ravelloPassword = studentData.ravelloCredentials.password;
 
-        coursesDal.getCourse(courseId).then(function(courseEntity) {
-            var course = coursesTrans.entityToDto(courseEntity);
-            q.all(_.map(course.blueprints, function(bp) {
-                    return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
-                })).then(function(bpResults) {
-                    course.blueprints = coursesService.assignBlueprintsToCourse(course, bpResults);
-                    response.json(course);
-                }).fail(function(error) {
-                    var message = "Could not get one of the course's blueprints";
+            return coursesDal.getCourse(courseId).then(
+                function(courseEntity) {
+                    var course = coursesTrans.entityToDto(courseEntity);
+                    return q.all(_.map(course.blueprints, function(bp) {
+                        return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
+                    })).then(
+                        function(bpResults) {
+                            course.blueprints = coursesService.assignBlueprintsToCourse(course, bpResults);
+                            response.json(course);
+                        }
+                    ).fail(
+                        function(error) {
+                            var message = "Could not get one of the course's blueprints";
+                            logger.error(error, message);
+                            response.send(404, message);
+                        }
+                    );
+                }
+            ).fail(
+                function(error) {
+                    var message = "Could not load course: " + courseId;
                     logger.error(error, message);
                     response.send(404, message);
-                });
-        }).fail(function(error) {
-            var message = "Could not load course: " + courseId;
+                }
+            );
+        }
+    ).fail(
+        function(error) {
+            var message = "Could not load class of user " + user.username;
             logger.error(error, message);
             response.send(404, message);
-        });
-    }).fail(function(error) {
-        var message = "Could not load class of user " + user.username;
-        logger.error(error, message);
-        response.send(404, message);
-    });
+        }
+    );
 };

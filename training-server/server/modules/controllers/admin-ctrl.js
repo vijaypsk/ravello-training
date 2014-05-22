@@ -19,12 +19,16 @@ exports.updateProfile = function(request, response) {
 
     var user = usersTrans.ravelloDtoToEntity(userDto);
 
-    usersDal.updateUser(userEntity.id, user).then(function(persistedUser) {
-        var returnedUser = usersTrans.entityToDto(persistedUser);
-        response.json(returnedUser);
-    }).fail(function(error) {
-        var message = "Could not update the admin profile";
-        logger.error(error, message);
-        response.send(404, error);
-    });
+    usersDal.updateUser(userEntity.id, user).then(
+        function(persistedUser) {
+            var returnedUser = usersTrans.entityToDto(persistedUser);
+            response.json(returnedUser);
+        }
+    ).fail(
+        function(error) {
+            var message = "Could not update the admin profile";
+            logger.error(error, message);
+            response.send(404, error);
+        }
+    );
 };
