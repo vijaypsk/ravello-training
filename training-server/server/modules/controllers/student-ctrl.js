@@ -136,6 +136,13 @@ exports.getStudentClassApps = function(request, response) {
             var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
             var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
+			if (!ravelloUsername || !ravelloPassword) {
+				var message = "Student does not have Ravello Credentials";
+				logger.warn(message);
+				response.send(401, message);
+				return;
+			}
+
             return coursesDal.getCourse(classEntity.courseId).then(
                 function(course) {
                     return q.all(_.map(studentData.apps, function(app) {
@@ -145,6 +152,15 @@ exports.getStudentClassApps = function(request, response) {
                             var appViewObjects = [];
 
                             _.forEach(appsResults, function(appResult) {
+								if (appResult.status >= 400 && appResult.error) {
+									if (appResult.status == 401) {
+										response.send(appResult.status, "Wrong Ravello credentials");
+									} else {
+										response.send(appResult.status, appResult.error.message);
+									}
+									return;
+								}
+
                                 var appViewObject = appsTrans.ravelloObjectToStudentDto(course, appResult.body);
                                 appViewObjects.push(appViewObject);
                             });
@@ -197,7 +213,14 @@ exports.getAppVms = function(request, response) {
             var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
             var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
-            appsService.getApp(appId, ravelloUsername, ravelloPassword).then(
+			if (!ravelloUsername || !ravelloPassword) {
+				var message = "Student does not have Ravello Credentials";
+				logger.warn(message);
+				response.send(401, message);
+				return;
+			}
+
+			appsService.getApp(appId, ravelloUsername, ravelloPassword).then(
                 function(appResult) {
                     var app = appResult.body;
 
@@ -245,12 +268,20 @@ exports.getStudentCourse = function(request, response) {
                 return;
             }
 
-            var studentData = classEntity.findStudentByUserId(userId);
+			var classData = classesTrans.entityToDto(classEntity);
+			var studentData = classEntity.findStudentByUserId(userId);
 
-            var ravelloUsername = studentData.ravelloCredentials.username;
-            var ravelloPassword = studentData.ravelloCredentials.password;
+			var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+			var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
-            return coursesDal.getCourse(courseId).then(
+			if (!ravelloUsername || !ravelloPassword) {
+				var message = "Student does not have Ravello Credentials";
+				logger.warn(message);
+				response.send(401, message);
+				return;
+			}
+
+			return coursesDal.getCourse(courseId).then(
                 function(courseEntity) {
                     var course = coursesTrans.entityToDto(courseEntity);
                     return q.all(_.map(course.blueprints, function(bp) {
