@@ -1,9 +1,17 @@
-<div id="allBlueprintsDiv">
-    <h3>Select Blueprints for Course</h3>
-    <div id="allBlueprintsDataGridDiv">
+<div id="allBlueprintsDiv" class="all-bps-div">
+    <div class="all-bps-header">
+        <div class="all-bps-title">
+            <h3>Select Blueprints for Course</h3>
+        </div>
+        <div class="all-bps-search">
+            <label for="bpsSearchInput">Search:</label>
+            <input id="bpsSearchInput" type="text" ng-model="viewModel.searchText" ng-change="filterBlueprints()">
+        </div>
+    </div>
+    <div id="allBlueprintsDataGridDiv" class="all-bps-table">
         <div id="allBlueprintsDataGrid" class="all-bps-data-grid" ng-grid="allBlueprintsDataGrid"></div>
     </div>
-    <div class="row btns-ok-cancel">
+    <div class="row">
         <button ng-click="ok()" class="btn btn-success btn-sm">
             <i class="fa fa-check"></i> OK
         </button>

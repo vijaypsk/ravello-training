@@ -9,25 +9,26 @@ angular.module('trng.trainer.training.courses').controller('trainerAddBlueprints
     'courseBlueprints',
     function ($scope, $log, $modalInstance, DateUtil, allBlueprints, courseBlueprints) {
 
+		// Deep-clone the original blueprints collections, so that the controller can alter it as will, without affecting the
+		// original.
+		var allBlueprintsCopy = _.cloneDeep(allBlueprints);
+
         $scope.init = function () {
+			$scope.viewModel = {
+				searchText: ''
+			};
+
             $scope.initBlueprints();
             $scope.initBlueprintsDataGrid();
         };
 
         $scope.initBlueprints = function () {
-            $scope.allBlueprints = _.cloneDeep(allBlueprints);
+			// Shallow-clone the collection of blueprints, as the datagridBlueprints collection will change throughout the
+			// life of this controller, while the bps collection should remain intact.
+            $scope.datagridBlueprints = _.clone(allBlueprintsCopy);
 
-            $scope.courseBlueprints = [];
-
-            _.forEach(courseBlueprints, function (selectedBp) {
-                var matchingBp = _.find($scope.allBlueprints, function (bp) {
-                    return (bp && selectedBp && bp.hasOwnProperty('id') && selectedBp.hasOwnProperty('id') &&
-                        bp.id === selectedBp.id);
-                });
-
-                if (matchingBp) {
-                    $scope.courseBlueprints.push(matchingBp);
-                }
+            $scope.courseBlueprints = _.map(courseBlueprints, function (selectedBp) {
+				return _.find($scope.datagridBlueprints, {id: selectedBp.id});
             });
         };
 
@@ -56,16 +57,12 @@ angular.module('trng.trainer.training.courses').controller('trainerAddBlueprints
         $scope.initBlueprintsDataGrid = function () {
             $scope.initBlueprintsColumns();
             $scope.allBlueprintsDataGrid = {
-                data: 'allBlueprints',
+                data: 'datagridBlueprints',
                 columnDefs: $scope.allBlueprintsColumns,
                 selectedItems: $scope.courseBlueprints,
                 showSelectionCheckbox: true,
                 selectWithCheckboxOnly: true,
-                enableColumnResize: true,
-                filterOptions: {
-                    filterText: ''
-                },
-                showFilter: true
+                enableColumnResize: true
             };
         };
 
@@ -76,6 +73,21 @@ angular.module('trng.trainer.training.courses').controller('trainerAddBlueprints
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
+
+		$scope.filterBlueprints = function() {
+			if (!$scope.viewModel.searchText) {
+				$scope.datagridBlueprints = _.clone(allBlueprintsCopy);
+				return;
+			}
+
+			var filteredBps = _.filter(allBlueprintsCopy, function(bp) {
+				return ((bp.name && bp.name.toLowerCase().indexOf($scope.viewModel.searchText.toLowerCase()) != -1) ||
+					(bp.description && bp.description.toLowerCase().indexOf($scope.viewModel.searchText.toLowerCase()) != -1) ||
+					(bp.owner && bp.owner.toLowerCase().indexOf($scope.viewModel.searchText.toLowerCase()) != -1));
+			});
+
+			$scope.datagridBlueprints = filteredBps;
+		};
 
         $scope.init();
     }

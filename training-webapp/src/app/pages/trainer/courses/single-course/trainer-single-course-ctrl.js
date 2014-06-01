@@ -77,45 +77,27 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
                 var modalInstance = $modal.open({
                     templateUrl: 'app/pages/trainer/courses/single-course/trainer-add-blueprints.html',
                     controller: 'trainerAddBlueprintsController',
-                    windowClass: 'allBlueprintsPopup',
+                    windowClass: 'all-blueprints-popup',
                     resolve: {
                         allBlueprints: function() {
                             return blueprints;
                         },
                         courseBlueprints: function() {
-                            return $scope.currentCourse['blueprints'];
+                            return $scope.currentCourse.blueprints;
                         }
                     }
                 });
 
                 modalInstance.result.then(function(result) {
-                    _.forEach(result, function(newSelectedBp) {
-                        var matching = _.find($scope.currentCourse['blueprints'], function(existingBp) {
-                            return (existingBp && newSelectedBp &&
-                                existingBp.hasOwnProperty('id') && newSelectedBp.hasOwnProperty('id') &&
-                                existingBp['id'] === newSelectedBp['id']);
-                        });
-
-                        if (!$scope.currentCourse['blueprints']) {
-                            $scope.currentCourse['blueprints'] = [];
-                        }
-
-                        if (!matching) {
-                            var newBp = _.cloneDeep(newSelectedBp);
-                            newBp['displayForStudents'] = newBp['name'];
-                            $scope.currentCourse['blueprints'].push(newBp);
-                        }
-                    });
-
-                    _.remove($scope.currentCourse['blueprints'], function(existingBp) {
-                        var matching = _.find(result, function(newlySelectedBp) {
-                            return (existingBp && newlySelectedBp &&
-                                existingBp.hasOwnProperty('id') && newlySelectedBp.hasOwnProperty('id') &&
-                                existingBp['id'] === newlySelectedBp['id']);
-                        });
-
-                        return !matching;
-                    });
+					$scope.currentCourse.blueprints = _.map(result, function(newBp) {
+						var existingBp = _.find($scope.currentCourse.blueprints, {id: newBp.id});
+						if (!existingBp) {
+							newBp = _.cloneDeep(newBp);
+							newBp.displayForStudents = newBp.name;
+							return newBp;
+						}
+						return existingBp;
+					});
                 });
             });
         };

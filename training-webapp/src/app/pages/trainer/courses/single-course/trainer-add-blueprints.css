@@ -1,10 +1,38 @@
 
-.allBlueprintsPopup .modal-dialog {
+h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.all-blueprints-popup .modal-dialog {
     width: 900px;
 }
 
-.allBlueprintsPopup .modal-content {
+.all-blueprints-popup .modal-content {
     height: 750px;
+}
+
+.all-bps-header {
+    height: 25px;
+    display: table;
+    width: 100%;
+}
+
+.all-bps-title {
+    float: left;
+    display: table-cell;
+    vertical-align: top;
+}
+
+.all-bps-search {
+    float: right;
+    display: table-cell;
+    vertical-align: top;
+}
+
+.all-bps-table {
+    height: 600px;
+    margin: 10px 0;
 }
 
 .all-bps-data-grid {
