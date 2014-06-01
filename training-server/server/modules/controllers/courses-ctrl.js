@@ -27,7 +27,7 @@ exports.getCourses = function(request, response) {
             return q.all(_.map(courses, function(courseEntity) {
                 var course = coursesTrans.entityToDto(courseEntity);
 
-                return matchCourseWithBlueprints(courseEntity, ravelloUsername, ravelloPassword).then(
+                return matchCourseWithBlueprints(course, ravelloUsername, ravelloPassword).then(
                     function(result) {
                         courseDtos.push(result);
                         return result;
