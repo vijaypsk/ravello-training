@@ -10,3 +10,19 @@
 .bp-permissions-data-grid {
     height: 300px;
 }
+
+.bp-permissions-popup .modal-dialog {
+    width: 650px;
+}
+
+.bp-permissions-popup .modal-content {
+    width: 650px;
+}
+
+.bp-permissions-row {
+    padding: 10px 0;
+}
+
+.bp-permissions-row > div {
+    padding: 0;
+}

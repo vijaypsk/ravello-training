@@ -86,6 +86,7 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
             var modalInstance = $modal.open({
                 templateUrl: 'app/pages/trainer/single-student/trainer-bp-permissions.html',
                 controller: 'trainerBpPermissionsController',
+				windowClass: 'bp-permissions-popup',
                 resolve: {
                     bpPermissions: function() {
                         return {
@@ -125,6 +126,7 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
             var modalInstance = $modal.open({
                 templateUrl: 'app/pages/trainer/single-student/trainer-bp-permissions.html',
                 controller: 'trainerBpPermissionsController',
+				windowClass: 'bp-permissions-popup',
                 resolve: {
                     bpPermissions: function() {
                         return bpPermissions;

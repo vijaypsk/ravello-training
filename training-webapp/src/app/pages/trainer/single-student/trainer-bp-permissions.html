@@ -1,7 +1,7 @@
 
 <div id="bpPermissionsDiv">
     <h3>Permissions</h3>
-    <div>
+    <div class="row bp-permissions-row">
         <div class="col-md-3">
             <label for="startVmsInput">Start VMs&nbsp;&nbsp;</label>
             <input id="startVmsInput" type="checkbox" ng-model="viewModel.bpPermissions.startVms">
@@ -18,7 +18,9 @@
             <label for="consoleInput">Console&nbsp;&nbsp;</label>
             <input id="consoleInput" type="checkbox" ng-model="viewModel.bpPermissions.console">
         </div>
-<div class="clearfix "></div>
+
+        <div class="clearfix"></div>
+
         <div class="row btns-ok-cancel">
                 <button ng-click="ok()"class="btn btn-success btn-sm">
                     <i class="fa fa-check"></i>OK
