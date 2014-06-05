@@ -160,7 +160,8 @@ exports.vmVnc = function(appId, vmId, username, password) {
     request.
         get(properties.baseUrl + "/services/applications/" + appId + "/vms/" + vmId + "/vncUrl").
         set('Content-Length', 0).
-        auth(username, password).
+		accept('application/json').
+		auth(username, password).
         end(deferred.makeNodeResolver());
 
     return deferred.promise;
