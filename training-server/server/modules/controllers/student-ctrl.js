@@ -49,7 +49,8 @@ var createVmViewObject = function(vm) {
 
             allDns.push({
                 name: networkConnection.ipConfig.fqdn,
-                services: servicesForNic
+                services: servicesForNic,
+                ip: publicIp
             });
         }
     });

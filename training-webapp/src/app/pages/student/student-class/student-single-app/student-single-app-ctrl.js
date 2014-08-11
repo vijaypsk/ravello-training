@@ -50,10 +50,16 @@ angular.module('trng.student').controller('studentSingleAppController', [
                     width: '9%'
                 },
                 {
+                    field: 'firstDns.ip',
+                    displayName: 'IP',
+                    enableCellEdit: true,
+                    width: '20%'
+                },
+                {
                     field: 'firstDns.name',
                     displayName: 'DNS',
                     enableCellEdit: true,
-                    width: '45%'
+                    width: '25%'
                 },
                 {
                     displayName: 'Actions',
