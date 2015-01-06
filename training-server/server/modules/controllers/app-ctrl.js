@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var q = require('q');
 
 var properties = require('../config/properties');
 var logger = require('../config/logger');
@@ -38,34 +39,46 @@ exports.createApp = function(request, response) {
             return appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
                 function(publishResult) {
                     if (publishResult.status != 200 && publishResult.status != 202) {
-                        return response.send(publishResult.status, "Could not publish app [" + requestData.name + "]");
+						return response.send(publishResult.status, "Could not publish app [" + requestData.name + "]");
                     }
 
-                    return classesDal.updateStudentApp(requestData.userId, appData.ravelloId).then(
-                        function(persistedClass) {
-                            // The appData contains all the bare info of the app, as received from Ravello.
-                            // But we also need to return the newly persisted data (mainly, the mongo ID of the document that was
-                            // created for the app).
-                            var dto = appData;
+					var promise;
+					if (properties.defaultAutoStopSeconds !== -1 ) {
+						promise = appsService.appAutoStop(appData.ravelloId, properties.defaultAutoStopSeconds,
+							ravelloUsername, ravelloPassword);
+					} else {
+						promise = q({});
+					}
 
-                            var matchingStudent = _.find(persistedClass.students, function(student) {
-                                return student.user == requestData.userId;
-                            });
+					return promise.then(
+						function() {
+							return classesDal.updateStudentApp(requestData.userId, appData.ravelloId).then(
+								function(persistedClass) {
+									// The appData contains all the bare info of the app, as received from Ravello.
+									// But we also need to return the newly persisted data (mainly, the mongo ID of the document that was
+									// created for the app).
+									var dto = appData;
 
-                            if (matchingStudent) {
-                                var newPersistedApp = _.last(matchingStudent.apps);
-                                _.assign(dto, newPersistedApp.toJSON());
-                            }
+									var matchingStudent = _.find(persistedClass.students, function(student) {
+										return student.user == requestData.userId;
+									});
 
-                            response.json(dto);
-                        }
-                    ).fail(
-                        function(error) {
-                            var message = "Could not save the new app [" + requestData.name + "] for the student";
-                            logger.error(error, message);
-                            return response.send(401, message);
-                        }
-                    );
+									if (matchingStudent) {
+										var newPersistedApp = _.last(matchingStudent.apps);
+										_.assign(dto, newPersistedApp.toJSON());
+									}
+
+									response.json(dto);
+								}
+							).fail(
+								function(error) {
+									var message = "Could not save the new app [" + requestData.name + "] for the student";
+									logger.error(error, message);
+									return response.send(401, message);
+								}
+							);
+						}
+					);
                 }
             ).fail(
                 function(error) {
