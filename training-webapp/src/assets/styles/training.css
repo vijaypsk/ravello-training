@@ -37,9 +37,7 @@ html, body {
     }
 }
 .header-title {
-    /*background: transparent url(../images/ravello-logo-small.png) no-repeat center left scroll;*/
-    background: transparent url(../images/default_logo.png) no-repeat center left scroll;
-    padding-left: 45px;
+    padding-left: 10px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin: 0;
@@ -47,7 +45,7 @@ html, body {
     vertical-align: middle;
     color: white;
     font-size: 22px;
-    width: 28%;
+    width: 21%;
 }
 .header-filler {
     display: table-cell;
@@ -197,6 +195,13 @@ h3.panel-title {
     background: transparent url(../images/ravello-logo-small.png) no-repeat center left scroll;
     padding-left:20px;
     background-size: contain;
+}
+.site-logo{
+    width: 80px;
+}
+.site-logo img {
+    width: 80px;
+    height: 30px;
 }
 .small-padding-no-bullet {
     list-style: none;
