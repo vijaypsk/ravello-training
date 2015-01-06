@@ -24,6 +24,7 @@ def parse_args():
 
 	arg_parser.add_argument("-n", "--num_of_students", help="The number of students to create", default=DEFAULT_NUM_OF_STUDENTS, type=int)
 	arg_parser.add_argument("--server_url", help="The URL of the server to access too", default=DEFAULT_SERVER_URL)
+	arg_parser.add_argument("--override_existing", help="If used, the current students of the class will be deleted. Default: false", default=False, type=bool, const=True, nargs='?')
 
 	args = arg_parser.parse_args()
 
@@ -82,7 +83,14 @@ the_class, the_course = get_class_and_course()
 
 bpPermissions = [transformBp(bp) for bp in the_course['blueprints']]
 
-the_class['students'] = [createStudent(i, bpPermissions) for i in range(args.num_of_students)]
+initial_index = 0
+if (args.override_existing):
+    the_class['students'] = []
+else:
+    initial_index = len(the_class['students'])
+
+new_students = [createStudent(initial_index + i, bpPermissions) for i in range(args.num_of_students)]
+the_class['students'].extend(new_students)
 
 pretty_class = json.dumps(the_class, sort_keys=True, indent=4, separators=(',', ': '))
 
