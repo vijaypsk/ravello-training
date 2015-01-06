@@ -62,7 +62,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
                             '<i class="fa fa-plus"></i> More' +
                         '</a>' +
-                        '<a href="" class="btn btn-small btn-link" ng-click="consoleVm(row)" ng-disabled="consoleButtonDisabled()">' +
+                        '<a href="" class="btn btn-small btn-link" ng-click="consoleVm(row)" ng-disabled="consoleButtonDisabled(row.entity)">' +
                             '<i class="fa fa-terminal"></i> Console' +
                         '</a>'
                 }
@@ -172,8 +172,8 @@ angular.module('trng.student').controller('studentSingleAppController', [
                 !$scope.bpPermissions.restartVms);
         };
 
-        $scope.consoleButtonDisabled = function() {
-            return !$scope.bpPermissions.console;
+        $scope.consoleButtonDisabled = function(vm) {
+            return vm.name && vm.name !== 'Hero3' ? !$scope.bpPermissions.console : true;
         };
 
         $scope.refreshButtonDisabled = function() {
