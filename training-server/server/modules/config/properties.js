@@ -1,6 +1,6 @@
 'use strict';
 
-exports.baseUrl = 'https://cloud.ravellosystems.com';
+exports.ravelloUrl = 'https://cloud.ravellosystems.com';
 
 exports.baseUrl = '/services';
 
