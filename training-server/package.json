@@ -19,6 +19,7 @@
     "superagent": "~0.18.0",
     "bcrypt-nodejs": "0.0.3",
     "bunyan": "~0.22.3",
-    "express-bunyan-logger": "~0.1.2"
+    "express-bunyan-logger": "~0.1.2",
+	"bunyan-prettystream": "~0.1.3"
   }
 }

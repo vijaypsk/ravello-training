@@ -52,13 +52,11 @@ exports.ravelloObjectToStudentDto = function(course, app) {
 };
 
 exports.ravelloObjectToTrainerDto = function(app) {
-    var numOfRunningVms = getNumOfRunningVms(app);
-
     return {
         ravelloId: app.id,
         name: app.name,
         blueprintId: app.baseBlueprintId,
-        creationTime: new Date(app.creationTime),
-        numOfRunningVms: numOfRunningVms
+        creationTime: new Date(parseInt(app.creationTime)),
+        numOfRunningVms: app.deployment ? app.deployment.totalActiveVms : 0
     };
 };

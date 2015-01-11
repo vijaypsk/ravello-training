@@ -19,22 +19,19 @@ var classValidator = require('../validators/class-validator');
 /* --- Private functions --- */
 
 var matchClassWithApps = function(theClass, ravelloUsername, ravelloPassword) {
-    // Go over every student, and then on every student's list of apps.
-    return q.all(_.map(theClass.students, function(student) {
-        return q.all(_.map(student.apps, function(app) {
-
-            // Then simply try to get the current app of the current student, all the while accumulating the promises.
-            return appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
-
-        })).then(
-            function(appsResults) {
-                // When all of the apps are returned, transform them from Ravello-oriented objects to the training DTOs.
-                student.apps = _.map(appsResults, function(appResult) {
-                    return appsTrans.ravelloObjectToTrainerDto(appResult.body);
-                });
-            }
-        );
-    }));
+	return appsService.getApps(ravelloUsername, ravelloPassword).then(
+		function(apps) {
+			var appsMap = _.indexBy(apps, 'id');
+			_.forEach(theClass.students, function(student) {
+				_.forEach(student.apps, function(studentApp) {
+					var appDto = appsMap[studentApp.ravelloId];
+					if (appDto) {
+						_.assign(studentApp, appsTrans.ravelloObjectToTrainerDto(appDto));
+					}
+				});
+			});
+		}
+	);
 };
 
 var validateClass = function(theClass) {
