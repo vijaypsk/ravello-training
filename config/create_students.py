@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import argparse, requests, json
+from requests.adapters import HTTPAdapter
 
 DEFAULT_NUM_OF_STUDENTS = 200
 DEFAULT_SERVER_URL = "http://localhost"
@@ -11,6 +12,7 @@ args = {}
 base_url = ''
 headers = {}
 auth = ()
+session = {}
 
 def parse_args():
 	global args
@@ -33,10 +35,14 @@ def init_rest():
 	global base_url
 	global headers
 	global auth
+	global session
 
 	base_url = args.server_url + REST_BASE_PATH
 	headers = {"Content-Type": "application/json"}
 	auth = (args.trainer_username, args.trainer_password)
+
+	session = requests.Session()
+	session.mount(args.server_url, HTTPAdapter(max_retries=20))
 
 	print 'Base URL: %s' % base_url
 
@@ -97,7 +103,7 @@ the_class['students'].extend(new_students)
 
 pretty_class = json.dumps(the_class, sort_keys=True, indent=4, separators=(',', ': '))
 
-response = requests.put(base_url + "/classes/" + args.class_id, data=pretty_class, auth=auth, headers=headers)
+response = requests.put(base_url + "/classes/" + args.class_id, data=pretty_class, auth=auth, headers=headers, timeout=300)
 
 if (response and response.status_code == requests.codes.ok):
 	print "Class updated successfully"
