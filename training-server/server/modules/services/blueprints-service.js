@@ -11,7 +11,7 @@ exports.getBlueprints = function(username, password) {
     var promise = deferred.promise;
 
     request.
-        get(properties.baseUrl + '/services/blueprints').
+        get(properties.ravelloUrl + properties.baseUrl + '/blueprints').
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
@@ -26,7 +26,7 @@ exports.getBlueprintById = function(bpId, username, password) {
     var deferred = q.defer();
 
     request.
-        get(properties.baseUrl + '/services/blueprints/' + bpId).
+        get(properties.ravelloUrl + properties.baseUrl + '/blueprints/' + bpId).
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).

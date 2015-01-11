@@ -9,7 +9,7 @@ exports.getApps = function(username, password) {
     var deferred = q.defer();
 
     request.
-        get(properties.baseUrl + "/services/applications").
+        get(properties.ravelloUrl + properties.baseUrl + "/applications").
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
@@ -24,7 +24,7 @@ exports.getApp = function(appId, username, password) {
     var deferred = q.defer();
 
     request.
-        get(properties.baseUrl + "/services/applications/" + appId).
+        get(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId).
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
@@ -37,7 +37,7 @@ exports.getAppVms = function(appId, username, password) {
     var deferred = q.defer();
 
     request.
-        get(properties.baseUrl + "/services/applications/" + appId + ";deployment/vms").
+        get(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + ";deployment/vms").
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
@@ -50,7 +50,7 @@ exports.getAppDeployment = function(appId, username, password) {
     var deferred = q.defer();
 
     request.
-        get(properties.baseUrl + "/services/applications/" + appId + ";deployment").
+        get(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + ";deployment").
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
@@ -70,7 +70,7 @@ exports.createApp = function(name, description, bpId, username, password) {
     };
 
     request.
-        post(properties.baseUrl + "/services/applications").
+        post(properties.ravelloUrl + properties.baseUrl + "/applications").
         send(dto).
         type('application/json').
         accept('application/json').
@@ -84,7 +84,7 @@ exports.deleteApp = function(appId, username, password) {
     var deferred = q.defer();
 
     request.
-        del(properties.baseUrl + "/services/applications/" + appId).
+        del(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId).
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
@@ -101,7 +101,7 @@ exports.publishApp = function(appId, username, password) {
     };
 
     request.
-        post(properties.baseUrl + "/services/applications/" + appId + "/publish").
+        post(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + "/publish").
         send(dto).
         type('application/json').
         accept('application/json').
@@ -115,7 +115,7 @@ exports.appAction = function(appId, action, username, password) {
     var deferred = q.defer();
 
     request.
-        post(properties.baseUrl + "/services/applications/" + appId + "/" + action).
+        post(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + "/" + action).
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
@@ -132,7 +132,7 @@ exports.appAutoStop = function(appId, secondsFromNow, username, password) {
     };
 
     request.
-        post(properties.baseUrl + "/services/applications/" + appId + "/setExpiration").
+        post(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + "/setExpiration").
         send(dto).
         accept('application/json').
         auth(username, password).
@@ -145,7 +145,7 @@ exports.vmAction = function(appId, vmId, action, username, password) {
     var deferred = q.defer();
 
     request.
-        post(properties.baseUrl + "/services/applications/" + appId + "/vms/" + vmId + "/" + action).
+        post(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + "/vms/" + vmId + "/" + action).
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
@@ -158,7 +158,7 @@ exports.vmVnc = function(appId, vmId, username, password) {
     var deferred = q.defer();
 
     request.
-        get(properties.baseUrl + "/services/applications/" + appId + "/vms/" + vmId + "/vncUrl").
+        get(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + "/vms/" + vmId + "/vncUrl").
         set('Content-Length', 0).
 		accept('application/json').
 		auth(username, password).
