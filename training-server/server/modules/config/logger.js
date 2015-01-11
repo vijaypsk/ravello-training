@@ -12,7 +12,7 @@ var devStreams = [
 var productionStreams = [
     {
         path: 'ravello_training_server.log',
-        level: 'debug'
+        level: 'info'
     }
 ];
 
