@@ -7,18 +7,25 @@ angular.module('trng.proxies').factory('AppsProxy', [
     'TrainingMainTracker',
     function($http, $q, CommonConstants, TrainingMainTracker) {
         var service = {
-            createApp: function(appName, appDescription, blueprintId, userId) {
-                var dto = {
-                    name: appName,
-                    description: appDescription,
-                    baseBlueprintId: blueprintId,
-                    userId: userId
-                };
+			createApps: function(classId, appsData) {
+				var appsDtos = _.map(appsData, function(appData) {
+					return {
+						userId: appData.userId,
+						name: appData.appName,
+						description: appData.appDescription,
+						baseBlueprintId: appData.blueprintId
+					};
+				});
 
-                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications', dto);
-                TrainingMainTracker.addPromise(promise);
-                return promise;
-            },
+				var dto = {
+					classId: classId,
+					apps: appsDtos
+				};
+
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications', dto);
+				TrainingMainTracker.addPromise(promise);
+				return promise;
+			},
 
             deleteApp: function(appId, userId) {
                 var requestConfig = {
