@@ -9,7 +9,7 @@ exports.login = function(username, password) {
     var deferred = q.defer();
 
     request.
-        post(properties.baseUrl + '/services/login').
+        post(properties.ravelloUrl + properties.baseUrl + '/login').
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
