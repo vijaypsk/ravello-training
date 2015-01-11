@@ -68,10 +68,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
                             '<i class="fa fa-plus"></i> More' +
                         '</a>' +
-						'<a href="" class="btn btn-small btn-link" ng-click="consoleVm(row)" ng-if="consoleButtonVisible(row.entity)" ng-disabled="consoleButtonDisabled(row.entity)">' +
-							'<i class="fa fa-terminal"></i> Console' +
-						'</a>' +
-						'<a href="" class="btn btn-small btn-link" ng-click="rdpVm(row.entity)" ng-if="rdpButtonVisible(row.entity)">' +
+						'<a href="" class="btn btn-small btn-link" ng-click="rdpVm(row.entity)" ng-if="rdpButtonVisible(row.entity)" ng-disabled="rdpButtonDisabled(row.entity)">' +
 							'<i class="fa fa-terminal"></i> Go!' +
 						'</a>'
                 }
@@ -191,8 +188,8 @@ angular.module('trng.student').controller('studentSingleAppController', [
             return vm.name && vm.name !== 'Hero3' ? !$scope.bpPermissions.console : true;
         };
 
-		$scope.consoleButtonVisible = function(vm) {
-			return vn.name && vm.name !== 'Hero3';
+		$scope.rdpButtonDisabled = function(vm) {
+			return !vm || !vm.firstDns || !vm.firstDns.name;
 		};
 
 		$scope.rdpButtonVisible = function(vm) {
