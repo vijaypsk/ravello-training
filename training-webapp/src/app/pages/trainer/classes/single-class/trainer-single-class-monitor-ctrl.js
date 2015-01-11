@@ -107,27 +107,28 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
             };
         };
 
-        $scope.createApp = function() {
-            return _.map($scope.viewModel.selectedApps, function(app) {
-                var appName =
-                    $scope.currentClass.name + '##' +
-                    app.blueprint.name + '##' +
-                    app.student.user.username;
+		$scope.createApps = function() {
+			var appsData = _.map($scope.viewModel.selectedApps, function(app) {
+				var appName =
+					$scope.currentClass.name + '##' +
+						app.blueprint.name + '##' +
+						app.student.user.username;
 
-                var appDesc =
-                    'App for student ' + app.student.user.username +
-                    ' from BP ' + app.blueprint.name +
-                    ' for class ' + $scope.currentClass.name;
+				var appDesc =
+					'App for student ' + app.student.user.username +
+						' from BP ' + app.blueprint.name +
+						' for class ' + $scope.currentClass.name;
 
-                if (!app.creationTime) {
-                    ClassesService.createAppForStudent($scope.currentClass.id, app.student.user.id, appName, appDesc,
-                        app.blueprint.id).then(fetchClassApps);
-                } else {
-                    growl.addInfoMessage("Application for student " + app.student.user.username +
-                        " from blueprint [" + app.blueprint.name + "] already exists");
-                }
-            });
-        };
+				return {
+					appName: appName,
+					appDescription: appDesc,
+					userId: app.student.user.id,
+					blueprintId: app.blueprint.id
+				};
+			});
+
+			return ClassesService.createAppForStudents($scope.currentClass.id, appsData).then(fetchClassApps);
+		};
 
         $scope.deleteApp = function() {
             if (!$scope.isDeleteDisabled()) {

@@ -193,21 +193,10 @@ angular.module('trng.services').factory('ClassesService', [
             // the cache after a newly app is created for a student in a class).
             // The same goes for deleting an app of course.
 
-            createAppForStudent: function(classId, studentUserId, appName, appDesc, blueprintId) {
-                return AppsService.createApp(appName, appDesc, blueprintId, studentUserId).then(
-                    function(appDto) {
-                        if (cachedClasses) {
-                            var theClass = _.find(cachedClasses, {id: classId});
-                            if (theClass) {
-                                var student = _.find(theClass.students, {user: {id: studentUserId}});
-                                student && student.apps.push(appDto);
-                                return appDto;
-                            }
-                        }
-                    }
-                );
-            },
-            
+			createAppForStudents: function(classId, appsData) {
+				return AppsService.createApps(classId, appsData);
+			},
+
             deleteAppForStudent: function(classId, studentUserId, appRavelloId) {
                 return AppsService.deleteApp(appRavelloId, studentUserId).then(
                     function(result) {

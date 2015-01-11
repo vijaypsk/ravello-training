@@ -6,13 +6,15 @@ angular.module('trng.services').factory('AppsService', [
 	function(AppsProxy, AppsTrans) {
 
 		var service = {
-            createApp: function(appName, appDescription, blueprintId, userId) {
-                return AppsProxy.createApp(appName, appDescription, blueprintId, userId).then(
-                    function(result) {
-                        return AppsTrans.dtoToEntity(result.data);
-                    }
-                );
-            },
+			createApps: function(classId, appsData) {
+				return AppsProxy.createApps(classId, appsData).then(
+					function(result) {
+						return _.map(result.data, function(dto) {
+							return AppsTrans.dtoToEntity(dto);
+						});
+					}
+				);
+			},
 
             deleteApp: function(appId, userId) {
                 return AppsProxy.deleteApp(appId, userId);
