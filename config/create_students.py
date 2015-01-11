@@ -25,6 +25,7 @@ def parse_args():
 	arg_parser.add_argument("-n", "--num_of_students", help="The number of students to create", default=DEFAULT_NUM_OF_STUDENTS, type=int)
 	arg_parser.add_argument("--server_url", help="The URL of the server to access too", default=DEFAULT_SERVER_URL)
 	arg_parser.add_argument("--override_existing", help="If used, the current students of the class will be deleted. Default: false", default=False, type=bool, const=True, nargs='?')
+	arg_parser.add_argument("--base_student_name", help="A string to user as the base for each student's name", default='User')
 
 	args = arg_parser.parse_args()
 
@@ -66,11 +67,13 @@ def transformBp(bp):
 	}
 
 def createStudent(index, bpPermissions):
-	return {
+    username = args.base_student_name + str(index + 1)
+
+    return {
 		'user': {
 			'firstName': 'User',
 			'surname': str(index + 1),
-			'username': 'user' + str(index + 1),
+			'username': username,
 			'password': args.students_password,
 		},
 		'blueprintPermissions': bpPermissions
