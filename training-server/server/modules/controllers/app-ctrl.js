@@ -14,6 +14,8 @@ var classesTrans = require('../trans/classes-trans');
 var classesDal = require('../dal/classes-dal');
 
 exports.createApps = function(request, response) {
+	logger.debug('app-ctrl - createApps - start');
+
 	var user = request.user;
 
 	if (!user.ravelloCredentials) {
@@ -31,10 +33,13 @@ exports.createApps = function(request, response) {
 			ravelloPassword).then(
 
 			function (appCreateResult) {
+				logger.debug('app-ctrl - createApps - app [' + appDto.name + '] create returned, status: ' + appCreateResult.status);
+
 				if (appCreateResult.status >= 400) {
 					return q({
 						userId: appDto.userId,
-						message: "Could not create application [" + appDto.name + "]"
+						message: "Could not create application [" + appDto.name + "]",
+						reason: appCreateResult.text || appCreateResult.body || appCreateResult.error
 					});
 				}
 
@@ -42,11 +47,14 @@ exports.createApps = function(request, response) {
 
 				return appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
 					function(appPublishResult) {
+						logger.debug('app-ctrl - createApps - app [' + appDto.name + '] publish returned, status: ' + appPublishResult.status);
+
 						if (appPublishResult.status >= 400) {
 							return q({
 								userId: appDto.userId,
 								app: appData,
-								message: "Could not publish application [" + appDto.name + "]"
+								message: "Could not publish application [" + appDto.name + "]",
+								reason: appPublishResult.text || appPublishResult.body || appPublishResult.error
 							});
 						}
 
@@ -87,14 +95,18 @@ exports.createApps = function(request, response) {
 						}
 
 						if (appResult.message) {
-							logger.warn(appResult.message);
+							logger.warn(appResult.message, {reason: appResult.error});
 						}
 					});
+
+					logger.debug('app-ctrl - createApps - going to update class [' + requestData.classId + ']');
 
 					classesDal.updateClass(requestData.classId, classData).then(
 						function() {
 							return classesDal.getClass(requestData.classId).then(
 								function(result) {
+									logger.debug('app-ctrl - createApps - class [' + requestData.classId + '] is updated');
+
 									var dto = classesTrans.entityToDto(result);
 									response.json(dto);
 								}
@@ -106,7 +118,7 @@ exports.createApps = function(request, response) {
 		}
 	).catch(
 		function(error) {
-			logger.error(error);
+			logger.error({error: error});
 			return response.send(400, error.message);
 		}
 	);
