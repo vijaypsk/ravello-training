@@ -68,9 +68,12 @@ angular.module('trng.student').controller('studentSingleAppController', [
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
                             '<i class="fa fa-plus"></i> More' +
                         '</a>' +
-                        '<a href="" class="btn btn-small btn-link" ng-click="consoleVm(row)" ng-disabled="consoleButtonDisabled(row.entity)">' +
-                            '<i class="fa fa-terminal"></i> Console' +
-                        '</a>'
+						'<a href="" class="btn btn-small btn-link" ng-click="consoleVm(row)" ng-if="consoleButtonVisible(row.entity)" ng-disabled="consoleButtonDisabled(row.entity)">' +
+							'<i class="fa fa-terminal"></i> Console' +
+						'</a>' +
+						'<a href="" class="btn btn-small btn-link" ng-click="rdpVm(row.entity)" ng-if="rdpButtonVisible(row.entity)">' +
+							'<i class="fa fa-terminal"></i> Go!' +
+						'</a>'
                 }
             ];
         };
@@ -163,7 +166,13 @@ angular.module('trng.student').controller('studentSingleAppController', [
             });
         };
 
-        $scope.startButtonDisabled = function() {
+		$scope.rdpVm = function(vm) {
+			if (vm && vm.firstDns && vm.firstDns.name) {
+				$window.open('http://' + vm.firstDns.name, '_blank');
+			}
+		};
+
+		$scope.startButtonDisabled = function() {
             return ($scope.selectedVms.length < 1 ||
                 !$scope.bpPermissions.startVms);
         };
@@ -181,6 +190,14 @@ angular.module('trng.student').controller('studentSingleAppController', [
         $scope.consoleButtonDisabled = function(vm) {
             return vm.name && vm.name !== 'Hero3' ? !$scope.bpPermissions.console : true;
         };
+
+		$scope.consoleButtonVisible = function(vm) {
+			return vn.name && vm.name !== 'Hero3';
+		};
+
+		$scope.rdpButtonVisible = function(vm) {
+			return vm.name && vm.name !== 'Hero3';
+		};
 
         $scope.refreshButtonDisabled = function() {
             return ($scope.busy);
