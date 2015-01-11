@@ -6,7 +6,7 @@ var blueprintsTrans = require('../trans/blueprints-trans');
 
 exports.assignBlueprintsToCourse = function(course, ravelloBps) {
     return _.map(course.blueprints, function(currentBp) {
-        var matchingRavelloBp = _.find(ravelloBps, {body: {id: _.parseInt(currentBp.id)}});
+        var matchingRavelloBp = _.find(ravelloBps, {body: {id: currentBp.id}});
 
         if (!matchingRavelloBp) {
             return currentBp;

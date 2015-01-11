@@ -13,88 +13,103 @@ var classesTrans = require('../trans/classes-trans');
 
 var classesDal = require('../dal/classes-dal');
 
-exports.createApp = function(request, response) {
-    var user = request.user;
+exports.createApps = function(request, response) {
+	var user = request.user;
 
-    if (!user.ravelloCredentials) {
-        response.send(401, 'User does not have sufficient Ravello credentials');
-        return;
-    }
+	if (!user.ravelloCredentials) {
+		response.send(401, 'User does not have sufficient Ravello credentials');
+		return;
+	}
 
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
+	var ravelloUsername = user.ravelloCredentials.username;
+	var ravelloPassword = user.ravelloCredentials.password;
 
-    var requestData = request.body;
+	var requestData = request.body;
 
-    appsService.createApp(requestData.name, requestData.description, requestData.baseBlueprintId, ravelloUsername,
-            ravelloPassword).then(
+	q.all(_.map(requestData.apps, function(appDto) {
+		return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, ravelloUsername,
+			ravelloPassword).then(
 
-        function(result) {
-            if (result.status != 200 && result.status != 201) {
-                return response.send(result.status, "Could not create application [" + requestData.name + "]");
-            }
+			function (appCreateResult) {
+				if (appCreateResult.status >= 400) {
+					return q({
+						userId: appDto.userId,
+						message: "Could not create application [" + appDto.name + "]"
+					});
+				}
 
-            var appData = appsTrans.ravelloObjectToTrainerDto(result.body);
+				var appData = appsTrans.ravelloObjectToTrainerDto(appCreateResult.body);
 
-            return appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
-                function(publishResult) {
-                    if (publishResult.status != 200 && publishResult.status != 202) {
-						return response.send(publishResult.status, "Could not publish app [" + requestData.name + "]");
-                    }
+				return appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
+					function(appPublishResult) {
+						if (appPublishResult.status >= 400) {
+							return q({
+								userId: appDto.userId,
+								app: appData,
+								message: "Could not publish application [" + appDto.name + "]"
+							});
+						}
 
-					var promise;
-					if (properties.defaultAutoStopSeconds !== -1 ) {
-						promise = appsService.appAutoStop(appData.ravelloId, properties.defaultAutoStopSeconds,
-							ravelloUsername, ravelloPassword);
-					} else {
-						promise = q({});
+						var promise;
+						if (properties.defaultAutoStopSeconds !== -1 ) {
+							promise = appsService.appAutoStop(appData.ravelloId, properties.defaultAutoStopSeconds,
+								ravelloUsername, ravelloPassword);
+						} else {
+							promise = q({});
+						}
+
+						return promise.then(
+							function() {
+								return {
+									userId: appDto.userId,
+									app: appData
+								};
+							}
+						)
 					}
+				);
+			}
+		);
+	})).then(
+		function(appsResults) {
+			return classesDal.getClass(requestData.classId).then(
+				function(classEntity) {
+					var classData = classesTrans.entityToDto(classEntity);
 
-					return promise.then(
+					var studentsMap = _.indexBy(classData.students, function(student) {
+						return student.user._id;
+					});
+
+					_.forEach(appsResults, function(appResult) {
+						if (appResult.app) {
+							var student = studentsMap[appResult.userId];
+							student && student.apps.push({ravelloId: appResult.app.ravelloId});
+						}
+
+						if (appResult.message) {
+							logger.warn(appResult.message);
+						}
+					});
+
+					classesDal.updateClass(requestData.classId, classData).then(
 						function() {
-							return classesDal.updateStudentApp(requestData.userId, appData.ravelloId).then(
-								function(persistedClass) {
-									// The appData contains all the bare info of the app, as received from Ravello.
-									// But we also need to return the newly persisted data (mainly, the mongo ID of the document that was
-									// created for the app).
-									var dto = appData;
-
-									var matchingStudent = _.find(persistedClass.students, function(student) {
-										return student.user == requestData.userId;
-									});
-
-									if (matchingStudent) {
-										var newPersistedApp = _.last(matchingStudent.apps);
-										_.assign(dto, newPersistedApp.toJSON());
-									}
-
+							return classesDal.getClass(requestData.classId).then(
+								function(result) {
+									var dto = classesTrans.entityToDto(result);
 									response.json(dto);
-								}
-							).fail(
-								function(error) {
-									var message = "Could not save the new app [" + requestData.name + "] for the student";
-									logger.error(error, message);
-									return response.send(401, message);
 								}
 							);
 						}
 					);
-                }
-            ).fail(
-                function(error) {
-                    var message = "Could not publish new application [" + requestData.name + "]";
-                    logger.error(error, message);
-                    return response.send(401, message);
-                }
-            );
-        }
-    ).fail(
-        function(error) {
-            var message = "Could not create app with name [" + requestData.name + "]";
-            logger.error(error, message);
-            response.send(401, message);
-        }
-    );
+				}
+			);
+		}
+	).catch(
+		function(error) {
+			logger.error(error);
+			return response.send(400, error.message);
+		}
+	);
 };
 
 exports.deleteApp = function(request, response) {
@@ -111,6 +126,7 @@ exports.deleteApp = function(request, response) {
     var ravelloUsername = user.ravelloCredentials.username;
     var ravelloPassword = user.ravelloCredentials.password;
 
+	q.all(_.map())
     return appsService.deleteApp(appId, ravelloUsername, ravelloPassword).then(
         function(result) {
             return classesDal.deleteStudentApp(studentId, appId).then(

@@ -1,5 +1,6 @@
 'use strict';
 
+var logger = require('../config/logger');
 
 var _ = require('lodash');
 var mongoose = require('mongoose-q')(require('mongoose'));
@@ -51,8 +52,8 @@ exports.updateClass = function(classId, classData) {
     return TrainingClass.updateQ({_id: new ObjectId(classId)}, updatedClassEntity, {upsert: true});
 };
 
-exports.updateStudentApp = function(userId, appId) {
-    return TrainingClass.findOne({'students.user': new ObjectId(userId)}).execQ().then(
+exports.updateStudentApp = function(classId, userId, appId) {
+    return TrainingClass.findById(classId).execQ().then(
         function(classEntity) {
             var student = _.find(classEntity.students, function(currentStudent) {
                 return currentStudent.user == userId;
@@ -64,7 +65,7 @@ exports.updateStudentApp = function(userId, appId) {
             classData = _.omit(classData, '_id');
             return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(
                 function(result) {
-                    return classEntity;
+					return TrainingClass.findById(classId).execQ();
                 }
             );
         }
