@@ -108,7 +108,11 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
         };
 
 		$scope.createApps = function() {
-			var appsData = _.map($scope.viewModel.selectedApps, function(app) {
+			var onlyAppsToCreate = _.filter($scope.viewModel.selectedApps, function(app) {
+				return !app.creationTime;
+			});
+
+			var appsData = _.map(onlyAppsToCreate, function(app) {
 				var appName =
 					$scope.currentClass.name + '##' +
 						app.blueprint.name + '##' +
