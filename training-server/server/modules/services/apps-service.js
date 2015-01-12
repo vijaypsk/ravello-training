@@ -100,6 +100,11 @@ exports.publishApp = function(appId, username, password) {
         optimizationLevel: properties.defaultOptimizationLevel
     };
 
+	if (properties.defaultOptimizationLevel === 'PERFORMANCE_OPTIMIZED') {
+		dto.preferredCloud = properties.defaultCloud;
+		dto.preferredRegion = properties.defaultRegion;
+	}
+
     request.
         post(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + "/publish").
         send(dto).

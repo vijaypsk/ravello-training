@@ -95,7 +95,7 @@ exports.createApps = function(request, response) {
 						}
 
 						if (appResult.message) {
-							logger.warn(appResult.message, {reason: appResult.error});
+							logger.warn(appResult.message, {reason: appResult.reason});
 						}
 					});
 
