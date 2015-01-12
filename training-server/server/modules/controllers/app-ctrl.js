@@ -138,7 +138,6 @@ exports.deleteApp = function(request, response) {
     var ravelloUsername = user.ravelloCredentials.username;
     var ravelloPassword = user.ravelloCredentials.password;
 
-	q.all(_.map())
     return appsService.deleteApp(appId, ravelloUsername, ravelloPassword).then(
         function(result) {
             return classesDal.deleteStudentApp(studentId, appId).then(
