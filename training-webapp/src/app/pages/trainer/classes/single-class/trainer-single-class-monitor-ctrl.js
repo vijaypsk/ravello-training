@@ -145,7 +145,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
         };
 
         $scope.isDeleteDisabled = function() {
-            return $scope.viewModel.selectedApps.length <= 0 || !_.every($scope.viewModel.selectedApps, 'creationTime');
+            return $scope.viewModel.selectedApps.length <= 0;
         };
 
         /* --- Private functions --- */
