@@ -41,7 +41,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
                     field: 'name',
                     enableCellEdit: false,
                     displayName: 'VM name',
-                    width: '25%'
+                    width: '20%'
                 },
                 {
                     field: 'status',
@@ -65,12 +65,12 @@ angular.module('trng.student').controller('studentSingleAppController', [
                     displayName: 'Actions',
                     enableCellEdit: false,
                     cellTemplate:
-                        '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
-                            '<i class="fa fa-plus"></i> More' +
-                        '</a>' +
 						'<a href="" class="btn btn-small btn-link go-link" ng-click="rdpVm(row.entity)" ng-if="rdpButtonVisible(row.entity)" ng-disabled="rdpButtonDisabled(row.entity)">' +
 							'<i class="fa fa-terminal go-link"></i> Go!' +
-						'</a>'
+						'</a>' +
+                        '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
+                            '<i class="fa fa-plus"></i> More' +
+                        '</a>'
                 }
             ];
         };
