@@ -41,7 +41,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
                     field: 'name',
                     enableCellEdit: false,
                     displayName: 'VM name',
-                    width: '20%'
+                    width: '19%'
                 },
                 {
                     field: 'status',
@@ -53,24 +53,24 @@ angular.module('trng.student').controller('studentSingleAppController', [
                     field: 'firstDns.ip',
                     displayName: 'IP',
                     enableCellEdit: true,
-                    width: '20%'
+                    width: '12%'
                 },
                 {
                     field: 'firstDns.name',
                     displayName: 'DNS',
                     enableCellEdit: true,
-                    width: '25%'
+                    width: '20%'
                 },
                 {
                     displayName: 'Actions',
                     enableCellEdit: false,
                     cellTemplate:
-						'<a href="" class="btn btn-small btn-link go-link" ng-click="rdpVm(row.entity)" ng-if="rdpButtonVisible(row.entity)" ng-disabled="rdpButtonDisabled(row.entity)">' +
-							'<i class="fa fa-terminal go-link"></i> Go!' +
-						'</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
                             '<i class="fa fa-plus"></i> More' +
-                        '</a>'
+                        '</a>' +
+						'<a href="" class="btn btn-small btn-link go-link" ng-click="rdpVm(row.entity)" ng-if="rdpButtonVisible(row.entity)" ng-disabled="rdpButtonDisabled(row.entity)">' +
+							'<i class="fa fa-terminal go-link"></i> Go!' +
+						'</a>'
                 }
             ];
         };
