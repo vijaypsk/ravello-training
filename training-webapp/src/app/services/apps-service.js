@@ -7,13 +7,7 @@ angular.module('trng.services').factory('AppsService', [
 
 		var service = {
 			createApps: function(classId, appsData) {
-				return AppsProxy.createApps(classId, appsData).then(
-					function(result) {
-						return _.map(result.data, function(dto) {
-							return AppsTrans.dtoToEntity(dto);
-						});
-					}
-				);
+				return AppsProxy.createApps(classId, appsData);
 			},
 
             deleteApp: function(appId, userId) {
