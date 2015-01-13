@@ -193,7 +193,13 @@ angular.module('trng.student').controller('studentSingleAppController', [
 		};
 
 		$scope.rdpButtonVisible = function(vm) {
-			return vm.name && vm.name !== 'Hero3' && vm.name !== 'Win7';
+			return vm && vm.allDns && vm.allDns.length > 0 &&
+				_.some(vm.allDns, function(dns) {
+					return dns && dns.services && dns.services.length > 0 &&
+						_.some(dns.services, function(service) {
+							return service && service.port && service.port.toString() === "80";
+						});
+				});
 		};
 
         $scope.refreshButtonDisabled = function() {
