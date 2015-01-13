@@ -194,7 +194,19 @@ angular.module('trng.services').factory('ClassesService', [
             // The same goes for deleting an app of course.
 
 			createAppForStudents: function(classId, appsData) {
-				return AppsService.createApps(classId, appsData);
+				return AppsService.createApps(classId, appsData).then(
+					function(result) {
+						var persistedEntity = ClassesTrans.dtoToEntity(result.data);
+
+						cachedClasses && _.forEach(cachedClasses, function(currentClass, classIndex) {
+							if (currentClass.id == persistedEntity.id) {
+								cachedClasses[classIndex] = persistedEntity;
+							}
+						});
+
+						return persistedEntity;
+					}
+				);
 			},
 
             deleteAppForStudent: function(classId, studentUserId, appRavelloId) {
