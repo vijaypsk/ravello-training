@@ -2,3 +2,9 @@
 .student-vms-data-grid {
     height: 300px;
 }
+
+.go-link {
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 0;
+}

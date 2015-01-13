@@ -68,8 +68,8 @@ angular.module('trng.student').controller('studentSingleAppController', [
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
                             '<i class="fa fa-plus"></i> More' +
                         '</a>' +
-						'<a href="" class="btn btn-small btn-link" ng-click="rdpVm(row.entity)" ng-if="rdpButtonVisible(row.entity)" ng-disabled="rdpButtonDisabled(row.entity)">' +
-							'<i class="fa fa-terminal"></i> Go!' +
+						'<a href="" class="btn btn-small btn-link go-link" ng-click="rdpVm(row.entity)" ng-if="rdpButtonVisible(row.entity)" ng-disabled="rdpButtonDisabled(row.entity)">' +
+							'<i class="fa fa-terminal go-link"></i> Go!' +
 						'</a>'
                 }
             ];
