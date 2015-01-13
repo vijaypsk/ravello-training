@@ -193,7 +193,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
 		};
 
 		$scope.rdpButtonVisible = function(vm) {
-			return vm.name && vm.name !== 'Hero3';
+			return vm.name && vm.name !== 'Hero3' && vm.name !== 'Win7';
 		};
 
         $scope.refreshButtonDisabled = function() {
