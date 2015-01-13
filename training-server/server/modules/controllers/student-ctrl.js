@@ -156,8 +156,9 @@ exports.getStudentClassApps = function(request, response) {
 								if (appResult.status >= 400 && appResult.error) {
 									if (appResult.status == 401) {
 										response.send(appResult.status, "Wrong Ravello credentials");
-									} else if (appResult.status == 403) {
-										logger.warn('Got 403 for one of the apps of student ' + user.username, {reason: appResult.error});
+									} else if (appResult.status == 403 || appResult.status == 404) {
+										logger.warn('Got ' + appResult.status + ' for one of the apps of student ' +
+											user.username, {reason: appResult.error});
 									} else {
 										response.send(appResult.status, appResult.error.message);
 									}
