@@ -73,12 +73,14 @@ def transformBp(bp):
 	}
 
 def createStudent(index, bpPermissions):
+    firstName = args.base_student_name
+    surname = str(index + 1)
     username = args.base_student_name + str(index + 1)
 
     return {
 		'user': {
-			'firstName': 'User',
-			'surname': str(index + 1),
+			'firstName': firstName,
+			'surname': surname,
 			'username': username,
 			'password': args.students_password,
 		},
