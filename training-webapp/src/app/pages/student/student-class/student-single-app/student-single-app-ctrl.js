@@ -21,7 +21,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
             $scope.currentApp = currentApp;
             $scope.initPermissions();
             $scope.initVmsDataGrid();
-            $scope.initAutoRefresh();
+//            $scope.initAutoRefresh();
         };
 
         $scope.initAutoRefresh = function() {
