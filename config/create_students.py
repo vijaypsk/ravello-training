@@ -66,10 +66,10 @@ def get_class_and_course():
 def transformBp(bp):
 	return {
 		 'bpId': int(bp['id']),
-		 'startVms': True,
-		 'stopVms': True,
-		 'restartVms': True,
-		 'console': True
+		 'startVms': False,
+		 'stopVms': False,
+		 'restartVms': False,
+		 'console': False
 	}
 
 def createStudent(index, bpPermissions):
