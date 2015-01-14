@@ -16,7 +16,7 @@
             <h5><label>DNS:</label> {{dns.name}}</h5>
             <h5 style="font-weight: bold">Available Services:</h5>
             <ul>
-                <li ng-repeat="service in dns.services"><label class="text-uppercase">{{service.name}}</label> (Port {{service.port}})</li>
+                <li ng-repeat="service in dns.services"><label class="text-uppercase">{{service.name}}</label> (Port {{service.externalPort}})</li>
             </ul>
         </li>
     </ul>
