@@ -164,8 +164,11 @@ angular.module('trng.student').controller('studentSingleAppController', [
         };
 
 		$scope.rdpVm = function(vm) {
-			if (vm && vm.firstDns && vm.firstDns.name) {
-				$window.open('http://' + vm.firstDns.name, '_blank');
+			if (vm && vm.firstDns && vm.firstDns.name && vm.firstDns.services && vm.firstDns.services.length > 0) {
+				var httpService = _.find(vm.firstDns.services, {port: '80'});
+				if (httpService) {
+					$window.open('http://' + vm.firstDns.name + ':' + httpService.externalPort, '_blank');
+				}
 			}
 		};
 

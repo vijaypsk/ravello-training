@@ -26,37 +26,32 @@ var createVmViewObject = function(vm) {
         };
     });
 
-    var allDns = [];
-    _.forEach(vm.networkConnections, function(networkConnection) {
-        var publicIp = extractDeviceIp(networkConnection);
+    var externalAccesses = [];
 
-        if (publicIp && networkConnection.ipConfig.hasPublicIp) {
-            var servicesForNic = [];
-            _.forEach(vm.suppliedServices, function(currentService) {
-                // Return the service if:
-                // 1. It has no ip property (meaning it is for all IPs).
-                // 2. OR it has an ip property, and its equal to the current public IP.
-                // 3. AND it is defined as external.
-                if ((!currentService.hasOwnProperty('ip') || currentService.ip === publicIp) &&
-                    currentService.external) {
+	_.forEach(vm.suppliedServices, function(currentService) {
+		if (currentService && currentService.external) {
+			var networkCon = _.find(vm.networkConnections, {ipConfig: {id: currentService.ipConfigLuid}});
+			var matchingExternalAccess = _.find(externalAccesses, {name: networkCon.ipConfig.fqdn});
 
-                    servicesForNic.push({
-                        name: currentService.name,
-                        port: currentService.externalPort
-                    });
-                }
-            });
+			if (!matchingExternalAccess) {
+				matchingExternalAccess = {
+					name: networkCon.ipConfig.fqdn,
+					ip: networkCon.ipConfig.publicIp,
+					services: []
+				};
+				externalAccesses.push(matchingExternalAccess);
+			}
 
-            allDns.push({
-                name: networkConnection.ipConfig.fqdn,
-                services: servicesForNic,
-                ip: publicIp
-            });
-        }
-    });
+			matchingExternalAccess.services.push({
+				name: currentService.name,
+				port: currentService.portRange,
+				externalPort: currentService.externalPort
+			});
+		}
+	});
 
-    var firstDns = _.find(allDns, function(dns) {
-        return (dns && dns.services && dns.services.length > 0);
+    var firstExternalAccess = _.find(externalAccesses, function(externalAccess) {
+        return (externalAccess && externalAccess.services && externalAccess.services.length > 0);
     });
 
     var vmViewObject = {
@@ -65,8 +60,8 @@ var createVmViewObject = function(vm) {
         description: vm.description,
         status: vm.state,
         hostnames: hostnames,
-        allDns: allDns,
-        firstDns: firstDns
+        allDns: externalAccesses,
+        firstDns: firstExternalAccess
     };
 
     return vmViewObject;
