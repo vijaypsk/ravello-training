@@ -5,14 +5,22 @@
  */
 
 var express = require('express');
+var cluster = require('express-cluster');
 
-var config = require('./server/modules/config/config');
-var routes = require('./server/modules/config/routes');
+var properties = require('./server/modules/config/properties');
+var logger = require('./server/modules/config/logger');
 
-var app = express();
+cluster(function(worker) {
+	// console.log('Starting worker #' + worker.id);
+	logger.info('Starting worker # %s', worker.id);
 
-config(app);
-routes(app);
+	var config = require('./server/modules/config/config');
+	var routes = require('./server/modules/config/routes');
 
-app.listen(app.get('port'));
+	var app = express();
 
+	config(app);
+	routes(app);
+
+	app.listen(app.get('port'));
+}, {count: properties.numOfWorkers});

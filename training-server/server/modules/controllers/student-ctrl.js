@@ -88,14 +88,13 @@ var extractDeviceIp = function(device) {
 /* --- Public functions --- */
 
 exports.getStudentClass = function(request, response) {
-    var user = request.user;
-    var userId = user.id;
+    var userId = request.params.studentId;
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(
         function(classEntity) {
             if (!classEntity) {
-                logger.info("Could not find an active class for user [" + user.username + "]");
+                logger.info("Could not find an active class for user [" + userId + "]");
                 response.send(404, "You don't have a class that's taking place right now");
                 return;
             }
@@ -106,7 +105,7 @@ exports.getStudentClass = function(request, response) {
         }
     ).fail(
         function(error) {
-            var message = "Could not find the class of student: " + user.username;
+            var message = "Could not find the class of student: " + userId;
             logger.error(error, message);
             response.send(404, message);
         }
@@ -114,14 +113,13 @@ exports.getStudentClass = function(request, response) {
 };
 
 exports.getStudentClassApps = function(request, response) {
-    var user = request.user;
-    var userId = user.id;
+	var userId = request.params.studentId;
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(
         function(classEntity) {
             if (!classEntity) {
-                logger.info("Could not find an active class for user [" + user.username + "]");
+                logger.info("Could not find an active class for user [" + userId + "]");
                 response.send(404, "You don't have a class that's taking place right now");
                 return;
             }
@@ -153,7 +151,7 @@ exports.getStudentClassApps = function(request, response) {
 										response.send(appResult.status, "Wrong Ravello credentials");
 									} else if (appResult.status == 403 || appResult.status == 404) {
 										logger.warn('Got ' + appResult.status + ' for one of the apps of student ' +
-											user.username, {reason: appResult.error});
+											userId, {reason: appResult.error});
 									} else {
 										response.send(appResult.status, appResult.error.message);
 									}
@@ -168,7 +166,7 @@ exports.getStudentClassApps = function(request, response) {
                         }
                     ).fail(
                         function(error) {
-                            var message = "Could not get one of the apps of user: " + user.username;
+                            var message = "Could not get one of the apps of user: " + userId;
                             logger.error(error, message);
                             response.send(404, message);
                         }
@@ -176,7 +174,7 @@ exports.getStudentClassApps = function(request, response) {
                 }
             ).fail(
                 function(error) {
-                    var message = "Could not find the course of student: " + user.username;
+                    var message = "Could not find the course of student: " + userId;
                     logger.error(error, message);
                     response.send(404, message);
                 }
@@ -184,7 +182,7 @@ exports.getStudentClassApps = function(request, response) {
         }
     ).fail(
         function(error) {
-            var message = "Could not find the class of student: " + user.username;
+            var message = "Could not find the class of student: " + userId;
             logger.error(error, message);
             response.send(404, message);
         }
@@ -192,16 +190,14 @@ exports.getStudentClassApps = function(request, response) {
 };
 
 exports.getAppVms = function(request, response) {
-    var user = request.user;
-    var userId = user.id;
-
+	var userId = request.params.studentId;
     var appId = request.params.appId;
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(
         function(classEntity) {
             if (!classEntity) {
-                logger.info("Could not find an active class for user [" + user.username + "]");
+                logger.info("Could not find an active class for user [" + userId + "]");
                 response.send(404, "You don't have a class that's taking place right now");
                 return;
             }
@@ -253,16 +249,14 @@ exports.getAppVms = function(request, response) {
 };
 
 exports.getStudentCourse = function(request, response) {
-    var user = request.user;
-    var userId = user.id;
-
+	var userId = request.params.studentId;
     var courseId = request.params.courseId;
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(
         function(classEntity) {
             if (!classEntity) {
-                logger.info("Could not find an active class for user [" + user.username + "]");
+                logger.info("Could not find an active class for user [" + userId + "]");
                 response.send(404, "You don't have a class that's taking place right now");
                 return;
             }
@@ -308,7 +302,7 @@ exports.getStudentCourse = function(request, response) {
         }
     ).fail(
         function(error) {
-            var message = "Could not load class of user " + user.username;
+            var message = "Could not load class of user " + userId;
             logger.error(error, message);
             response.send(404, message);
         }
