@@ -19,3 +19,5 @@ exports.defaultCloud = 'AMAZON';
 // The default region to use, when publish method is PERFORMANCE_OPTIMIZED.
 // Can be one of: [Virginia, Oregon (for Amazon), US West AZ 2 (for HP), us-central1 (for Google Cloud)]
 exports.defaultRegion = 'Virginia';
+
+exports.numOfWorkers = 4;

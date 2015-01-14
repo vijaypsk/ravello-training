@@ -115,20 +115,20 @@ module.exports = function(app) {
 
     // Student route.
     app.get('/rest/students/:studentId',
-        passport.authenticate('basic', {session: false}),
-        authorization.isAuthorized(['STUDENT']),
+//        passport.authenticate('basic', {session: false}),
+//        authorization.isAuthorized(['STUDENT']),
         studentController.getStudentClass);
     app.get('/rest/students/:studentId/class/:classId/apps',
-        passport.authenticate('basic', {session: false}),
-        authorization.isAuthorized(['STUDENT']),
+//        passport.authenticate('basic', {session: false}),
+//        authorization.isAuthorized(['STUDENT']),
         studentController.getStudentClassApps);
     app.get('/rest/students/:studentId/class/:classId/apps/:appId',
-        passport.authenticate('basic', {session: false}),
-        authorization.isAuthorized(['STUDENT']),
+//        passport.authenticate('basic', {session: false}),
+//        authorization.isAuthorized(['STUDENT']),
         studentController.getAppVms);
     app.get('/rest/students/:studentId/course/:courseId',
-        passport.authenticate('basic', authConfig),
-        authorization.isAuthorized(['STUDENT']),
+//        passport.authenticate('basic', authConfig),
+//        authorization.isAuthorized(['STUDENT']),
         studentController.getStudentCourse);
 
     // App route.
