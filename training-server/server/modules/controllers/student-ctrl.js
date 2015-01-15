@@ -233,7 +233,8 @@ exports.getAppVms = function(request, response) {
                 }
             ).fail(
                 function(error) {
-                    var message = "Could not get application deployment information";
+                    var message = "Could not get application cloud information. " +
+						"Please try to refresh your browser.";
                     logger.error(error, message);
                     response.send(404, message);
                 }
