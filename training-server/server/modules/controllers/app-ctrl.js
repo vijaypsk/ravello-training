@@ -33,13 +33,13 @@ exports.createApps = function(request, response) {
 			ravelloPassword).then(
 
 			function (appCreateResult) {
-				logger.debug('app-ctrl - createApps - app [' + appDto.name + '] create returned, status: ' + appCreateResult.status);
+				logger.debug('app-ctrl - createApps - app [%s] create returned, status: %s', appDto.name, appCreateResult.status);
 
 				if (appCreateResult.status >= 400) {
 					return q({
 						userId: appDto.userId,
 						message: "Could not create application [" + appDto.name + "]",
-						reason: appCreateResult.text || appCreateResult.body || appCreateResult.error
+						reason: appCreateResult.headers['error-message'] || appCreateResult.error.message
 					});
 				}
 
@@ -47,21 +47,26 @@ exports.createApps = function(request, response) {
 
 				return appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
 					function(appPublishResult) {
-						logger.debug('app-ctrl - createApps - app [' + appDto.name + '] publish returned, status: ' + appPublishResult.status);
+						logger.debug('app-ctrl - createApps - app [%s] publish returned, status: %s', appDto.name, appPublishResult.status);
 
 						if (appPublishResult.status >= 400) {
 							return q({
 								userId: appDto.userId,
 								app: appData,
 								message: "Could not publish application [" + appDto.name + "]",
-								reason: appPublishResult.text || appPublishResult.body || appPublishResult.error
+								reason: appPublishResult.headers['error-message'] || appPublishResult.error.message
 							});
 						}
 
 						var promise;
 						if (properties.defaultAutoStopSeconds !== -1 ) {
 							promise = appsService.appAutoStop(appData.ravelloId, properties.defaultAutoStopSeconds,
-								ravelloUsername, ravelloPassword);
+								ravelloUsername, ravelloPassword).then(
+									function(autoStopResult) {
+										logger.debug('app-ctrl - createApps - app [%s] auto stop returned, status: %s', appDto.name, autoStopResult.status);
+										return autoStopResult;
+									}
+								);
 						} else {
 							promise = q({});
 						}
@@ -99,13 +104,13 @@ exports.createApps = function(request, response) {
 						}
 					});
 
-					logger.debug('app-ctrl - createApps - going to update class [' + requestData.classId + ']');
+					logger.debug('app-ctrl - createApps - going to update class [%s]', requestData.classId);
 
 					classesDal.updateClass(requestData.classId, classData).then(
 						function() {
 							return classesDal.getClass(requestData.classId).then(
 								function(result) {
-									logger.debug('app-ctrl - createApps - class [' + requestData.classId + '] is updated');
+									logger.debug('app-ctrl - createApps - class [%s] is updated', requestData.classId);
 
 									var dto = classesTrans.entityToDto(result);
 									response.json(dto);
