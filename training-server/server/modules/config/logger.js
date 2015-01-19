@@ -1,11 +1,16 @@
 'use strict';
 
 var bunyan = require("bunyan");
+var PrettyStream = require('bunyan-prettystream');
+
+var prettyStdOut = new PrettyStream({mode: 'short'});
+prettyStdOut.pipe(process.stdout);
 
 var devStreams = [
     {
-        stream: process.stderr,
-        level: "debug"
+        stream: prettyStdOut,
+		type: 'raw',
+        level: 'debug'
     }
 ];
 
@@ -17,12 +22,12 @@ var productionStreams = [
 ];
 
 var devConfig = {
-    name: "RavelloTrainingServer",
+    name: 'RavelloTrainingServer',
     streams: devStreams
 };
 
 var productionConfig = {
-    name: "RavelloTrainingServer",
+    name: 'RavelloTrainingServer',
     streams: productionStreams
 };
 
