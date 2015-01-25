@@ -87,7 +87,7 @@ angular.module('trng.student').controller('studentClassController', [
 			if (vm && vm.firstDns && vm.firstDns.name && vm.firstDns.services && vm.firstDns.services.length > 0) {
 				var httpService = _.find(vm.firstDns.services, {port: '80'});
 				if (httpService) {
-					$window.open('http://' + vm.firstDns.name + ':' + httpService.externalPort, '_blank');
+					$window.open('http://' + vm.firstDns.name + ':' + httpService.externalPort + '/client.xhtml?id=c%2FRDP', '_blank');
 				}
 			}
 		};
