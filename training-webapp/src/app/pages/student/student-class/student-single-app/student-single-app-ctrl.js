@@ -163,15 +163,6 @@ angular.module('trng.student').controller('studentSingleAppController', [
             });
         };
 
-		$scope.rdpVm = function(vm) {
-			if (vm && vm.firstDns && vm.firstDns.name && vm.firstDns.services && vm.firstDns.services.length > 0) {
-				var httpService = _.find(vm.firstDns.services, {port: '80'});
-				if (httpService) {
-					$window.open('http://' + vm.firstDns.name + ':' + httpService.externalPort, '_blank');
-				}
-			}
-		};
-
 		$scope.startButtonDisabled = function() {
             return ($scope.selectedVms.length < 1 ||
                 !$scope.bpPermissions.startVms);
@@ -190,20 +181,6 @@ angular.module('trng.student').controller('studentSingleAppController', [
         $scope.consoleButtonDisabled = function(vm) {
             return vm.name && vm.name !== 'Hero3' ? !$scope.bpPermissions.console : true;
         };
-
-		$scope.rdpButtonDisabled = function(vm) {
-			return !vm || !vm.firstDns || !vm.firstDns.name;
-		};
-
-		$scope.rdpButtonVisible = function(vm) {
-			return vm && vm.allDns && vm.allDns.length > 0 &&
-				_.some(vm.allDns, function(dns) {
-					return dns && dns.services && dns.services.length > 0 &&
-						_.some(dns.services, function(service) {
-							return service && service.port && service.port.toString() === "80";
-						});
-				});
-		};
 
         $scope.refreshButtonDisabled = function() {
             return ($scope.busy);

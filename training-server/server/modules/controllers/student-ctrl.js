@@ -158,8 +158,14 @@ exports.getStudentClassApps = function(request, response) {
 									return;
 								}
 
-                                var appViewObject = appsTrans.ravelloObjectToStudentDto(course, appResult.body);
-                                appViewObjects.push(appViewObject);
+								var ravelloApp = appResult.body;
+                                var appViewObject = appsTrans.ravelloObjectToStudentDto(course, ravelloApp);
+
+								appViewObject.vms = _.map(ravelloApp.deployment.vms, function(vm) {
+									return createVmViewObject(vm);
+								});
+
+								appViewObjects.push(appViewObject);
                             });
 
                             response.json(appViewObjects);
