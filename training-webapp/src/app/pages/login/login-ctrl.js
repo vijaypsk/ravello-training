@@ -33,6 +33,10 @@ angular.module('trng.login').controller('loginController', [
                 $('#usernameInput').checkAndTriggerAutoFillEvent();
                 $('#passwordInput').checkAndTriggerAutoFillEvent();
             }, 1000);
+
+			$timeout(function() {
+                $('#usernameInput').focus();
+			});
         };
 
         $scope.login = function() {
