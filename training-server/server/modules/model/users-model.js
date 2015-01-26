@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var q = require('q');
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+var passwordHash = require('password-hash');
 
 var UsersSchema = mongoose.Schema(
     {
@@ -24,7 +24,7 @@ var UsersSchema = mongoose.Schema(
 
 UsersSchema.methods = {
     validatePassword: function(password) {
-        return bcrypt.compareSync(password, this.password);
+		return passwordHash.verify(password, this.password);
     }
 };
 

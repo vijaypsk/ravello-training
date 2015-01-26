@@ -4,7 +4,7 @@ var adminUser = {
     firstName : "Admin",
     surname : "",
     username : "admin",
-    password : "$2a$10$hQR3dSKHMdANwm1uU3T.1uX6b5HoTZFLbN1YhsM2RggIYaToCOj02",
+    password : "sha256$70dfeb7a$1$73075447efdd78750d87a3cc67a409ddcabab38410c225e33bb4feae879be748",
     role : "ADMIN"
 };
 

@@ -1,11 +1,11 @@
 'use strict';
 
 var _ = require('lodash');
-var bcrypt = require('bcrypt-nodejs');
+var passwordHash = require('password-hash');
 
 var setDefaultValues = function(user) {
     if (user.password) {
-        user.password = bcrypt.hashSync(user.password);
+		user.password = passwordHash.generate(user.password, {algorithm: 'sha256'});
     }
 
     if (!user.role) {
