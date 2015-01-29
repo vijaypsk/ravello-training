@@ -6,7 +6,9 @@ angular.module('trng.services').factory('StudentsService', [
 	'AppsTransformer',
 	'CoursesTransformer',
 	function(StudentsProxy, StudentsTrans, AppsTrans, CoursesTrans) {
-		
+
+		var goFuncOnce;
+
 		var service = {
 			getStudent: function(studentId) {
 				return StudentsProxy.getStudent(studentId).then(
@@ -44,9 +46,17 @@ angular.module('trng.services').factory('StudentsService', [
                         return CoursesTrans.dtoToEntity(result.data);
                     }
                 );
-            }
+			},
+
+			goAtInit: function(goFunc) {
+				if (!goFuncOnce) {
+					goFuncOnce = _.once(goFunc);
+				}
+
+				goFuncOnce();
+			}
         };
-		
+
 		return service;
     }
 ]);
