@@ -6,12 +6,11 @@ angular.module('trng.student').controller('studentClassController', [
     '$state',
     '$window',
     'StatesNames',
-    'StudentsService',
     'AppsService',
     'student',
     'course',
     'apps',
-    function($log, $scope, $state, $window, StatesNames, StudentsService, AppsService, student, course, apps) {
+    function($log, $scope, $state, $window, StatesNames, AppsService, student, course, apps) {
         $scope.init = function() {
             $scope.name = student.firstName + ' ' + student.surname;
             $scope.student = student;
@@ -19,8 +18,6 @@ angular.module('trng.student').controller('studentClassController', [
 
             $scope.initDescription();
             $scope.initAppsDataGrid();
-
-			StudentsService.goAtInit(go);
         };
 
         $scope.initDescription = function() {
@@ -72,6 +69,16 @@ angular.module('trng.student').controller('studentClassController', [
             $state.go(StatesNames.student.studentClass.singleApp.name, {appId: appId});
         };
 
+		$scope.go = function() {
+			if (onlySingleApp()) {
+				_.forEach($scope.apps[0].vms, function(vm) {
+					if ($scope.rdpButtonVisible(vm)) {
+						$scope.rdpVm(vm);
+					}
+				});
+			}
+		};
+
 		$scope.isGoDisabled = function() {
 			return !onlySingleApp();
 		};
@@ -98,18 +105,6 @@ angular.module('trng.student').controller('studentClassController', [
 						});
 				});
 		};
-
-		$scope.go = go;
-
-		function go() {
-			if (onlySingleApp()) {
-				_.forEach($scope.apps[0].vms, function(vm) {
-					if ($scope.rdpButtonVisible(vm)) {
-						$scope.rdpVm(vm);
-					}
-				});
-			}
-		}
 
 		function onlySingleApp() {
 			return $scope.apps && $scope.apps.length === 1;
