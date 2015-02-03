@@ -30,7 +30,13 @@ var createVmViewObject = function(vm) {
 
 	_.forEach(vm.suppliedServices, function(currentService) {
 		if (currentService && currentService.external) {
-			var networkCon = _.find(vm.networkConnections, {ipConfig: {id: currentService.ipConfigLuid}});
+			var networkCon = _.find(vm.networkConnections, function(currentNetworkCon) {
+				if (currentNetworkCon && currentNetworkCon.ipConfig &&
+					currentNetworkCon.ipConfig.id == currentService.ipConfigLuid) {
+
+					return currentNetworkCon;
+				}
+			});
 			var matchingExternalAccess = _.find(externalAccesses, {name: networkCon.ipConfig.fqdn});
 
 			if (!matchingExternalAccess) {
