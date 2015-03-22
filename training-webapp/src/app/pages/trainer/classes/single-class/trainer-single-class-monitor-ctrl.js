@@ -148,11 +148,31 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
             }
         };
 
-        $scope.isDeleteDisabled = function() {
+		$scope.startApps = function() {
+			return AppsService.startBatchApps(_.pluck($scope.viewModel.selectedApps, 'ravelloId'));
+		};
+
+		$scope.stopApps = function() {
+			return AppsService.stopBatchApps(_.pluck($scope.viewModel.selectedApps, 'ravelloId'));
+		};
+
+		$scope.isCreateDisabled = function() {
+            return $scope.viewModel.selectedApps.length <= 0;
+		};
+
+		$scope.isDeleteDisabled = function() {
             return $scope.viewModel.selectedApps.length <= 0;
         };
 
-        /* --- Private functions --- */
+		$scope.isStartDisabled = function() {
+			return $scope.viewModel.selectedApps.length <= 0;
+		};
+
+		$scope.isStopDisabled = function() {
+			return $scope.viewModel.selectedApps.length <= 0;
+		};
+
+		/* --- Private functions --- */
 
         function fetchClassApps() {
             ClassesService.getClassApps($scope.currentClass.id).then(

@@ -3,12 +3,18 @@
     <div id="classAppsDiv" class="form-box class-apps">
         <span class="block-title">Applications</span>
 
-        <button id="createAppBtn" class="btn btn-default" ng-click="createApps()">
+        <button id="createAppBtn" class="btn btn-default" ng-click="createApps()" ng-disabled="isCreateDisabled()">
             <i class="fa fa-rocket"></i> Create app
         </button>
         <button id="deleteAppBtn" class="btn btn-danger" ng-click="deleteApp()" ng-disabled="isDeleteDisabled()">
             <i class="fa fa-trash-o"></i> Delete app
         </button>
+		<button id="startAppBtn" class="btn btn-default" ng-click="startApps()" ng-disabled="isStartDisabled()">
+			<i class="fa fa-play"></i> Start app
+		</button>
+		<button id="stopAppBtn" class="btn btn-default" ng-click="stopApps()" ng-disabled="isStopDisabled()">
+			<i class="fa fa-stop"></i> Stop app
+		</button>
 
         <div id="appsDataGridDiv" class="class-apps-data-grid-div">
             <div id="appsDataGrid" class="class-apps-data-grid" ng-grid="viewModel.appsDataGrid"></div>

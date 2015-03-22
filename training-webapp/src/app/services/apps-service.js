@@ -22,7 +22,15 @@ angular.module('trng.services').factory('AppsService', [
                 return AppsProxy.stopApp(appId);
             },
 
-            startVm: function(appId, vmId) {
+			startBatchApps: function(appIds) {
+                return AppsProxy.startBatchApps(appIds);
+			},
+
+			stopBatchApps: function(appIds) {
+                return AppsProxy.stopBatchApps(appIds);
+			},
+
+			startVm: function(appId, vmId) {
                 return AppsProxy.startVm(appId, vmId);
             },
 
