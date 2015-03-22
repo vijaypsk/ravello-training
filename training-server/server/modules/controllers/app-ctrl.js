@@ -13,9 +13,9 @@ var classesTrans = require('../trans/classes-trans');
 
 var classesDal = require('../dal/classes-dal');
 
-exports.createApps = function(request, response) {
-	logger.debug('app-ctrl - createApps - start');
+// These actions are taken by Trainer users.
 
+exports.createApps = function(request, response) {
 	var user = request.user;
 
 	if (!user.ravelloCredentials) {
@@ -33,8 +33,6 @@ exports.createApps = function(request, response) {
 			ravelloPassword).then(
 
 			function (appCreateResult) {
-				logger.debug('app-ctrl - createApps - app [%s] create returned, status: %s', appDto.name, appCreateResult.status);
-
 				if (appCreateResult.status >= 400) {
 					return q({
 						userId: appDto.userId,
@@ -47,8 +45,6 @@ exports.createApps = function(request, response) {
 
 				return appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
 					function(appPublishResult) {
-						logger.debug('app-ctrl - createApps - app [%s] publish returned, status: %s', appDto.name, appPublishResult.status);
-
 						if (appPublishResult.status >= 400) {
 							return q({
 								userId: appDto.userId,
@@ -63,7 +59,6 @@ exports.createApps = function(request, response) {
 							promise = appsService.appAutoStop(appData.ravelloId, properties.defaultAutoStopSeconds,
 								ravelloUsername, ravelloPassword).then(
 									function(autoStopResult) {
-										logger.debug('app-ctrl - createApps - app [%s] auto stop returned, status: %s', appDto.name, autoStopResult.status);
 										return autoStopResult;
 									}
 								);
@@ -104,14 +99,10 @@ exports.createApps = function(request, response) {
 						}
 					});
 
-					logger.debug('app-ctrl - createApps - going to update class [%s]', requestData.classId);
-
 					classesDal.updateClass(requestData.classId, classData).then(
 						function() {
 							return classesDal.getClass(requestData.classId).then(
 								function(result) {
-									logger.debug('app-ctrl - createApps - class [%s] is updated', requestData.classId);
-
 									var dto = classesTrans.entityToDto(result);
 									response.json(dto);
 								}
@@ -160,131 +151,186 @@ exports.deleteApp = function(request, response) {
     );
 };
 
+exports.appsBatchActions = function(request, response) {
+	var user = request.user;
+
+	if (!user.ravelloCredentials) {
+		response.send(401, 'User does not have sufficient Ravello credentials');
+		return;
+	}
+
+	var ravelloUsername = user.ravelloCredentials.username;
+	var ravelloPassword = user.ravelloCredentials.password;
+
+	var appIds = request.body.appIds;
+	var action = request.params.action;
+
+	q.all(_.map(appIds, function(appId) {
+			return appAction(appId, action, ravelloUsername, ravelloPassword);
+	})).then(
+		function(results) {
+			var atLeastOneFailure = _.some(results, function(result) {
+				if (result.status > 400) {
+					logger.error('Problem performing action [' + action + '] on app ID [' + result.appId + ']');
+					return true;
+				}
+				return false;
+			});
+
+			if (atLeastOneFailure) {
+				response.send(403, 'Could not perform action [' + action + '] on some of the apps');
+			} else {
+				response.send(200);
+			}
+		}
+	).catch(
+		function(error) {
+			logger.error({error: error});
+			return response.send(400, error.message);
+		}
+	);
+};
+
+// These actions are taken by Student users.
+
 exports.appAction = function(request, response) {
     var user = request.user;
-    var userId = user.id;
+	var userId = user.id;
 
-    var appId = request.params.appId;
-    var action = request.params.action;
+	var appId = request.params.appId;
+	var action = request.params.action;
 
-    // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(
-        function(classEntity) {
-            var classData = classesTrans.entityToDto(classEntity);
-            var studentData = _.find(classEntity.students, function(student) {
-                return (student.user.id === userId);
-            });
+	// When the user logs in, we first need to find the class associated with that user.
+	classesDal.getClassOfUserForNow(userId).then(
+		function(classEntity) {
+			var classData = classesTrans.entityToDto(classEntity);
+			var studentData = _.find(classEntity.students, function(student) {
+				return (student.user.id === userId);
+			});
 
-            var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-            var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
+			var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+			var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
-            return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
-                function(result) {
-                    if (result.status == 200) {
-                        var app = result.body;
-                        if (app.deployment.expirationType === 'AUTO_STOPPED') {
-                            return appsService.appAutoStop(appId, properties.defaultAutoStopSeconds, ravelloUsername,
-                                ravelloPassword);
-                        }
-                    } else {
-                        var message = "Could not get app: " + appId + ", error: " + result.ext;
-                        logger.error(message);
-                        response.send(result.status, message);
-                    }
-                }
-            ).then(
-                function(autoStopResult) {
-                    if (!autoStopResult || autoStopResult.result == 204) {
-                        return appsService.appAction(appId, action, ravelloUsername, ravelloPassword).then(
-                            function(result) {
-                                response.send(result.status);
-                            }
-                        ).fail(
-                            function(error) {
-                                var message = "Could not perform action " + action;
-                                logger.error(error, message);
-                                response.send(400, error);
-                            }
-                        );
-                    } else {
-                        var message = "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text;
-                        logger.error(message);
-                        response.send(400, message);
-                    }
-                }
-            );
-        }
-    );
+			return appAction(appId, action, ravelloUsername, ravelloPassword).then(
+				function(result) {
+					response.send(result.status);
+				}
+			).fail(
+				function(error) {
+					logger.error(error.message);
+					response.send(error.status, error.message);
+				}
+			);
+		}
+	);
 };
+
+function appAction(appId, action, ravelloUsername, ravelloPassword) {
+	return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
+		function(result) {
+			if (result.status == 200) {
+				var app = result.body;
+				if (app.deployment.expirationType !== 'AUTO_STOPPED') {
+					return q(null);
+				}
+				return appsService.appAutoStop(appId, properties.defaultAutoStopSeconds, ravelloUsername, ravelloPassword);
+			} else {
+				return q.reject({
+					appId: appId,
+					message: "Could not get app: " + appId + ", error: " + result.ext,
+					status: result.status
+				});
+			}
+		}
+	).then(
+		function(autoStopResult) {
+			if (!autoStopResult || autoStopResult.status === 204) {
+				return appsService.appAction(appId, action, ravelloUsername, ravelloPassword);
+			} else {
+				return q.reject({
+					appId: appId,
+					message: "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text,
+					status: autoStopResult.status
+				});
+			}
+		}
+	);
+}
 
 exports.vmAction = function(request, response) {
     var user = request.user;
     var userId = user.id;
 
-    var appId = request.params.appId;
-    var vmId = request.params.vmId;
-    var action = request.params.action;
+	var appId = request.params.appId;
+	var vmId = request.params.vmId;
+	var action = request.params.action;
 
-    // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(
-        function(classEntity) {
-            var classData = classesTrans.entityToDto(classEntity);
-            var studentData = _.find(classEntity.students, function(student) {
-                return (student.user.id === userId);
-            });
+	// When the user logs in, we first need to find the class associated with that user.
+	classesDal.getClassOfUserForNow(userId).then(
+		function(classEntity) {
+			var classData = classesTrans.entityToDto(classEntity);
+			var studentData = _.find(classEntity.students, function(student) {
+				return (student.user.id === userId);
+			});
 
-            var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-            var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
+			var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
+			var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
 
-            return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
-                function(result) {
-                    if (result.status == 200) {
-                        var app = result.body;
-                        if (app.deployment.expirationType === 'AUTO_STOPPED') {
-                            return appsService.appAutoStop(appId, properties.defaultAutoStopSeconds, ravelloUsername,
-                                ravelloPassword);
-                        }
-                    } else {
-                        var message = "Could not get app: " + appId + ", error: " + result.text;
-                        logger.error(message);
-                        response.send(result.status, message);
-                    }
-                }
-            ).then(
-                function(autoStopResult) {
-                    if (!autoStopResult || autoStopResult.result == 204) {
-                        return appsService.vmAction(appId, vmId, action, ravelloUsername, ravelloPassword).then(
-                            function(result) {
-                                response.send(result.status);
-                            }
-                        ).fail(
-                            function(error) {
-                                var message = "Could not perform action " + action;
-                                logger.error(error, message);
-                                response.send(400, error);
-                            }
-                        );
-                    } else {
-                        var message = "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text;
-                        logger.error(message);
-                        response.send(400, message);
-                    }
-                }
-            ).fail(
-                function(error) {
-                    var message = "Could not get app [" + appId + "]";
-                    logger.error(error, message);
-                    response.send(400, message);
-                }
-            );
-        }
-    ).fail(
-        function(error) {
-            var message = "Could not find the class associated with the logged in user: " + user.username;
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+			return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
+				function(result) {
+					if (result.status == 200) {
+						var app = result.body;
+						if (app.deployment.expirationType === 'AUTO_STOPPED') {
+							return appsService.appAutoStop(appId, properties.defaultAutoStopSeconds, ravelloUsername,
+								ravelloPassword);
+						}
+					} else {
+						var message = "Could not get app: " + appId + ", error: " + result.text;
+						logger.error(message);
+						response.send(result.status, message);
+					}
+				}
+			).then(
+				function(autoStopResult) {
+					if (!autoStopResult || autoStopResult.status === 204) {
+						return appsService.vmAction(appId, vmId, action, ravelloUsername, ravelloPassword).then(
+							function(result) {
+								if (result && result.status <= 400) {
+									response.send(result.status);
+								} else {
+									var message = "Could not perform action " + action + ', reason: ' + result.headers['error-message'] || result.error.message;
+									logger.error(message);
+									response.send(400, message);
+								}
+							}
+						).fail(
+							function(error) {
+								var message = "Could not perform action " + action;
+								logger.error(error, message);
+								response.send(400, error);
+							}
+						);
+					} else {
+						var message = "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text;
+						logger.error(message);
+						response.send(400, message);
+					}
+				}
+			).fail(
+				function(error) {
+					var message = "Could not get app [" + appId + "]";
+					logger.error(error, message);
+					response.send(400, message);
+				}
+			);
+		}
+	).fail(
+		function(error) {
+			var message = "Could not find the class associated with the logged in user: " + user.username;
+			logger.error(error, message);
+			response.send(404, message);
+		}
+	);
 };
 
 exports.vmVnc = function(request, response) {

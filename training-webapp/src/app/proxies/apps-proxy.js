@@ -39,7 +39,7 @@ angular.module('trng.proxies').factory('AppsProxy', [
                 return promise;
             },
 
-            startApp: function(appId) {
+			startApp: function(appId) {
                 var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/start');
                 TrainingMainTracker.addPromise(promise);
                 return promise;
@@ -51,7 +51,19 @@ angular.module('trng.proxies').factory('AppsProxy', [
                 return promise;
             },
 
-            startVm: function(appId, vmId) {
+			startBatchApps: function(appIds) {
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/start', {appIds: appIds});
+				TrainingMainTracker.addPromise(promise);
+				return promise;
+			},
+
+			stopBatchApps: function(appIds) {
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/stop', {appIds: appIds});
+				TrainingMainTracker.addPromise(promise);
+				return promise;
+			},
+
+			startVm: function(appId, vmId) {
                 var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/start");
                 TrainingMainTracker.addPromise(promise);
                 return promise;

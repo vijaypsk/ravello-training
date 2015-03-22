@@ -119,8 +119,14 @@ exports.publishApp = function(appId, username, password) {
 exports.appAction = function(appId, action, username, password) {
     var deferred = q.defer();
 
+	// It seems to be necessary to do this, even though it is redundant. Otherwise, VMs in the App will turn to ERROR state.
+	var dto = {
+		id: appId
+	};
+
     request.
         post(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + "/" + action).
+		send(dto).
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
