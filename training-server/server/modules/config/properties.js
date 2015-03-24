@@ -21,3 +21,9 @@ exports.defaultCloud = 'AMAZON';
 exports.defaultRegion = 'Virginia';
 
 exports.numOfWorkers = 4;
+
+// The number of applications to create in every batch.
+exports.createChuckSize = 30;
+
+// The time in millis to wait between every batch App creation.
+exports.createChuckDelay = 1000 * 60 * 5;

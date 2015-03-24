@@ -3,7 +3,7 @@
     <div id="classAppsDiv" class="form-box class-apps">
         <span class="block-title">Applications</span>
 
-        <button id="createAppBtn" class="btn btn-default" ng-click="createApps()" ng-disabled="isCreateDisabled()">
+        <button id="createAppBtn" class="btn btn-success" ng-click="createApps()" ng-disabled="isCreateDisabled()">
             <i class="fa fa-rocket"></i> Create app
         </button>
         <button id="deleteAppBtn" class="btn btn-danger" ng-click="deleteApp()" ng-disabled="isDeleteDisabled()">
@@ -14,6 +14,9 @@
 		</button>
 		<button id="stopAppBtn" class="btn btn-default" ng-click="stopApps()" ng-disabled="isStopDisabled()">
 			<i class="fa fa-stop"></i> Stop app
+		</button>
+		<button id="refreshBtn" class="btn btn-default pull-right" ng-click="refreshState(true)">
+			<i class="fa fa-refresh"></i> Refresh
 		</button>
 
         <div id="appsDataGridDiv" class="class-apps-data-grid-div">

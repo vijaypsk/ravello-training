@@ -79,7 +79,9 @@ exports.deleteStudentApp = function(userId, appId) {
                 return currentStudent.user == userId;
             });
 
-            _.remove(student.apps, {ravelloId: appId});
+            _.remove(student.apps, function(app) {
+				return app.ravelloId === appId;
+			});
 
             var classData = classEntity.toJSON();
             classData = _.omit(classData, '_id');

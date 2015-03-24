@@ -9,7 +9,7 @@
     "express": "~3.4.8",
     "jade": "*",
     "datejs": "~1.0.0-beta",
-    "lodash": "~2.4.1",
+    "lodash": "~3.5.0",
     "q": "~1.0.1",
     "passport": "~0.2.0",
     "passport-http": "~0.2.2",

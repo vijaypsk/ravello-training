@@ -12,12 +12,7 @@ var singleClassResolver = {
 
             return ClassesService.getClassById(classId).then(
                 function (theClass) {
-                    return CoursesService.getCourseById(theClass.courseId).then(
-                        function(course) {
-                            theClass.course = _.cloneDeep(course);
-                            return _.cloneDeep(theClass);
-                        }
-                    );
+					return _.cloneDeep(theClass);
                 }
             );
         }

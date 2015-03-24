@@ -8,6 +8,18 @@ angular.module('trng.services').factory('CoursesService', [
 
         var cachedCourses = null;
 
+		function updateCourseInCache(course) {
+			var persistedEntity = CoursesTrans.dtoToEntity(course);
+
+			cachedCourses && _.forEach(cachedCourses, function(currentCourse, courseIndex) {
+				if (currentCourse.id == persistedEntity.id) {
+					cachedCourses[courseIndex] = persistedEntity;
+				}
+			});
+
+			return persistedEntity;
+		}
+
 		var service = {
 			getAllCourses: function() {
                 if (cachedCourses) {
@@ -32,7 +44,7 @@ angular.module('trng.services').factory('CoursesService', [
 
                 return CoursesProxy.getCourseById(courseId).then(
                     function(result) {
-                        return CoursesTrans.dtoToEntity(result.data);
+						return updateCourseInCache(result.data);
                     }
                 );
             },
@@ -52,15 +64,7 @@ angular.module('trng.services').factory('CoursesService', [
                 var dto = CoursesTrans.entityToDto(entity);
                 return CoursesProxy.update(dto).then(
                     function(result) {
-                        var persistedEntity = CoursesTrans.dtoToEntity(result.data);
-
-                        cachedCourses && _.forEach(cachedCourses, function(currentCourse, courseIndex) {
-                            if (currentCourse.id == persistedEntity.id) {
-                                cachedCourses[courseIndex] = persistedEntity;
-                            }
-                        });
-
-                        return persistedEntity;
+						return updateCourseInCache(result.data);
                     }
                 );
             },
@@ -100,16 +104,8 @@ angular.module('trng.services').factory('CoursesService', [
 
                 return CoursesProxy.update(dto).then(
                     function(result) {
-                        var persistedEntity = CoursesTrans.dtoToEntity(result.data);
-
-                        cachedCourses && _.forEach(cachedCourses, function(currentCourse, courseIndex) {
-                            if (currentCourse.id == persistedEntity.id) {
-                                cachedCourses[courseIndex] = persistedEntity;
-                            }
-                        });
-
-                        return persistedEntity;
-                    }
+						return updateCourseInCache(result.data);
+					}
                 );
             }
         };
