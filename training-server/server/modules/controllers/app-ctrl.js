@@ -28,96 +28,116 @@ exports.createApps = function(request, response) {
 
 	var requestData = request.body;
 
-	q.all(_.map(requestData.apps, function(appDto) {
-		return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, ravelloUsername,
-			ravelloPassword).then(
+	var currentChunk = 0;
+	var appsChunks = _.chunk(requestData.apps, properties.createChuckSize);
 
-			function (appCreateResult) {
-				if (appCreateResult.status >= 400) {
-					return q({
-						userId: appDto.userId,
-						message: "Could not create application [" + appDto.name + "]",
-						reason: appCreateResult.headers['error-message'] || appCreateResult.error.message
-					});
-				}
+	createAppsInChunks();
 
-				var appData = appsTrans.ravelloObjectToTrainerDto(appCreateResult.body);
+	response.send(200);
 
-				return appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
-					function(appPublishResult) {
-						if (appPublishResult.status >= 400) {
-							return q({
-								userId: appDto.userId,
-								app: appData,
-								message: "Could not publish application [" + appDto.name + "]",
-								reason: appPublishResult.headers['error-message'] || appPublishResult.error.message
-							});
-						}
+	function createAppsInChunks() {
+		var apps = appsChunks[currentChunk];
 
-						var promise;
-						if (properties.defaultAutoStopSeconds !== -1 ) {
-							promise = appsService.appAutoStop(appData.ravelloId, properties.defaultAutoStopSeconds,
-								ravelloUsername, ravelloPassword).then(
-									function(autoStopResult) {
-										return autoStopResult;
-									}
-								);
-						} else {
-							promise = q({});
-						}
+		if (apps && apps.length) {
+			createApps(apps);
+			currentChunk++;
 
-						return promise.then(
-							function() {
-								return {
-									userId: appDto.userId,
-									app: appData
-								};
-							}
-						)
-					}
-				);
+			if (currentChunk < appsChunks.length) {
+				setInterval(createAppsInChunks, properties.createChuckDelay);
 			}
-		);
-	})).then(
-		function(appsResults) {
-			return classesDal.getClass(requestData.classId).then(
-				function(classEntity) {
-					var classData = classesTrans.entityToDto(classEntity);
+		}
+	}
 
-					var studentsMap = _.indexBy(classData.students, function(student) {
-						return student.user._id;
-					});
+	function createApps(apps) {
+		q.all(_.map(apps, function(appDto) {
+			return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, ravelloUsername,
+				ravelloPassword).then(
 
-					_.forEach(appsResults, function(appResult) {
-						if (appResult.app) {
-							var student = studentsMap[appResult.userId];
-							student && student.apps.push({ravelloId: appResult.app.ravelloId});
-						}
+				function (appCreateResult) {
+					if (appCreateResult.status >= 400) {
+						return q({
+							userId: appDto.userId,
+							message: "Could not create application [" + appDto.name + "]",
+							reason: appCreateResult.headers['error-message'] || appCreateResult.error.message
+						});
+					}
 
-						if (appResult.message) {
-							logger.warn(appResult.message, {reason: appResult.reason});
-						}
-					});
+					var appData = appsTrans.ravelloObjectToTrainerDto(appCreateResult.body);
 
-					classesDal.updateClass(requestData.classId, classData).then(
-						function() {
-							return classesDal.getClass(requestData.classId).then(
-								function(result) {
-									var dto = classesTrans.entityToDto(result);
-									response.json(dto);
+					return appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
+						function(appPublishResult) {
+							if (appPublishResult.status >= 400) {
+								return q({
+									userId: appDto.userId,
+									app: appData,
+									message: "Could not publish application [" + appDto.name + "]",
+									reason: appPublishResult.headers['error-message'] || appPublishResult.error.message
+								});
+							}
+
+							var promise;
+							if (properties.defaultAutoStopSeconds !== -1 ) {
+								promise = appsService.appAutoStop(appData.ravelloId, properties.defaultAutoStopSeconds,
+									ravelloUsername, ravelloPassword).then(
+										function(autoStopResult) {
+											return autoStopResult;
+										}
+									);
+							} else {
+								promise = q({});
+							}
+
+							return promise.then(
+								function() {
+									return {
+										userId: appDto.userId,
+										app: appData
+									};
 								}
-							);
+							)
 						}
 					);
 				}
 			);
-		}
-	).catch(
-		function(error) {
-			logger.error({error: error});
-			return response.send(400, error.message);
-		}
-	);
+		})).then(
+			function(appsResults) {
+				return classesDal.getClass(requestData.classId).then(
+					function(classEntity) {
+						var classData = classesTrans.entityToDto(classEntity);
+
+						var studentsMap = _.indexBy(classData.students, function(student) {
+							return student.user._id;
+						});
+
+						_.forEach(appsResults, function(appResult) {
+							if (appResult.app) {
+								var student = studentsMap[appResult.userId];
+								student && student.apps.push({ravelloId: appResult.app.ravelloId});
+							}
+
+							if (appResult.message) {
+								logger.warn(appResult.message, {reason: appResult.reason});
+							}
+						});
+
+						classesDal.updateClass(requestData.classId, classData).then(
+							function() {
+								return classesDal.getClass(requestData.classId).then(
+									function(result) {
+										var dto = classesTrans.entityToDto(result);
+									}
+								);
+							}
+						);
+					}
+				);
+			}
+		).catch(
+			function(error) {
+				logger.error({error: error});
+			}
+		);
+	}
 };
 
 exports.deleteApp = function(request, response) {

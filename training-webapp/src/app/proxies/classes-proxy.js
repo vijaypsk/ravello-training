@@ -13,15 +13,23 @@ angular.module('trng.proxies').factory('ClassesProxy', [
                 return promise;
             },
 
-            getClassById: function(classId) {
+            getClassById: function(classId, track) {
                 var promise = $http.get(CommonConstants.baseUrl + '/rest/classes/' + classId);
-                TrainingMainTracker.addPromise(promise);
+
+				if (track || _.isUndefined(track)) {
+					TrainingMainTracker.addPromise(promise);
+				}
+
                 return promise;
             },
 
-            getClassApps: function(classId) {
+            getClassApps: function(classId, track) {
                 var promise = $http.get(CommonConstants.baseUrl + '/rest/classes/' + classId + '/apps');
-                TrainingMainTracker.addPromise(promise);
+
+				if (track || _.isUndefined(track)) {
+					TrainingMainTracker.addPromise(promise);
+				}
+
                 return promise;
             },
 

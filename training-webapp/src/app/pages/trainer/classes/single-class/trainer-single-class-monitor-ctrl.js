@@ -9,12 +9,16 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
     '$state',
     'growl',
     '$dialogs',
+    '$timeout',
+    'CommonConstants',
     'DateUtil',
     'ClassesService',
+    'CoursesService',
     'AppsService',
     'classApps',
     'currentClass',
-    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, DateUtil, ClassesService, AppsService, classApps, currentClass) {
+    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, $timeout, CommonConstants, DateUtil, ClassesService, CoursesService, AppsService,
+			  classApps, currentClass) {
 
         $scope.init = function () {
             $scope.currentClass = currentClass;
@@ -27,6 +31,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
             $scope.initData();
             $scope.initDates();
             $scope.initAppsDataGrid();
+			$scope.initAutoRefresh();
         };
 
         $scope.initData = function() {
@@ -60,7 +65,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
                     var studentViewObject = _.omit(_.cloneDeep(currentStudent), 'apps');
 
-                    appViewObject.student = studentViewObject;
+                    appViewObject.id = studentViewObject.user.username + '-' + currentBp.id;
+					appViewObject.student = studentViewObject;
                     appViewObject.blueprint = currentBp;
 
                     $scope.viewModel.apps.push(appViewObject);
@@ -99,6 +105,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
             $scope.viewModel.appsDataGrid = {
                 data: 'viewModel.apps',
+				primaryKey: 'id',
                 columnDefs: $scope.viewModel.appsColumns,
                 selectedItems: $scope.viewModel.selectedApps,
                 showSelectionCheckbox: true,
@@ -106,6 +113,24 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                 enableColumnResize: true
             };
         };
+
+		$scope.initAutoRefresh = function() {
+			$scope.shouldAutoRefresh = true;
+			$scope.autoRefresh();
+		};
+
+		$scope.autoRefresh = function() {
+			$timeout(function() {
+				if ($scope.shouldAutoRefresh) {
+					$scope.refreshState(false);
+					$scope.autoRefresh();
+				}
+			}, CommonConstants.autoRefreshDuration);
+		};
+
+		$scope.refreshState = function(track) {
+			return fetchClassApps(track);
+		};
 
 		$scope.createApps = function() {
 			var onlyAppsToCreate = _.filter($scope.viewModel.selectedApps, function(app) {
@@ -174,13 +199,19 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
 		/* --- Private functions --- */
 
-        function fetchClassApps() {
-            ClassesService.getClassApps($scope.currentClass.id).then(
-                function(result) {
-                    classApps = result;
-                    $scope.initData();
-                }
-            );
+        function fetchClassApps(track) {
+			return ClassesService.getClassById($scope.currentClass.id, track).then(
+				function (theClass) {
+					$scope.currentClass = _.cloneDeep(theClass);
+					return ClassesService.getClassApps($scope.currentClass.id, track).then(
+						function(result) {
+							classApps = result;
+							$scope.viewModel.apps = [];
+							$scope.matchApps();
+						}
+					);
+				}
+			);
         }
 
         /* --- Init --- */
