@@ -55,7 +55,7 @@ exports.createApps = function(request, response) {
 
 				function (appCreateResult) {
 					if (appCreateResult.status >= 400) {
-						return q({
+						return q.reject({
 							userId: appDto.userId,
 							message: "Could not create application [" + appDto.name + "]",
 							reason: appCreateResult.headers['error-message'] || appCreateResult.error.message
@@ -67,7 +67,7 @@ exports.createApps = function(request, response) {
 					return appsService.publishApp(appData.ravelloId, appDto.publishDetails, ravelloUsername, ravelloPassword).then(
 						function(appPublishResult) {
 							if (appPublishResult.status >= 400) {
-								return q({
+								return q.reject({
 									userId: appDto.userId,
 									app: appData,
 									message: "Could not publish application [" + appDto.name + "]",
