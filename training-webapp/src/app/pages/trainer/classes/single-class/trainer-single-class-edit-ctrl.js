@@ -25,9 +25,75 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
             $scope.initClass();
             $scope.initDates();
             $scope.initStudentsDataGrid();
+			$scope.initPublishDetailsOptions();
         };
 
-        $scope.initClass = function() {
+		$scope.initPublishDetailsOptions = function() {
+			$scope.publishMethods = [
+				{
+					name: 'Cost',
+					value: 'COST_OPTIMIZED'
+				},
+				{
+					name: 'Performance',
+					value: 'PERFORMANCE_OPTIMIZED'
+				}
+			];
+
+			$scope.clouds = [
+				{
+					name: 'Amazon',
+					value: 'AMAZON'
+				},
+				{
+					name: 'HP',
+					value: 'HPCLOUD'
+				},
+				{
+					name: 'Google',
+					value: 'GOOGLE'
+				}
+			];
+
+			$scope.regions = {
+				'AMAZON': [
+					{
+						name: 'Virginia',
+						value: 'Virginia'
+					},
+					{
+						name: 'Oregon',
+						value: 'Oregon'
+					}
+				],
+				'HPCLOUD': [
+					{
+						name: 'US West AZ 2',
+						value: 'US West AZ 2'
+					}
+				],
+				'GOOGLE': [
+					{
+						name: 'us-central1',
+						value: 'us-central1'
+					}
+				]
+			};
+		};
+
+		$scope.isCloudVisible = function(bpPublishDetails) {
+			return bpPublishDetails && bpPublishDetails.method !== 'COST_OPTIMIZED';
+		};
+
+		$scope.isRegionVisible = function(bpPublishDetails) {
+			return bpPublishDetails && bpPublishDetails.method !== 'COST_OPTIMIZED';
+		};
+
+		$scope.cloudChanged = function(bpPublishDetails) {
+			bpPublishDetails.region = $scope.regions[bpPublishDetails.cloud][0].value;
+		};
+
+		$scope.initClass = function() {
             $scope.currentClass = currentClass;
 
             $scope.isRavelloCredentials =
@@ -113,6 +179,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
         };
 
         $scope.addToEdit = function() {
+			currentClass = ClassesService.createEmptyClass(currentClass.course);
+			$scope.currentClass = currentClass;
             $state.go(StatesNames.trainer.training.singleClass.editClass.name);
         };
 

@@ -64,7 +64,7 @@ exports.createApps = function(request, response) {
 
 					var appData = appsTrans.ravelloObjectToTrainerDto(appCreateResult.body);
 
-					return appsService.publishApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
+					return appsService.publishApp(appData.ravelloId, appDto.publishDetails, ravelloUsername, ravelloPassword).then(
 						function(appPublishResult) {
 							if (appPublishResult.status >= 400) {
 								return q({
@@ -75,14 +75,18 @@ exports.createApps = function(request, response) {
 								});
 							}
 
+							var autoStop = properties.defaultAutoStopSeconds;
+							if (appDto.publishDetails.autoStop) {
+								autoStop = appDto.publishDetails.autoStop * 60;
+							}
+
 							var promise;
-							if (properties.defaultAutoStopSeconds !== -1 ) {
-								promise = appsService.appAutoStop(appData.ravelloId, properties.defaultAutoStopSeconds,
-									ravelloUsername, ravelloPassword).then(
-										function(autoStopResult) {
-											return autoStopResult;
-										}
-									);
+							if (autoStop !== -1 ) {
+								promise = appsService.appAutoStop(appData.ravelloId, autoStop, ravelloUsername, ravelloPassword).then(
+									function(autoStopResult) {
+										return autoStopResult;
+									}
+								);
 							} else {
 								promise = q({});
 							}

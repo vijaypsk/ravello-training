@@ -1,39 +1,41 @@
-<form name="classForm" class="form-horizontal" role="form">
-    <div class="form-box">
-        <span class="block-title">Class details</span>
-        <div class="form-group">
-            <div class="col-md-6">
-                <label for="nameInput" class="col-sm-3 control-label">Name:</label>
-                <div class="col-sm-9">
-                    <input id="nameInput" type="text" ng-model="currentClass.name" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label class="col-sm-3 control-label">Course:</label>
-                <div class="col-sm-9"><div class="form-control mock-disabled-input">{{currentClass.course.name}}</div></div>
-            </div>
-        </div>
+<div>
+	<div ng-form="classForm" class="form-horizontal" role="form">
+		<div class="form-box">
+			<span class="block-title">Class details</span>
+			<div class="form-group">
+				<div class="col-md-6">
+					<label for="nameInput" class="col-sm-3 control-label">Name:</label>
+					<div class="col-sm-9">
+						<input id="nameInput" type="text" ng-model="currentClass.name" class="form-control">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label class="col-sm-3 control-label">Course:</label>
+					<div class="col-sm-9"><div class="form-control mock-disabled-input">{{currentClass.course.name}}</div></div>
+				</div>
+			</div>
 
-        <div class="form-group">
-            <div class="col-md-6">
-                <label for="descriptionInput"  class="col-sm-3 control-label">Description:</label>
-                <div class="col-sm-9">
-                    <input id="descriptionInput" type="text" class="form-control" ng-model="currentClass.description">
-                </div>
-            </div>
-            <div class="col-md-6">
-                 <label class="col-sm-3 control-label"><i class="fa fa-calendar"></i> Start date:</label>
-                <div class="col-sm-3"><quick-datepicker ng-model="currentClass.startDate" placeholder="Pick Date"
-                                                        date-format="{{dateFormat}}"
-                                                        time-format="{{timeFormat}}" label-format="{{dateTimeFormat}}"/></div>
+			<div class="form-group">
+				<div class="col-md-6">
+					<label for="descriptionInput"  class="col-sm-3 control-label">Description:</label>
+					<div class="col-sm-9">
+						<input id="descriptionInput" type="text" class="form-control" ng-model="currentClass.description">
+					</div>
+				</div>
+				<div class="col-md-6">
+					 <label class="col-sm-3 control-label"><i class="fa fa-calendar"></i> Start date:</label>
+					<div class="col-sm-3"><quick-datepicker ng-model="currentClass.startDate" placeholder="Pick Date"
+															date-format="{{dateFormat}}"
+															time-format="{{timeFormat}}" label-format="{{dateTimeFormat}}"/></div>
 
-                <label class="col-sm-3 control-label"><i class="fa fa-calendar"></i> End date:</label>
-                <div class="col-sm-3"><quick-datepicker ng-model="currentClass.endDate" placeholder="Pick Date"
-                                                        date-format="{{dateFormat}}"
-                                                        time-format="{{timeFormat}}" label-format="{{dateTimeFormat}}"/></div>
-            </div>
-        </div>
-    </div>
+					<label class="col-sm-3 control-label"><i class="fa fa-calendar"></i> End date:</label>
+					<div class="col-sm-3"><quick-datepicker ng-model="currentClass.endDate" placeholder="Pick Date"
+															date-format="{{dateFormat}}"
+															time-format="{{timeFormat}}" label-format="{{dateTimeFormat}}"/></div>
+				</div>
+			</div>
+		</div>
+	</div>
 
     <accordion close-others="oneAtATime">
         <accordion-group class="accordionGroup" heading="Ravello Credentials" is-open="isRavelloCredentials">
@@ -67,6 +69,39 @@
         </accordion-group>
     </accordion>
 
+	<br>
+
+	<accordion>
+		<accordion-group class="accordionGroup" heading="Applications Publish" is-open="isApplicationsPublish">
+			<div ng-form="publishDetailsForm" class="form-inline">
+				<div ng-repeat="bpPublishDetails in currentClass.bpPublishDetailsList" class="bp-publish-details">
+					<div class="publish-details-bp-name row">
+						<span>{{bpPublishDetails.bpName}}</span>
+					</div>
+					<div class="form-group">
+						<label for="publishMethodSelect">Method:</label>
+						<select id="publishMethodSelect" class="form-control" ng-options="m.value as m.name for m in publishMethods"
+								ng-model="bpPublishDetails.method"></select>
+					</div>
+					<div class="form-group" ng-if="isCloudVisible(bpPublishDetails)">
+						<label for="cloudSelect">Cloud:</label>
+						<select id="cloudSelect" class="form-control" ng-options="c.value as c.name for c in clouds"
+								ng-model="bpPublishDetails.cloud" ng-change="cloudChanged(bpPublishDetails)"></select>
+					</div>
+					<div class="form-group" ng-if="isRegionVisible(bpPublishDetails)">
+						<label for="regionSelect">Region:</label>
+						<select id="regionSelect" class="form-control" ng-options="r.value as r.name for r in regions[bpPublishDetails.cloud]"
+								ng-model="bpPublishDetails.region"></select>
+					</div>
+					<div class="form-group">
+						<label for="autoStopInput" tooltip="Set -1 for Never">Auto Stop (minutes):</label>
+						<input id="autoStopInput" type="number" class="form-control" ng-model="bpPublishDetails.autoStop">
+					</div>
+				</div>
+			</div>
+		</accordion-group>
+	</accordion>
+
     <div id="classStudentsDiv" class="form-box class-students-div">
         <span class="block-title">Students</span>
 
@@ -78,5 +113,4 @@
             <div id="studentsDataGrid" class="students-data-grid" ng-grid="studentsDataGrid"></div>
         </div>
     </div>
-
-</form>
+</div>

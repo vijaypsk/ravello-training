@@ -13,7 +13,8 @@ angular.module('trng.proxies').factory('AppsProxy', [
 						userId: appData.userId,
 						name: appData.appName,
 						description: appData.appDescription,
-						baseBlueprintId: appData.blueprintId
+						baseBlueprintId: appData.blueprintId,
+						publishDetails: appData.publishDetails
 					};
 				});
 

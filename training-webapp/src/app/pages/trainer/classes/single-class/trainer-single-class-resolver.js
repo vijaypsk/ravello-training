@@ -2,8 +2,8 @@
 
 var singleClassResolver = {
     currentClass: [
-        '$q', '$stateParams', 'ClassesService', 'CoursesService',
-        function ($q, $stateParams, ClassesService, CoursesService) {
+        '$q', '$stateParams', 'ClassesService',
+        function ($q, $stateParams, ClassesService) {
             var classId = $stateParams['classId'];
 
             if (!classId) {
