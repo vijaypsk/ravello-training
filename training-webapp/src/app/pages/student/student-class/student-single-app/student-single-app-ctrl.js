@@ -187,7 +187,7 @@ angular.module('trng.student').controller('studentSingleAppController', [
         };
 
         $scope.refreshState = function (track) {
-            return StudentsService.getStudentClassSingleApp(student._id, student['userClass']['_id'],
+            return StudentsService.getStudentClassSingleApp(student._id, student.userClass._id,
                     $scope.currentApp.id, track).
                 then(function (result) {
                     _.forEach($scope.currentApp.vms, function(vm) {
