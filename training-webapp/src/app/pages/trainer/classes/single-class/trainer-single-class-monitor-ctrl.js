@@ -96,11 +96,13 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                 {
                     field: 'creationTime',
                     displayName: 'Creation Time',
-                    cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
+                    cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\'',
+					width: '175px'
                 },
                 {
                     field: 'status',
-                    displayName: 'Status'
+                    displayName: 'Status',
+					width: '75px'
                 }
             ];
         };
