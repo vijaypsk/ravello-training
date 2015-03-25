@@ -158,7 +158,9 @@ angular.module('trng.services').factory('ClassesService', [
 									student.apps = [];
 								}
 								_.forEach(studentDto.apps, function(appDto) {
-									var app = _.find(student.apps, {ravelloId: appDto.ravelloId});
+									var app = _.find(student.apps, function(currentApp) {
+										return currentApp.ravelloId == appDto.ravelloId;
+									});
 									if (!app) {
 										app = {};
 										student.apps.push(app);
