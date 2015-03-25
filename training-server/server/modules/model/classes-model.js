@@ -14,6 +14,15 @@ var TrainingClassSchema = mongoose.Schema({
         username: String,
         password: String
     },
+	bpPublishDetailsList: [
+		{
+			bpId: String,
+			method: String,
+			cloud: String,
+			region: String,
+			autoStop: Number
+		}
+	],
     students: [
         {
             user: {type: mongoose.Schema.ObjectId, ref: 'User'},

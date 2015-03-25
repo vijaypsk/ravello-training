@@ -2,11 +2,12 @@
 
 angular.module('trng.services').factory('ClassesService', [
 	'$q',
+	'CommonConstants',
 	'ClassesProxy',
 	'ClassesTransformer',
 	'CoursesService',
 	'AppsService',
-	function($q, ClassesProxy, ClassesTrans, CoursesService, AppsService) {
+	function($q, CommonConstants, ClassesProxy, ClassesTrans, CoursesService, AppsService) {
 
         var cachedClasses = null;
 
@@ -70,46 +71,117 @@ angular.module('trng.services').factory('ClassesService', [
             student.blueprints = blueprints;
         };
 
+		var getCoursesForClasses = function(classes) {
+			return CoursesService.getAllCourses().then(
+				function(courses) {
+					_.forEach(classes, function(currentClass) {
+						currentClass.course = _.find(courses, {id: currentClass.courseId});
+						matchClassWithCourse(currentClass);
+					});
+					return classes;
+				}
+			);
+		};
+
+		var getCourseForClass = function(theClass) {
+			return CoursesService.getCourseById(theClass.courseId).then(
+				function(course) {
+					theClass.course = course;
+					matchClassWithCourse(theClass);
+					return theClass;
+				}
+			);
+		};
+
+		var matchClassWithCourse = function(theClass) {
+			if (theClass.course && theClass.course.blueprints && theClass.course.blueprints.length) {
+				if (!theClass.bpPublishDetailsList) {
+					theClass.bpPublishDetailsList = [];
+				}
+
+				_.forEach(theClass.course.blueprints, function(bp) {
+					var bpPublishDetails = _.find(theClass.bpPublishDetailsList, {bpId: bp.id});
+					if (!bpPublishDetails) {
+						bpPublishDetails = {
+							bpId: bp.id,
+							method: CommonConstants.defaultPublishMethod,
+							cloud: CommonConstants.defaultCloud,
+							region: CommonConstants.defaultRegion,
+							autoStop: CommonConstants.defaultAutoStopMillis
+
+						};
+						theClass.bpPublishDetailsList.push(bpPublishDetails);
+					}
+					bpPublishDetails.bpName = bp.name;
+				});
+			}
+		};
+
         var service = {
 			getAllClasses: function() {
                 if (cachedClasses) {
-                    return $q.when(cachedClasses);
+					return getCoursesForClasses(cachedClasses);
                 }
 
 				return ClassesProxy.getAllClasses().then(
-                    function(result) {
-                        cachedClasses = _.map(result.data, function(currentClassDto) {
-                            return ClassesTrans.dtoToEntity(currentClassDto);
-                        });
-                        return cachedClasses;
-                    }
-                );
+					function(classesResult) {
+						cachedClasses = _.map(classesResult.data, function(currentClassDto) {
+							return ClassesTrans.dtoToEntity(currentClassDto);
+						});
+						return getCoursesForClasses(cachedClasses);
+					}
+				);
             },
 
             getClassById: function(classId, track) {
                 if (cachedClasses) {
                     var theClass = _.find(cachedClasses, {id: classId});
-                    return $q.when(theClass);
+					return getCourseForClass(theClass);
                 }
 
                 return ClassesProxy.getClassById(classId, track).then(
                     function(result) {
 						var persistedClass = updateClassInCache(result.data);
-						return CoursesService.getCourseById(persistedClass.courseId).then(
-							function(courseResult) {
-								persistedClass.course = _.cloneDeep(courseResult);
-								return persistedClass;
-							}
-						);
+						return getCourseForClass(persistedClass);
                     }
                 );
             },
 
             getClassApps: function(classId, track) {
-                return ClassesProxy.getClassApps(classId, track).then(function(result) {
-                    return ClassesTrans.dtoToEntity(result.data);
-                });
+                return ClassesProxy.getClassApps(classId, track).then(
+					function(result) {
+						var theClass = _.find(cachedClasses, {id: classId});
+						if (theClass) {
+							_.forEach(result.data.students, function(studentDto) {
+								var student = _.find(theClass.students, {user: {id: studentDto.user._id}});
+								if (!student.apps) {
+									student.apps = [];
+								}
+								_.forEach(studentDto.apps, function(appDto) {
+									var app = _.find(student.apps, {ravelloId: appDto.ravelloId});
+									if (!app) {
+										app = {};
+										student.apps.push(app);
+									}
+									app.ravelloId = appDto.ravelloId;
+								});
+							});
+						}
+						return result.data;
+					}
+				);
             },
+
+			createEmptyClass: function(course) {
+				var theClass = {
+					course: course,
+					courseId: course.id
+				};
+
+				matchClassWithCourse(theClass);
+
+				return theClass;
+			},
 
             add: function(entity) {
                 var dto = ClassesTrans.entityToDto(entity);
@@ -117,7 +189,7 @@ angular.module('trng.services').factory('ClassesService', [
                     function(result) {
                         var persistedClassEntity = ClassesTrans.dtoToEntity(result.data);
                         cachedClasses && cachedClasses.push(persistedClassEntity);
-                        return persistedClassEntity;
+                        return getCourseForClass(persistedClassEntity);
                     });
             },
 
@@ -125,7 +197,8 @@ angular.module('trng.services').factory('ClassesService', [
                 var dto = ClassesTrans.entityToDto(entity);
                 return ClassesProxy.update(dto).then(
                     function(result) {
-						return updateClassInCache(result.data);
+						var persistedClassEntity = updateClassInCache(result.data);
+						return getCourseForClass(persistedClassEntity);
                     }
                 );
             },
@@ -159,14 +232,15 @@ angular.module('trng.services').factory('ClassesService', [
                             entity.id = persistedDto.id;
                             var persistedEntity = ClassesTrans.dtoToEntity(persistedDto);
                             cachedClasses && cachedClasses.push(persistedEntity);
-                            return persistedEntity;
+							return getCourseForClass(persistedEntity);
                         }
                     );
                 }
 
                 return ClassesProxy.update(dto).then(
                     function(result) {
-						return updateClassInCache(result.data);
+						var persistedEntity = updateClassInCache(result.data);
+						return getCourseForClass(persistedEntity);
                     }
                 );
             },

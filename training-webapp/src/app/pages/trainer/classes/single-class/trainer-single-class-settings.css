@@ -10,3 +10,29 @@
 .students-data-grid {
     height: 300px;
 }
+
+.bp-publish-details {
+    margin-bottom: 10px;
+    background-color: #F7F7F7;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    height: 85px;
+    padding: 5px 0 5px 5px;
+}
+
+.bp-publish-details .form-group {
+    margin-right: 10px;
+}
+
+.publish-details-bp-name {
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#autoStopInput {
+    width: 110px;
+}

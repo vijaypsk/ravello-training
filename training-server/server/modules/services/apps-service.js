@@ -93,16 +93,16 @@ exports.deleteApp = function(appId, username, password) {
     return deferred.promise;
 };
 
-exports.publishApp = function(appId, username, password) {
+exports.publishApp = function(appId, publishDetails, username, password) {
     var deferred = q.defer();
 
     var dto = {
-        optimizationLevel: properties.defaultOptimizationLevel
+        optimizationLevel: publishDetails.method || properties.defaultOptimizationLevel
     };
 
-	if (properties.defaultOptimizationLevel === 'PERFORMANCE_OPTIMIZED') {
-		dto.preferredCloud = properties.defaultCloud;
-		dto.preferredRegion = properties.defaultRegion;
+	if (dto.optimizationLevel === 'PERFORMANCE_OPTIMIZED') {
+		dto.preferredCloud = publishDetails.cloud || properties.defaultCloud;
+		dto.preferredRegion = publishDetails.region || properties.defaultRegion;
 	}
 
     request.

@@ -39,8 +39,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
             // breaks the selection of the dataGrid. the apps array, on the contrary, must be changed by reference, in order
             // for the dataGrid to be actually updated (as the watch on the array is based on reference or length).
             $scope.viewModel.apps = [];
-            _.remove($scope.viewModel.selectedApps);
-
             $scope.matchApps();
         };
 
@@ -50,13 +48,15 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
             // student for each BP. If an app has been created for the student from that BP, the trainer
             // would see the app info. Otherwise, the app info should be blank, but a row for that pair
             // of student-BP must still appear.
-            _.forEach(classApps.students, function(currentStudent) {
+			_.forEach($scope.currentClass.students, function(currentStudent) {
 
                 // Thus, the iteration is done through the BPs of the course, and NOT the apps of the student.
                 _.forEach($scope.currentClass.course.blueprints, function(currentBp) {
 
-                    // Then, an app matching the current BP is searched for the specific student.
-                    var appViewObject = _.find(currentStudent.apps, {blueprintId: currentBp.id});
+					var matchingStudentAppsObject = _.find(classApps.students, {_id: currentStudent.id});
+
+					// Then, an app matching the current BP is searched for the specific student.
+                    var appViewObject = _.find(matchingStudentAppsObject.apps, {blueprintId: currentBp.id});
 
                     // If not found, an empty object is created, so that the app fields will be blank.
                     if (!appViewObject) {
@@ -68,6 +68,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                     appViewObject.id = studentViewObject.user.username + '-' + currentBp.id;
 					appViewObject.student = studentViewObject;
                     appViewObject.blueprint = currentBp;
+
+					appViewObject.publishDetails = _.find($scope.currentClass.bpPublishDetailsList, {bpId: currentBp.id});
 
                     $scope.viewModel.apps.push(appViewObject);
                 });
@@ -133,7 +135,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		};
 
 		$scope.createApps = function() {
-			var onlyAppsToCreate = _.filter($scope.viewModel.selectedApps, function(app) {
+			var onlyAppsToCreate = _.filter(getSelectedApps(), function(app) {
 				return !app.creationTime;
 			});
 
@@ -152,7 +154,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 					appName: appName,
 					appDescription: appDesc,
 					userId: app.student.user.id,
-					blueprintId: app.blueprint.id
+					blueprintId: app.blueprint.id,
+					publishDetails: app.publishDetails
 				};
 			});
 
@@ -164,7 +167,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                 var dialog = $dialogs.confirm('Delete application', 'Are you sure you want to delete the selected applications?');
                 return dialog.result.then(
                     function() {
-                        return $q.all(_.map($scope.viewModel.selectedApps, function(app) {
+                        return $q.all(_.map(getSelectedApps(), function(app) {
                             return app.creationTime &&
                                 ClassesService.deleteAppForStudent($scope.currentClass.id, app.student.user.id, app.ravelloId);
                         })).then(fetchClassApps);
@@ -174,11 +177,11 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
         };
 
 		$scope.startApps = function() {
-			return AppsService.startBatchApps(_.pluck($scope.viewModel.selectedApps, 'ravelloId'));
+			return AppsService.startBatchApps(_.pluck(getSelectedApps(), 'ravelloId'));
 		};
 
 		$scope.stopApps = function() {
-			return AppsService.stopBatchApps(_.pluck($scope.viewModel.selectedApps, 'ravelloId'));
+			return AppsService.stopBatchApps(_.pluck(getSelectedApps(), 'ravelloId'));
 		};
 
 		$scope.isCreateDisabled = function() {
@@ -204,8 +207,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 				function (theClass) {
 					$scope.currentClass = _.cloneDeep(theClass);
 					return ClassesService.getClassApps($scope.currentClass.id, track).then(
-						function(result) {
-							classApps = result;
+						function(results) {
+							classApps = results;
 							$scope.viewModel.apps = [];
 							$scope.matchApps();
 						}
@@ -213,6 +216,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 				}
 			);
         }
+
+		function getSelectedApps() {
+			return _.filter($scope.viewModel.apps, function(app) {
+				return _.find($scope.viewModel.selectedApps, {id: app.id});
+			});
+		}
 
         /* --- Init --- */
 

@@ -8,7 +8,10 @@ angular.module('trng.transformers').factory('StudentTransformer', [
 			dtoToEntity: function(dto) {
 		        var entity = _.cloneDeep(dto);
 
-                if (dto.userClass.startDate) {
+				entity.id = dto._id;
+				entity = _.omit(entity, '_id');
+
+				if (dto.userClass.startDate) {
                     entity.userClass.startDate = new Date(dto.userClass.startDate).toString(DateUtil.dateJs.dateTimeFormat);
                 }
                 if (dto.userClass.endDate) {
@@ -21,7 +24,10 @@ angular.module('trng.transformers').factory('StudentTransformer', [
 			entityToDto: function(entity) {
 		        var dto = _.cloneDeep(entity);
 
-                if (entity.userClass.startDate) {
+				dto._id = entity.id;
+				dto = _.omit(dto, 'id');
+
+				if (entity.userClass.startDate) {
                     dto.userClass.startDate = entity.userClass.startDate.getTime();
                 }
                 if (entity.userClass.endDate) {
