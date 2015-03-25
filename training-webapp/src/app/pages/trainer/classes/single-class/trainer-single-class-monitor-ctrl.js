@@ -72,6 +72,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
 					appViewObject.publishDetails = _.find($scope.currentClass.bpPublishDetailsList, {bpId: currentBp.id});
 
+					determineAppStatus(appViewObject);
+
                     $scope.viewModel.apps.push(appViewObject);
                 });
             });
@@ -97,8 +99,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                     cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
                 },
                 {
-                    field: 'numOfRunningVms',
-                    displayName: '# of running VMs'
+                    field: 'status',
+                    displayName: 'Status'
                 }
             ];
         };
@@ -228,6 +230,16 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			return _.filter($scope.viewModel.apps, function(app) {
 				return _.find($scope.viewModel.selectedApps, {id: app.id});
 			});
+		}
+
+		function determineAppStatus(app) {
+			if (!app.ravelloId) {
+				app.status = '-';
+			} else if (app.numOfRunningVms > 0) {
+				app.status = 'Started';
+			} else {
+				app.status = 'Stopped';
+			}
 		}
 
         /* --- Init --- */
