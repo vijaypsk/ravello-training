@@ -11,14 +11,15 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
     '$dialogs',
     '$timeout',
     'CommonConstants',
+    'StatesNames',
     'DateUtil',
     'ClassesService',
     'CoursesService',
     'AppsService',
     'classApps',
     'currentClass',
-    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, $timeout, CommonConstants, DateUtil, ClassesService, CoursesService, AppsService,
-			  classApps, currentClass) {
+    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, $timeout, CommonConstants, StatesNames, DateUtil, ClassesService, CoursesService,
+			  AppsService, classApps, currentClass) {
 
         $scope.init = function () {
             $scope.currentClass = currentClass;
@@ -119,6 +120,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		$scope.initAutoRefresh = function() {
 			$scope.shouldAutoRefresh = true;
 			$scope.autoRefresh();
+
+			$scope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
+				if (fromState && fromState.name === StatesNames.trainer.training.singleClass.monitorClass.name) {
+					$scope.shouldAutoRefresh = false;
+				}
+			});
 		};
 
 		$scope.autoRefresh = function() {
