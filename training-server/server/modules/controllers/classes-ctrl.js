@@ -20,7 +20,15 @@ var classValidator = require('../validators/class-validator');
 
 var matchClassWithApps = function(theClass, ravelloUsername, ravelloPassword) {
 	return appsService.getApps(ravelloUsername, ravelloPassword).then(
-		function(apps) {
+		function(result) {
+			if (result.status >= 400) {
+				return q.reject({
+					status: result.status,
+					reason: result.headers['error-message']
+				});
+			}
+
+			var apps = result.body;
 			var appsMap = _.indexBy(apps, 'id');
 			_.forEach(theClass.students, function(student) {
 				_.forEach(student.apps, function(studentApp) {

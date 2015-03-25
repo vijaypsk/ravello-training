@@ -15,9 +15,7 @@ exports.getApps = function(username, password) {
         auth(username, password).
         end(deferred.makeNodeResolver());
 
-    return deferred.promise.then(function(result) {
-        return result.body;
-    });
+    return deferred.promise;
 };
 
 exports.getApp = function(appId, username, password) {

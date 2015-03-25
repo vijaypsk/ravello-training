@@ -21,7 +21,8 @@ exports.getBlueprints = function(request, response) {
     blueprintsService.getBlueprints(ravelloUsername, ravelloPassword).then(
         function(result) {
             if (result.status != 200) {
-                response.send(result.status, result.text);
+				var message = result.status === 401 ? 'User not authorized to access Ravello. Please check Ravello Credentials' : result.headers['error-message'];
+                response.send(result.status, message);
             } else {
                 var dtos = _.map(result.body, function(bpDto) {
                     return blueprintsTrans.ravelloDtoToEntity(bpDto);
