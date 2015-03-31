@@ -31,7 +31,12 @@ exports.createApps = function(request, response) {
 	var currentChunk = 0;
 	var appsChunks = _.chunk(requestData.apps, properties.createChuckSize);
 
-	createAppsInChunks();
+	logger.info('Creating %d apps in %d chunks. Delay between chunks: %d milliseconds',
+		requestData.apps.length, (appsChunks ? appsChunks.length : 0), properties.createChuckDelay);
+
+	if (appsChunks && appsChunks.length) {
+		createAppsInChunks();
+	}
 
 	response.send(200);
 
@@ -39,6 +44,8 @@ exports.createApps = function(request, response) {
 		var apps = appsChunks[currentChunk];
 
 		if (apps && apps.length) {
+			logger.info('Creating %d apps in chunk # %d', apps.length, currentChunk);
+
 			createApps(apps);
 			currentChunk++;
 
