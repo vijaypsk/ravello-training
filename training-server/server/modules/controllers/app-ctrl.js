@@ -75,8 +75,11 @@ exports.createApps = function(request, response) {
 								});
 							}
 
-							var autoStop = properties.defaultAutoStopSeconds;
-							if (appDto.publishDetails.autoStop) {
+							var autoStop = appDto.publishDetails && !_.isUndefined(appDto.publishDetails.autoStop) ?
+								appDto.publishDetails.autoStop :
+								properties.defaultAutoStopSeconds;
+
+							if (autoStop !== -1) {
 								autoStop = appDto.publishDetails.autoStop * 60;
 							}
 
