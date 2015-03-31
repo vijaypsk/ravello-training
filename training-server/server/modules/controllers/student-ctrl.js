@@ -19,6 +19,26 @@ var coursesService = require('../services/courses-service');
 
 /* --- Private functions --- */
 
+var findIpConfig = function(vm, service) {
+	var ipConfig = null;
+
+	_.forEach(vm.networkConnections, function(nic) {
+		if (nic.ipConfig && nic.ipConfig.id === service.ipConfigLuid) {
+			ipConfig = nic.ipConfig;
+		}
+
+		if (nic.additionalIpConfig && nic.additionalIpConfig.length > 0) {
+			_.forEach(nic.additionalIpConfig, function(currentIpConfig) {
+				if (currentIpConfig && currentIpConfig.id === service.ipConfigLuid) {
+					ipConfig = currentIpConfig;
+				}
+			});
+		}
+	});
+
+	return ipConfig;
+};
+
 var createVmViewObject = function(vm) {
     var hostnames = _.map(vm.hostnames, function(hostname) {
         return {
@@ -30,19 +50,13 @@ var createVmViewObject = function(vm) {
 
 	_.forEach(vm.suppliedServices, function(currentService) {
 		if (currentService && currentService.external) {
-			var networkCon = _.find(vm.networkConnections, function(currentNetworkCon) {
-				if (currentNetworkCon && currentNetworkCon.ipConfig &&
-					currentNetworkCon.ipConfig.id == currentService.ipConfigLuid) {
-
-					return currentNetworkCon;
-				}
-			});
-			var matchingExternalAccess = _.find(externalAccesses, {name: networkCon.ipConfig.fqdn});
+			var ipConfig = findIpConfig(vm, currentService);
+			var matchingExternalAccess = _.find(externalAccesses, {name: ipConfig.fqdn});
 
 			if (!matchingExternalAccess) {
 				matchingExternalAccess = {
-					name: networkCon.ipConfig.fqdn,
-					ip: networkCon.ipConfig.publicIp,
+					name: ipConfig.fqdn,
+					ip: ipConfig.publicIp,
 					services: []
 				};
 				externalAccesses.push(matchingExternalAccess);
@@ -164,14 +178,8 @@ exports.getStudentClassApps = function(request, response) {
 									return;
 								}
 
-								var ravelloApp = appResult.body;
-                                var appViewObject = appsTrans.ravelloObjectToStudentDto(course, ravelloApp);
-
-								appViewObject.vms = _.map(ravelloApp.deployment.vms, function(vm) {
-									return createVmViewObject(vm);
-								});
-
-								appViewObjects.push(appViewObject);
+                                var appViewObject = appsTrans.ravelloObjectToStudentDto(course, appResult.body);
+                                appViewObjects.push(appViewObject);
                             });
 
                             response.json(appViewObjects);
