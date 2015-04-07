@@ -52,14 +52,14 @@ angular.module('trng.proxies').factory('AppsProxy', [
                 return promise;
             },
 
-			startBatchApps: function(appIds) {
-				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/start', {appIds: appIds});
+			startBatchApps: function(classId, apps) {
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/start', {classId: classId, apps: apps});
 				TrainingMainTracker.addPromise(promise);
 				return promise;
 			},
 
-			stopBatchApps: function(appIds) {
-				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/stop', {appIds: appIds});
+			stopBatchApps: function(classId, apps) {
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/stop', {classId: classId, apps: apps});
 				TrainingMainTracker.addPromise(promise);
 				return promise;
 			},
