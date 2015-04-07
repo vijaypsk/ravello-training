@@ -188,11 +188,13 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
         };
 
 		$scope.startApps = function() {
-			return AppsService.startBatchApps(_.pluck(getSelectedApps(), 'ravelloId'));
+			var appsForAction = prepareAppsForAction();
+			return AppsService.startBatchApps($scope.currentClass.id, appsForAction);
 		};
 
 		$scope.stopApps = function() {
-			return AppsService.stopBatchApps(_.pluck(getSelectedApps(), 'ravelloId'));
+			var appsForAction = prepareAppsForAction();
+			return AppsService.stopBatchApps($scope.currentClass.id, appsForAction);
 		};
 
 		$scope.isCreateDisabled = function() {
@@ -242,6 +244,15 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			} else {
 				app.status = 'Stopped';
 			}
+		}
+
+		function prepareAppsForAction() {
+			return _.map(getSelectedApps(), function(app) {
+				return {
+					ravelloId: app.ravelloId,
+					bpId: app.blueprint.id
+				};
+			});
 		}
 
         /* --- Init --- */

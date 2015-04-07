@@ -149,10 +149,6 @@ module.exports = function(app) {
 		passport.authenticate('basic', {session: false}),
 		authorization.isAuthorized(['TRAINER']),
 		appController.appsBatchActions);
-    app.post('/rest/applications/:appId/:action',
-        passport.authenticate('basic', {session: false}),
-        authorization.isAuthorized(['STUDENT']),
-        appController.appAction);
     app.post('/rest/applications/:appId/vms/:vmId/:action',
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['STUDENT']),

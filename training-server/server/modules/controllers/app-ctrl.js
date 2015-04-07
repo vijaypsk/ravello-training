@@ -196,70 +196,52 @@ exports.appsBatchActions = function(request, response) {
 	var ravelloUsername = user.ravelloCredentials.username;
 	var ravelloPassword = user.ravelloCredentials.password;
 
-	var appIds = request.body.appIds;
+	var classId = request.body.classId;
+	var apps = request.body.apps;
 	var action = request.params.action;
 
-	q.all(_.map(appIds, function(appId) {
-			return appAction(appId, action, ravelloUsername, ravelloPassword);
-	})).then(
-		function(results) {
-			var atLeastOneFailure = _.some(results, function(result) {
-				if (result.status > 400) {
-					logger.error('Problem performing action [' + action + '] on app ID [' + result.appId + ']');
-					return true;
-				}
-				return false;
-			});
-
-			if (atLeastOneFailure) {
-				response.send(403, 'Could not perform action [' + action + '] on some of the apps');
-			} else {
-				response.send(200);
-			}
-		}
-	).catch(
-		function(error) {
-			logger.error({error: error});
-			return response.send(400, error.message);
-		}
-	);
-};
-
-// These actions are taken by Student users.
-
-exports.appAction = function(request, response) {
-    var user = request.user;
-	var userId = user.id;
-
-	var appId = request.params.appId;
-	var action = request.params.action;
-
-	// When the user logs in, we first need to find the class associated with that user.
-	classesDal.getClassOfUserForNow(userId).then(
+	classesDal.getClass(classId).then(
 		function(classEntity) {
 			var classData = classesTrans.entityToDto(classEntity);
-			var studentData = _.find(classEntity.students, function(student) {
-				return (student.user.id === userId);
-			});
 
-			var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-			var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
-
-			return appAction(appId, action, ravelloUsername, ravelloPassword).then(
-				function(result) {
-					response.send(result.status);
+			return q.all(_.map(apps, function(app) {
+				var autoStop = properties.defaultAutoStopSeconds;
+				var publishDetails = _.find(classData.bpPublishDetailsList, {bpId: app.bpId});
+				if (publishDetails) {
+					autoStop = publishDetails.autoStop;
+					if (autoStop !== -1) {
+						autoStop *= 60;
+					}
 				}
-			).fail(
+
+				return appAction(app.ravelloId, action, autoStop, ravelloUsername, ravelloPassword);
+			})).then(
+				function(results) {
+					var atLeastOneFailure = _.some(results, function(result) {
+						if (result.status > 400) {
+							logger.error('Problem performing action [' + action + '] on app ID [' + result.appId + ']');
+							return true;
+						}
+						return false;
+					});
+
+					if (atLeastOneFailure) {
+						response.send(403, 'Could not perform action [' + action + '] on some of the apps');
+					} else {
+						response.send(200);
+					}
+				}
+			).catch(
 				function(error) {
-					logger.error(error.message);
-					response.send(error.status, error.message);
+					logger.error({error: error});
+					return response.send(400, error.message);
 				}
 			);
 		}
 	);
 };
 
-function appAction(appId, action, ravelloUsername, ravelloPassword) {
+function appAction(appId, action, autoStop, ravelloUsername, ravelloPassword) {
 	return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
 		function(result) {
 			if (result.status == 200) {
@@ -267,7 +249,8 @@ function appAction(appId, action, ravelloUsername, ravelloPassword) {
 				if (app.deployment.expirationType !== 'AUTO_STOPPED') {
 					return q(null);
 				}
-				return appsService.appAutoStop(appId, properties.defaultAutoStopSeconds, ravelloUsername, ravelloPassword);
+
+				return appsService.appAutoStop(appId, autoStop, ravelloUsername, ravelloPassword);
 			} else {
 				return q.reject({
 					appId: appId,
@@ -278,7 +261,7 @@ function appAction(appId, action, ravelloUsername, ravelloPassword) {
 		}
 	).then(
 		function(autoStopResult) {
-			if (!autoStopResult || autoStopResult.status === 204) {
+			if (!autoStopResult || autoStopResult.status < 400) {
 				return appsService.appAction(appId, action, ravelloUsername, ravelloPassword);
 			} else {
 				return q.reject({
@@ -290,6 +273,8 @@ function appAction(appId, action, ravelloUsername, ravelloPassword) {
 		}
 	);
 }
+
+// These actions are taken by Student users.
 
 exports.vmAction = function(request, response) {
     var user = request.user;
