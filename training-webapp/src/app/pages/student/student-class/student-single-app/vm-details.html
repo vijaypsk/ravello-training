@@ -16,7 +16,10 @@
             <h5><label>DNS:</label> {{dns.name}}</h5>
             <h5 style="font-weight: bold">Available Services:</h5>
             <ul>
-                <li ng-repeat="service in dns.services"><label class="text-uppercase">{{service.name}}</label> (Port {{service.externalPort}})</li>
+                <li ng-repeat="service in dns.services">
+					<label class="text-uppercase">{{service.name}}</label> (Port {{service.externalPort}})
+					<a href="{{getServiceGoLink(dns, service)}}" target="_blank" class="go-link" ng-if="showServiceGoLink(service)">Go!</a>
+				</li>
             </ul>
         </li>
     </ul>
