@@ -64,6 +64,7 @@ var createVmViewObject = function(vm) {
 
 			matchingExternalAccess.services.push({
 				name: currentService.name,
+				protocol: currentService.protocol,
 				port: currentService.portRange,
 				externalPort: currentService.externalPort
 			});

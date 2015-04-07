@@ -34,6 +34,30 @@ angular.module('trng.student').controller('studentVmDetailsController', [
             $modalInstance.close();
         };
 
+		$scope.getServiceGoLink = function(dns, service) {
+			var type = 'http://';
+			if (isHttps(service)) {
+				type = 'https://';
+			}
+			return type + dns.name + ':' + service.externalPort;
+		};
+
+		$scope.showServiceGoLink = function(service) {
+			return isHttp(service) || isHttps(service);
+		};
+
+		function isHttp(service) {
+			return (service.protocol ? service.protocol === 'HTTP' : false) ||
+				(service.externalPort ? service.port === 80 || service.port === 8080 : false) ||
+				(service.name ? service.name === 'http' || service.name === 'www' || service.name === 'web' : false);
+		}
+
+		function isHttps(service) {
+			return (service.protocol ? service.protocol === 'HTTPS' : false) ||
+				(service.externalPort ? service.port === 443 : false) ||
+				(service.name ? service.name === 'https' : false);
+		}
+
         $scope.init();
     }
 ]);
