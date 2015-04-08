@@ -48,10 +48,15 @@ def init_rest():
 
 def get_class_and_course():
 	response = requests.get(base_url + "/classes/" + args.class_id, auth=auth)
+
+	if (response.status_code >= 400):
+		print 'Could not find class with ID [%s]' % args.class_id
+		exit()
+
 	the_class = response.json()
 	
 	if (not the_class or not the_class['courseId']):
-		print 'Could not find class with ID [%d]' % args.class_id
+		print 'Could not find class with ID [%s]' % args.class_id
 		exit()
 	
 	response = requests.get(base_url + "/courses/" + the_class['courseId'], auth=auth)
