@@ -16,7 +16,7 @@
     "mongoose": "~3.8.9",
     "mongoose-q": "0.0.10",
     "randy": "~1.4.3",
-    "superagent": "0.18.2",
+    "superagent": "0.18.0",
     "bcrypt-nodejs": "0.0.3",
     "bunyan": "~0.22.3",
     "express-bunyan-logger": "~0.1.2",
