@@ -382,7 +382,7 @@ exports.vmVnc = function(request, response) {
                 function(error) {
                     var message = "Could not get the URL for the VNC";
                     logger.error(error, message);
-                    response.send(400, error);
+                    response.send(400, message + '. Error from server: ' + error.toString());
                 }
             );
         }
