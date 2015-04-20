@@ -8,13 +8,14 @@ angular.module('trng.student').controller('studentSingleAppController', [
     '$window',
     '$timeout',
     '$dialogs',
+    'growl',
     'CommonConstants',
     'StatesNames',
     'AppsService',
     'StudentsService',
     'student',
     'currentApp',
-    function ($log, $scope, $state, $modal, $window, $timeout, $dialogs, CommonConstants, StatesNames, AppsService,
+    function ($log, $scope, $state, $modal, $window, $timeout, $dialogs, growl, CommonConstants, StatesNames, AppsService,
                             StudentsService, student, currentApp) {
 
         $scope.init = function() {
@@ -110,10 +111,10 @@ angular.module('trng.student').controller('studentSingleAppController', [
         $scope.startVm = function() {
             _.forEach($scope.selectedVms, function(vm) {
                 AppsService.startVm(currentApp.id, vm.id).then(function(result) {
-                    if (result.status === 202) {
+                    if (result.status < 400) {
                         $scope.refreshState();
                     } else {
-                        alert("Could not perform action on VM: " + result.message);
+                        growl.addErrorMessage('Could not perform action on VM: ' + result.message);
                     }
                 });
             });
@@ -124,10 +125,10 @@ angular.module('trng.student').controller('studentSingleAppController', [
             dialog.result.then(function(result) {
                 _.forEach($scope.selectedVms, function(vm) {
                     AppsService.stopVm(currentApp.id, vm.id).then(function(result) {
-                        if (result.status === 202) {
+                        if (result.status < 400) {
                             $scope.refreshState();
                         } else {
-                            alert("Could not perform action on VM: " + result.message);
+                            growl.addErrorMessage('Could not perform action on VM: ' + result.message);
                         }
                     });
                 });
@@ -139,10 +140,10 @@ angular.module('trng.student').controller('studentSingleAppController', [
             dialog.result.then(function(result) {
                 _.forEach($scope.selectedVms, function(vm) {
                     AppsService.restartVm(currentApp.id, vm.id).then(function(result) {
-                        if (result.status === 202) {
+                        if (result.status < 400) {
                             $scope.refreshState();
                         } else {
-                            alert("Could not perform action on VM: " + result.message);
+                            growl.addErrorMessage('Could not perform action on VM: ' + result.message);
                         }
                     });
                 });
