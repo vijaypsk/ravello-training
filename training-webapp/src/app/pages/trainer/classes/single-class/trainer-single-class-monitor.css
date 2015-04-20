@@ -4,9 +4,14 @@
 }
 
 .class-apps-data-grid-div {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .class-apps-data-grid {
     height: 300px;
+}
+
+.selected-rows-count {
+    height: 25px;
+    margin-bottom: 10px;
 }

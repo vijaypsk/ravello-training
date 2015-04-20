@@ -20,6 +20,9 @@
 		</button>
 
         <div id="appsDataGridDiv" class="class-apps-data-grid-div">
+            <div class="row selected-rows-count">
+                <span>{{viewModel.selectedApps.length}} apps selected</span>
+            </div>
             <div id="appsDataGrid" class="class-apps-data-grid" ng-grid="viewModel.appsDataGrid"></div>
         </div>
     </div>
