@@ -26,7 +26,7 @@ function initErrorsMiddleware(app) {
 			}
 		}
 
-		logger.error(errorReason, errorMessage);
+		logger.error({reason: errorReason, status: errorStatus}, errorMessage);
 
 		response.send(errorStatus, errorMessage);
 	});
