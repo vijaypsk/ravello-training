@@ -9,13 +9,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
     '$log',
     '$window',
     '$dialogs',
-    'growl',
     'StatesNames',
     'ClassesService',
     'DateUtil',
     'currentClass',
     'courses',
-    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, growl, StatesNames, ClassesService,
+    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, StatesNames, ClassesService,
               DateUtil, currentClass, courses) {
 
         $scope.init = function () {
@@ -164,7 +163,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 			var validationResult = validateRavelloCredentials($scope.currentClass);
 
 			if (!validationResult.isValid && validationResult.message) {
-				growl.addWarnMessage(validationResult.message);
+                $dialogs.notify('Validation error', validationResult.message);
 			}
 
             return ClassesService.saveOrUpdate($scope.currentClass).then(

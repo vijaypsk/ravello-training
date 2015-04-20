@@ -8,14 +8,13 @@ angular.module('trng.student').controller('studentSingleAppController', [
     '$window',
     '$timeout',
     '$dialogs',
-    'growl',
     'CommonConstants',
     'StatesNames',
     'AppsService',
     'StudentsService',
     'student',
     'currentApp',
-    function ($log, $scope, $state, $modal, $window, $timeout, $dialogs, growl, CommonConstants, StatesNames, AppsService,
+    function ($log, $scope, $state, $modal, $window, $timeout, $dialogs, CommonConstants, StatesNames, AppsService,
                             StudentsService, student, currentApp) {
 
         $scope.init = function() {
@@ -113,8 +112,6 @@ angular.module('trng.student').controller('studentSingleAppController', [
                 AppsService.startVm(currentApp.id, vm.id).then(function(result) {
                     if (result.status < 400) {
                         $scope.refreshState();
-                    } else {
-                        growl.addErrorMessage('Could not perform action on VM: ' + result.message);
                     }
                 });
             });
@@ -127,8 +124,6 @@ angular.module('trng.student').controller('studentSingleAppController', [
                     AppsService.stopVm(currentApp.id, vm.id).then(function(result) {
                         if (result.status < 400) {
                             $scope.refreshState();
-                        } else {
-                            growl.addErrorMessage('Could not perform action on VM: ' + result.message);
                         }
                     });
                 });
@@ -142,8 +137,6 @@ angular.module('trng.student').controller('studentSingleAppController', [
                     AppsService.restartVm(currentApp.id, vm.id).then(function(result) {
                         if (result.status < 400) {
                             $scope.refreshState();
-                        } else {
-                            growl.addErrorMessage('Could not perform action on VM: ' + result.message);
                         }
                     });
                 });

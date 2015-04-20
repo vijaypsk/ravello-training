@@ -8,12 +8,12 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
     '$log',
     '$modal',
     '$window',
-    'growl',
+    '$dialogs',
     'StatesNames',
     'ClassesService',
     'currentStudent',
     'currentClass',
-    function ($scope, $state, $stateParams, $log, $modal, $window, growl, StatesNames, ClassesService, currentStudent,
+    function ($scope, $state, $stateParams, $log, $modal, $window, $dialogs, StatesNames, ClassesService, currentStudent,
               currentClass) {
 
         $scope.init = function () {
@@ -153,7 +153,7 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
 
                 finalMessage = "Could not save, please fill required fields: [" + finalMessage + "]";
 
-                growl.addErrorMessage(finalMessage);
+                $dialogs.error('Validation error', finalMessage);
 
                 return;
             }

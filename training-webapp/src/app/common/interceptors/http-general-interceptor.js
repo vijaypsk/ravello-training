@@ -2,8 +2,8 @@
 
 angular.module('trng.interceptors').factory('httpGeneralInterceptor', [
     '$q',
-    'growl',
-    function($q, growl) {
+    '$injector',
+    function($q, $injector) {
         return {
             responseError: function(rejection) {
                 if (rejection.hasOwnProperty('status')) {
@@ -18,7 +18,9 @@ angular.module('trng.interceptors').factory('httpGeneralInterceptor', [
                             }
 
                             console.log(message);
-                            growl.addErrorMessage(message);
+
+                            var $dialogs = $injector.get('$dialogs');
+                            $dialogs.error('Error', message);
                         }
                     }
                 }

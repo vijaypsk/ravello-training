@@ -7,7 +7,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
     '$rootScope',
     '$q',
     '$state',
-    'growl',
     '$dialogs',
     '$timeout',
     'CommonConstants',
@@ -18,7 +17,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
     'AppsService',
     'classApps',
     'currentClass',
-    function ($log, $scope, $rootScope, $q, $state, growl, $dialogs, $timeout, CommonConstants, StatesNames, DateUtil, ClassesService, CoursesService,
+    function ($log, $scope, $rootScope, $q, $state, $dialogs, $timeout, CommonConstants, StatesNames, DateUtil, ClassesService, CoursesService,
 			  AppsService, classApps, currentClass) {
 
         $scope.init = function () {
