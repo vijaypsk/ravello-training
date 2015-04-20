@@ -5,6 +5,7 @@ var q = require('q');
 
 var properties = require('../config/properties');
 var logger = require('../config/logger');
+var errorHandler = require('../utils/error-handler');
 
 var appsService = require('../services/apps-service');
 
@@ -15,11 +16,11 @@ var classesDal = require('../dal/classes-dal');
 
 // These actions are taken by Trainer users.
 
-exports.createApps = function(request, response) {
+exports.createApps = function(request, response, next) {
 	var user = request.user;
 
 	if (!user.ravelloCredentials) {
-		response.send(401, 'User does not have sufficient Ravello credentials');
+		next(errorHandler.createError(401, 'User does not have sufficient Ravello credentials'));
 		return;
 	}
 
@@ -57,31 +58,12 @@ exports.createApps = function(request, response) {
 
 	function createApps(apps) {
 		q.all(_.map(apps, function(appDto) {
-			return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, ravelloUsername,
-				ravelloPassword).then(
-
+			return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, ravelloUsername, ravelloPassword).then(
 				function (appCreateResult) {
-					if (appCreateResult.status >= 400) {
-						return q.reject({
-							userId: appDto.userId,
-							message: "Could not create application [" + appDto.name + "]",
-							reason: appCreateResult.headers['error-message'] || appCreateResult.error.message
-						});
-					}
-
 					var appData = appsTrans.ravelloObjectToTrainerDto(appCreateResult.body);
 
 					return appsService.publishApp(appData.ravelloId, appDto.publishDetails, ravelloUsername, ravelloPassword).then(
-						function(appPublishResult) {
-							if (appPublishResult.status >= 400) {
-								return q.reject({
-									userId: appDto.userId,
-									app: appData,
-									message: "Could not publish application [" + appDto.name + "]",
-									reason: appPublishResult.headers['error-message'] || appPublishResult.error.message
-								});
-							}
-
+						function() {
 							var autoStop = appDto.publishDetails && !_.isUndefined(appDto.publishDetails.autoStop) ?
 								appDto.publishDetails.autoStop :
 								properties.defaultAutoStopSeconds;
@@ -92,11 +74,7 @@ exports.createApps = function(request, response) {
 
 							var promise;
 							if (autoStop !== -1 ) {
-								promise = appsService.appAutoStop(appData.ravelloId, autoStop, ravelloUsername, ravelloPassword).then(
-									function(autoStopResult) {
-										return autoStopResult;
-									}
-								);
+								promise = appsService.appAutoStop(appData.ravelloId, autoStop, ravelloUsername, ravelloPassword);
 							} else {
 								promise = q({});
 							}
@@ -146,19 +124,15 @@ exports.createApps = function(request, response) {
 					}
 				);
 			}
-		).catch(
-			function(error) {
-				logger.error({error: error});
-			}
-		);
+		).catch(next);
 	}
 };
 
-exports.deleteApp = function(request, response) {
+exports.deleteApp = function(request, response, next) {
     var user = request.user;
 
     if (!user.ravelloCredentials) {
-        response.send(401, 'User does not have sufficient Ravello credentials');
+		next(errorHandler.createError(401, 'User does not have sufficient Ravello credentials'));
         return;
     }
 
@@ -169,27 +143,21 @@ exports.deleteApp = function(request, response) {
     var ravelloPassword = user.ravelloCredentials.password;
 
     return appsService.deleteApp(appId, ravelloUsername, ravelloPassword).then(
-        function(result) {
+        function() {
             return classesDal.deleteStudentApp(studentId, appId).then(
-                function(persistedClass) {
+                function() {
                     response.send(200);
                 }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not delete app [" + appId + "]";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.appsBatchActions = function(request, response) {
+exports.appsBatchActions = function(request, response, next) {
 	var user = request.user;
 
 	if (!user.ravelloCredentials) {
-		response.send(401, 'User does not have sufficient Ravello credentials');
+		next(errorHandler.createError(401, 'User does not have sufficient Ravello credentials'));
 		return;
 	}
 
@@ -216,27 +184,10 @@ exports.appsBatchActions = function(request, response) {
 
 				return appAction(app.ravelloId, action, autoStop, ravelloUsername, ravelloPassword);
 			})).then(
-				function(results) {
-					var atLeastOneFailure = _.some(results, function(result) {
-						if (result.status > 400) {
-							logger.error('Problem performing action [' + action + '] on app ID [' + result.appId + ']');
-							return true;
-						}
-						return false;
-					});
-
-					if (atLeastOneFailure) {
-						response.send(403, 'Could not perform action [' + action + '] on some of the apps');
-					} else {
-						response.send(200);
-					}
+				function() {
+					response.send(200);
 				}
-			).catch(
-				function(error) {
-					logger.error({error: error});
-					return response.send(400, error.message);
-				}
-			);
+			).catch(next);
 		}
 	);
 };
@@ -244,31 +195,19 @@ exports.appsBatchActions = function(request, response) {
 function appAction(appId, action, autoStop, ravelloUsername, ravelloPassword) {
 	return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
 		function(result) {
-			if (result.status == 200) {
+			if (result.status === 200) {
 				var app = result.body;
 				if (app.deployment.expirationType !== 'AUTO_STOPPED') {
 					return q(null);
 				}
 
 				return appsService.appAutoStop(appId, autoStop, ravelloUsername, ravelloPassword);
-			} else {
-				return q.reject({
-					appId: appId,
-					message: "Could not get app: " + appId + ", error: " + result.ext,
-					status: result.status
-				});
 			}
 		}
 	).then(
 		function(autoStopResult) {
 			if (!autoStopResult || autoStopResult.status < 400) {
 				return appsService.appAction(appId, action, ravelloUsername, ravelloPassword);
-			} else {
-				return q.reject({
-					appId: appId,
-					message: "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text,
-					status: autoStopResult.status
-				});
 			}
 		}
 	);
@@ -276,7 +215,7 @@ function appAction(appId, action, autoStop, ravelloUsername, ravelloPassword) {
 
 // These actions are taken by Student users.
 
-exports.vmAction = function(request, response) {
+exports.vmAction = function(request, response, next) {
     var user = request.user;
     var userId = user.id;
 
@@ -297,62 +236,27 @@ exports.vmAction = function(request, response) {
 
 			return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
 				function(result) {
-					if (result.status == 200) {
-						var app = result.body;
-						if (app.deployment.expirationType === 'AUTO_STOPPED') {
-							return appsService.appAutoStop(appId, properties.defaultAutoStopSeconds, ravelloUsername,
-								ravelloPassword);
-						}
-					} else {
-						var message = "Could not get app: " + appId + ", error: " + result.text;
-						logger.error(message);
-						response.send(result.status, message);
+					var app = result.body;
+					if (app.deployment.expirationType === 'AUTO_STOPPED') {
+						return appsService.appAutoStop(appId, properties.defaultAutoStopSeconds, ravelloUsername, ravelloPassword);
 					}
 				}
 			).then(
 				function(autoStopResult) {
 					if (!autoStopResult || autoStopResult.status === 204) {
 						return appsService.vmAction(appId, vmId, action, ravelloUsername, ravelloPassword).then(
-							function(result) {
-								if (result && result.status <= 400) {
-									response.send(result.status);
-								} else {
-									var message = "Could not perform action " + action + ', reason: ' + result.headers['error-message'] || result.error.message;
-									logger.error(message);
-									response.send(400, message);
-								}
-							}
-						).fail(
-							function(error) {
-								var message = "Could not perform action " + action;
-								logger.error(error, message);
-								response.send(400, error);
+							function() {
+								response.send(200);
 							}
 						);
-					} else {
-						var message = "Could not set autoStop for app: " + appId + ", error: " + autoStopResult.text;
-						logger.error(message);
-						response.send(400, message);
 					}
-				}
-			).fail(
-				function(error) {
-					var message = "Could not get app [" + appId + "]";
-					logger.error(error, message);
-					response.send(400, message);
 				}
 			);
 		}
-	).fail(
-		function(error) {
-			var message = "Could not find the class associated with the logged in user: " + user.username;
-			logger.error(error, message);
-			response.send(404, message);
-		}
-	);
+	).catch(next);
 };
 
-exports.vmVnc = function(request, response) {
+exports.vmVnc = function(request, response, next) {
     var user = request.user;
     var userId = user.id;
 
@@ -372,25 +276,9 @@ exports.vmVnc = function(request, response) {
 
             return appsService.vmVnc(appId, vmId, ravelloUsername, ravelloPassword).then(
                 function(result) {
-                    if (result.status === 200) {
-                        response.send(200, result.text);
-                    } else {
-                        response.send(result.status, result.text);
-                    }
-                }
-            ).fail(
-                function(error) {
-                    var message = "Could not get the URL for the VNC";
-                    logger.error(error, message);
-                    response.send(400, message + '. Error from server: ' + error.toString());
+					response.send(200, result.text);
                 }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not find the class associated with the logged in user: " + user.username;
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };

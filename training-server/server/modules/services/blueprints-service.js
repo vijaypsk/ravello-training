@@ -4,22 +4,19 @@ var q = require('q');
 var request = require('superagent');
 
 var properties = require('../config/properties');
+var serviceResultHandler = require('../utils/error-handler');
 
 exports.getBlueprints = function(username, password) {
     var deferred = q.defer();
-
-    var promise = deferred.promise;
 
     request.
         get(properties.ravelloUrl + properties.baseUrl + '/blueprints').
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
-        end(deferred.makeNodeResolver());
+        end(serviceResultHandler.handleSuperagentError(deferred));
 
-    return promise.then(function(result) {
-        return result;
-    });
+    return deferred.promise;
 };
 
 exports.getBlueprintById = function(bpId, username, password) {
@@ -30,11 +27,7 @@ exports.getBlueprintById = function(bpId, username, password) {
         set('Content-Length', 0).
         accept('application/json').
         auth(username, password).
-        end(deferred.makeNodeResolver());
-
-    deferred.promise.then(function(result) {
-        return result;
-    });
+        end(serviceResultHandler.handleSuperagentError(deferred));
 
     return deferred.promise;
 };

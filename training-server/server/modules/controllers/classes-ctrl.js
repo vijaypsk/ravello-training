@@ -4,6 +4,7 @@ var q = require('q');
 var _ = require('lodash');
 
 var logger = require('../config/logger');
+var errorHandler = require('../utils/error-handler');
 
 var classesDal = require('../dal/classes-dal');
 var usersDal = require('../dal/users-dal');
@@ -60,12 +61,7 @@ var validateClass = function(theClass) {
 
 /* --- Public functions --- */
 
-exports.getClasses = function(request, response) {
-    var user = request.user;
-
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
-
+exports.getClasses = function(request, response, next) {
     classesDal.getClasses().then(
         function(classes) {
             var classesDtos = _.map(classes, function(classEntity) {
@@ -73,21 +69,10 @@ exports.getClasses = function(request, response) {
             });
             response.json(classesDtos);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not load classes";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.getClass = function(request, response) {
-    var user = request.user;
-
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
-
+exports.getClass = function(request, response, next) {
     var classId = request.params.classId;
 
     classesDal.getClass(classId).then(
@@ -95,16 +80,10 @@ exports.getClass = function(request, response) {
             var classDto = classesTrans.entityToDto(classEntity);
             response.json(classDto);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not load class [" + classId + "]";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.getAllClassApps = function(request, response) {
+exports.getAllClassApps = function(request, response, next) {
     var user = request.user;
 
     var ravelloUsername = user.ravelloCredentials.username;
@@ -117,32 +96,25 @@ exports.getAllClassApps = function(request, response) {
             var classDto = classesTrans.entityToDto(classEntity);
             var promise = matchClassWithApps(classDto, ravelloUsername, ravelloPassword);
             return promise.then(
-                function(result) {
+                function() {
                     response.json(classDto);
-                }
-            ).fail(
-                function(error) {
-                    var message = "Could not load one of the apps of one of the students in the class";
-                    logger.error(error, message);
-                    response.send(404, message);
                 }
             );
         }
-    ).fail(
+    ).catch(
         function(error) {
-            var message = "Could not load applications of class";
-            logger.error(error, message);
-            response.send(404, message);
+            error.message = 'Could not load applications of the class: ' + error.message;
+            next(error);
         }
     );
 };
 
-exports.createClass = function(request, response) {
+exports.createClass = function(request, response, next) {
     var classData = request.body;
 
     var finalValidationMessage = validateClass(classData);
     if (finalValidationMessage != "") {
-        response.send(403, finalValidationMessage);
+        next(errorHandler.createError(404, finalValidationMessage));
         return;
     }
 
@@ -163,36 +135,16 @@ exports.createClass = function(request, response) {
                     var dto = classesTrans.entityToDto(result);
                     response.json(dto);
                 }
-            ).fail(
-                function(error) {
-                    var message = "Could not save class";
-                    logger.error(error, message);
-                    response.send(400, message);
-                }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not save one of the users associated with the new class";
-            if (error.message && error.message.indexOf("duplicate key") != -1) {
-                message += ": username already exists";
-            }
-            logger.error(error, message);
-            response.send(400, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.updateClass = function(request, response) {
+exports.updateClass = function(request, response, next) {
     var user = request.user;
 
-    if (!user.ravelloCredentials) {
-        response.send(401, 'User does not have Ravello credentials');
-        return;
-    }
-
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
+    var ravelloUsername = user.ravelloCredentials ? user.ravelloCredentials.username : '';
+    var ravelloPassword = user.ravelloCredentials ? user.ravelloCredentials.password : '';
 
     var classId = request.params.classId;
     var classData = request.body;
@@ -200,7 +152,7 @@ exports.updateClass = function(request, response) {
 
     var finalValidationMessage = validateClass(classEntityData);
     if (finalValidationMessage != "") {
-        response.send(403, finalValidationMessage);
+        next(errorHandler.createError(404, finalValidationMessage));
         return;
     }
 
@@ -247,40 +199,20 @@ exports.updateClass = function(request, response) {
                                         }
                                     );
                                 }
-                            ).fail(
-                                function(error) {
-                                    var message = "Could not save class";
-                                    logger.error(error, message);
-                                    response.send(400, message);
-                                }
                             );
                         }
                     );
                 }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not save one of the users associated with the new class";
-            if (error.message && error.message.indexOf("duplicate key") != -1) {
-                message += ": username already exists";
-            }
-            logger.error(error, message);
-            response.send(400, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.deleteClass = function(request, response) {
+exports.deleteClass = function(request, response, next) {
     var user = request.user;
 
-    if (!user.ravelloCredentials) {
-        response.send(401, 'User does not have Ravello credentials');
-        return;
-    }
-
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
+    var ravelloUsername = user.ravelloCredentials ? user.ravelloCredentials.username : '';
+    var ravelloPassword = user.ravelloCredentials ? user.ravelloCredentials.password : '';
 
     var classId = request.params.classId;
 
@@ -289,13 +221,7 @@ exports.deleteClass = function(request, response) {
             var prePromises = [];
 
             _.forEach(deletedClass.students, function(student) {
-                var userPromise = usersDal.findAndDelete(student.user.id).fail(
-                    function(error) {
-                        var message = "Could not delete one of the users associated with the class";
-                        logger.error(error, message);
-                        response.send(400, message);
-                    }
-                );
+                var userPromise = usersDal.findAndDelete(student.user.id);
                 prePromises.push(userPromise);
 
                 _.forEach(student.apps, function(currentApp) {
@@ -306,14 +232,8 @@ exports.deleteClass = function(request, response) {
             return q.all(prePromises);
         }
     ).then(
-        function(result) {
+        function() {
             response.send(200);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not delete class";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };

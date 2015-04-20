@@ -14,11 +14,11 @@ var coursesTrans = require('../trans/courses-trans');
 
 /* --- Public functions --- */
 
-exports.getCourses = function(request, response) {
+exports.getCourses = function(request, response, next) {
     var user = request.user;
 
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
+    var ravelloUsername = user.ravelloCredentials ? user.ravelloCredentials.username : '';
+    var ravelloPassword = user.ravelloCredentials ? user.ravelloCredentials.password : '';
 
     coursesDal.getCourses().then(
         function(courses) {
@@ -32,35 +32,23 @@ exports.getCourses = function(request, response) {
                         courseDtos.push(result);
                         return result;
                     }
-                ).fail(
-                    function(error) {
-                        var message = "Could not get one of the course's blueprints";
-                        logger.error(error, message);
-                        response.send(404, message);
-                    }
                 );
             })).then(
-                function(coursesResults) {
+                function() {
                     response.json(courseDtos);
                 }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not get one of the courses";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.getCourse = function(request, response) {
+exports.getCourse = function(request, response, next) {
     var user = request.user;
 
     var courseId = request.params.courseId;
 
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
+    var ravelloUsername = user.ravelloCredentials ? user.ravelloCredentials.username : '';
+    var ravelloPassword = user.ravelloCredentials ? user.ravelloCredentials.password : '';
 
     coursesDal.getCourse(courseId).then(
         function(courseEntity) {
@@ -69,28 +57,16 @@ exports.getCourse = function(request, response) {
                 function(result) {
                     response.json(result);
                 }
-            ).fail(
-                function(error) {
-                    var message = "Could not get one of the course's blueprints";
-                    logger.error(error, message);
-                    response.send(404, message);
-                }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not get course [" + courseId + "]";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.createCourse = function(request, response) {
+exports.createCourse = function(request, response, next) {
     var user = request.user;
 
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
+    var ravelloUsername = user.ravelloCredentials ? user.ravelloCredentials.username : '';
+    var ravelloPassword = user.ravelloCredentials ? user.ravelloCredentials.password : '';
 
     coursesDal.createCourse(request.body).then(
         function(courseEntity) {
@@ -99,34 +75,22 @@ exports.createCourse = function(request, response) {
                 function(result) {
                     response.json(result);
                 }
-            ).fail(
-                function(error) {
-                    var message = "Could not get one of the course's blueprints";
-                    logger.error(error, message);
-                    response.send(404, message);
-                }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not save course";
-            logger.error(error, message);
-            response.send(400, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.updateCourse = function(request, response) {
+exports.updateCourse = function(request, response, next) {
     var user = request.user;
 
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
+    var ravelloUsername = user.ravelloCredentials ? user.ravelloCredentials.username : '';
+    var ravelloPassword = user.ravelloCredentials ? user.ravelloCredentials.password : '';
 
     var courseId = request.params.courseId;
     var courseData = request.body;
 
     coursesDal.updateCourse(courseId, courseData).then(
-        function(courseEntity) {
+        function() {
             return coursesDal.getCourse(courseId).then(
                 function(result) {
                     var dto = coursesTrans.entityToDto(result);
@@ -134,39 +98,21 @@ exports.updateCourse = function(request, response) {
                         function(result) {
                             response.json(result);
                         }
-                    ).fail(
-                        function(error) {
-                            var message = "Could not get one of the course's blueprints";
-                            logger.error(error, message);
-                            response.send(404, message);
-                        }
                     );
                 }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not update course";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.deleteCourse = function(request, response) {
+exports.deleteCourse = function(request, response, next) {
     var courseId = request.params.courseId;
 
     coursesDal.deleteCourse(courseId).then(
-        function(courseEntity) {
+        function() {
             response.send(200);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not delete course";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
 /* --- Private functions --- */

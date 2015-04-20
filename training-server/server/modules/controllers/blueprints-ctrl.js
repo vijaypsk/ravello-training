@@ -7,23 +7,15 @@ var logger = require('../config/logger');
 var blueprintsService = require('../services/blueprints-service');
 var blueprintsTrans = require('../trans/blueprints-trans');
 
-exports.getBlueprints = function(request, response) {
+exports.getBlueprints = function(request, response, next) {
     var user = request.user;
 
-    if (!user.ravelloCredentials) {
-        response.send(401, 'User does not have sufficient Ravello credentials');
-        return;
-    }
-
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
+    var ravelloUsername = user.ravelloCredentials ? user.ravelloCredentials.username : '';
+    var ravelloPassword = user.ravelloCredentials ? user.ravelloCredentials.password : '';
 
     blueprintsService.getBlueprints(ravelloUsername, ravelloPassword).then(
         function(result) {
-            if (result.status != 200) {
-				var message = result.status === 401 ? 'User not authorized to access Ravello. Please check Ravello Credentials' : result.headers['error-message'];
-                response.send(result.status, message);
-            } else {
+            if (result.status === 200) {
                 var dtos = _.map(result.body, function(bpDto) {
                     return blueprintsTrans.ravelloDtoToEntity(bpDto);
                 });
@@ -31,11 +23,5 @@ exports.getBlueprints = function(request, response) {
                 response.json(dtos);
             }
         }
-    ).fail(
-        function(error) {
-            var message = "Could not get blueprints from Ravello";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };

@@ -8,7 +8,7 @@ var logger = require('../config/logger');
 var usersTrans = require('../trans/users-trans');
 var usersDal = require('../dal/users-dal');
 
-exports.updateProfile = function(request, response) {
+exports.updateProfile = function(request, response, next) {
     // This is the user is logged in currently.
     var userEntity = request.user;
     var userDto = userEntity.toJSON();
@@ -24,11 +24,5 @@ exports.updateProfile = function(request, response) {
             var returnedUser = usersTrans.entityToDto(persistedUser);
             response.json(returnedUser);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not update the admin profile";
-            logger.error(error, message);
-            response.send(404, error);
-        }
-    );
+    ).catch(next);
 };

@@ -108,55 +108,30 @@ var extractDeviceIp = function(device) {
 
 /* --- Public functions --- */
 
-exports.getStudentClass = function(request, response) {
+exports.getStudentClass = function(request, response, next) {
     var userId = request.params.studentId;
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(
         function(classEntity) {
-            if (!classEntity) {
-                logger.info("Could not find an active class for user [" + userId + "]");
-                response.send(404, "You don't have a class that's taking place right now");
-                return;
-            }
-
             var studentEntity = classEntity.findStudentByUserId(userId);
             var dto = singleStudentTrans.entityToDto(studentEntity, classEntity);
             response.json(dto);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not find the class of student: " + userId;
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.getStudentClassApps = function(request, response) {
+exports.getStudentClassApps = function(request, response, next) {
 	var userId = request.params.studentId;
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(
         function(classEntity) {
-            if (!classEntity) {
-                logger.info("Could not find an active class for user [" + userId + "]");
-                response.send(404, "You don't have a class that's taking place right now");
-                return;
-            }
-
             var classData = classesTrans.entityToDto(classEntity);
             var studentData = classEntity.findStudentByUserId(userId);
 
             var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
             var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
-
-			if (!ravelloUsername || !ravelloPassword) {
-				var message = "Student does not have Ravello Credentials";
-				logger.warn(message);
-				response.send(401, message);
-				return;
-			}
 
             return coursesDal.getCourse(classEntity.courseId).then(
                 function(course) {
@@ -167,74 +142,31 @@ exports.getStudentClassApps = function(request, response) {
                             var appViewObjects = [];
 
                             _.forEach(appsResults, function(appResult) {
-								if (appResult.status >= 400 && appResult.error) {
-									if (appResult.status == 401) {
-										response.send(appResult.status, "Wrong Ravello credentials");
-									} else if (appResult.status == 403 || appResult.status == 404) {
-										logger.warn('Got ' + appResult.status + ' for one of the apps of student ' +
-											userId, {reason: appResult.error});
-									} else {
-										response.send(appResult.status, appResult.error.message);
-									}
-									return;
-								}
-
                                 var appViewObject = appsTrans.ravelloObjectToStudentDto(course, appResult.body);
                                 appViewObjects.push(appViewObject);
                             });
 
                             response.json(appViewObjects);
                         }
-                    ).fail(
-                        function(error) {
-                            var message = "Could not get one of the apps of user: " + userId;
-                            logger.error(error, message);
-                            response.send(404, message);
-                        }
                     );
-                }
-            ).fail(
-                function(error) {
-                    var message = "Could not find the course of student: " + userId;
-                    logger.error(error, message);
-                    response.send(404, message);
                 }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not find the class of student: " + userId;
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.getAppVms = function(request, response) {
+exports.getAppVms = function(request, response, next) {
 	var userId = request.params.studentId;
     var appId = request.params.appId;
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(
         function(classEntity) {
-            if (!classEntity) {
-                logger.info("Could not find an active class for user [" + userId + "]");
-                response.send(404, "You don't have a class that's taking place right now");
-                return;
-            }
-
             var classData = classesTrans.entityToDto(classEntity);
             var studentData = classEntity.findStudentByUserId(userId);
 
             var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
             var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
-
-			if (!ravelloUsername || !ravelloPassword) {
-				var message = "Student does not have Ravello Credentials";
-				logger.warn(message);
-				response.send(401, message);
-				return;
-			}
 
 			appsService.getApp(appId, ravelloUsername, ravelloPassword).then(
                 function(appResult) {
@@ -252,49 +184,23 @@ exports.getAppVms = function(request, response) {
 
                     response.json(appDto);
                 }
-            ).fail(
-                function(error) {
-                    var message = "Could not get application cloud information. " +
-						"Please try to refresh your browser.";
-                    logger.error(error, message);
-                    response.send(404, message);
-                }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not load app " + appId;
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.getStudentCourse = function(request, response) {
+exports.getStudentCourse = function(request, response, next) {
 	var userId = request.params.studentId;
     var courseId = request.params.courseId;
 
     // When the user logs in, we first need to find the class associated with that user.
     classesDal.getClassOfUserForNow(userId).then(
         function(classEntity) {
-            if (!classEntity) {
-                logger.info("Could not find an active class for user [" + userId + "]");
-                response.send(404, "You don't have a class that's taking place right now");
-                return;
-            }
-
 			var classData = classesTrans.entityToDto(classEntity);
 			var studentData = classEntity.findStudentByUserId(userId);
 
 			var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
 			var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
-
-			if (!ravelloUsername || !ravelloPassword) {
-				var message = "Student does not have Ravello Credentials";
-				logger.warn(message);
-				response.send(401, message);
-				return;
-			}
 
 			return coursesDal.getCourse(courseId).then(
                 function(courseEntity) {
@@ -306,27 +212,9 @@ exports.getStudentCourse = function(request, response) {
                             course.blueprints = coursesService.assignBlueprintsToCourse(course, bpResults);
                             response.json(course);
                         }
-                    ).fail(
-                        function(error) {
-                            var message = "Could not get one of the course's blueprints";
-                            logger.error(error, message);
-                            response.send(404, message);
-                        }
                     );
-                }
-            ).fail(
-                function(error) {
-                    var message = "Could not load course: " + courseId;
-                    logger.error(error, message);
-                    response.send(404, message);
                 }
             );
         }
-    ).fail(
-        function(error) {
-            var message = "Could not load class of user " + userId;
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };

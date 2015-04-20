@@ -7,7 +7,7 @@ var logger = require('../config/logger');
 var usersDal = require('../dal/users-dal');
 var usersTrans = require('../trans/users-trans');
 
-exports.getAllTrainers = function(request, response) {
+exports.getAllTrainers = function(request, response, next) {
     usersDal.getUserByRole('TRAINER').then(
         function(entities) {
             var dtos = _.map(entities, function(entity) {
@@ -16,17 +16,10 @@ exports.getAllTrainers = function(request, response) {
 
             response.json(dtos);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not load trainers";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-
-exports.getTrainer = function(request, response) {
+exports.getTrainer = function(request, response, next) {
     var trainerId = request.params.trainerId;
 
     usersDal.getUserById(trainerId).then(
@@ -34,16 +27,10 @@ exports.getTrainer = function(request, response) {
             var dto = usersTrans.entityToDto(entity);
             response.json(dto);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not load trainer [" + trainerId + "]";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.saveTrainer = function(request, response) {
+exports.saveTrainer = function(request, response, next) {
     var newTrainerDto = request.body;
     var newTrainerData = usersTrans.ravelloDtoToEntity(newTrainerDto);
     newTrainerData.role = 'TRAINER';
@@ -53,19 +40,10 @@ exports.saveTrainer = function(request, response) {
             var dto = usersTrans.entityToDto(trainerEntity);
             response.json(dto);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not save new trainer";
-            if (error.message && error.message.indexOf("duplicate key") != -1) {
-                message += ": username already exists";
-            }
-            logger.error(error, message);
-            response.send(400, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.updateTrainer = function(request, response) {
+exports.updateTrainer = function(request, response, next) {
     var trainerId = request.params.trainerId;
 
     var newTrainerDto = request.body;
@@ -77,26 +55,14 @@ exports.updateTrainer = function(request, response) {
             var dto = usersTrans.entityToDto(trainerEntity);
             response.json(dto);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not update trainer";
-            logger.error(error, message);
-            response.send(400, message);
-        }
-    );
+    ).catch(next);
 };
 
-exports.deleteTrainer = function(request, response) {
+exports.deleteTrainer = function(request, response, next) {
     var trainerId = request.params.trainerId;
     usersDal.deleteUser(trainerId).then(
         function(result) {
             response.send(200);
         }
-    ).fail(
-        function(error) {
-            var message = "Could not delete trainer [" + trainerId + "]";
-            logger.error(error, message);
-            response.send(404, message);
-        }
-    );
+    ).catch(next);
 };
