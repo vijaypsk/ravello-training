@@ -29,102 +29,131 @@ exports.createApps = function(request, response, next) {
 
 	var requestData = request.body;
 
-	var currentChunk = 0;
-	var appsChunks = _.chunk(requestData.apps, properties.createChuckSize);
-
-	logger.info('Creating %d apps in %d chunks. Delay between chunks: %d milliseconds',
-		requestData.apps.length, (appsChunks ? appsChunks.length : 0), properties.createChuckDelay);
-
-	if (appsChunks && appsChunks.length) {
-		createAppsInChunks();
-	}
-
-	response.send(200);
-
-	function createAppsInChunks() {
-		var apps = appsChunks[currentChunk];
-
-		if (apps && apps.length) {
-			logger.info('Creating %d apps in chunk # %d', apps.length, currentChunk);
-
-			createApps(apps);
-			currentChunk++;
-
-			if (currentChunk < appsChunks.length) {
-				setInterval(createAppsInChunks, properties.createChuckDelay);
+	// First create all of the apps.
+	q.all(_.map(requestData.apps, function(appDto) {
+		return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, ravelloUsername, ravelloPassword).then(
+			function(createAppResult) {
+				var appData = appsTrans.ravelloObjectToTrainerDto(createAppResult.body);
+				return {
+					originalDto: appDto,
+					appData: appData
+				};
 			}
-		}
-	}
+		).catch(
+			function(error) {
+				// Don't fail the whole call if one app wasn't created.
+				logger.warn({reason: error}, 'Could not create App [%s] for user ID [%s]', appDto.name, appDto.userId);
+				return {
+					originalDto: appDto,
+					appData: null
+				};
+			}
+		);
+	})).then(
+		function(createAppResults) {
+			// Now that all apps are finished (whether successfully or not) we can update the class, to maintain synchronization between Ravello and TP.
+			var appsToPublish = [];
 
-	function createApps(apps) {
-		q.all(_.map(apps, function(appDto) {
-			return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, ravelloUsername, ravelloPassword).then(
-				function (appCreateResult) {
-					var appData = appsTrans.ravelloObjectToTrainerDto(appCreateResult.body);
+			return classesDal.getClass(requestData.classId).then(
+				function(classEntity) {
+					var classData = classesTrans.entityToDto(classEntity);
 
-					return appsService.publishApp(appData.ravelloId, appDto.publishDetails, ravelloUsername, ravelloPassword).then(
+					var studentsMap = _.indexBy(classData.students, function(student) {
+						return student.user._id;
+					});
+
+					// Only the apps that were created successfully will be saved in the class, and will be later published.
+					_.forEach(createAppResults, function(createAppResult) {
+						if (createAppResult.appData) {
+							var student = studentsMap[createAppResult.originalDto.userId];
+							student && student.apps.push({ravelloId: createAppResult.appData.ravelloId});
+
+							appsToPublish.push(createAppResult);
+						}
+					});
+
+					return classesDal.updateClass(requestData.classId, classData).then(
 						function() {
-							var autoStop = appDto.publishDetails && !_.isUndefined(appDto.publishDetails.autoStop) ?
-								appDto.publishDetails.autoStop :
-								properties.defaultAutoStopSeconds;
-
-							if (autoStop !== -1) {
-								autoStop = appDto.publishDetails.autoStop * 60;
-							}
-
-							var promise;
-							if (autoStop !== -1 ) {
-								promise = appsService.appAutoStop(appData.ravelloId, autoStop, ravelloUsername, ravelloPassword);
-							} else {
-								promise = q({});
-							}
-
-							return promise.then(
-								function() {
-									return {
-										userId: appDto.userId,
-										app: appData
-									};
+							return classesDal.getClass(requestData.classId).then(
+								function(result) {
+									// The response to the client returns now, before starting to publish the apps against Ravello.
+									var dto = classesTrans.entityToDto(result);
+									response.send(dto);
 								}
-							)
+							);
 						}
 					);
 				}
+			).then(
+				function() {
+					// Publishing the apps happens in the background, after the response returns.
+					// We do it in chunks, because there are time-based limits when working against the clouds,
+					// and we don't want to meet them, so we don't perform too many actions simultaneously.
+					publishAppsInChunks(appsToPublish);
+				}
 			);
-		})).then(
-			function(appsResults) {
-				return classesDal.getClass(requestData.classId).then(
-					function(classEntity) {
-						var classData = classesTrans.entityToDto(classEntity);
+		}
+	).catch(next);
 
-						var studentsMap = _.indexBy(classData.students, function(student) {
-							return student.user._id;
-						});
+	function publishAppsInChunks(appsToPublish) {
+		function publishChunk() {
+			var apps = appsChunks[currentChunk];
 
-						_.forEach(appsResults, function(appResult) {
-							if (appResult.app) {
-								var student = studentsMap[appResult.userId];
-								student && student.apps.push({ravelloId: appResult.app.ravelloId});
-							}
+			if (apps && apps.length) {
+				logger.info('Publishing %d apps in chunk # %d', apps.length, currentChunk);
 
-							if (appResult.message) {
-								logger.warn(appResult.message, {reason: appResult.reason});
-							}
-						});
+				publishApps(apps);
+				currentChunk++;
 
-						classesDal.updateClass(requestData.classId, classData).then(
-							function() {
-								return classesDal.getClass(requestData.classId).then(
-									function(result) {
-										var dto = classesTrans.entityToDto(result);
-									}
-								);
-							}
-						);
-					}
-				);
+				if (currentChunk < appsChunks.length) {
+					setInterval(publishChunk, properties.publishAppsChunkDelay);
+				}
 			}
-		).catch(next);
+		}
+
+		var currentChunk = 0;
+		var appsChunks = _.chunk(appsToPublish, properties.publishAppsChunkSize);
+
+		logger.info('Publishing %d apps in %d chunks. Delay between chunks: %d milliseconds',
+			requestData.apps.length, (appsChunks ? appsChunks.length : 0), properties.publishAppsChunkDelay);
+
+		if (appsChunks && appsChunks.length) {
+			publishChunk();
+		}
+	}
+
+	function publishApps(apps) {
+		return q.all(_.map(apps, function(app) {
+			return publishApp(app.appData, app.originalDto.publishDetails);
+		}));
+	}
+
+	function publishApp(appData, publishDetails) {
+		return appsService.publishApp(appData.ravelloId, publishDetails, ravelloUsername, ravelloPassword).then(
+			function() {
+				var autoStop = publishDetails && !_.isUndefined(publishDetails.autoStop) ?
+					publishDetails.autoStop :
+					properties.defaultAutoStopSeconds;
+
+				if (autoStop !== -1) {
+					autoStop = publishDetails.autoStop * 60;
+				}
+
+				var promise;
+				if (autoStop !== -1 ) {
+					promise = appsService.appAutoStop(appData.ravelloId, autoStop, ravelloUsername, ravelloPassword);
+				} else {
+					promise = q({});
+				}
+
+				return promise;
+			}
+		).catch(
+			function(error) {
+				// The publish action happens asynchronously, in the background, so we get informed about failures via the log...
+				logger.warn({reason: error.reason, status: error.status}, 'Could not publish App: %s', error.message);
+			}
+		);
 	}
 };
 
