@@ -2,10 +2,12 @@
 
 angular.module('trng.trainer').controller('TrainerController', [
     '$scope',
+    '$rootScope',
     '$state',
     'StatesNames',
-    function($scope, $state, StatesNames) {
+    function($scope, $rootScope, $state, StatesNames) {
         $scope.init = function() {
+            $state.go(StatesNames.trainer.training.name);
         };
 
         $scope.navigateToClasses = function() {

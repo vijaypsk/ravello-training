@@ -12,8 +12,6 @@
         '$stateProvider',
         'StatesNames',
         function($urlRouterProvider, $stateProvider, StatesNames) {
-            $urlRouterProvider.when("/trainer", "/trainer/training");
-
             $stateProvider.
                 state(StatesNames.trainer.training.name, {
                     url: '/training',

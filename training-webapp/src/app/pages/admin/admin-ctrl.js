@@ -8,6 +8,7 @@ angular.module('trng.admin').controller('AdminController', [
     'StatesNames',
     function($rootScope, $scope, $state, LoginModel, StatesNames) {
         $scope.init = function() {
+            $state.go(StatesNames.admin.trainers.name);
         };
 
         $scope.handleRole = function() {
