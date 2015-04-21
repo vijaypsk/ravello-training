@@ -50,6 +50,12 @@ function handleSuperagentError(deferred) {
 		} else if (response && response.status) {
 			if (response.status === 401) {
 				errorMessage = 'You are not authorized to work against Ravello. Please check your Ravello Credentials.';
+
+			} else if (response.status === 429) {
+				errorMessage = 'You have reached the organization rate limit for simultaneous actions that can be taken against Ravello. ' +
+					'Please consult the Ravello administrator for changing those limits for your organization. ' +
+					'In the meantime, you can try to perform actions on less applications every time.'
+
 			} else if (response.status >= 400) {
 				errorMessage =
 					response.headers['error-message'] ||
