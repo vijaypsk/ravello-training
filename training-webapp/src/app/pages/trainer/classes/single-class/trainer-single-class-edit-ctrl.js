@@ -185,7 +185,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
         };
 
         $scope.showActive = function() {
-            return !$state.is(StatesNames.trainer.training.singleClass.addClass.name);
+            return $state.is(StatesNames.trainer.training.singleClass.editClass.name) ||
+                $state.is(StatesNames.trainer.training.singleClass.singleStudent.name);
         };
 
         $scope.toggleActive = function() {
