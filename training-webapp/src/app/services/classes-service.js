@@ -181,7 +181,8 @@ angular.module('trng.services').factory('ClassesService', [
 					courseId: course.id,
                     ravelloCredentials: {
                         username: LoginModel.user.ravelloCredentials.username,
-                        password: LoginModel.user.ravelloCredentials.password
+                        password: LoginModel.user.ravelloCredentials.password,
+                        overrideTrainerCredentials: false
                     },
                     active: true
 				};

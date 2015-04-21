@@ -10,7 +10,8 @@ var TrainingClassSchema = mongoose.Schema({
     active: Boolean,
     ravelloCredentials: {
         username: String,
-        password: String
+        password: String,
+        overrideTrainerCredentials: Boolean
     },
 	bpPublishDetailsList: [
 		{

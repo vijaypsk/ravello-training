@@ -26,6 +26,40 @@
 		</div>
 	</div>
 
+    <accordion close-others="oneAtATime">
+        <accordion-group class="accordionGroup" heading="Ravello Credentials" is-open="isRavelloCredentials">
+			<div class="row">
+				<div class="col-md-12 override-ravello-credentials-div">
+					<div class="form-group">
+						<input id="overrideRavelloCredentialsInput" type="checkbox" ng-model="currentClass.ravelloCredentials.overrideTrainerCredentials">
+						<label for="overrideRavelloCredentialsInput" class="control-label">Override the Ravello Credentials for the students?</label>
+					</div>
+				</div>
+			</div>
+			<br/>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="rav-email"  class="col-sm-3 control-label">Email:</label>
+						<div class="col-sm-9">
+							<input id="rav-email" type="text" class="form-control"
+								   ng-model="currentClass.ravelloCredentials.username" ng-disabled="!currentClass.ravelloCredentials.overrideTrainerCredentials">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="rav-password"  class="col-sm-3 control-label">Password:</label>
+						<div class="col-sm-9">
+							<input id="rav-password" type="password" class="form-control"
+								   ng-model="currentClass.ravelloCredentials.password"  ng-disabled="!currentClass.ravelloCredentials.overrideTrainerCredentials">
+						</div>
+					</div>
+				</div>
+			</div>
+        </accordion-group>
+    </accordion>
+
 	<br>
 
 	<accordion>

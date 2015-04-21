@@ -7,6 +7,14 @@
     margin-bottom: 20px;
 }
 
+.override-ravello-credentials-div {
+    padding-left: 28px;
+}
+
+.override-ravello-credentials-div input {
+    margin-right: 8px;
+}
+
 .students-data-grid {
     height: 300px;
 }

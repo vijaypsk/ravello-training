@@ -11,10 +11,11 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
     '$dialogs',
     'StatesNames',
     'ClassesService',
+    'LoginModel',
     'DateUtil',
     'currentClass',
     'courses',
-    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, StatesNames, ClassesService,
+    function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, StatesNames, ClassesService, LoginModel,
               DateUtil, currentClass, courses) {
 
         $scope.init = function () {
@@ -94,6 +95,16 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 
 		$scope.initClass = function() {
             $scope.currentClass = currentClass;
+            $scope.isRavelloCredentials = false;
+
+            $scope.$watch('currentClass.ravelloCredentials.overrideTrainerCredentials', function(newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    if (!newVal) {
+                        $scope.currentClass.ravelloCredentials.username = LoginModel.user.ravelloCredentials.username;
+                        $scope.currentClass.ravelloCredentials.password = LoginModel.user.ravelloCredentials.password;
+                    }
+                }
+            });
         };
 
         $scope.initDates = function() {
