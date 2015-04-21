@@ -3,9 +3,11 @@
 var _ = require('lodash');
 
 var logger = require('../config/logger');
+var errorHandler = require('../utils/error-handler');
 
 var usersDal = require('../dal/users-dal');
 var usersTrans = require('../trans/users-trans');
+var loginService = require('../services/login-service');
 
 exports.getAllTrainers = function(request, response, next) {
     usersDal.getUserByRole('TRAINER').then(
@@ -35,12 +37,24 @@ exports.saveTrainer = function(request, response, next) {
     var newTrainerData = usersTrans.ravelloDtoToEntity(newTrainerDto);
     newTrainerData.role = 'TRAINER';
 
-    usersDal.createUser(newTrainerData).then(
-        function(trainerEntity) {
-            var dto = usersTrans.entityToDto(trainerEntity);
-            response.json(dto);
+    loginService.login(newTrainerData.ravelloCredentials.username, newTrainerData.ravelloCredentials.password).then(
+        function() {
+            usersDal.createUser(newTrainerData).then(
+                function(trainerEntity) {
+                    var dto = usersTrans.entityToDto(trainerEntity);
+                    response.json(dto);
+                }
+            ).catch(next);
         }
-    ).catch(next);
+    ).catch(
+        function(error) {
+            if (error.status === 401) {
+                next(errorHandler.createError(403, 'Your Ravello credentials are wrong, could not add save trainer'));
+            } else {
+                next(error);
+            }
+        }
+    );
 };
 
 exports.updateTrainer = function(request, response, next) {
@@ -50,12 +64,24 @@ exports.updateTrainer = function(request, response, next) {
     var newTrainerData = usersTrans.ravelloDtoToEntity(newTrainerDto);
     newTrainerData.role = 'TRAINER';
 
-    usersDal.updateUser(trainerId, newTrainerData).then(
-        function(trainerEntity) {
-            var dto = usersTrans.entityToDto(trainerEntity);
-            response.json(dto);
+    loginService.login(newTrainerData.ravelloCredentials.username, newTrainerData.ravelloCredentials.password).then(
+        function() {
+            usersDal.updateUser(trainerId, newTrainerData).then(
+                function(trainerEntity) {
+                    var dto = usersTrans.entityToDto(trainerEntity);
+                    response.json(dto);
+                }
+            ).catch(next);
         }
-    ).catch(next);
+    ).catch(
+        function(error) {
+            if (error.status === 401) {
+                next(errorHandler.createError(403, 'Your Ravello credentials are wrong, could not add save trainer'));
+            } else {
+                next(error);
+            }
+        }
+    );
 };
 
 exports.deleteTrainer = function(request, response, next) {
