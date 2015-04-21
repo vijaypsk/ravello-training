@@ -25,6 +25,10 @@ angular.module('trng.admin.trainers').controller('adminSingleTrainerController',
             $window.history.back();
         };
 
+        $scope.isSaveDisabled = function() {
+            return $scope.singleTrainerForm ? !$scope.singleTrainerForm.$valid : false;
+        };
+
         $scope.init();
     }
 ]);

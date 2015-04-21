@@ -7,7 +7,8 @@ angular.module('trng.common.directives').directive('saveAndCancel', function() {
             approveLabel: '@',
             cancelLabel: '@',
             approveFunc: '=',
-            cancelFunc: '='
+            cancelFunc: '=',
+            approveDisabledFunc: '='
         },
         templateUrl: 'app/common/directives/save-and-cancel/save-and-cancel.html'
     };

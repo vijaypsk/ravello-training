@@ -2,7 +2,7 @@
         <button class="btn btn-danger" ng-click="cancelFunc()">
             <i class="fa fa-arrow-left"></i> {{cancelLabel}}
         </button>
-        <button class="btn btn-success" ng-click="approveFunc()">
+        <button class="btn btn-success" ng-click="approveFunc()" ng-disabled="approveDisabledFunc()">
             <i class="fa fa-check"></i> {{approveLabel}}
         </button>
 </div>
