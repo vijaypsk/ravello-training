@@ -12,13 +12,6 @@ exports.entityToDto = function(studentEntity, classEntity) {
 
     classDto = _.omit(classDto, 'students');
 
-    if (classDto.startDate) {
-        classDto.startDate = classDto.startDate.getTime();
-    }
-    if (classDto.endDate) {
-        classDto.endDate = classDto.endDate.getTime();
-    }
-
     dto.blueprintPermissions = studentDto.blueprintPermissions;
     dto.userClass = classDto;
 

@@ -2,16 +2,15 @@
 
 angular.module('trng.services').factory('StudentsService', [
 	'StudentsProxy',
-	'StudentTransformer',
 	'AppsTransformer',
 	'CoursesTransformer',
-	function(StudentsProxy, StudentsTrans, AppsTrans, CoursesTrans) {
+	function(StudentsProxy, AppsTrans, CoursesTrans) {
 		
 		var service = {
 			getStudent: function(studentId) {
 				return StudentsProxy.getStudent(studentId).then(
                     function(result) {
-                        return StudentsTrans.dtoToEntity(result.data);
+                        return _.cloneDeep(result.data);
                     }
                 );
 			},

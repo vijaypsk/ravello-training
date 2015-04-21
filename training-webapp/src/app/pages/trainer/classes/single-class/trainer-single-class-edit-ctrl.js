@@ -173,6 +173,14 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
             $state.go(StatesNames.trainer.training.singleClass.editClass.name);
         };
 
+        $scope.showActive = function() {
+            return !$state.is(StatesNames.trainer.training.singleClass.addClass.name);
+        };
+
+        $scope.toggleActive = function() {
+            $scope.currentClass.active = !$scope.currentClass.active;
+        };
+
         $scope.init();
     }
 ]);

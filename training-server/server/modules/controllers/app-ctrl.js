@@ -253,12 +253,14 @@ exports.vmAction = function(request, response, next) {
 	var action = request.params.action;
 
 	// When the user logs in, we first need to find the class associated with that user.
-	classesDal.getClassOfUserForNow(userId).then(
+	classesDal.getClassOfUser(userId).then(
 		function(classEntity) {
+			if (!classEntity.active) {
+				next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
+				return;
+			}
+
 			var classData = classesTrans.entityToDto(classEntity);
-			var studentData = _.find(classEntity.students, function(student) {
-				return (student.user.id === userId);
-			});
 
 			var ravelloUsername = classData.ravelloCredentials.username;
 			var ravelloPassword = classData.ravelloCredentials.password;
@@ -293,12 +295,14 @@ exports.vmVnc = function(request, response, next) {
     var vmId = request.params.vmId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(
+    classesDal.getClassOfUser(userId).then(
         function(classEntity) {
-            var classData = classesTrans.entityToDto(classEntity);
-            var studentData = _.find(classEntity.students, function(student) {
-                return (student.user.id === userId);
-            });
+			if (!classEntity.active) {
+				next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
+				return;
+			}
+
+			var classData = classesTrans.entityToDto(classEntity);
 
             var ravelloUsername = classData.ravelloCredentials.username;
             var ravelloPassword = classData.ravelloCredentials.password;

@@ -129,8 +129,7 @@ exports.createClass = function(request, response, next) {
         );
     })).then(
         function() {
-            var classEntityData = classesTrans.ravelloDtoToEntity(classData);
-            return classesDal.createClass(classEntityData).then(
+            return classesDal.createClass(classData).then(
                 function(result) {
                     var dto = classesTrans.entityToDto(result);
                     response.json(dto);
@@ -148,9 +147,8 @@ exports.updateClass = function(request, response, next) {
 
     var classId = request.params.classId;
     var classData = request.body;
-    var classEntityData = classesTrans.ravelloDtoToEntity(classData);
 
-    var finalValidationMessage = validateClass(classEntityData);
+    var finalValidationMessage = validateClass(classData);
     if (finalValidationMessage != "") {
         next(errorHandler.createError(404, finalValidationMessage));
         return;
@@ -190,7 +188,7 @@ exports.updateClass = function(request, response, next) {
                     })).then(
                         function() {
                             // And at last, actually update the class.
-                            return classesDal.updateClass(classId, classEntityData).then(
+                            return classesDal.updateClass(classId, classData).then(
                                 function() {
                                     return classesDal.getClass(classId).then(
                                         function(result) {

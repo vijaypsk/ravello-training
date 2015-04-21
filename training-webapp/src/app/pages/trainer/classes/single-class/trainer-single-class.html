@@ -1,8 +1,14 @@
 <div id="singleClassDiv">
     <div class="container">
         <div class="row">
-            <h2>{{currentClass.name}}</h2>
-            <div ui-view></div>
+            <h2 class="pull-left">{{currentClass.name}}</h2>
+            <div class="pull-right class-active-div" ng-class="{'active': currentClass.active, 'not-active': !currentClass.active}" ng-if="showActive()">
+                <span ng-if="currentClass.active">ACTIVE</span>
+                <span ng-if="!currentClass.active">NOT ACTIVE</span>
+                <span class="fa fa-lg" ng-class="{'fa-check-square-o': currentClass.active, 'fa-square-o': !currentClass.active}"
+                      ng-click="toggleActive()"></span>
+            </div>
         </div>
+        <div ui-view></div>
     </div>
 </div>

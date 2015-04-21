@@ -7,8 +7,7 @@ var TrainingClassSchema = mongoose.Schema({
     name: String,
     description: String,
     courseId: String,
-    startDate: Date,
-    endDate: Date,
+    active: Boolean,
     ravelloCredentials: {
         username: String,
         password: String

@@ -4,6 +4,7 @@ var _ = require('lodash');
 var q = require('q');
 
 var logger = require('../config/logger');
+var errorHandler = require('../utils/error-handler');
 
 var coursesDal = require('../dal/courses-dal');
 var classesDal = require('../dal/classes-dal');
@@ -112,8 +113,13 @@ exports.getStudentClass = function(request, response, next) {
     var userId = request.params.studentId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(
+    classesDal.getClassOfUser(userId).then(
         function(classEntity) {
+            if (!classEntity.active) {
+                next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
+                return;
+            }
+
             var studentEntity = classEntity.findStudentByUserId(userId);
             var dto = singleStudentTrans.entityToDto(studentEntity, classEntity);
             response.json(dto);
@@ -125,8 +131,13 @@ exports.getStudentClassApps = function(request, response, next) {
 	var userId = request.params.studentId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(
+    classesDal.getClassOfUser(userId).then(
         function(classEntity) {
+            if (!classEntity.active) {
+                next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
+                return;
+            }
+
             var classData = classesTrans.entityToDto(classEntity);
             var studentData = classEntity.findStudentByUserId(userId);
 
@@ -160,10 +171,14 @@ exports.getAppVms = function(request, response, next) {
     var appId = request.params.appId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(
+    classesDal.getClassOfUser(userId).then(
         function(classEntity) {
+            if (!classEntity.active) {
+                next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
+                return;
+            }
+
             var classData = classesTrans.entityToDto(classEntity);
-            var studentData = classEntity.findStudentByUserId(userId);
 
             var ravelloUsername = classData.ravelloCredentials.username;
             var ravelloPassword = classData.ravelloCredentials.password;
@@ -194,10 +209,14 @@ exports.getStudentCourse = function(request, response, next) {
     var courseId = request.params.courseId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUserForNow(userId).then(
+    classesDal.getClassOfUser(userId).then(
         function(classEntity) {
-			var classData = classesTrans.entityToDto(classEntity);
-			var studentData = classEntity.findStudentByUserId(userId);
+            if (!classEntity.active) {
+                next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
+                return;
+            }
+
+            var classData = classesTrans.entityToDto(classEntity);
 
 			var ravelloUsername = classData.ravelloCredentials.username;
 			var ravelloPassword = classData.ravelloCredentials.password;

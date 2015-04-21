@@ -24,22 +24,6 @@ exports.getClassOfUser = function(userId) {
         errorHandler.handleMongoError(404, 'Could not read class of user ' + userId));
 };
 
-exports.getClassOfUserForNow = function(userId) {
-    var now = Date.today().setTimeToNow();
-
-    return TrainingClass.findOne(
-        {
-            'students.user': new ObjectId(userId),
-            'startDate': {
-                '$lte': now
-            },
-            'endDate': {
-                '$gte': now
-            }
-        }
-    ).populate('students.user').execQ().catch(errorHandler.handleMongoError(404, 'Could not read class of user ' + userId + ' for now'));
-};
-
 exports.createClass = function(classData) {
     var newClass = new TrainingClass(classData);
 

@@ -182,7 +182,8 @@ angular.module('trng.services').factory('ClassesService', [
                     ravelloCredentials: {
                         username: LoginModel.user.ravelloCredentials.username,
                         password: LoginModel.user.ravelloCredentials.password
-                    }
+                    },
+                    active: true
 				};
 
 				matchClassWithCourse(theClass);

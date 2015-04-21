@@ -11,3 +11,32 @@
 .classes-data-grid {
     height: 300px;
 }
+
+.class-active-div {
+    padding-top: 5px;
+    font-size: 18px;
+}
+
+.class-active-div.active {
+    color: green;
+}
+
+.class-active-div.not-active {
+    color: red;
+}
+
+.class-active-div .fa {
+    cursor: pointer;
+}
+
+.foo {
+    text-align: center;
+}
+
+.class-row-active-cell .active {
+    color: green;
+}
+
+.class-row-active-cell .not-active {
+    color: red;
+}

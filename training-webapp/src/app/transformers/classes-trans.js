@@ -43,9 +43,6 @@ angular.module('trng.transformers').factory('ClassesTransformer', [
 					}
 				});
 
-                entity.startDate = new Date(dto.startDate);
-                entity.endDate = new Date(dto.endDate);
-
                 return entity;
 			},
 			
@@ -65,13 +62,6 @@ angular.module('trng.transformers').factory('ClassesTransformer', [
 						publishDetails.autoStop = publishDetails.autoStop;
 					}
 				});
-
-				if (entity.startDate) {
-                    dto.startDate = entity.startDate.getTime();
-                }
-                if (entity.endDate) {
-                    dto.endDate = entity.endDate.getTime();
-                }
 
                 return dto;
 			}

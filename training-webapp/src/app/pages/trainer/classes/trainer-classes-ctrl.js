@@ -35,14 +35,13 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
                     displayName: 'Course'
                 },
                 {
-                    field: 'startDate',
-                    displayName: 'Start date',
-                    cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
-                },
-                {
-                    field: 'endDate',
-                    displayName: 'End date',
-                    cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
+                    field: 'active',
+                    displayName: 'Active',
+                    width: '60px',
+                    cellTemplate:
+                        '<div class="ngCellText text-center class-row-active-cell" ng-class="col.colIndex()">' +
+                            '<span ng-cell-text class="fa" ng-class="{\'active fa-check\': row.getProperty(col.field), \'not-active fa-times\': !row.getProperty(col.field)}"></span>' +
+                        '</div>'
                 },
                 {
                     displayName: 'Actions',
