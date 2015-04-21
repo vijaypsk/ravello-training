@@ -47,7 +47,7 @@ function handleSuperagentError(deferred) {
 		if (error) {
 			errorMessage = error.message || error.toString();
 
-		} else if (response.status) {
+		} else if (response && response.status) {
 			if (response.status === 401) {
 				errorMessage = 'You are not authorized to work against Ravello. Please check your Ravello Credentials.';
 			} else if (response.status >= 400) {

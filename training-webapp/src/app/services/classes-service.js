@@ -7,7 +7,8 @@ angular.module('trng.services').factory('ClassesService', [
 	'ClassesTransformer',
 	'CoursesService',
 	'AppsService',
-	function($q, CommonConstants, ClassesProxy, ClassesTrans, CoursesService, AppsService) {
+	'LoginModel',
+	function($q, CommonConstants, ClassesProxy, ClassesTrans, CoursesService, AppsService, LoginModel) {
 
         var cachedClasses = null;
 
@@ -177,7 +178,11 @@ angular.module('trng.services').factory('ClassesService', [
 			createEmptyClass: function(course) {
 				var theClass = {
 					course: course,
-					courseId: course.id
+					courseId: course.id,
+                    ravelloCredentials: {
+                        username: LoginModel.user.ravelloCredentials.username,
+                        password: LoginModel.user.ravelloCredentials.password
+                    }
 				};
 
 				matchClassWithCourse(theClass);

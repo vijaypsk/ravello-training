@@ -260,8 +260,8 @@ exports.vmAction = function(request, response, next) {
 				return (student.user.id === userId);
 			});
 
-			var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-			var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
+			var ravelloUsername = classData.ravelloCredentials.username;
+			var ravelloPassword = classData.ravelloCredentials.password;
 
 			return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
 				function(result) {
@@ -300,8 +300,8 @@ exports.vmVnc = function(request, response, next) {
                 return (student.user.id === userId);
             });
 
-            var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-            var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
+            var ravelloUsername = classData.ravelloCredentials.username;
+            var ravelloPassword = classData.ravelloCredentials.password;
 
             return appsService.vmVnc(appId, vmId, ravelloUsername, ravelloPassword).then(
                 function(result) {

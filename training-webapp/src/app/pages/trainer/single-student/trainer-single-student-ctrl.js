@@ -21,19 +21,6 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
             $scope.currentClass = currentClass;
 
             $scope.initBpPermissionsDataGrid();
-
-            // Show the ravello credentials of the student if:
-            // 1) There are no ravello credentials at all
-            // 2) One of username/password is missing
-            // 3) There are no ravello credentials at the class level
-            // 4) One of username/password is missing in class level
-            // The idea behind this logic is to draw attention to this part, only if its empty (and thus shall be filled)
-            // or if there are no credentials set at the class level (in which case they must be set at the student level).
-            $scope.isRavelloCredentials =
-                (!$scope.currentStudent.ravelloCredentials ||
-                (!$scope.currentStudent.ravelloCredentials.username && !$scope.currentStudent.ravelloCredentials.password)) ||
-                !$scope.currentClass.ravelloCredentials ||
-                (!$scope.currentClass.ravelloCredentials.username && !$scope.currentClass.ravelloCredentials.password);
         };
 
         $scope.initBpPermissionsColumns = function () {

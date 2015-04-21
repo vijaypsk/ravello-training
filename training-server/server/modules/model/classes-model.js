@@ -10,7 +10,6 @@ var TrainingClassSchema = mongoose.Schema({
     startDate: Date,
     endDate: Date,
     ravelloCredentials: {
-        useCourseCredentials: Boolean,
         username: String,
         password: String
     },
@@ -35,11 +34,6 @@ var TrainingClassSchema = mongoose.Schema({
                     console: Boolean
                 }
             ],
-            ravelloCredentials: {
-                useClassCredentials: Boolean,
-                username: String,
-                password: String
-            },
             apps: [
                 {
                     ravelloId: String

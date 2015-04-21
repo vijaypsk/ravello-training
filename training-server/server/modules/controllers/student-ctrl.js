@@ -130,8 +130,8 @@ exports.getStudentClassApps = function(request, response, next) {
             var classData = classesTrans.entityToDto(classEntity);
             var studentData = classEntity.findStudentByUserId(userId);
 
-            var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-            var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
+            var ravelloUsername = classData.ravelloCredentials.username;
+            var ravelloPassword = classData.ravelloCredentials.password;
 
             return coursesDal.getCourse(classEntity.courseId).then(
                 function(course) {
@@ -165,8 +165,8 @@ exports.getAppVms = function(request, response, next) {
             var classData = classesTrans.entityToDto(classEntity);
             var studentData = classEntity.findStudentByUserId(userId);
 
-            var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-            var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
+            var ravelloUsername = classData.ravelloCredentials.username;
+            var ravelloPassword = classData.ravelloCredentials.password;
 
 			appsService.getApp(appId, ravelloUsername, ravelloPassword).then(
                 function(appResult) {
@@ -199,8 +199,8 @@ exports.getStudentCourse = function(request, response, next) {
 			var classData = classesTrans.entityToDto(classEntity);
 			var studentData = classEntity.findStudentByUserId(userId);
 
-			var ravelloUsername = studentData.ravelloCredentials.username || classData.ravelloCredentials.username;
-			var ravelloPassword = studentData.ravelloCredentials.password || classData.ravelloCredentials.password;
+			var ravelloUsername = classData.ravelloCredentials.username;
+			var ravelloPassword = classData.ravelloCredentials.password;
 
 			return coursesDal.getCourse(courseId).then(
                 function(courseEntity) {

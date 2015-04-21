@@ -94,10 +94,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 
 		$scope.initClass = function() {
             $scope.currentClass = currentClass;
-
-            $scope.isRavelloCredentials =
-                (!$scope.currentClass.ravelloCredentials ||
-                (!$scope.currentClass.ravelloCredentials.username && !$scope.currentClass.ravelloCredentials.password));
         };
 
         $scope.initDates = function() {
@@ -160,12 +156,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
         };
 
         $scope.saveClass = function() {
-			var validationResult = validateRavelloCredentials($scope.currentClass);
-
-			if (!validationResult.isValid && validationResult.message) {
-                $dialogs.notify('Validation error', validationResult.message);
-			}
-
             return ClassesService.saveOrUpdate($scope.currentClass).then(
                 function(result) {
                     $state.go(StatesNames.trainer.training.classes.name);
@@ -184,37 +174,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
         };
 
         $scope.init();
-
-		/* --- Private functions --- */
-
-		function validateRavelloCredentials(theClass) {
-			var validationResult = {
-				isValid: true,
-				message: ''
-			};
-
-			if (!theClass.ravelloCredentials || !theClass.ravelloCredentials.username || !theClass.ravelloCredentials.password) {
-				var finalMessage = "";
-
-				_.forEach(theClass.students, function(student) {
-					if (!student.ravelloCredentials || !student.ravelloCredentials.username || !student.ravelloCredentials.password) {
-						if (finalMessage != "") {
-							finalMessage += ", ";
-						}
-						finalMessage += student.user.username;
-					}
-				});
-
-				if (finalMessage) {
-					validationResult.isValid = false;
-					validationResult.message =
-						"Class is saved, but has no Ravello Credentials, while students [" + finalMessage + "] " +
-						"also don't have specific Ravello Credentials.";
-				}
-			}
-
-			return validationResult;
-		}
     }
 ]);
 
