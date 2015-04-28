@@ -9,6 +9,7 @@ angular.module('trng.common.directives.setPassword').controller('setPasswordPopu
         $scope.init = function() {
             $scope.viewModel = {
                 password: '',
+                confirmedPassword: '',
                 inlineMessage: inlineMessage
             };
         };
@@ -19,7 +20,15 @@ angular.module('trng.common.directives.setPassword').controller('setPasswordPopu
 
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
-        }
+        };
+
+        $scope.isOkDisabled = function() {
+            return $scope.viewModel.password !== $scope.viewModel.confirmedPassword;
+        };
+
+        $scope.getOkButtonExplanation = function() {
+            return $scope.isOkDisabled() ? 'Passwords mush match!' : '';
+        };
 
         $scope.init();
     }

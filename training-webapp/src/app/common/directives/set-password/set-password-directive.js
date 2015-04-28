@@ -41,8 +41,6 @@ angular.module('trng.common.directives.setPassword').directive('setPassword', [
             },
             templateUrl: 'app/common/directives/set-password/set-password.html',
             controller: 'setPasswordController'
-//            link: function(scope, element, attrs, modelCtrl) {
-//            }
         };
     }
 ]);
