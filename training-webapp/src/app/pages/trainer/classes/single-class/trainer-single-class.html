@@ -1,7 +1,7 @@
 <div id="singleClassDiv">
     <div class="container">
         <div class="row">
-            <h2 class="pull-left">{{currentClass.name}}</h2>
+            <h2 class="pull-left">{{getTitle()}}</h2>
             <div class="pull-right class-active-div" ng-class="{'active': currentClass.active, 'not-active': !currentClass.active}" ng-if="showActive()">
                 <span ng-if="currentClass.active">ACTIVE</span>
                 <span ng-if="!currentClass.active">NOT ACTIVE</span>

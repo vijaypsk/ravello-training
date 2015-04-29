@@ -20,7 +20,27 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
             $scope.currentStudent = currentStudent;
             $scope.currentClass = currentClass;
 
+            $scope.initAbstract();
             $scope.initBpPermissionsDataGrid();
+        };
+
+        $scope.initAbstract = function() {
+            $scope.abstract.getStudentName = function() {
+                var fullName = '';
+
+                if ($scope.currentStudent.user.firstName) {
+                    fullName += $scope.currentStudent.user.firstName;
+                }
+                if ($scope.currentStudent.user.surname) {
+                    fullName += ' ' + $scope.currentStudent.user.surname;
+                }
+
+                return fullName ? fullName : 'New student';
+            };
+
+            $scope.$on('$destroy', function() {
+                delete $scope.abstract.getStudentName;
+            });
         };
 
         $scope.initBpPermissionsColumns = function () {

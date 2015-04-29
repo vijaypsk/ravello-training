@@ -22,10 +22,15 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
             $scope.apps = [];
             $scope.courses = courses;
 
+            $scope.initAbstract();
             $scope.initClass();
             $scope.initDates();
             $scope.initStudentsDataGrid();
 			$scope.initPublishDetailsOptions();
+        };
+
+        $scope.initAbstract = function() {
+            $scope.abstract = {};
         };
 
 		$scope.initPublishDetailsOptions = function() {
@@ -186,6 +191,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 
         $scope.addToEditDisabled = function() {
             return !$scope.currentClass.course;
+        };
+
+        $scope.getTitle = function() {
+            var title = $scope.currentClass.name || 'New class';
+            title += $scope.abstract.getStudentName ? ' > ' + $scope.abstract.getStudentName() : '';
+            return title;
         };
 
         $scope.init();
