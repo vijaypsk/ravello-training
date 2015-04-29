@@ -108,7 +108,7 @@ angular.module('trng.services').factory('ClassesService', [
 							method: CommonConstants.defaultPublishMethod,
 							cloud: CommonConstants.defaultCloud,
 							region: CommonConstants.defaultRegion,
-							autoStop: CommonConstants.defaultAutoStopMillis
+							autoStop: CommonConstants.defaultAutoStopMinutes
 
 						};
 						theClass.bpPublishDetailsList.push(bpPublishDetails);
