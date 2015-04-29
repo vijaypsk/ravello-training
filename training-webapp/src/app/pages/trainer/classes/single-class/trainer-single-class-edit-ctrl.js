@@ -46,10 +46,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 					value: 'AMAZON'
 				},
 				{
-					name: 'HP',
-					value: 'HPCLOUD'
-				},
-				{
 					name: 'Google',
 					value: 'GOOGLE'
 				}
@@ -64,12 +60,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 					{
 						name: 'Oregon',
 						value: 'Oregon'
-					}
-				],
-				'HPCLOUD': [
-					{
-						name: 'US West AZ 2',
-						value: 'US West AZ 2'
 					}
 				],
 				'GOOGLE': [
