@@ -48,8 +48,13 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
                 {
                     field: 'displayForStudents',
                     displayName: 'Display name for students',
-                    enableCellEdit: true,
-                    width: '35%'
+                    width: '20%',
+                    cellTemplate:
+                        '<div class="ngCellText" ng-class="col.colIndex()">' +
+                            '<div ng-cell-text>' +
+                                '<span click-to-edit="row.entity.displayForStudents"></span>' +
+                            '</div>' +
+                        '</div>'
                 },
                 {
                     displayName: 'Actions',
@@ -59,6 +64,13 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
                         '</a>'
                 }
             ];
+        };
+
+        $scope.editDisplayName = function() {
+            console.log('editDisplayName');
+            if ($scope.textBtnForm) {
+                console.log('has textBtnForm');
+            }
         };
 
         $scope.initBlueprintsDataGrid = function () {

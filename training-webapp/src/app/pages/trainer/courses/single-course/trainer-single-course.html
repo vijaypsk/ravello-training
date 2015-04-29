@@ -1,7 +1,7 @@
 
 <div id="coursesDiv" class="container">
     <div>
-        <form name="coursesForm">
+        <div ng-form="coursesForm" editable-form>
             <div class="form-horizontal form-box">
                 <span class="block-title">Course Details</span>
 
@@ -37,7 +37,7 @@
                     <div id="blueprintsDataGrid" class="trainer-bps-data-grid" ng-grid="blueprintsDataGrid"></div>
                 </div>
             </div>
-        </form>
+        </div>
         <div class="row pull-right">
             <div save-and-cancel approve-label="Save" cancel-label="Back"
                  approve-func="save" cancel-func="back">
