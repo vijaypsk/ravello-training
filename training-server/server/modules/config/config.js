@@ -12,6 +12,7 @@ require('./../model/courses-model');
 
 var logger = require('./logger');
 var passportConfig = require('./config-passport');
+var properties = require('./properties');
 
 module.exports = function(app) {
     app.configure(function() {
@@ -38,7 +39,7 @@ module.exports = function(app) {
 
         // DB configuration.
 
-        mongoose.connect('mongodb://localhost/training');
+        mongoose.connect('mongodb://' + properties.dbUsername + ':' + properties.dbPassword + '@' + 'localhost/training');
 
         // Passport config.
 

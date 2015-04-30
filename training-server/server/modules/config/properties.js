@@ -4,6 +4,9 @@ exports.ravelloUrl = 'https://cloud.ravellosystems.com';
 
 exports.baseUrl = '/services';
 
+exports.dbUsername = 'training-admin';
+exports.dbPassword = 'admin';
+
 exports.defaultAutoStopSeconds = -1;
 
 exports.dateFormat = 'dd.MM.yyyy hh:mm:ss tt';
