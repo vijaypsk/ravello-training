@@ -37,6 +37,7 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
                 {
                     field: 'active',
                     displayName: 'Active',
+                    resizable: false,
                     width: '60px',
                     cellTemplate:
                         '<div class="ngCellText text-center class-row-active-cell" ng-class="col.colIndex()">' +
@@ -45,7 +46,8 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
                 },
                 {
                     displayName: 'Actions',
-                    width: '25%',
+                    resizable: false,
+                    width: '270px',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="editClass(row)">' +
                             '<i class="fa fa-pencil" /> Edit' +
@@ -70,7 +72,8 @@ angular.module('trng.trainer.training.classes').controller('trainerClassesContro
                 columnDefs: $scope.classesColumns,
                 selectedItems: $scope.selectedClasses,
                 showSelectionCheckbox: true,
-                selectWithCheckboxOnly: true
+                selectWithCheckboxOnly: true,
+                enableColumnResize: true
             };
         };
 

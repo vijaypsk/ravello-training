@@ -121,6 +121,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
                 },
                 {
                     displayName: 'Actions',
+                    width: '180px',
+                    resizable: false,
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="editStudent(row)">' +
                             '<i class="fa fa-pencil" /> Edit' +
@@ -141,7 +143,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
                 columnDefs: $scope.studentsColumns,
                 selectedItems: $scope.selectedStudents,
                 showSelectionCheckbox: false,
-                selectWithCheckboxOnly: true
+                selectWithCheckboxOnly: true,
+                enableColumnResize: true
             };
         };
 

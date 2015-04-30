@@ -40,30 +40,30 @@ angular.module('trng.student').controller('studentSingleAppController', [
                 {
                     field: 'name',
                     enableCellEdit: false,
-                    displayName: 'VM name',
-                    width: '25%'
+                    displayName: 'VM name'
                 },
                 {
                     field: 'status',
                     enableCellEdit: false,
                     displayName: 'Status',
-                    width: '9%'
+                    width: '100px'
                 },
                 {
                     field: 'firstDns.ip',
                     displayName: 'IP',
                     enableCellEdit: true,
-                    width: '20%'
+                    width: '120px'
                 },
                 {
                     field: 'firstDns.name',
                     displayName: 'DNS',
-                    enableCellEdit: true,
-                    width: '25%'
+                    enableCellEdit: true
                 },
                 {
                     displayName: 'Actions',
                     enableCellEdit: false,
+                    width: '200px',
+                    resizable: false,
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
                             '<i class="fa fa-plus"></i> More' +
@@ -86,7 +86,8 @@ angular.module('trng.student').controller('studentSingleAppController', [
                 selectedItems: $scope.selectedVms,
                 showSelectionCheckbox: true,
                 selectWithCheckboxOnly: true,
-                enableCellEditOnFocus: true
+                enableCellEditOnFocus: true,
+                enableColumnResize: true
             };
         };
 

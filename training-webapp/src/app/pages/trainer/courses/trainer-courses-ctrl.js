@@ -35,6 +35,7 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
                 },
                 {
                     displayName: 'Actions',
+                    width: '180px',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="editCourse(row)">' +
                             '<i class="fa fa-pencil" /> Edit' +
@@ -56,7 +57,9 @@ angular.module('trng.trainer.training.courses').controller('trainerCoursesContro
                 columnDefs: $scope.coursesColumns,
                 selectedItems: $scope.selectedCourses,
                 showSelectionCheckbox: true,
-                selectWithCheckboxOnly: true
+                selectWithCheckboxOnly: true,
+                enableColumnResize: true
+
             };
         };
 

@@ -27,7 +27,7 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
                 },
                 {
                     displayName: 'Actions',
-                    width: '25%',
+                    width: '180px',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="editTrainer(row)">' +
                             '<i class="fa fa-pencil" /> Edit' +

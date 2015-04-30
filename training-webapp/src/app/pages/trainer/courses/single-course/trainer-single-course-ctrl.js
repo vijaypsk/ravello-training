@@ -39,16 +39,18 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
                 {
                     field: 'creationTime',
                     displayName: 'Creation time',
+                    width: '180px',
                     cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
                 },
                 {
                     field: 'owner',
+                    width: '140px',
                     displayName: 'owner'
                 },
                 {
                     field: 'displayForStudents',
                     displayName: 'Display name for students',
-                    width: '20%',
+                    width: '220px',
                     cellTemplate:
                         '<div class="ngCellText" ng-class="col.colIndex()">' +
                             '<div ng-cell-text>' +
@@ -58,6 +60,7 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
                 },
                 {
                     displayName: 'Actions',
+                    width: '120px',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="deleteBlueprint(row)">' +
                             '<i class="fa fa-trash-o" /> Delete' +

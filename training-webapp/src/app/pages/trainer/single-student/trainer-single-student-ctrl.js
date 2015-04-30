@@ -51,22 +51,27 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
                 },
                 {
                     field: 'startVms',
+                    width: '120px',
                     displayName: 'Start VMs'
                 },
                 {
                     field: 'stopVms',
+                    width: '120px',
                     displayName: 'Stop VMs'
                 },
                 {
                     field: 'restartVms',
+                    width: '120px',
                     displayName: 'Restart VMs'
                 },
                 {
                     field: 'console',
+                    width: '120px',
                     displayName: 'Console'
                 },
                 {
                     displayName: 'Actions',
+                    width: '180px',
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="configureBpPermission(row)">' +
                             '<i class="fa fa-cog" /> Configure Permissions' +

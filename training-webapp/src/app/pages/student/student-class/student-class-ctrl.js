@@ -35,14 +35,18 @@ angular.module('trng.student').controller('studentClassController', [
                 },
                 {
                     field: 'numOfVms',
+                    width: '150px',
                     displayName: '# of VMs'
                 },
                 {
                     field: 'numOfRunningVms',
+                    width: '150px',
                     displayName: '# of running VMs'
                 },
                 {
                     displayName: 'Actions',
+                    width: '150px',
+                    resizable: false,
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="view(row)">' +
                             '<i class="fa fa-search"></i> View' +
@@ -59,7 +63,8 @@ angular.module('trng.student').controller('studentClassController', [
             $scope.studentAppsDataGird = {
                 data: 'apps',
                 columnDefs: $scope.appsColumns,
-                selectedItems: $scope.selectedApps
+                selectedItems: $scope.selectedApps,
+                enableColumnResize: true
             };
         };
 

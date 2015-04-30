@@ -45,10 +45,12 @@ angular.module('trng.trainer.training.courses').controller('trainerAddBlueprints
                 {
                     field: 'creationTime',
                     displayName: 'Creation time',
+                    width: '180px',
                     cellFilter: 'date:\'' + DateUtil.angular.dateTimeFormat + '\''
                 },
                 {
                     field: 'owner',
+                    width: '140px',
                     displayName: 'owner'
                 }
             ];
