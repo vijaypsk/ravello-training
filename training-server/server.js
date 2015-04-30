@@ -19,6 +19,7 @@ function run() {
 
 	config(app);
 	routes(app);
+	errorHandler.initErrorsMiddleware(app);
 
 	app.listen(app.get('port'));
 }
