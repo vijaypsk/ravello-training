@@ -1,7 +1,13 @@
 'use strict';
 
+var fs = require('fs');
 var bunyan = require("bunyan");
 var PrettyStream = require('bunyan-prettystream');
+
+var logFileStream = fs.createWriteStream('ravello_training_server.log');
+
+var prettyLogFile = new PrettyStream({mode: 'short'});
+prettyLogFile.pipe(logFileStream);
 
 var prettyStdOut = new PrettyStream({mode: 'short'});
 prettyStdOut.pipe(process.stdout);
@@ -9,15 +15,16 @@ prettyStdOut.pipe(process.stdout);
 var devStreams = [
     {
         stream: prettyStdOut,
-		type: 'raw',
+        type: 'raw',
         level: 'debug'
     }
 ];
 
 var productionStreams = [
     {
-        path: 'ravello_training_server.log',
-        level: 'info'
+        stream: prettyLogFile,
+        type: 'raw',
+        level: 'debug'
     }
 ];
 
@@ -34,4 +41,3 @@ var productionConfig = {
 var logger = bunyan.createLogger(productionConfig);
 
 module.exports = logger;
-
