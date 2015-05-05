@@ -4,8 +4,8 @@ exports.ravelloUrl = 'https://cloud.ravellosystems.com';
 
 exports.baseUrl = '/services';
 
-exports.dbUsername = 'training-admin';
-exports.dbPassword = 'admin';
+exports.dbUsername = 'training';
+exports.dbPassword = 'training';
 
 exports.defaultAutoStopSeconds = -1;
 
