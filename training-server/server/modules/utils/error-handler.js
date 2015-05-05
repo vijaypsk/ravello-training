@@ -9,6 +9,7 @@ function initErrorsMiddleware(app) {
 		var errorStatus = 500;
 		var errorMessage = error;
 		var errorReason = error;
+		var ravelloOpId = undefined;
 
 		if (error && _.isObject(error)) {
 			if (error.message) {
@@ -24,19 +25,24 @@ function initErrorsMiddleware(app) {
 			if (error.status) {
 				errorStatus = error.status;
 			}
+
+			if (error.ravelloOpId) {
+				ravelloOpId = error.ravelloOpId;
+			}
 		}
 
-		logger.error({reason: errorReason, status: errorStatus}, errorMessage);
+		logger.error({reason: errorReason, status: errorStatus, ravelloOpId: ravelloOpId}, errorMessage);
 
 		response.send(errorStatus, errorMessage);
 	});
 }
 
-function createError(status, message, reason) {
+function createError(status, message, reason, ravelloOpId) {
 	return {
 		status: status,
 		message: message,
-		reason: reason
+		reason: reason,
+		ravelloOpId: ravelloOpId
 	};
 }
 
@@ -44,6 +50,7 @@ function handleSuperagentError(deferred) {
 	return function(error, response) {
 		var status = 500;
 		var errorMessage = null;
+		var ravelloOpId = null;
 
 		if (error) {
 			errorMessage = error.message || error.toString();
@@ -69,8 +76,12 @@ function handleSuperagentError(deferred) {
 			}
 		}
 
+		if (response && response.headers && response.headers['operation-id']) {
+			ravelloOpId = response.headers['operation-id'];
+		}
+
 		if (errorMessage) {
-			deferred.reject(createError(status, errorMessage, error));
+			deferred.reject(createError(status, errorMessage, error, ravelloOpId));
 		} else if (arguments.length > 2) {
 			deferred.resolve(_.last(arguments, arguments.length - 1));
 		} else {
