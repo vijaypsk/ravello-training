@@ -65,8 +65,11 @@ html, body {
     color: white;
 }
 .main-nav li a:hover, .main-nav li a:hover {
-    color: #ffe403;
+    color: #FDFF9D;
     text-decoration: none;
+}
+.main-nav li a.active {
+    color: #ffe403;
 }
 .submenu {
     width: 100%;

@@ -9,8 +9,8 @@
                     <ul class="submenu">
                         <div class="submenu-wrapper">
                             <div class="submenu-links">
-                                <li><a href="" ng-click="navigateToClasses()">Classes</a></li>
-                                <li><a href="" ng-click="navigateToCourses()">Courses</a></li>
+                                <li><a href="" ng-click="navigateToClasses()" ng-class="{'active': isClassesActive()}">Classes</a></li>
+                                <li><a href="" ng-click="navigateToCourses()" ng-class="{'active': isCoursesActive()}">Courses</a></li>
                             </div>
                         </div>
                     </ul>

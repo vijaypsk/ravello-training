@@ -18,6 +18,16 @@ angular.module('trng.trainer').controller('TrainerController', [
             $state.go(StatesNames.trainer.training.courses.name);
         };
 
+        $scope.isClassesActive = function() {
+            return $state.includes(StatesNames.trainer.training.classes.name) ||
+                $state.includes(StatesNames.trainer.training.singleClass.name);
+        };
+
+        $scope.isCoursesActive = function() {
+            return $state.includes(StatesNames.trainer.training.courses.name) ||
+                $state.includes(StatesNames.trainer.training.singleCourse.name);
+        };
+
         $scope.init();
     }
 ]);
