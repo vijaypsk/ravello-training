@@ -14,6 +14,20 @@ var config = require('./server/modules/config/config');
 var routes = require('./server/modules/config/routes');
 var errorHandler = require('./server/modules/utils/error-handler');
 
+function main() {
+	init();
+
+	if (properties.numOfWorkers === 1) {
+		runSingle();
+	} else {
+		runCluster();
+	}
+}
+
+function init() {
+	logger.init();
+}
+
 function run() {
 	var app = express();
 
@@ -36,9 +50,4 @@ function runCluster() {
 	}, {count: properties.numOfWorkers});
 }
 
-if (properties.numOfWorkers === 1) {
-	runSingle();
-} else {
-	runCluster();
-}
-
+main();

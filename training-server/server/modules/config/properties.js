@@ -30,3 +30,5 @@ exports.publishAppsChunkSize = 30;
 
 // The time in millis to wait between every batch App creation.
 exports.publishAppsChunkDelay = 1000 * 60 * 5;
+
+exports.logLevel = 'debug';
