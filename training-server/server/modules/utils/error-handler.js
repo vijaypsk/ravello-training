@@ -42,12 +42,15 @@ function createError(status, message, reason) {
 
 function handleSuperagentError(deferred) {
 	return function(error, response) {
+		var status = 500;
 		var errorMessage = null;
 
 		if (error) {
 			errorMessage = error.message || error.toString();
 
 		} else if (response && response.status) {
+			status = response.status;
+
 			if (response.status === 401) {
 				errorMessage = 'You are not authorized to work against Ravello. Please check your Ravello Credentials.';
 
@@ -67,7 +70,7 @@ function handleSuperagentError(deferred) {
 		}
 
 		if (errorMessage) {
-			deferred.reject(createError(response.status, errorMessage, error));
+			deferred.reject(createError(status, errorMessage, error));
 		} else if (arguments.length > 2) {
 			deferred.resolve(_.last(arguments, arguments.length - 1));
 		} else {
