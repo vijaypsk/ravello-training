@@ -41,7 +41,7 @@ function init() {
         streams: productionStreams
     };
 
-    var logger = bunyan.createLogger(productionConfig);
+    var logger = bunyan.createLogger(devConfig);
 
     // This is important - we want to export the actual logger object, so that it can be used conveniently in other modules.
     // But we also want to export the init function itself, which is external to the logger object.
