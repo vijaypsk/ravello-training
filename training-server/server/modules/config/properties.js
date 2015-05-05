@@ -1,10 +1,8 @@
 'use strict';
 
-//exports.ravelloUrl = 'https://cloud.ravellosystems.com';
-exports.ravelloUrl = 'https://server-teamuidevbabu-e9tezids.srv.ravcloud.com';
+exports.ravelloUrl = 'https://cloud.ravellosystems.com';
 
-//exports.baseUrl = '/services';
-exports.baseUrl = '/api/v1';
+exports.baseUrl = '/services';
 
 exports.dbUsername = 'training';
 exports.dbPassword = 'training';
@@ -25,7 +23,7 @@ exports.defaultCloud = 'AMAZON';
 // Can be one of: [Virginia, Oregon (for Amazon), US West AZ 2 (for HP), us-central1 (for Google Cloud)]
 exports.defaultRegion = 'Virginia';
 
-exports.numOfWorkers = 1;
+exports.numOfWorkers = 4;
 
 // The number of applications to create in every batch.
 exports.publishAppsChunkSize = 30;
