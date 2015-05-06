@@ -12,13 +12,10 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
     'StatesNames',
     'ClassesService',
     'currentStudent',
-    'currentClass',
-    function ($scope, $state, $stateParams, $log, $modal, $window, $dialogs, StatesNames, ClassesService, currentStudent,
-              currentClass) {
+    function ($scope, $state, $stateParams, $log, $modal, $window, $dialogs, StatesNames, ClassesService, currentStudent) {
 
         $scope.init = function () {
             $scope.currentStudent = currentStudent;
-            $scope.currentClass = currentClass;
 
             $scope.initAbstract();
             $scope.initBpPermissionsDataGrid();
