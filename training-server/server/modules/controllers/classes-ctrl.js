@@ -184,6 +184,24 @@ exports.updateClass = function(request, response, next) {
                                         }
                                     );
                                 }
+                            ).fail(
+                                function(error) {
+                                    if (error.status && error.status === 400) {
+                                        return classesDal.getClassByUsername(student.user.username).then(
+                                            function(existingUserClass) {
+                                                if (existingUserClass) {
+                                                    error.message += '<br>The student is in class: [' + existingUserClass.name + '].<br>' +
+                                                        'Unfortunately, the same username cannot be used in more than one class.<br>' +
+                                                        'Please delete the student from the other class, or change the username of this student.';
+                                                }
+
+                                                return q.reject(error);
+                                            }
+                                        );
+                                    } else {
+                                        return q.reject(error);
+                                    }
+                                }
                             );
                     })).then(
                         function() {

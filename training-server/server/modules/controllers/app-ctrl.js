@@ -253,7 +253,7 @@ exports.vmAction = function(request, response, next) {
 	var action = request.params.action;
 
 	// When the user logs in, we first need to find the class associated with that user.
-	classesDal.getClassOfUser(userId).then(
+	classesDal.getClassByUserId(userId).then(
 		function(classEntity) {
 			if (!classEntity.active) {
 				next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
@@ -295,7 +295,7 @@ exports.vmVnc = function(request, response, next) {
     var vmId = request.params.vmId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(
+    classesDal.getClassByUserId(userId).then(
         function(classEntity) {
 			if (!classEntity.active) {
 				next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));

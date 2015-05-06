@@ -113,7 +113,7 @@ exports.getStudentClass = function(request, response, next) {
     var userId = request.params.studentId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(
+    classesDal.getClassByUserId(userId).then(
         function(classEntity) {
             if (!classEntity.active) {
                 next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
@@ -131,7 +131,7 @@ exports.getStudentClassApps = function(request, response, next) {
 	var userId = request.params.studentId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(
+    classesDal.getClassByUserId(userId).then(
         function(classEntity) {
             if (!classEntity.active) {
                 next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
@@ -171,7 +171,7 @@ exports.getAppVms = function(request, response, next) {
     var appId = request.params.appId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(
+    classesDal.getClassByUserId(userId).then(
         function(classEntity) {
             if (!classEntity.active) {
                 next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));
@@ -209,7 +209,7 @@ exports.getStudentCourse = function(request, response, next) {
     var courseId = request.params.courseId;
 
     // When the user logs in, we first need to find the class associated with that user.
-    classesDal.getClassOfUser(userId).then(
+    classesDal.getClassByUserId(userId).then(
         function(classEntity) {
             if (!classEntity.active) {
                 next(errorHandler.createError(404, 'Your class is not open yet, please contact your trainer'));

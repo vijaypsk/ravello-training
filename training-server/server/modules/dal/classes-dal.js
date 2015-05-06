@@ -19,9 +19,32 @@ exports.getClass = function(classId) {
     return TrainingClass.findById(classId).populate('students.user').execQ().catch(errorHandler.handleMongoError(404, 'Could not read class ' + classId));
 };
 
-exports.getClassOfUser = function(userId) {
+exports.getClassByUserId = function(userId) {
     return TrainingClass.findOne({'students.user': new ObjectId(userId)}).populate('students.user').execQ().catch(
         errorHandler.handleMongoError(404, 'Could not read class of user ' + userId));
+};
+
+exports.getClassByUsername = function(username) {
+    return exports.getClasses().then(
+        function(classes) {
+            var theClass = null;
+
+            _.forEach(classes, function(currentClass) {
+                if (currentClass && currentClass.students) {
+                    _.forEach(currentClass.students, function(student) {
+                        if (student && student.user && student.user.username === username) {
+                            theClass = currentClass;
+                        }
+                    });
+                }
+            });
+
+            return q.resolve(theClass);
+        }
+    );
+
+    //return TrainingClass.findOne({'students.user.username': username}).populate('students.user').execQ().catch(
+    //    errorHandler.handleMongoError(404, 'Could not read class of user ' + username));
 };
 
 exports.createClass = function(classData) {
