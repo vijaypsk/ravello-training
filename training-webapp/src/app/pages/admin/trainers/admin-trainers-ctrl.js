@@ -49,7 +49,8 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
                 columnDefs: $scope.trainersColumns,
                 selectedItems: $scope.selectedTrainers,
                 showSelectionCheckbox: true,
-                selectWithCheckboxOnly: true
+                selectWithCheckboxOnly: true,
+                enableHighlighting: true
             };
         };
 

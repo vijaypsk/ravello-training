@@ -64,7 +64,9 @@ angular.module('trng.student').controller('studentClassController', [
                 data: 'apps',
                 columnDefs: $scope.appsColumns,
                 selectedItems: $scope.selectedApps,
-                enableColumnResize: true
+                enableColumnResize: true,
+                enableHighlighting: true,
+                enableRowSelection: false
             };
         };
 

@@ -144,7 +144,9 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
                 selectedItems: $scope.selectedStudents,
                 showSelectionCheckbox: false,
                 selectWithCheckboxOnly: true,
-                enableColumnResize: true
+                enableColumnResize: true,
+                enableHighlighting: true,
+                enableRowSelection: false
             };
         };
 

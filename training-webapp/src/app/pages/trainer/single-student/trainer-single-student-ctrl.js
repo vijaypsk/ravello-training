@@ -90,7 +90,8 @@ angular.module('trng.trainer.students').controller('trainerSingleStudentControll
                 columnDefs: $scope.studentsColumns,
                 selectedItems: $scope.selectedBps,
                 showSelectionCheckbox: true,
-                selectWithCheckboxOnly: true
+                selectWithCheckboxOnly: true,
+                enableHighlighting: true
             };
         };
 

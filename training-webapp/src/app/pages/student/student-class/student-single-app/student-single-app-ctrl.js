@@ -87,7 +87,8 @@ angular.module('trng.student').controller('studentSingleAppController', [
                 showSelectionCheckbox: true,
                 selectWithCheckboxOnly: true,
                 enableCellEditOnFocus: true,
-                enableColumnResize: true
+                enableColumnResize: true,
+                enableHighlighting: true
             };
         };
 
