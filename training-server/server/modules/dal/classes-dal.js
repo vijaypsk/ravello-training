@@ -42,9 +42,6 @@ exports.getClassByUsername = function(username) {
             return q.resolve(theClass);
         }
     );
-
-    //return TrainingClass.findOne({'students.user.username': username}).populate('students.user').execQ().catch(
-    //    errorHandler.handleMongoError(404, 'Could not read class of user ' + username));
 };
 
 exports.createClass = function(classData) {
