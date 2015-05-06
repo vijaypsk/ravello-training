@@ -1,12 +1,20 @@
 'use strict';
 
 angular.module('trng.services').factory('CoursesService', [
+	'$rootScope',
 	'$q',
+	'CommonConstants',
 	'CoursesProxy',
 	'CoursesTransformer',
-	function($q, CoursesProxy, CoursesTrans) {
+	function($rootScope, $q, CommonConstants, CoursesProxy, CoursesTrans) {
 
         var cachedCourses = null;
+
+        function updateCourse(course) {
+            var persistedEntity = updateCourseInCache(course);
+            $rootScope.$broadcast(CommonConstants.courseChangedEvent, course);
+            return persistedEntity;
+        }
 
 		function updateCourseInCache(course) {
 			var persistedEntity = CoursesTrans.dtoToEntity(course);
@@ -64,7 +72,7 @@ angular.module('trng.services').factory('CoursesService', [
                 var dto = CoursesTrans.entityToDto(entity);
                 return CoursesProxy.update(dto).then(
                     function(result) {
-						return updateCourseInCache(result.data);
+						return updateCourse(result.data);
                     }
                 );
             },
@@ -104,7 +112,7 @@ angular.module('trng.services').factory('CoursesService', [
 
                 return CoursesProxy.update(dto).then(
                     function(result) {
-						return updateCourseInCache(result.data);
+						return updateCourse(result.data);
 					}
                 );
             }

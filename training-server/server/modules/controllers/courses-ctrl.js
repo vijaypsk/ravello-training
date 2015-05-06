@@ -6,11 +6,13 @@ var q = require('q');
 var logger = require('../config/logger');
 
 var coursesDal = require('../dal/courses-dal');
+var classesDal = require('../dal/classes-dal');
 
 var blueprintsService = require('../services/blueprints-service');
 var coursesService = require('../services/courses-service');
 
 var coursesTrans = require('../trans/courses-trans');
+var classesTrans = require('../trans/classes-trans');
 
 /* --- Public functions --- */
 
@@ -96,7 +98,11 @@ exports.updateCourse = function(request, response, next) {
                     var dto = coursesTrans.entityToDto(result);
                     return matchCourseWithBlueprints(dto, ravelloUsername, ravelloPassword).then(
                         function(result) {
-                            response.json(result);
+                            return updateClassesOfCourse(result).then(
+                                function() {
+                                    response.json(result);
+                                }
+                            );
                         }
                     );
                 }
@@ -124,6 +130,27 @@ var matchCourseWithBlueprints = function(course, ravelloUsername, ravelloPasswor
         function(bpResults) {
             course.blueprints = coursesService.assignBlueprintsToCourse(course, bpResults);
             return course;
+        }
+    );
+};
+
+var updateClassesOfCourse = function(persistedCourse) {
+    return classesDal.getClassByCourseId(persistedCourse._id).then(
+        function(classes) {
+            return q.all(_.map(classes, function(currentClass) {
+                var classData = classesTrans.entityToDto(currentClass);
+
+                _.remove(classData.bpPublishDetailsList, function(bpPublishDetails) {
+                    return !_.find(persistedCourse.blueprints, {id: bpPublishDetails.bpId});
+                });
+                _.forEach(classData.students, function(student) {
+                    _.remove(student.blueprintPermissions, function(bpPermissions) {
+                        return !_.find(persistedCourse.blueprints, {id: bpPermissions.bpId});
+                    });
+                });
+
+                return classesDal.updateClass(currentClass.id, classData);
+            }));
         }
     );
 };

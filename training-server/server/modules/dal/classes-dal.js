@@ -44,6 +44,11 @@ exports.getClassByUsername = function(username) {
     );
 };
 
+exports.getClassByCourseId = function(courseId) {
+    return TrainingClass.find({'courseId': new ObjectId(courseId)}).populate('students.user').execQ().catch(
+        errorHandler.handleMongoError(404, 'Could not read classes that have course ' + courseId));
+};
+
 exports.createClass = function(classData) {
     var newClass = new TrainingClass(classData);
 

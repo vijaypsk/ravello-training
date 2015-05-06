@@ -9,5 +9,7 @@ angular.module('trng.config').constant('CommonConstants', {
 	defaultPublishMethod: 'COST_OPTIMIZED',
 	defaultCloud: 'AMAZON',
 	defaultRegion: 'Virginia',
-	defaultAutoStopMinutes: 120
+	defaultAutoStopMinutes: 120,
+
+	courseChangedEvent: 'COURSE_CHANGED'
 });

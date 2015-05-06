@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('trng.services').factory('ClassesService', [
+	'$rootScope',
 	'$q',
 	'CommonConstants',
 	'ClassesProxy',
@@ -8,7 +9,7 @@ angular.module('trng.services').factory('ClassesService', [
 	'CoursesService',
 	'AppsService',
 	'LoginModel',
-	function($q, CommonConstants, ClassesProxy, ClassesTrans, CoursesService, AppsService, LoginModel) {
+	function($rootScope, $q, CommonConstants, ClassesProxy, ClassesTrans, CoursesService, AppsService, LoginModel) {
 
         var cachedClasses = null;
 
@@ -115,8 +116,18 @@ angular.module('trng.services').factory('ClassesService', [
 					}
 					bpPublishDetails.bpName = bp.name;
 				});
+
+                _.remove(theClass.bpPublishDetailsList, function(bpPublishDetails) {
+                    return bpPublishDetails && !_.find(theClass.course.blueprints, {id: bpPublishDetails.bpId});
+                });
 			}
 		};
+
+        // This is the way for services to communicate with one another.
+        $rootScope.$on(CommonConstants.courseChangedEvent, function(event, course) {
+            // The classes cache should invalidated, when there's a change in a course that might affect the classes.
+            cachedClasses = null;
+        });
 
         var service = {
 			getAllClasses: function() {
