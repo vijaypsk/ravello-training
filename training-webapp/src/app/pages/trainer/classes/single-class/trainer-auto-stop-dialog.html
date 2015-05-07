@@ -1,0 +1,24 @@
+
+<div class="auto-stop-dialog">
+	<h3>Auto-stop</h3>
+
+	<div class="clearfix"></div>
+
+	<div class="row auto-stop-form">
+		<div class="form-group">
+			<label for="autoStopInput">Auto-stop minutes (-1 for never):</label>
+			<input id="autoStopInput" type="text" ng-model="viewModel.autoStopMinutes" autofocus>
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row btns-ok-cancel">
+		<button ng-click="ok()"class="btn btn-success btn-sm">
+			<i class="fa fa-check"></i> OK
+		</button>
+		<button ng-click="cancel()"class="btn btn-danger btn-sm">
+			<i class="fa fa-times"></i> Cancel
+		</button>
+	</div>
+</div>

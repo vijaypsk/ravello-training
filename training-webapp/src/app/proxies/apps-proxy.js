@@ -41,28 +41,34 @@ angular.module('trng.proxies').factory('AppsProxy', [
             },
 
 			startApp: function(appId) {
-                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/start');
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/action/start');
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
             stopApp: function(appId) {
-                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/stop');
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/action/stop');
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
 			startBatchApps: function(classId, apps) {
-				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/start', {classId: classId, apps: apps});
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/action/start', {classId: classId, apps: apps});
 				TrainingMainTracker.addPromise(promise);
 				return promise;
 			},
 
 			stopBatchApps: function(classId, apps) {
-				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/stop', {classId: classId, apps: apps});
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/action/stop', {classId: classId, apps: apps});
 				TrainingMainTracker.addPromise(promise);
 				return promise;
 			},
+
+            autoStopBatchApps: function(apps, autoStopMinutes) {
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/autostop', {apps: apps, autoStopMinutes: autoStopMinutes});
+                TrainingMainTracker.addPromise(promise);
+                return promise;
+            },
 
 			startVm: function(appId, vmId) {
                 var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/start");

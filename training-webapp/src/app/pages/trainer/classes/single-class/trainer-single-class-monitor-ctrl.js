@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('trng.trainer.training.classes').controller('trainerSingleClassMonitorController', [
     '$log',
     '$scope',
@@ -106,7 +105,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 				{
 					field: 'expirationTime',
 					displayName: 'Auto-stop',
-					width: '105px',
+					width: '100px',
 					cellTemplate:
 						'<div class="ngCellText" ng-class="col.colIndex()">' +
 							'<span ng-cell-text>{{getAppExpirationTime(row.entity)}}</span>' +
@@ -206,6 +205,16 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			return AppsService.stopBatchApps($scope.currentClass.id, appsForAction);
 		};
 
+		$scope.autoStopApps = function() {
+			var modalInstance = $dialogs.create('app/pages/trainer/classes/single-class/trainer-auto-stop-dialog.html', 'trainerAutoStopController');
+			return modalInstance.result.then(
+				function(autoStopMinutes) {
+					var appsForAction = prepareAppsForAction();
+					return AppsService.autoStopBatchApps(appsForAction, autoStopMinutes).then(fetchClassApps);
+				}
+			);
+		};
+
 		$scope.isCreateDisabled = function() {
             return $scope.viewModel.selectedApps.length <= 0;
 		};
@@ -222,9 +231,17 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			return $scope.viewModel.selectedApps.length <= 0;
 		};
 
+		$scope.isAutoStopDisabled = function() {
+			return $scope.viewModel.selectedApps.length <= 0;
+		};
+
 		$scope.getAppExpirationTime = function(app) {
-			if (!app || !app.expirationTime || app.numOfRunningVms === 0) {
+			if (!app || !app.numOfRunningVms) {
 				return '-';
+			}
+
+			if (!app.expirationTime || app.expirationTime === '-1') {
+				return 'Never';
 			}
 
 			var expirationMoment = moment(parseInt(app.expirationTime));

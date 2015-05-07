@@ -242,6 +242,34 @@ function appAction(appId, action, autoStop, ravelloUsername, ravelloPassword) {
 	);
 }
 
+exports.appsBatchAutoStop = function(request, response, next) {
+	var user = request.user;
+
+	if (!user.ravelloCredentials) {
+		next(errorHandler.createError(401, 'User does not have sufficient Ravello credentials'));
+		return;
+	}
+
+	var ravelloUsername = user.ravelloCredentials.username;
+	var ravelloPassword = user.ravelloCredentials.password;
+
+	var apps = request.body.apps;
+	var autoStopMinutes = request.body.autoStopMinutes;
+	var autoStop = autoStopMinutes === '-1' ? parseInt(autoStopMinutes) : parseInt(autoStopMinutes) * 60;
+
+	return q.all(_.map(apps, function(app) {
+		if (app.deployment && app.deployment.expirationType !== 'AUTO_STOPPED') {
+			return q(null);
+		}
+
+		return appsService.appAutoStop(app.ravelloId, autoStop, ravelloUsername, ravelloPassword);
+	})).then(
+		function() {
+			response.send(200);
+		}
+	).catch(next);
+};
+
 // These actions are taken by Student users.
 
 exports.vmAction = function(request, response, next) {

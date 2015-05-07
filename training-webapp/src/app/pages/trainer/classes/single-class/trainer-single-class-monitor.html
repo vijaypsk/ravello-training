@@ -12,9 +12,12 @@
 		<button id="startAppBtn" class="btn btn-default" ng-click="startApps()" ng-disabled="isStartDisabled()">
 			<i class="fa fa-play"></i> Start app
 		</button>
-		<button id="stopAppBtn" class="btn btn-default" ng-click="stopApps()" ng-disabled="isStopDisabled()">
-			<i class="fa fa-stop"></i> Stop app
-		</button>
+        <button id="stopAppBtn" class="btn btn-default" ng-click="stopApps()" ng-disabled="isStopDisabled()">
+            <i class="fa fa-stop"></i> Stop app
+        </button>
+        <button id="autostopAppBtn" class="btn btn-default" ng-click="autoStopApps()" ng-disabled="isAutoStopDisabled()">
+            <i class="fa fa-clock-o"></i> Auto-stop app
+        </button>
 		<button id="refreshBtn" class="btn btn-default pull-right" ng-click="refreshState(true)">
 			<i class="fa fa-refresh"></i> Refresh
 		</button>

@@ -30,6 +30,10 @@ angular.module('trng.services').factory('AppsService', [
                 return AppsProxy.stopBatchApps(classId, apps);
 			},
 
+            autoStopBatchApps: function(apps, autoStopMinutes) {
+                return AppsProxy.autoStopBatchApps(apps, autoStopMinutes);
+            },
+
 			startVm: function(appId, vmId) {
                 return AppsProxy.startVm(appId, vmId);
             },
