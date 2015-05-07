@@ -8,5 +8,5 @@ fi
 username=$1
 password=$2
 
-mongo -u $username -p $password training $RAVELLO_TRAINING_HOME/js/init_db.js
+mongo -u $username -p $password training $RAVELLO_TRAINING_HOME/bin/js/init_db.js
 
