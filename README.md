@@ -32,7 +32,7 @@ You need to have the following components installed:
 ### How to install?
 
 #### General
-1. Set the RAVELLO_TRAINING_HOME environment variable to the root directory of the project, for example :
+1. Set the RAVELLO_TRAINING_HOME environment variable to the root directory of the project, for example:
 
 ```
 export RAVELLO_TRAINING_HOME=/home/myUser/ravello-training
@@ -47,7 +47,7 @@ export RAVELLO_TRAINING_HOME=/home/myUser/ravello-training
 
 4. By default, the application is launched on port 8080. If you would like to change it, you can do so in the Gruntfile.js file, under the 'connect.options' property.
 
-5. grunt
+5. grunt build
 
 #### REST server
 1. cd training-server
@@ -60,8 +60,8 @@ export RAVELLO_TRAINING_HOME=/home/myUser/ravello-training
 In the root directory, run:  
 
 ```
-config/startup_static_server.sh
-config/startup_rest_server.sh
+bin/startup_static_server.sh
+bin/startup_rest_server.sh
 ```
 
 Now you can access the application locally at:  
@@ -81,13 +81,43 @@ config/start_rest_server.sh
 
 ### Additional configuration
 
-To configure the application to its initial state, run from the root directory:
+#### Create the applicative MongoDB user
+**Important:** the REST server accesses the MongoDB with a username and password.
+
+By default, they are:
+
+username - training
+
+password - training
+
+Use MongoDB to create this user and password.
+
+**It is strongly recommended that you change the password, to something specific to your organization.**
+
+If the password was indeed changed, you'd have to change the properties of the REST server, and set the new password.
+
+Edit the file /Users/danielw/Workspaces/git/ravello_training/training-server/server/modules/config/properties.js, and change the properties 'dbUsername' and 'dbPassword' to match the ones you set in the previous step.
+
+#### Configure the DB
+To configure the application to its initial state, run:
 
 ```
-mongo training config/init_db.js
+cd bin
+./init_db.sh <username> <password>
 ```
 
-This creates the basic 'admin' user, with which you could create the other application users, and then start using its full functionality.
+Where <username> and <password> are the ones determined previously. 
+
+This will create the basic 'admin' user, with which you could create the other application users, and then start using its full functionality.
+
+#### Enable remote access for MongoDB
+
+It might be helpful to open the MongoDB for remote access, to ease later support.
+To do so, MongoDB has to be configured to accept remote access.
+In addition, since remote access will be enabled, it is recommended to also enable authentication in the DB, so that only authenticated users could access.
+A complimentary MongoDB configuration file is supplied, as an example of how to do both: open the DB for remote access, and enable authentication.
+
+This file is in config/mongodb.conf
 
 ### Troubleshooting
 
