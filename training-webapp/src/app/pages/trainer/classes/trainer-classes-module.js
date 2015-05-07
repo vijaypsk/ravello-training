@@ -3,7 +3,6 @@
 (function (angular) {
     angular.module('trng.trainer.training.classes', [
         'ngGrid',
-        'ngQuickDate',
         'ui.bootstrap',
         'trng.config',
         'trng.services',
@@ -12,16 +11,10 @@
     ]);
 
     angular.module('trng.trainer.training.classes').config([
-        'ngQuickDateDefaultsProvider',
         '$urlRouterProvider',
         '$stateProvider',
         'StatesNames',
-        function(ngQuickDateDefaultsProvider, $urlRouterProvider, $stateProvider, StatesNames) {
-
-            ngQuickDateDefaultsProvider.set('parseDateFunction', function(str) {
-                return Date.parse(str);
-            });
-
+        function($urlRouterProvider, $stateProvider, StatesNames) {
             $stateProvider.
                 state(StatesNames.trainer.training.singleClass.addClass.name, {
                     url: '/add',
