@@ -30,7 +30,6 @@
     "angular-scenario": "1.2.6"
   },
   "resolutions": {
-    "angular": "1.2.14",
-    "angular-bootstrap": "0.10.0"
+    "angular": "1.2.14"
   }
 }
