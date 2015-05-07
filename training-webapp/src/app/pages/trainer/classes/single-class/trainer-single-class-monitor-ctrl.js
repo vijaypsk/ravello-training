@@ -102,7 +102,16 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                     field: 'status',
                     displayName: 'Status',
 					width: '75px'
-                }
+                },
+				{
+					field: 'expirationTime',
+					displayName: 'Auto-stop',
+					width: '105px',
+					cellTemplate:
+						'<div class="ngCellText" ng-class="col.colIndex()">' +
+							'<span ng-cell-text>{{getAppExpirationTime(row.entity)}}</span>' +
+						'</div>'
+				}
             ];
         };
 
@@ -211,6 +220,16 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
 		$scope.isStopDisabled = function() {
 			return $scope.viewModel.selectedApps.length <= 0;
+		};
+
+		$scope.getAppExpirationTime = function(app) {
+			if (!app || !app.expirationTime || app.numOfRunningVms === 0) {
+				return '-';
+			}
+
+			var expirationMoment = moment(parseInt(app.expirationTime));
+			var diff = expirationMoment.diff(moment());
+			return moment.utc(diff).format('HH:mm') + 'hr';
 		};
 
 		/* --- Private functions --- */

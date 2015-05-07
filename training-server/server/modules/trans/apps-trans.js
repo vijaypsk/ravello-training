@@ -57,6 +57,7 @@ exports.ravelloObjectToTrainerDto = function(app) {
         name: app.name,
         blueprintId: app.baseBlueprintId.toString(),
         creationTime: new Date(parseInt(app.creationTime)),
-        numOfRunningVms: app.deployment ? app.deployment.totalActiveVms : 0
+        numOfRunningVms: app.deployment ? app.deployment.totalActiveVms : 0,
+        expirationTime: app.deployment ? app.deployment.expirationTime : null
     };
 };

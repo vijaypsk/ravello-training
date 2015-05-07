@@ -226,7 +226,7 @@ function appAction(appId, action, autoStop, ravelloUsername, ravelloPassword) {
 		function(result) {
 			if (result.status === 200) {
 				var app = result.body;
-				if (app.deployment.expirationType !== 'AUTO_STOPPED') {
+				if (app.deployment && app.deployment.expirationType !== 'AUTO_STOPPED') {
 					return q(null);
 				}
 

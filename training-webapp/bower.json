@@ -24,7 +24,8 @@
     "angular-growl": "0.4.0",
     "dialogs": "3.1.0",
     "font-awesome": "~4.0.3",
-    "ua-parser-js": "~0.7.3"
+    "ua-parser-js": "~0.7.3",
+    "moment": "~2.10.2"
   },
   "devDependencies": {
     "angular-mocks": "1.2.6",
