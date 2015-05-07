@@ -1,0 +1,7 @@
+files:
+  - /home/ubuntu/Workspace/ravello_training/training-server/ravello_training_server.log
+destination:
+  host: logs2.papertrailapp.com
+  port: 28841
+  protocol: tcp
+
