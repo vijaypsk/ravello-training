@@ -1,15 +1,11 @@
 #!/bin/sh
 
-TP_HOME=~/Workspace/ravello_training
-
-cd $TP_HOME
-
 echo "Step 1/7: fetching new code from github.com"
 echo ""
 
 git pull
 
-cd $TP_HOME/training-webapp
+cd $RAVELLO_TRAINING_HOME/training-webapp
 
 echo "Updating webapp"
 echo ""
@@ -29,7 +25,7 @@ echo ""
 
 grunt build
 
-cd $TP_HOME/training-server
+cd $RAVELLO_TRAINING_HOME/training-server
 
 echo "Updating server"
 echo ""
@@ -42,16 +38,16 @@ npm install
 echo "Step 6/7: setting revision.txt"
 echo ""
 
-rm -f $TP_HOME/training-webapp/target/revision.txt
-rm -f $TP_HOME/training-server/revision.txt
+rm -f $RAVELLO_TRAINING_HOME/training-webapp/target/revision.txt
+rm -f $RAVELLO_TRAINING_HOME/training-server/revision.txt
 
-git rev-parse HEAD > $TP_HOME/training-webapp/target/revision.txt
-cp $TP_HOME/training-webapp/target/revision.txt $TP_HOME/training-server/revision.txt
+git rev-parse HEAD > $RAVELLO_TRAINING_HOME/training-webapp/target/revision.txt
+cp $RAVELLO_TRAINING_HOME/training-webapp/target/revision.txt $RAVELLO_TRAINING_HOME/training-server/revision.txt
 
 echo "Step 7/7: restarting node server"
 echo ""
 
-cd $TP_HOME/bin
+cd $RAVELLO_TRAINING_HOME/bin
 
 ./restart_rest_server.sh
 
