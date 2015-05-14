@@ -1,11 +1,8 @@
 #!/bin/sh
 
-echo "Step 0/7: prepare script - set up home directory and bin folder"
+echo "Step 0/7: prepare script - set up home directory"
 echo ""
-
 export RAVELLO_TRAINING_HOME="/home/ubuntu/Workspace/ravello_training"
-mkdir $RAVELLO_TRAINING_HOME/bin
-cp *.* $RAVELLO_TRAINING_HOME/bin
 
 echo "Step 1/7: fetching new code from github.com"
 echo ""
