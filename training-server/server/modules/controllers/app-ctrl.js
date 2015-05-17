@@ -212,14 +212,7 @@ function batchAppAction(request, response, next, action, shouldAutoStop) {
 				var autoStop = null;
 
 				if (shouldAutoStop) {
-					autoStop = properties.defaultAutoStopSeconds;
-					var publishDetails = _.find(classData.bpPublishDetailsList, {bpId: app.bpId});
-					if (publishDetails) {
-						autoStop = publishDetails.autoStop;
-						if (autoStop !== -1) {
-							autoStop *= 60;
-						}
-					}
+					autoStop = getClassAutoStopForBp(classData, app.bpId);
 				}
 
 				return appAction(app.ravelloId, action, shouldAutoStop, autoStop, ravelloUsername, ravelloPassword);
@@ -238,20 +231,7 @@ function appAction(appId, action, shouldAutoStop, defaultAutoStop, ravelloUserna
 		function(result) {
 			if (shouldAutoStop && result.status === 200) {
 				var app = result.body;
-
-				var autoStop = defaultAutoStop;
-
-				// If the App was stopped by the user - use it's existing expiration time:
-				// if 'Never', keep with 'Never', otherwise use the existing expiration.
-				// Otherwise, it means the expiration time had been crossed, so set a new expiration using the default.
-				if (app.deployment && app.deployment.expirationType === 'STOPPED_BY_USER') {
-					if (!app.deployment.expirationTime) {
-						autoStop = -1;
-					} else {
-						autoStop = (app.deployment.expirationTime - Date.now()) / 1000;
-					}
-				}
-
+				var autoStop = determineAppAutoStop(app, defaultAutoStop);
 				return appsService.appAutoStop(appId, autoStop, ravelloUsername, ravelloPassword);
 			}
 		}
@@ -280,7 +260,7 @@ exports.appsBatchAutoStop = function(request, response, next) {
 	var autoStop = autoStopMinutes === '-1' ? parseInt(autoStopMinutes) : parseInt(autoStopMinutes) * 60;
 
 	return q.all(_.map(apps, function(app) {
-		if (app.deployment && app.deployment.expirationType !== 'AUTO_STOPPED') {
+		if (app.deployment) {
 			return q(null);
 		}
 
@@ -318,19 +298,17 @@ exports.vmAction = function(request, response, next) {
 			return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
 				function(result) {
 					var app = result.body;
-					if (app.deployment.expirationType === 'AUTO_STOPPED') {
-						return appsService.appAutoStop(appId, properties.defaultAutoStopSeconds, ravelloUsername, ravelloPassword);
-					}
+					var defaultAutoStop = getClassAutoStopForBp(classData, app.baseBlueprintId);
+					var autoStop = determineAppAutoStop(app, defaultAutoStop);
+					return appsService.appAutoStop(appId, autoStop, ravelloUsername, ravelloPassword);
 				}
 			).then(
-				function(autoStopResult) {
-					if (!autoStopResult || autoStopResult.status === 204) {
-						return appsService.vmAction(appId, vmId, action, ravelloUsername, ravelloPassword).then(
-							function() {
-								response.send(200);
-							}
-						);
-					}
+				function() {
+					return appsService.vmAction(appId, vmId, action, ravelloUsername, ravelloPassword).then(
+						function() {
+							response.send(200);
+						}
+					);
 				}
 			);
 		}
@@ -365,3 +343,41 @@ exports.vmVnc = function(request, response, next) {
         }
     ).catch(next);
 };
+
+// Private functions
+
+function getClassAutoStopForBp(classData, bpId) {
+	var autoStop = properties.defaultAutoStopSeconds;
+	var
+		publishDetails = _.find(classData.bpPublishDetailsList, {bpId: bpId});
+	if (publishDetails) {
+		autoStop = publishDetails.autoStop;
+		if (autoStop !== -1) {
+			autoStop *= 60;
+		}
+	}
+
+	return autoStop;
+}
+
+function determineAppAutoStop(app, defaultAutoStop) {
+	var autoStop = null;
+
+	if (app.deployment) {
+		// If the app already has a valid (later than now) expiration time - stick with it.
+		if (app.deployment.expirationTime && app.deployment.expirationTime > Date.now()) {
+			autoStop = (app.deployment.expirationTime - Date.now()) / 1000;
+		} else {
+			// Otherwise, it means there was no explicit expiration.
+			// If the app was stopped manually, though it has no expiration - it means its expiration is in fact Never.
+			// If the app was stopped automatically - it means it in fact expired, and new (default) expiration should be set.
+			if (!app.deployment.expirationType || app.deployment.expirationType === 'STOPPED_BY_USER') {
+				autoStop = -1;
+			} else {
+				autoStop = defaultAutoStop;
+			}
+		}
+	}
+
+	return autoStop;
+}
