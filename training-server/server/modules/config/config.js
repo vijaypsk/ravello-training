@@ -24,7 +24,7 @@ module.exports = function(app) {
         // Middleware
 
         app.use(function(request, response, next) {
-            logger.info('Get request %s %s', request.method, request.url);
+            logger.info('Handle request: %s %s', request.method, request.url);
             next();
         });
 
