@@ -142,10 +142,14 @@ module.exports = function(app) {
         authorization.isAuthorized(['TRAINER']),
         appController.deleteApp);
 
-	app.post('/rest/applications/action/:action',
-		passport.authenticate('basic', {session: false}),
-		authorization.isAuthorized(['TRAINER']),
-		appController.appsBatchActions);
+    app.post('/rest/applications/action/start',
+        passport.authenticate('basic', {session: false}),
+        authorization.isAuthorized(['TRAINER']),
+        appController.appsBatchStart);
+    app.post('/rest/applications/action/stop',
+        passport.authenticate('basic', {session: false}),
+        authorization.isAuthorized(['TRAINER']),
+        appController.appsBatchStop);
 	app.post('/rest/applications/autostop',
 		passport.authenticate('basic', {session: false}),
 		authorization.isAuthorized(['TRAINER']),

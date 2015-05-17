@@ -182,7 +182,15 @@ exports.deleteApp = function(request, response, next) {
     ).catch(next);
 };
 
-exports.appsBatchActions = function(request, response, next) {
+exports.appsBatchStart = function(request, response, next) {
+	batchAppAction(request, response, next, 'start', true);
+};
+
+exports.appsBatchStop = function(request, response, next) {
+	batchAppAction(request, response, next, 'stop', false);
+};
+
+function batchAppAction(request, response, next, action, shouldAutoStop) {
 	var user = request.user;
 
 	if (!user.ravelloCredentials) {
@@ -195,23 +203,26 @@ exports.appsBatchActions = function(request, response, next) {
 
 	var classId = request.body.classId;
 	var apps = request.body.apps;
-	var action = request.params.action;
 
 	classesDal.getClass(classId).then(
 		function(classEntity) {
 			var classData = classesTrans.entityToDto(classEntity);
 
 			return q.all(_.map(apps, function(app) {
-				var autoStop = properties.defaultAutoStopSeconds;
-				var publishDetails = _.find(classData.bpPublishDetailsList, {bpId: app.bpId});
-				if (publishDetails) {
-					autoStop = publishDetails.autoStop;
-					if (autoStop !== -1) {
-						autoStop *= 60;
+				var autoStop = null;
+
+				if (shouldAutoStop) {
+					autoStop = properties.defaultAutoStopSeconds;
+					var publishDetails = _.find(classData.bpPublishDetailsList, {bpId: app.bpId});
+					if (publishDetails) {
+						autoStop = publishDetails.autoStop;
+						if (autoStop !== -1) {
+							autoStop *= 60;
+						}
 					}
 				}
 
-				return appAction(app.ravelloId, action, autoStop, ravelloUsername, ravelloPassword);
+				return appAction(app.ravelloId, action, shouldAutoStop, autoStop, ravelloUsername, ravelloPassword);
 			})).then(
 				function() {
 					response.send(200);
@@ -219,15 +230,26 @@ exports.appsBatchActions = function(request, response, next) {
 			).catch(next);
 		}
 	);
-};
 
-function appAction(appId, action, autoStop, ravelloUsername, ravelloPassword) {
+}
+
+function appAction(appId, action, shouldAutoStop, defaultAutoStop, ravelloUsername, ravelloPassword) {
 	return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
 		function(result) {
-			if (result.status === 200) {
+			if (shouldAutoStop && result.status === 200) {
 				var app = result.body;
-				if (app.deployment && app.deployment.expirationType !== 'AUTO_STOPPED') {
-					return q(null);
+
+				var autoStop = defaultAutoStop;
+
+				// If the App was stopped by the user - use it's existing expiration time:
+				// if 'Never', keep with 'Never', otherwise use the existing expiration.
+				// Otherwise, it means the expiration time had been crossed, so set a new expiration using the default.
+				if (app.deployment && app.deployment.expirationType === 'STOPPED_BY_USER') {
+					if (!app.deployment.expirationTime) {
+						autoStop = -1;
+					} else {
+						autoStop = (app.deployment.expirationTime - Date.now()) / 1000;
+					}
 				}
 
 				return appsService.appAutoStop(appId, autoStop, ravelloUsername, ravelloPassword);
