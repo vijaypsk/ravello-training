@@ -65,14 +65,38 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 					{
 						name: 'Oregon',
 						value: 'Oregon'
-					}
+					},
+                    {
+                        name: 'Ireland',
+                        value: 'Ireland'
+                    },
+                    {
+                        name: 'Sao Paulo',
+                        value: 'Sao Paulo'
+                    },
+                    {
+                        name: 'Singapore',
+                        value: 'Singapore'
+                    },
+                    {
+                        name: 'Sydney',
+                        value: 'Sydney'
+                    },
+                    {
+                        name: 'Tokyo',
+                        value: 'Tokyo'
+                    }
 				],
 				'GOOGLE': [
 					{
 						name: 'us-central1',
 						value: 'us-central1'
-					}
-				]
+					},
+                    {
+                        name: 'europe-west1',
+                        value: 'europe-west1'
+                    }
+                ]
 			};
 		};
 
