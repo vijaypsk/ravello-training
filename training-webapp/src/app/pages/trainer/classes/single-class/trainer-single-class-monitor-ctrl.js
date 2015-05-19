@@ -184,12 +184,19 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 				var message = '';
 
 				var appsByPublishDetails = _.groupBy(appsData, function(app) {
-					return app.publishDetails.cloud + ' / ' + app.publishDetails.region;
+					return app.publishDetails.method === 'PERFORMANCE_OPTIMIZED' ?
+						app.publishDetails.cloud + ' / ' + app.publishDetails.region :
+						'';
 				});
 
 				_.forOwn(appsByPublishDetails, function(apps, publishString) {
-					message += 'These applications will be published on ' + publishString + ':<br>' +
-						_.pluck(apps, 'appName').join('<br>') + '<br><br>';
+					var baseMessage = publishString ?
+						'These applications will be published on ' + publishString :
+						'These applications will be published as Cost-optimized';
+
+					var appsNamesString = _.pluck(apps, 'appName').join('<br>');
+
+					message += baseMessage + ':<br>' + appsNamesString + '<br><br>';
 				});
 
 				return message.replace(/<br><br>$/, '');
