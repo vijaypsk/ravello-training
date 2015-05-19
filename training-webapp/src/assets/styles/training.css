@@ -281,3 +281,6 @@ div > span.block-title {
     line-height: 1.1;
 }
 
+.page-title {
+    margin-bottom: 10px;
+}

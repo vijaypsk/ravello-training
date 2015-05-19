@@ -141,6 +141,10 @@ angular.module('trng.trainer.training.courses').controller('trainerSingleCourseC
             $window.history.back();
         };
 
+        $scope.getTitle = function() {
+            return $scope.currentCourse.name;
+        };
+
         $scope.init();
     }
 ]);
