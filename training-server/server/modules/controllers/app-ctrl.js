@@ -151,7 +151,7 @@ exports.createApps = function(request, response, next) {
 		).catch(
 			function(error) {
 				// The publish action happens asynchronously, in the background, so we get informed about failures via the log...
-				logger.warn({reason: error.reason, status: error.status}, 'Could not publish App: %s', error.message);
+				logger.warn({reason: error.reason, status: error.status, ravelloOpId: error.ravelloOpId}, 'Could not publish App: %s', error.message);
 			}
 		);
 	}
