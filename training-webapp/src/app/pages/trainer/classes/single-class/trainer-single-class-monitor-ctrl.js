@@ -154,36 +154,60 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		};
 
 		$scope.createApps = function() {
-			var onlyAppsToCreate = _.filter(getSelectedApps(), function(app) {
-				return !app.creationTime;
-			});
+			function createAppsData() {
+				var onlyAppsToCreate = _.filter(getSelectedApps(), function(app) {
+					return !app.creationTime;
+				});
 
-			var appsData = _.map(onlyAppsToCreate, function(app) {
-				var appName =
-					$scope.currentClass.name + '##' +
-						app.blueprint.name + '##' +
-						app.student.user.username;
+				return _.map(onlyAppsToCreate, function(app) {
+					var appName =
+						$scope.currentClass.name + '##' +
+							app.blueprint.name + '##' +
+							app.student.user.username;
 
-				var appDesc =
-					'App for student ' + app.student.user.username +
-						' from BP ' + app.blueprint.name +
-						' for class ' + $scope.currentClass.name;
+					var appDesc =
+						'App for student ' + app.student.user.username +
+							' from BP ' + app.blueprint.name +
+							' for class ' + $scope.currentClass.name;
 
-				return {
-					appName: appName,
-					appDescription: appDesc,
-					userId: app.student.user.id,
-					blueprintId: app.blueprint.id,
-					publishDetails: app.publishDetails
-				};
-			});
+					return {
+						appName: appName,
+						appDescription: appDesc,
+						userId: app.student.user.id,
+						blueprintId: app.blueprint.id,
+						publishDetails: app.publishDetails
+					};
+				});
+			}
 
-			return ClassesService.createAppForStudents($scope.currentClass.id, appsData).then(fetchClassApps);
+			function createDialogMessage() {
+				var message = '';
+
+				var appsByPublishDetails = _.groupBy(appsData, function(app) {
+					return app.publishDetails.cloud + ' / ' + app.publishDetails.region;
+				});
+
+				_.forOwn(appsByPublishDetails, function(apps, publishString) {
+					message += 'These applications will be published on ' + publishString + ':<br>' +
+						_.pluck(apps, 'appName').join('<br>') + '<br><br>';
+				});
+
+				return message.replace(/<br><br>$/, '');
+			}
+
+			var appsData = createAppsData();
+
+			var dialog = $dialogs.confirm('Create applications', createDialogMessage());
+			dialog.result.then(
+				function() {
+					return ClassesService.createAppForStudents($scope.currentClass.id, appsData).then(fetchClassApps);
+				}
+			);
 		};
 
         $scope.deleteApp = function() {
             if (!$scope.isDeleteDisabled()) {
-                var dialog = $dialogs.confirm('Delete application', 'Are you sure you want to delete the selected applications?');
+                var dialog = $dialogs.confirm('Delete applications', 'Are you sure you want to delete the selected applications?');
                 return dialog.result.then(
                     function() {
                         return $q.all(_.map(getSelectedApps(), function(app) {
@@ -196,13 +220,27 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
         };
 
 		$scope.startApps = function() {
-			var appsForAction = prepareAppsForAction();
-			return AppsService.startBatchApps($scope.currentClass.id, appsForAction);
+			if (!$scope.isStartDisabled()) {
+				var dialog = $dialogs.confirm('Start applications', 'Are you sure you want to start the selected applications?');
+				return dialog.result.then(
+					function() {
+						var appsForAction = prepareAppsForAction();
+						return AppsService.startBatchApps($scope.currentClass.id, appsForAction);
+					}
+				);
+			}
 		};
 
 		$scope.stopApps = function() {
-			var appsForAction = prepareAppsForAction();
-			return AppsService.stopBatchApps($scope.currentClass.id, appsForAction);
+			if (!$scope.isStartDisabled()) {
+				var dialog = $dialogs.confirm('Stop applications', 'Are you sure you want to stop the selected applications?');
+				return dialog.result.then(
+					function() {
+						var appsForAction = prepareAppsForAction();
+						return AppsService.stopBatchApps($scope.currentClass.id, appsForAction);
+					}
+				);
+			}
 		};
 
 		$scope.autoStopApps = function() {
