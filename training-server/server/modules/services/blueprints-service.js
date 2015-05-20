@@ -12,6 +12,7 @@ exports.getBlueprints = function(username, password) {
     request.
         get(properties.ravelloUrl + properties.baseUrl + '/blueprints').
         set('Content-Length', 0).
+        set('X-LongToString', true).
         accept('application/json').
         auth(username, password).
         end(serviceResultHandler.handleSuperagentError(deferred));
@@ -25,6 +26,7 @@ exports.getBlueprintById = function(bpId, username, password) {
     request.
         get(properties.ravelloUrl + properties.baseUrl + '/blueprints/' + bpId).
         set('Content-Length', 0).
+        set('X-LongToString', true).
         accept('application/json').
         auth(username, password).
         end(serviceResultHandler.handleSuperagentError(deferred));
