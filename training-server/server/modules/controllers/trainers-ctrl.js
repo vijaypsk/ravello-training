@@ -49,7 +49,7 @@ exports.saveTrainer = function(request, response, next) {
     ).catch(
         function(error) {
             if (error.status === 401) {
-                next(errorHandler.createError(403, 'Your Ravello credentials are wrong, could not add save trainer'));
+                next(errorHandler.createError(403, 'Ravello credentials specified are invalid. Failed to add trainer.'));
             } else {
                 next(error);
             }
@@ -76,7 +76,7 @@ exports.updateTrainer = function(request, response, next) {
     ).catch(
         function(error) {
             if (error.status === 401) {
-                next(errorHandler.createError(403, 'Your Ravello credentials are wrong, could not add save trainer'));
+                next(errorHandler.createError(403, 'Ravello credentials specified are invalid. Failed to updated trainer.'));
             } else {
                 next(error);
             }
