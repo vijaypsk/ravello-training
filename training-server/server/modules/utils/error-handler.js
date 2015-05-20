@@ -80,6 +80,10 @@ function handleSuperagentError(deferred) {
 			ravelloOpId = response.headers['operation-id'];
 		}
 
+		if (ravelloOpId) {
+			logger.debug({ravelloOpId: ravelloOpId}, 'REST call returned from Ravello: %s %s', response.req.method, response.req.path);
+		}
+
 		if (errorMessage) {
 			deferred.reject(createError(status, errorMessage, error, ravelloOpId));
 		} else if (arguments.length > 2) {
