@@ -53,10 +53,10 @@ exports.updateUser = function(id, userData) {
 
     return User.findByIdAndUpdateQ(id, data, options).catch(
         function(error) {
-            var errorMessage = 'Could not update user.';
+            var errorMessage = 'Unable to update user.';
             var errorStatus = 500;
             if (error.message && error.message.indexOf("duplicate key") !== -1) {
-                errorMessage += ' Username already exists.';
+                errorMessage += ' Usernames must be unique.';
                 errorStatus = 400;
             }
             return q.reject(errorHandler.createError(errorStatus, errorMessage, error));

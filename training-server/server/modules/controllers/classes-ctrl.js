@@ -190,9 +190,9 @@ exports.updateClass = function(request, response, next) {
                                         return classesDal.getClassByUsername(student.user.username).then(
                                             function(existingUserClass) {
                                                 if (existingUserClass) {
-                                                    error.message += '<br>The student is in class: [' + existingUserClass.name + '].<br>' +
-                                                        'Unfortunately, the same username cannot be used in more than one class.<br>' +
-                                                        'Please delete the student from the other class, or change the username of this student.';
+                                                    error.message += '<br>A student with that username already exists in class: [' +
+                                                        existingUserClass.name + '].<br>' +
+                                                        'Delete the student from that class or assign this student a different username.';
                                                 }
 
                                                 return q.reject(error);

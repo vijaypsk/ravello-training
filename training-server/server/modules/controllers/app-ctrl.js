@@ -20,7 +20,7 @@ exports.createApps = function(request, response, next) {
 	var user = request.user;
 
 	if (!user.ravelloCredentials) {
-		next(errorHandler.createError(401, 'User does not have sufficient Ravello credentials'));
+		next(errorHandler.createError(401, 'You are not authorized to perform this action. Verify your Ravello credentials.'));
 		return;
 	}
 
@@ -161,7 +161,7 @@ exports.deleteApp = function(request, response, next) {
     var user = request.user;
 
     if (!user.ravelloCredentials) {
-		next(errorHandler.createError(401, 'User does not have sufficient Ravello credentials'));
+		next(errorHandler.createError(401, 'You are not authorized to perform this action.'));
         return;
     }
 
@@ -194,7 +194,7 @@ function batchAppAction(request, response, next, action, shouldAutoStop) {
 	var user = request.user;
 
 	if (!user.ravelloCredentials) {
-		next(errorHandler.createError(401, 'User does not have sufficient Ravello credentials'));
+		next(errorHandler.createError(401, 'You are not authorized to perform this action.'));
 		return;
 	}
 
@@ -248,7 +248,7 @@ exports.appsBatchAutoStop = function(request, response, next) {
 	var user = request.user;
 
 	if (!user.ravelloCredentials) {
-		next(errorHandler.createError(401, 'User does not have sufficient Ravello credentials'));
+		next(errorHandler.createError(401, 'You are not authorized to perform this action.'));
 		return;
 	}
 

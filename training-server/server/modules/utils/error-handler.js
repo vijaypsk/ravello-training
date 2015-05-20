@@ -63,8 +63,8 @@ function handleSuperagentError(deferred) {
 
 			} else if (response.status === 429) {
 				errorMessage = 'You have reached the organization rate limit for simultaneous actions that can be taken against Ravello. ' +
-					'Please consult the Ravello administrator for changing those limits for your organization. ' +
-					'In the meantime, you can try to perform actions on less applications every time.'
+					'Consult with the Ravello administrator about changing those limits for your organization. ' +
+					'In the meantime, you can try to perform actions on fewer applications at a time.'
 
 			} else if (response.status >= 400) {
 				errorMessage =
