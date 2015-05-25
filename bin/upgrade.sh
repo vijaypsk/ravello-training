@@ -2,6 +2,8 @@
 echo "Step 1/7: fetching new code from github.com"
 echo ""
 
+cd $RAVELLO_TRAINING_HOME
+
 git pull
 
 cd $RAVELLO_TRAINING_HOME/training-webapp
