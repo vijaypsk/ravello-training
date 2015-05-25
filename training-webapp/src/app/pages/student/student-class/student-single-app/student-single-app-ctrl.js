@@ -168,22 +168,19 @@ angular.module('trng.student').controller('studentSingleAppController', [
         };
 
         $scope.startButtonDisabled = function() {
-            return ($scope.selectedVms.length < 1 ||
-                !$scope.bpPermissions.startVms);
+            return ($scope.selectedVms.length < 1 || ($scope.bpPermissions ? !$scope.bpPermissions.startVms : false));
         };
 
         $scope.stopButtonDisabled = function() {
-            return ($scope.selectedVms.length < 1 ||
-                !$scope.bpPermissions.stopVms);
+            return ($scope.selectedVms.length < 1 || ($scope.bpPermissions ? !$scope.bpPermissions.stopVms : false));
         };
 
         $scope.restartButtonDisabled = function() {
-            return ($scope.selectedVms.length < 1 ||
-                !$scope.bpPermissions.restartVms);
+            return ($scope.selectedVms.length < 1 || ($scope.bpPermissions ? !$scope.bpPermissions.restartVms : false));
         };
 
         $scope.consoleButtonDisabled = function() {
-            return !$scope.bpPermissions.console;
+            return $scope.bpPermissions ? !$scope.bpPermissions.console : false;
         };
 
         $scope.refreshButtonDisabled = function() {
