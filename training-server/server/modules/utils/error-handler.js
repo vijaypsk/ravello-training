@@ -72,7 +72,7 @@ function handleSuperagentError(deferred) {
 					(response.body && response.body.operationMessages && response.body.operationMessages.length ?
 						response.body.operationMessages[0].message : null) ||
 					response.text ||
-					response.error;
+					(response.error && response.error.message ? response.error.message : response.error);
 			}
 		}
 
@@ -81,7 +81,7 @@ function handleSuperagentError(deferred) {
 		}
 
 		if (ravelloOpId) {
-			logger.debug({ravelloOpId: ravelloOpId}, 'REST call returned from Ravello: %s %s', response.req.method, response.req.path);
+			logger.debug({ravelloOpId: ravelloOpId, status: status}, 'REST call returned from Ravello: %s %s', response.req.method, response.req.path);
 		}
 
 		if (errorMessage) {
