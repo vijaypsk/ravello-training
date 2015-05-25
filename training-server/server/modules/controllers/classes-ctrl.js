@@ -14,6 +14,7 @@ var appsTrans = require('../trans/apps-trans');
 var usersTrans = require('../trans/users-trans');
 
 var appsService = require('../services/apps-service');
+var loginService = require('../services/login-service');
 
 var classValidator = require('../validators/class-validator');
 
@@ -76,6 +77,22 @@ function handleUserExistsError(student) {
         } else {
             return q.reject(error);
         }
+    }
+}
+
+function validateClassRavelloCredentials(classData, next) {
+    if (classData.ravelloCredentials.overrideTrainerCredentials) {
+        return loginService.login(classData.ravelloCredentials.username, classData.ravelloCredentials.password).catch(
+            function(error) {
+                if (error.status === 401) {
+                    next(errorHandler.createError(403, 'The overridden Ravello credentials specified are invalid. Failed to save class.'));
+                } else {
+                    next(error);
+                }
+            }
+        );
+    } else {
+        return q({});
     }
 }
 
@@ -149,6 +166,10 @@ exports.createClass = function(request, response, next) {
         ).fail(handleUserExistsError(student));
     })).then(
         function() {
+            return validateClassRavelloCredentials(classData, next);
+        }
+    ).then(
+        function() {
             return classesDal.createClass(classData).then(
                 function(result) {
                     var dto = classesTrans.entityToDto(result);
@@ -207,11 +228,15 @@ exports.updateClass = function(request, response, next) {
                         ).fail(handleUserExistsError(student));
                     })).then(
                         function() {
+                            return validateClassRavelloCredentials(classData, next);
+                        }
+                    ).then(
+                        function() {
                             // And at last, actually update the class.
                             return classesDal.updateClass(classId, classData).then(
-                                function() {
+                                function () {
                                     return classesDal.getClass(classId).then(
-                                        function(result) {
+                                        function (result) {
                                             var dto = classesTrans.entityToDto(result);
                                             response.json(dto);
                                         }
