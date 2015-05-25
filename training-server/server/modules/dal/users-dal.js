@@ -24,7 +24,7 @@ exports.getUserByRole = function(role) {
 
 exports.createUser = function(userData) {
     var user = new User(userData);
-    return user.saveQ().catch(errorHandler.handleMongoError(400, 'Could not create user'));
+    return user.saveQ().catch(handleUserExistsError);
 };
 
 exports.updateUser = function(id, userData) {
@@ -51,17 +51,7 @@ exports.updateUser = function(id, userData) {
         id = new ObjectId();
     }
 
-    return User.findByIdAndUpdateQ(id, data, options).catch(
-        function(error) {
-            var errorMessage = 'Unable to update user.';
-            var errorStatus = 500;
-            if (error.message && error.message.indexOf("duplicate key") !== -1) {
-                errorMessage += ' Usernames must be unique.';
-                errorStatus = 400;
-            }
-            return q.reject(errorHandler.createError(errorStatus, errorMessage, error));
-        }
-    );
+    return User.findByIdAndUpdateQ(id, data, options).catch(handleUserExistsError);
 };
 
 exports.deleteUser = function(id) {
@@ -71,3 +61,13 @@ exports.deleteUser = function(id) {
 exports.findAndDelete = function(id) {
     return User.findOneAndRemoveQ({'_id': new ObjectId(id)}).catch(errorHandler.handleMongoError(404, 'Could not delete user ' + id));
 };
+
+function handleUserExistsError(error) {
+    var errorMessage = 'Unable to update user.';
+    var errorStatus = 500;
+    if (error.message && error.message.indexOf("duplicate key") !== -1) {
+        errorMessage += ' Usernames must be unique.';
+        errorStatus = 400;
+    }
+    return q.reject(errorHandler.createError(errorStatus, errorMessage, error));
+}

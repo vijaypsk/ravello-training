@@ -59,6 +59,26 @@ var validateClass = function(theClass) {
     return "";
 };
 
+function handleUserExistsError(student) {
+    return function(error) {
+        if (error.status && error.status === 400) {
+            return classesDal.getClassByUsername(student.user.username).then(
+                function(existingUserClass) {
+                    if (existingUserClass) {
+                        error.message += '<br>A student with that username already exists in class: [' +
+                        existingUserClass.name + '].<br>' +
+                        'Delete the student from that class or assign this student a different username.';
+                    }
+
+                    return q.reject(error);
+                }
+            );
+        } else {
+            return q.reject(error);
+        }
+    }
+}
+
 /* --- Public functions --- */
 
 exports.getClasses = function(request, response, next) {
@@ -126,7 +146,7 @@ exports.createClass = function(request, response, next) {
             function(persistedUser) {
                 student.user = persistedUser.id;
             }
-        );
+        ).fail(handleUserExistsError(student));
     })).then(
         function() {
             return classesDal.createClass(classData).then(
@@ -175,34 +195,16 @@ exports.updateClass = function(request, response, next) {
                 function() {
                     // Then update the users for the students that remained in the class data.
                     return q.all(_.map(classData.students, function(student) {
-                            student.user = usersTrans.ravelloDtoToEntity(student.user);
-                            return usersDal.updateUser(student.user._id, student.user).then(
-                                function() {
-                                    return usersDal.getUserByUsername(student.user.username).then(
-                                        function(persistedUser) {
-                                            student.user = persistedUser.id;
-                                        }
-                                    );
-                                }
-                            ).fail(
-                                function(error) {
-                                    if (error.status && error.status === 400) {
-                                        return classesDal.getClassByUsername(student.user.username).then(
-                                            function(existingUserClass) {
-                                                if (existingUserClass) {
-                                                    error.message += '<br>A student with that username already exists in class: [' +
-                                                        existingUserClass.name + '].<br>' +
-                                                        'Delete the student from that class or assign this student a different username.';
-                                                }
-
-                                                return q.reject(error);
-                                            }
-                                        );
-                                    } else {
-                                        return q.reject(error);
+                        student.user = usersTrans.ravelloDtoToEntity(student.user);
+                        return usersDal.updateUser(student.user._id, student.user).then(
+                            function() {
+                                return usersDal.getUserByUsername(student.user.username).then(
+                                    function(persistedUser) {
+                                        student.user = persistedUser.id;
                                     }
-                                }
-                            );
+                                );
+                            }
+                        ).fail(handleUserExistsError(student));
                     })).then(
                         function() {
                             // And at last, actually update the class.
