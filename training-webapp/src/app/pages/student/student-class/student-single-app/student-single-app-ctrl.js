@@ -109,40 +109,48 @@ angular.module('trng.student').controller('studentSingleAppController', [
             });
         };
 
-        $scope.startVm = function() {
-            _.forEach($scope.selectedVms, function(vm) {
-                AppsService.startVm(currentApp.id, vm.id).then(function(result) {
+        $scope.startVms = function() {
+            var vmIds = _.pluck($scope.selectedVms, 'id');
+            AppsService.batchVmsStart(currentApp.id, vmIds).then(
+                function(result) {
                     if (result.status < 400) {
                         $scope.refreshState();
                     }
-                });
-            });
+                }
+            );
         };
 
-        $scope.stopVm = function() {
+
+        $scope.stopVms = function() {
             var dialog = $dialogs.confirm("Stop VMs", "Are you sure you want to stop the VMs?");
-            dialog.result.then(function(result) {
-                _.forEach($scope.selectedVms, function(vm) {
-                    AppsService.stopVm(currentApp.id, vm.id).then(function(result) {
-                        if (result.status < 400) {
-                            $scope.refreshState();
+            dialog.result.then(
+                function() {
+                    var vmIds = _.pluck($scope.selectedVms, 'id');
+                    AppsService.batchVmsStop(currentApp.id, vmIds).then(
+                        function(result) {
+                            if (result.status < 400) {
+                                $scope.refreshState();
+                            }
                         }
-                    });
-                });
-            });
+                    );
+                }
+            );
         };
 
-        $scope.restartVm = function() {
+        $scope.restartVms = function() {
             var dialog = $dialogs.confirm("Restart VMs", "Are you sure you want to restart the VMs?");
-            dialog.result.then(function(result) {
-                _.forEach($scope.selectedVms, function(vm) {
-                    AppsService.restartVm(currentApp.id, vm.id).then(function(result) {
-                        if (result.status < 400) {
-                            $scope.refreshState();
+            dialog.result.then(
+                function() {
+                    var vmIds = _.pluck($scope.selectedVms, 'id');
+                    AppsService.batchVmsRestart(currentApp.id, vmIds).then(
+                        function(result) {
+                            if (result.status < 400) {
+                                $scope.refreshState();
+                            }
                         }
-                    });
-                });
-            });
+                    );
+                }
+            );
         };
 
         $scope.consoleVm = function(vm) {

@@ -160,11 +160,16 @@ exports.appAutoStop = function(appId, secondsFromNow, username, password) {
     return deferred.promise;
 };
 
-exports.vmAction = function(appId, vmId, action, username, password) {
+exports.batchVmsActions = function(appId, vmIds, action, username, password) {
     var deferred = q.defer();
 
+    var dto = {
+        ids: vmIds
+    };
+
     request.
-        post(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + "/vms/" + vmId + "/" + action).
+        post(properties.ravelloUrl + properties.baseUrl + "/applications/" + appId + "/vms/" + action).
+        send(dto).
         set('Content-Length', 0).
         set('X-LongToString', true).
         accept('application/json').
@@ -187,3 +192,4 @@ exports.vmVnc = function(appId, vmId, username, password) {
 
     return deferred.promise;
 };
+

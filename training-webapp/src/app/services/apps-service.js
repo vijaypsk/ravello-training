@@ -34,16 +34,16 @@ angular.module('trng.services').factory('AppsService', [
                 return AppsProxy.autoStopBatchApps(apps, autoStopMinutes);
             },
 
-			startVm: function(appId, vmId) {
-                return AppsProxy.startVm(appId, vmId);
+            batchVmsStart: function(appId, vmIds) {
+                return AppsProxy.batchVmsStart(appId, vmIds);
             },
 
-            stopVm: function(appId, vmId) {
-                return AppsProxy.stopVm(appId, vmId);
+            batchVmsStop: function(appId, vmIds) {
+                return AppsProxy.batchVmsStop(appId, vmIds);
             },
 
-            restartVm: function(appId, vmId) {
-                return AppsProxy.restartVm(appId, vmId);
+            batchVmsRestart: function(appId, vmIds) {
+                return AppsProxy.batchVmsRestart(appId, vmIds);
             },
 
             consoleVm: function(appId, vmId) {

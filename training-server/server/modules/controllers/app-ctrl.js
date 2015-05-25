@@ -274,13 +274,14 @@ exports.appsBatchAutoStop = function(request, response, next) {
 
 // These actions are taken by Student users.
 
-exports.vmAction = function(request, response, next) {
-    var user = request.user;
-    var userId = user.id;
+exports.batchVmsActions = function(request, response, next) {
+	var user = request.user;
+	var userId = user.id;
 
 	var appId = request.params.appId;
-	var vmId = request.params.vmId;
 	var action = request.params.action;
+
+	var vmIds = request.body.vmIds;
 
 	// When the user logs in, we first need to find the class associated with that user.
 	classesDal.getClassByUserId(userId).then(
@@ -297,14 +298,18 @@ exports.vmAction = function(request, response, next) {
 
 			return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
 				function(result) {
-					var app = result.body;
-					var defaultAutoStop = getClassAutoStopForBp(classData, app.baseBlueprintId);
-					var autoStop = determineAppAutoStop(app, defaultAutoStop);
-					return appsService.appAutoStop(appId, autoStop, ravelloUsername, ravelloPassword);
+					if (action !== 'stop') {
+						var app = result.body;
+						var defaultAutoStop = getClassAutoStopForBp(classData, app.baseBlueprintId);
+						var autoStop = determineAppAutoStop(app, defaultAutoStop);
+						return appsService.appAutoStop(appId, autoStop, ravelloUsername, ravelloPassword);
+					} else {
+						return q({});
+					}
 				}
 			).then(
 				function() {
-					return appsService.vmAction(appId, vmId, action, ravelloUsername, ravelloPassword).then(
+					return appsService.batchVmsActions(appId, vmIds, action, ravelloUsername, ravelloPassword).then(
 						function() {
 							response.send(200);
 						}

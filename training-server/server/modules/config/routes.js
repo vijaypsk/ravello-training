@@ -155,10 +155,10 @@ module.exports = function(app) {
 		authorization.isAuthorized(['TRAINER']),
 		appController.appsBatchAutoStop);
 
-    app.post('/rest/applications/:appId/vms/:vmId/:action',
+    app.post('/rest/applications/:appId/vms/:action',
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['STUDENT']),
-        appController.vmAction);
+        appController.batchVmsActions);
     app.get('/rest/applications/:appId/vms/:vmId/vncUrl',
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['STUDENT']),

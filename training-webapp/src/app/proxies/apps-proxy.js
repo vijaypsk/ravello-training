@@ -70,20 +70,32 @@ angular.module('trng.proxies').factory('AppsProxy', [
                 return promise;
             },
 
-			startVm: function(appId, vmId) {
-                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/start");
+            batchVmsStart: function(appId, vmIds) {
+                var dto = {
+                    vmIds: vmIds
+                };
+
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/start', dto);
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
-            stopVm: function(appId, vmId) {
-                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/stop");
+            batchVmsStop: function(appId, vmIds) {
+                var dto = {
+                    vmIds: vmIds
+                };
+
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/stop', dto);
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
 
-            restartVm: function(appId, vmId) {
-                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/restart");
+            batchVmsRestart: function(appId, vmIds) {
+                var dto = {
+                    vmIds: vmIds
+                };
+
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/restart', dto);
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
