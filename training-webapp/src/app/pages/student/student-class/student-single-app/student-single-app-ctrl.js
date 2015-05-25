@@ -66,10 +66,10 @@ angular.module('trng.student').controller('studentSingleAppController', [
                     resizable: false,
                     cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="showDetails(row)">' +
-                            '<i class="fa fa-plus"></i> More' +
+                            '<i class="fa fa-angle-double-right"></i> Go!' +
                         '</a>' +
                         '<a href="" class="btn btn-small btn-link" ng-click="consoleVm(row)" ng-disabled="consoleButtonDisabled()">' +
-                            '<i class="fa fa-terminal"></i> Console' +
+                            '<i class="fa fa-desktop"></i> Console' +
                         '</a>'
                 }
             ];
