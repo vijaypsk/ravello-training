@@ -31,6 +31,15 @@ exports.getApp = function(appId, username, password) {
         auth(username, password).
         end(errorHandler.handleSuperagentError(deferred));
 
+    deferred.promise.catch(
+        function(error) {
+            if (error && error.status === 404) {
+                error.message = 'Could not get application information from Ravello';
+            }
+            return q.reject(error);
+        }
+    );
+
     return deferred.promise;
 };
 
@@ -58,6 +67,15 @@ exports.getAppDeployment = function(appId, username, password) {
         accept('application/json').
         auth(username, password).
         end(errorHandler.handleSuperagentError(deferred));
+
+    deferred.promise.catch(
+        function(error) {
+            if (error && error.status === 404) {
+                error.message = 'Could not get application deployment information from Ravello';
+            }
+            return q.reject(error);
+        }
+    );
 
     return deferred.promise;
 };

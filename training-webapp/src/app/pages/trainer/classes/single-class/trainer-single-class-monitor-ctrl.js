@@ -328,7 +328,11 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		}
 
 		function prepareAppsForAction() {
-			return _.map(getSelectedApps(), function(app) {
+			var filteredApps = _.filter(getSelectedApps(), function(app) {
+				return app && app.creationTime;
+			});
+
+			return _.map(filteredApps, function(app) {
 				return {
 					ravelloId: app.ravelloId,
 					bpId: app.blueprint.id

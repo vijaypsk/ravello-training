@@ -220,9 +220,9 @@ function batchAppAction(request, response, next, action, shouldAutoStop) {
 				function() {
 					response.send(200);
 				}
-			).catch(next);
+			);
 		}
-	);
+	).catch(next);
 
 }
 
