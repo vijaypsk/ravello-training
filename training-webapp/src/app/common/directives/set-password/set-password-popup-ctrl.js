@@ -27,7 +27,7 @@ angular.module('trng.common.directives.setPassword').controller('setPasswordPopu
         };
 
         $scope.getOkButtonExplanation = function() {
-            return $scope.isOkDisabled() ? 'Passwords mush match!' : '';
+            return $scope.isOkDisabled() ? 'Passwords must match!' : '';
         };
 
         $scope.init();
