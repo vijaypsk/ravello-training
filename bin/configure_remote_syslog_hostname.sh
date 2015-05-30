@@ -7,3 +7,5 @@ echo "hostname: $hostname" >> /tmp/log_files.yml
 
 cp /tmp/log_files.yml /etc/log_files.yml
 
+sudo /etc/init.d/remote_syslog restart
+
