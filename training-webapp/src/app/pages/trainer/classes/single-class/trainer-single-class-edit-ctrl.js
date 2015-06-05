@@ -114,7 +114,14 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 
 		$scope.initClass = function() {
             $scope.currentClass = currentClass;
-            $scope.currentClass.course = $scope.courses && $scope.courses.length ? $scope.courses[0] : null;
+            if ($scope.courses && $scope.courses.length) {
+                $scope.currentClass.course = _.find($scope.courses, function(course) {
+                    return course.id === currentClass.courseId;
+                });
+            } else {
+                $scope.currentClass.course = null;
+            }
+
             $scope.isRavelloCredentials = false;
 
             $scope.$watch('currentClass.ravelloCredentials.overrideTrainerCredentials', function(newVal, oldVal) {
