@@ -183,7 +183,7 @@ exports.getAppVms = function(request, response, next) {
             var ravelloUsername = classData.ravelloCredentials.username;
             var ravelloPassword = classData.ravelloCredentials.password;
 
-			appsService.getApp(appId, ravelloUsername, ravelloPassword).then(
+			return appsService.getApp(appId, ravelloUsername, ravelloPassword).then(
                 function(appResult) {
                     var app = appResult.body;
 
