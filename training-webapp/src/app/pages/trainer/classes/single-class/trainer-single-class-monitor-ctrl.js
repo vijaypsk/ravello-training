@@ -100,8 +100,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
                 {
                     field: 'status',
                     displayName: 'Status',
-					width: '75px'
-                },
+					width: '105px',
+					cellTemplate:
+						'<div class="ngCellText" ng-class="col.colIndex()">' +
+							'<span ng-cell-text class="{{determineAppStatusStyle(row.entity)}}">{{COL_FIELD}}</span>' +
+						'</div>'
+				},
 				{
 					field: 'expirationTime',
 					displayName: 'Auto-stop',
@@ -294,6 +298,10 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			return moment.utc(diff).format('HH:mm') + 'hr';
 		};
 
+		$scope.determineAppStatusStyle = function(app) {
+			return app.status === 'Not published' ? 'status-warn' : '';
+		};
+
 		/* --- Private functions --- */
 
         function fetchClassApps(track) {
@@ -320,6 +328,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		function determineAppStatus(app) {
 			if (!app.ravelloId) {
 				app.status = '-';
+			} else if (!app.hasDeployment) {
+				app.status = 'Not published';
 			} else if (app.numOfRunningVms > 0) {
 				app.status = 'Started';
 			} else {

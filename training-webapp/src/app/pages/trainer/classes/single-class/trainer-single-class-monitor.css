@@ -19,3 +19,7 @@
 .auto-stop-form {
     margin-top: 22px;
 }
+
+.status-warn {
+    color: red;
+}
