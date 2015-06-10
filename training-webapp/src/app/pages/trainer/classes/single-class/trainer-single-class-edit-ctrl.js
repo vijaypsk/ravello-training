@@ -115,9 +115,14 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 		$scope.initClass = function() {
             $scope.currentClass = currentClass;
             if ($scope.courses && $scope.courses.length) {
-                $scope.currentClass.course = _.find($scope.courses, function(course) {
-                    return course.id === currentClass.courseId;
-                });
+                if (!$scope.currentClass.courseId) {
+                    $scope.currentClass.course = $scope.courses[0];
+                    $scope.currentClass.courseId = $scope.courses[0].id;
+                } else {
+                    $scope.currentClass.course = _.find($scope.courses, function(course) {
+                        return course.id === currentClass.courseId;
+                    });
+                }
             } else {
                 $scope.currentClass.course = null;
             }
