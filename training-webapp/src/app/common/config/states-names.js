@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('trng.config').constant('StatesNames', {
+    root: 'root',
     login: {
         name: 'login'
     },

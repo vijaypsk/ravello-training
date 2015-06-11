@@ -14,6 +14,7 @@ var coursesController = require('./../controllers/courses-ctrl');
 var blueprintsController = require('./../controllers/blueprints-ctrl');
 var studentController = require('./../controllers/student-ctrl');
 var appController = require('./../controllers/app-ctrl');
+var featureTogglesController = require('./../controllers/toggle-ctrl');
 var versionController = require('./../controllers/version-ctrl');
 
 //var classesController = require('./../controllers/mocks/classes-ctrl-mock');
@@ -163,6 +164,9 @@ module.exports = function(app) {
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['STUDENT']),
         appController.vmVnc);
+
+    app.get('/rest/featureToggles',
+        featureTogglesController.getAllFeatureToggles);
 
     app.get('/rest/version',
         versionController.getVersion);

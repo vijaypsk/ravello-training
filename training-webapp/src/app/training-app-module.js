@@ -30,23 +30,31 @@
             // Routes configuration.
 
             $stateProvider.
-                state(StatesNames.login.name, {
+                state(StatesNames.root, {
+                    abstract: true,
+                    templateUrl: 'app/pages/root/root.html',
+                    resolve: rootResolver
+                }).state(StatesNames.login.name, {
                     url: '/login',
                     templateUrl: 'app/pages/login/login.html',
-                    controller: 'loginController'
+                    controller: 'loginController',
+                    parent: StatesNames.root
                 }).state(StatesNames.admin.name, {
                     url: '/admin',
                     templateUrl: 'app/pages/admin/admin.html',
-                    controller: 'AdminController'
+                    controller: 'AdminController',
+                    parent: StatesNames.root
                 }).state(StatesNames.trainer.name, {
                     url: '/trainer',
                     templateUrl: 'app/pages/trainer/trainer.html',
-                    controller: 'TrainerController'
+                    controller: 'TrainerController',
+                    parent: StatesNames.root
                 }).state(StatesNames.student.name, {
                     url: '/student',
                     templateUrl: 'app/pages/student/student.html',
                     controller: 'studentController',
-                    resolve: studentResolver
+                    resolve: studentResolver,
+                    parent: StatesNames.root
                 });
 
             // HTTP configurations.

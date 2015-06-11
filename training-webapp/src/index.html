@@ -27,6 +27,7 @@
 
     <!-- build:css({.tmp,src}) assets/styles/main.css -->
     <link rel="stylesheet" type="text/css" href="assets/styles/training.css" />
+    <link rel="stylesheet" type="text/css" href="app/pages/root/root.css" />
     <link rel="stylesheet" type="text/css" href="app/pages/admin/trainers/admin-trainers.css" />
     <link rel="stylesheet" type="text/css" href="app/pages/admin/trainers/single-trainer/admin-single-trainer.css" />
     <link rel="stylesheet" type="text/css" href="app/pages/trainer/classes/trainer-classes.css" />
@@ -104,6 +105,7 @@
     <script src='app/proxies/students-proxy.js'></script>
     <script src='app/proxies/apps-proxy.js'></script>
     <script src='app/proxies/trainers-proxy.js'></script>
+    <script src='app/proxies/feature-toggles-proxy.js'></script>
 
     <script src='app/transformers/trans-module.js'></script>
     <script src='app/transformers/classes-trans.js'></script>
@@ -122,6 +124,9 @@
     <script src='app/services/students-service.js'></script>
     <script src='app/services/apps-service.js'></script>
     <script src='app/services/trainers-service.js'></script>
+    <script src='app/services/feature-toggles-service.js'></script>
+
+    <script src='app/pages/root/root-resolver.js'></script>
 
     <script src='app/pages/login/login-module.js'></script>
     <script src='app/pages/login/login-ctrl.js'></script>

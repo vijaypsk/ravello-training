@@ -32,3 +32,7 @@ exports.publishAppsChunkSize = 30;
 exports.publishAppsChunkDelay = 1000 * 60 * 5;
 
 exports.logLevel = 'debug';
+
+// Feature toggles.
+exports.featureToggles = {
+};
