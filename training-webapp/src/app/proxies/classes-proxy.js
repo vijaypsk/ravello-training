@@ -55,6 +55,16 @@ angular.module('trng.proxies').factory('ClassesProxy', [
                 var promise = $http.delete(CommonConstants.baseUrl + '/rest/classes/' + classId);
                 TrainingMainTracker.addPromise(promise);
                 return promise;
+            },
+
+            exportAppsToCsv: function(classId, appIds) {
+                var dto = {
+                    appIds: appIds
+                };
+
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/classes/' + classId + '/apps/export', dto);
+                TrainingMainTracker.addPromise(promise);
+                return promise;
             }
         };
     }

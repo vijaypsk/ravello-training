@@ -9,7 +9,8 @@ angular.module('trng.services').factory('ClassesService', [
 	'CoursesService',
 	'AppsService',
 	'LoginModel',
-	function($rootScope, $q, CommonConstants, ClassesProxy, ClassesTrans, CoursesService, AppsService, LoginModel) {
+	'FileUtil',
+	function($rootScope, $q, CommonConstants, ClassesProxy, ClassesTrans, CoursesService, AppsService, LoginModel, FileUtil) {
 
         var cachedClasses = null;
 
@@ -306,6 +307,14 @@ angular.module('trng.services').factory('ClassesService', [
                                 return result;
                             }
                         }
+                    }
+                );
+            },
+
+            exportAppsToCsv: function(classId, appIds) {
+                return ClassesProxy.exportAppsToCsv(classId, appIds).then(
+                    function(response) {
+                        FileUtil.downloadText('apps.csv', response.data);
                     }
                 );
             }

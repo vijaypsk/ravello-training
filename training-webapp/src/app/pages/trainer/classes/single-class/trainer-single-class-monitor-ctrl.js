@@ -14,10 +14,11 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
     'ClassesService',
     'CoursesService',
     'AppsService',
+    'FeatureTogglesService',
     'classApps',
     'currentClass',
     function ($log, $scope, $rootScope, $q, $state, $dialogs, $timeout, CommonConstants, StatesNames, DateUtil, ClassesService, CoursesService,
-			  AppsService, classApps, currentClass) {
+			  AppsService, FeatureTogglesService, classApps, currentClass) {
 
         $scope.init = function () {
             $scope.currentClass = currentClass;
@@ -284,6 +285,10 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			return $scope.viewModel.selectedApps.length <= 0;
 		};
 
+		$scope.isExportCsvDisabled = function() {
+			return $scope.viewModel.selectedApps.length <= 0;
+		};
+
 		$scope.getAppExpirationTime = function(app) {
 			if (!app || !app.numOfRunningVms) {
 				return '-';
@@ -300,6 +305,20 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
 		$scope.determineAppStatusStyle = function(app) {
 			return app.status === 'Not published' ? 'status-warn' : '';
+		};
+
+		$scope.showExportCsv = function() {
+			return FeatureTogglesService.hasFeatureToggle(CommonConstants.EXPORT_STUDENT_APPS_TO_CSV_TOGGLE);
+		};
+
+		$scope.exportAppsToCsv = function() {
+			var filteredApps = _.filter(getSelectedApps(), function(app) {
+				return app && app.creationTime && app.numOfRunningVms > 0;
+			});
+
+			var appIds = _.pluck(filteredApps, 'ravelloId');
+
+			ClassesService.exportAppsToCsv($scope.currentClass.id, appIds);
 		};
 
 		/* --- Private functions --- */

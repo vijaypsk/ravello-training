@@ -18,12 +18,8 @@ angular.module('trng.proxies').factory('FeatureTogglesService', ['$q', 'FeatureT
 				);
 			},
 
-			getFeatureToggle: function (toggleName) {
-				return service.getAllFeatureToggles().then(
-					function() {
-						return featureToggles[toggleName];
-					}
-				);
+			hasFeatureToggle: function (toggleName) {
+				return featureToggles ? featureToggles[toggleName] : false;
 			}
 		};
 

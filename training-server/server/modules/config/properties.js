@@ -35,4 +35,5 @@ exports.logLevel = 'debug';
 
 // Feature toggles.
 exports.featureToggles = {
+	EXPORT_STUDENTS_APP_TO_CSV: false
 };

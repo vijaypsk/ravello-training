@@ -11,5 +11,7 @@ angular.module('trng.config').constant('CommonConstants', {
 	defaultRegion: 'Virginia',
 	defaultAutoStopMinutes: 120,
 
-	courseChangedEvent: 'COURSE_CHANGED'
+	courseChangedEvent: 'COURSE_CHANGED',
+
+	EXPORT_STUDENT_APPS_TO_CSV_TOGGLE: 'EXPORT_STUDENTS_APP_TO_CSV'
 });

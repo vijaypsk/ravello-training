@@ -69,6 +69,13 @@ module.exports = function (grunt) {
                     port: 3000,
                     https: false,
                     changeOrigin: false
+                },
+                {
+                    context: '/download',
+                    host: 'localhost',
+                    port: 3000,
+                    https: false,
+                    changeOrigin: false
                 }
             ],
             livereload: {

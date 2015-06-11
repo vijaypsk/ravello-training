@@ -18,6 +18,8 @@ var loginService = require('../services/login-service');
 
 var classValidator = require('../validators/class-validator');
 
+var appsHelper = require('../helpers/apps-helper');
+
 /* --- Private functions --- */
 
 var matchClassWithApps = function(theClass, ravelloUsername, ravelloPassword) {
@@ -277,6 +279,60 @@ exports.deleteClass = function(request, response, next) {
     ).then(
         function() {
             response.send(200);
+        }
+    ).catch(next);
+};
+
+exports.exportAppsToCsv = function(request, response, next) {
+    var user = request.user;
+
+    if (!user.ravelloCredentials) {
+        next(errorHandler.createError(401, 'You are not authorized to perform this action.'));
+        return;
+    }
+
+    var ravelloUsername = user.ravelloCredentials.username;
+    var ravelloPassword = user.ravelloCredentials.password;
+
+    var classId = request.params.classId;
+    var appIds = request.body.appIds;
+
+    classesDal.getClass(classId).then(
+        function(classEntity) {
+            var classData = classesTrans.entityToDto(classEntity);
+
+            return q.all(_.map(appIds, function(appId) {
+                return appsService.getApp(appId, ravelloUsername, ravelloPassword).then(
+                    function(result) {
+                        return result.body;
+                    }
+                );
+            })).then(
+                function(apps) {
+                    var studentApps = _.map(apps, function(app) {
+                        var student = _.find(classData.students, function(student) {
+                            return _.find(student.apps, {ravelloId: app.id});
+                        });
+
+                        var studentData = [student.user.username, student.user.firstName, student.user.surname, app.name];
+
+                        if (app.deployment) {
+                            _.forEach(app.deployment.vms, function (vm, vmIndex) {
+                                var vmViewObject = appsHelper.createVmViewObject(vm);
+                                _.forEach(vmViewObject.allDns, function(externalAccess, externalAccessIndex) {
+                                    studentData.push(vm.name);
+                                    studentData.push(externalAccess.name);
+                                    studentData.push(externalAccess.ip);
+                                });
+                            });
+                        }
+
+                        return studentData;
+                    });
+
+                    response.csv(studentApps);
+                }
+            );
         }
     ).catch(next);
 };

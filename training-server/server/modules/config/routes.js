@@ -15,6 +15,7 @@ var blueprintsController = require('./../controllers/blueprints-ctrl');
 var studentController = require('./../controllers/student-ctrl');
 var appController = require('./../controllers/app-ctrl');
 var featureTogglesController = require('./../controllers/toggle-ctrl');
+var downloadController = require('./../controllers/download-ctrl');
 var versionController = require('./../controllers/version-ctrl');
 
 //var classesController = require('./../controllers/mocks/classes-ctrl-mock');
@@ -74,6 +75,10 @@ module.exports = function(app) {
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['TRAINER']),
         classesController.getAllClassApps);
+    app.post('/rest/classes/:classId/apps/export',
+        passport.authenticate('basic', {session: false}),
+        authorization.isAuthorized(['TRAINER']),
+        classesController.exportAppsToCsv);
     app.post('/rest/classes',
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['TRAINER']),
@@ -170,4 +175,7 @@ module.exports = function(app) {
 
     app.get('/rest/version',
         versionController.getVersion);
+
+    app.post('/download/:filename',
+        downloadController.downloadText);
 };
