@@ -4,6 +4,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
+require('express-csv');
+
 // These requires must remain here, even though they are not used, in order to initialize the models.
 // They must also come before the other requires of the applicative modules, since these other modules depend on the models.
 require('./../model/users-model');
