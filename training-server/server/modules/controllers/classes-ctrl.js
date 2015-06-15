@@ -20,6 +20,10 @@ var classValidator = require('../validators/class-validator');
 
 var appsHelper = require('../helpers/apps-helper');
 
+/* --- Constants --- */
+
+var CSV_SERVICE_DELIMITER = ' / ';
+
 /* --- Private functions --- */
 
 var matchClassWithApps = function(theClass, ravelloUsername, ravelloPassword) {
@@ -96,6 +100,55 @@ function validateClassRavelloCredentials(classData, next) {
     } else {
         return q({});
     }
+}
+
+function exportStudentApps(apps, classData) {
+    return _.map(apps, function(app) {
+        var student = _.find(classData.students, function(student) {
+            return _.find(student.apps, {ravelloId: app.id});
+        });
+
+        var studentData = [student.user.username, student.user.firstName, student.user.surname, app.name];
+
+        if (app.deployment) {
+            _.forEach(app.deployment.vms, function (vm) {
+                var vmViewObject = appsHelper.createVmViewObject(vm);
+                _.forEach(vmViewObject.allDns, function(externalAccess) {
+                    studentData.push(vm.name);
+                    studentData.push(externalAccess.name);
+                    studentData.push(externalAccess.ip);
+                    studentData.push(concatServices(externalAccess));
+                });
+            });
+        }
+
+        return studentData;
+    });
+}
+
+function concatServices(externalAccess) {
+    var serviceString = _.reduce(externalAccess.services, function(serviceString, service) {
+        return serviceString + service.name + ':' + service.externalPort + CSV_SERVICE_DELIMITER;
+    }, '');
+
+    serviceString = _.trim(serviceString, CSV_SERVICE_DELIMITER);
+    serviceString = serviceString.replace(',', '\,');
+
+    return serviceString;
+}
+
+function exportHeaders(rows) {
+    var headersRow = ['Username', 'First name', 'Surname', 'App name'];
+
+    var maxRowLength = _.max(_.pluck(rows, 'length'));
+    for (var i = 0; i < maxRowLength - 4; i += 4) {
+        headersRow.push('VM name');
+        headersRow.push('VM DNS');
+        headersRow.push('VM IP');
+        headersRow.push('VM port');
+    }
+
+    return headersRow;
 }
 
 /* --- Public functions --- */
@@ -309,35 +362,8 @@ exports.exportAppsToCsv = function(request, response, next) {
                 );
             })).then(
                 function(apps) {
-                    var studentRows = _.map(apps, function(app) {
-                        var student = _.find(classData.students, function(student) {
-                            return _.find(student.apps, {ravelloId: app.id});
-                        });
-
-                        var studentData = [student.user.username, student.user.firstName, student.user.surname, app.name];
-
-                        if (app.deployment) {
-                            _.forEach(app.deployment.vms, function (vm, vmIndex) {
-                                var vmViewObject = appsHelper.createVmViewObject(vm);
-                                _.forEach(vmViewObject.allDns, function(externalAccess, externalAccessIndex) {
-                                    studentData.push(vm.name);
-                                    studentData.push(externalAccess.name);
-                                    studentData.push(externalAccess.ip);
-                                });
-                            });
-                        }
-
-                        return studentData;
-                    });
-
-                    var headersRow = ['Username', 'First name', 'Surname', 'App name'];
-
-                    var maxRowLength = _.max(_.pluck(studentRows, 'length'));
-                    for (var i = 0; i < maxRowLength - 4; i+=3) {
-                        headersRow.push('VM name');
-                        headersRow.push('VM DNS');
-                        headersRow.push('VM IP');
-                    }
+                    var studentRows = exportStudentApps(apps, classData);
+                    var headersRow = exportHeaders(studentRows);
 
                     studentRows.unshift(headersRow);
 
