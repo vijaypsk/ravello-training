@@ -309,7 +309,7 @@ exports.exportAppsToCsv = function(request, response, next) {
                 );
             })).then(
                 function(apps) {
-                    var studentApps = _.map(apps, function(app) {
+                    var studentRows = _.map(apps, function(app) {
                         var student = _.find(classData.students, function(student) {
                             return _.find(student.apps, {ravelloId: app.id});
                         });
@@ -330,7 +330,18 @@ exports.exportAppsToCsv = function(request, response, next) {
                         return studentData;
                     });
 
-                    response.csv(studentApps);
+                    var headersRow = ['Username', 'First name', 'Surname', 'App name'];
+
+                    var maxRowLength = _.max(_.pluck(studentRows, 'length'));
+                    for (var i = 0; i < maxRowLength - 4; i+=3) {
+                        headersRow.push('VM name');
+                        headersRow.push('VM DNS');
+                        headersRow.push('VM IP');
+                    }
+
+                    studentRows.unshift(headersRow);
+
+                    response.csv(studentRows);
                 }
             );
         }
