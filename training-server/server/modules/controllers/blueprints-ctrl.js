@@ -16,7 +16,11 @@ exports.getBlueprints = function(request, response, next) {
     blueprintsService.getBlueprints(ravelloUsername, ravelloPassword).then(
         function(result) {
             if (result.status === 200) {
-                var dtos = _.map(result.body, function(bpDto) {
+                var myBlueprints = _.filter(result.body, function(bp) {
+                    return (!bp.firstPeerToPeerSharingUser);
+                });
+
+                var dtos = _.map(myBlueprints, function(bpDto) {
                     return blueprintsTrans.ravelloDtoToEntity(bpDto);
                 });
 
