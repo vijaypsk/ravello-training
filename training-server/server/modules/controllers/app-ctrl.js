@@ -157,29 +157,42 @@ exports.createApps = function(request, response, next) {
 	}
 };
 
-exports.deleteApp = function(request, response, next) {
-    var user = request.user;
+exports.deleteApps = function(request, response, next) {
+	var user = request.user;
 
-    if (!user.ravelloCredentials) {
+	if (!user.ravelloCredentials) {
 		next(errorHandler.createError(401, 'You are not authorized to perform this action.'));
-        return;
-    }
+		return;
+	}
 
-    var appId = request.params.appId;
-    var studentId = request.query.studentId;
+	var classId = request.body.classId;
+	var appsToDelete = request.body.apps;
 
-    var ravelloUsername = user.ravelloCredentials.username;
-    var ravelloPassword = user.ravelloCredentials.password;
+	var ravelloUsername = user.ravelloCredentials.username;
+	var ravelloPassword = user.ravelloCredentials.password;
 
-    return appsService.deleteApp(appId, ravelloUsername, ravelloPassword).then(
-        function() {
-            return classesDal.deleteStudentApp(studentId, appId).then(
-                function() {
-                    response.send(200);
-                }
-            );
-        }
-    ).catch(next);
+	var deletedAppsData = [];
+
+	q.all(_.map(appsToDelete, function(appData) {
+		return appsService.deleteApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
+			function(result) {
+				if (result && result.status < 400) {
+					deletedAppsData.push(appData);
+				} else {
+					logger.warn('Could not delete app ' + appData.ravelloId + ' for user ' + appData.userId);
+				}
+				return result;
+			}
+		);
+	})).then(
+		function() {
+			return classesDal.deleteStudentsApps(classId, deletedAppsData).then(
+				function() {
+					response.send(200);
+				}
+			);
+		}
+	).catch(next);
 };
 
 exports.appsBatchStart = function(request, response, next) {

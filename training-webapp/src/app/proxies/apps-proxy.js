@@ -28,14 +28,13 @@ angular.module('trng.proxies').factory('AppsProxy', [
 				return promise;
 			},
 
-            deleteApp: function(appId, userId) {
-                var requestConfig = {
-                    params: {
-                        studentId: userId
-                    }
+            deleteApps: function(classId, appsData) {
+                var dto = {
+                    classId: classId,
+                    apps: appsData
                 };
 
-                var promise = $http.delete(CommonConstants.baseUrl + '/rest/applications/' + appId, requestConfig);
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/delete', dto);
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },

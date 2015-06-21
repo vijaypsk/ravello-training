@@ -85,24 +85,26 @@ exports.updateStudentApp = function(classId, userId, appId) {
     );
 };
 
-exports.deleteStudentApp = function(userId, appId) {
-    return TrainingClass.findOne({'students.user': new ObjectId(userId)}).execQ().then(
+exports.deleteStudentsApps = function(classId, appsData) {
+    return TrainingClass.findById(classId).execQ().then(
         function(classEntity) {
-            var student = _.find(classEntity.students, function(currentStudent) {
-                return currentStudent.user == userId;
-            });
+            _.forEach(appsData, function(appData) {
+                var student = _.find(classEntity.students, function(currentStudent) {
+                    return currentStudent.user == appData.userId;
+                });
 
-            _.remove(student.apps, function(app) {
-				return app.ravelloId === appId;
-			});
+                _.remove(student.apps, function(app) {
+                    return app.ravelloId === appData.ravelloId;
+                });
+            });
 
             var classData = classEntity.toJSON();
             classData = _.omit(classData, '_id');
             return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(
-                function(result) {
+                function() {
                     return classEntity;
                 }
-            ).catch(errorHandler.handleMongoError(404, 'Could not delete app ' + appId + ' for user ' + userId));
+            ).catch(errorHandler.handleMongoError(404, 'Could not delete apps'));
         }
     );
 };

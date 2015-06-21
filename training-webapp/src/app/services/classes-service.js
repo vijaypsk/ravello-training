@@ -296,19 +296,8 @@ angular.module('trng.services').factory('ClassesService', [
 				return AppsService.createApps(classId, appsData);
 			},
 
-            deleteAppForStudent: function(classId, studentUserId, appRavelloId) {
-                return AppsService.deleteApp(appRavelloId, studentUserId).then(
-                    function(result) {
-                        if (cachedClasses) {
-                            var theClass = _.find(cachedClasses, {id: classId});
-                            if (theClass) {
-                                var student = _.find(theClass.students, {user: {id: studentUserId}});
-                                student && _.remove(student.apps, {ravelloId: appRavelloId.toString()});
-                                return result;
-                            }
-                        }
-                    }
-                );
+            deleteAppForStudents: function(classId, appsData) {
+                return AppsService.deleteApps(classId, appsData);
             },
 
             exportAppsToCsv: function(classId, appIds) {

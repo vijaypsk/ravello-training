@@ -143,10 +143,10 @@ module.exports = function(app) {
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['TRAINER']),
         appController.createApps);
-    app.delete('/rest/applications/:appId',
+    app.post('/rest/applications/delete',
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['TRAINER']),
-        appController.deleteApp);
+        appController.deleteApps);
 
     app.post('/rest/applications/action/start',
         passport.authenticate('basic', {session: false}),

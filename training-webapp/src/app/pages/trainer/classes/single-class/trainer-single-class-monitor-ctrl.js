@@ -217,19 +217,17 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			);
 		};
 
-        $scope.deleteApp = function() {
-            if (!$scope.isDeleteDisabled()) {
-                var dialog = $dialogs.confirm('Delete applications', 'Are you sure you want to delete the selected applications?');
-                return dialog.result.then(
-                    function() {
-                        return $q.all(_.map(getSelectedApps(), function(app) {
-                            return app.creationTime &&
-                                ClassesService.deleteAppForStudent($scope.currentClass.id, app.student.user.id, app.ravelloId);
-                        })).then(fetchClassApps);
-                    }
-                );
-            }
-        };
+		$scope.deleteApps = function() {
+			if (!$scope.isDeleteDisabled()) {
+				var dialog = $dialogs.confirm('Delete applications', 'Are you sure you want to delete the selected applications?');
+				return dialog.result.then(
+					function() {
+						var appsData = prepareAppsForDelete();
+						return ClassesService.deleteAppForStudents($scope.currentClass.id, appsData).then(fetchClassApps);
+					}
+				);
+			}
+		};
 
 		$scope.startApps = function() {
 			if (!$scope.isStartDisabled()) {
@@ -369,7 +367,20 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			});
 		}
 
-        /* --- Init --- */
+		function prepareAppsForDelete() {
+			var filteredApps = _.filter(getSelectedApps(), function(app) {
+				return app && app.creationTime;
+			});
+
+			return _.map(filteredApps, function(app) {
+				return {
+					ravelloId: app.ravelloId,
+					userId: app.student.user.id
+				};
+			});
+		}
+
+		/* --- Init --- */
 
         $scope.init();
     }
