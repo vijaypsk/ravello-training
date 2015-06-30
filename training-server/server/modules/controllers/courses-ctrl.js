@@ -127,7 +127,7 @@ var matchCourseWithBlueprints = function(course, ravelloUsername, ravelloPasswor
     return q.all(_.map(course.blueprints, function(bp) {
         return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword).catch(
             function(rejection) {
-                if (rejection.status === '404' || rejection.status === '401') {
+                if (rejection.status === 404 || rejection.status === 401) {
                     // If we fail to get a specific blueprint, we don't want to hold the trainer
                     // work. So we just skip them.
                     // So do nothing.
