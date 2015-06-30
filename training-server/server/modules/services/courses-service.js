@@ -7,7 +7,7 @@ var blueprintsTrans = require('../trans/blueprints-trans');
 exports.assignBlueprintsToCourse = function(course, ravelloBps) {
     return _.map(course.blueprints, function(currentBp) {
         var matchingRavelloBp = _.find(ravelloBps, function(bp) {
-			return bp.body.id == currentBp.id;
+			return bp && bp.body.id == currentBp.id;
 		});
 
         if (!matchingRavelloBp) {
