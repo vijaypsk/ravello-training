@@ -125,7 +125,18 @@ exports.deleteCourse = function(request, response, next) {
 
 var matchCourseWithBlueprints = function(course, ravelloUsername, ravelloPassword) {
     return q.all(_.map(course.blueprints, function(bp) {
-        return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
+        return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword).catch(
+            function(rejection) {
+                if (rejection.status === '404' || rejection.status === '401') {
+                    // If we fail to get a specific blueprint, we don't want to hold the trainer
+                    // work. So we just skip them.
+                    // So do nothing.
+                    // TODO: log
+                } else {
+                    return q.reject(rejection);
+                }
+            }
+        );
     })).then(
         function(bpResults) {
             course.blueprints = coursesService.assignBlueprintsToCourse(course, bpResults);
