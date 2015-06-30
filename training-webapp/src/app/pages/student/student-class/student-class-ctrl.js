@@ -15,50 +15,54 @@ angular.module('trng.student').controller('studentClassController', [
             $scope.student = student;
             $scope.apps = apps;
 
-            $scope.initDescription();
-            $scope.initAppsDataGrid();
+            initDescription();
+            initAppsDataGrid();
         };
 
-        $scope.initDescription = function() {
-            $scope.description = course.description +  ' ' + $scope.student.userClass.description;
-        };
+        function initDescription() {
+            var courseDescription = course.description ? description : '';
+            var classDescription = $scope.student.userClass.description ?
+                $scope.student.userClass.description : '';
+            $scope.description = courseDescription + ' ' + classDescription;
+        }
 
-        $scope.initAppsColumns = function() {
-            $scope.appsColumns = [
-                {
-                    field: 'name',
-                    displayName: 'Name',
-                    cellTemplate:
+        function initAppsDataGrid() {
+
+            function initAppsColumns() {
+                $scope.appsColumns = [
+                    {
+                        field: 'name',
+                        displayName: 'Name',
+                        cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="view(row)">' +
-                            '<i></i> {{row.getProperty(col.field)}}' +
+                        '<i></i> {{row.getProperty(col.field)}}' +
                         '</a>'
-                },
-                {
-                    field: 'numOfVms',
-                    width: '150px',
-                    displayName: '# of VMs'
-                },
-                {
-                    field: 'numOfRunningVms',
-                    width: '150px',
-                    displayName: '# of running VMs'
-                },
-                {
-                    displayName: 'Actions',
-                    width: '150px',
-                    resizable: false,
-                    cellTemplate:
+                    },
+                    {
+                        field: 'numOfVms',
+                        width: '150px',
+                        displayName: '# of VMs'
+                    },
+                    {
+                        field: 'numOfRunningVms',
+                        width: '150px',
+                        displayName: '# of running VMs'
+                    },
+                    {
+                        displayName: 'Actions',
+                        width: '150px',
+                        resizable: false,
+                        cellTemplate:
                         '<a href="" class="btn btn-small btn-link" ng-click="view(row)">' +
-                            '<i class="fa fa-search"></i> View' +
+                        '<i class="fa fa-search"></i> View' +
                         '</a>'
-                }
-            ];
-        };
+                    }
+                ];
+            }
 
-        $scope.initAppsDataGrid = function() {
             $scope.selectedApps = [];
 
-            $scope.initAppsColumns();
+            initAppsColumns();
 
             $scope.studentAppsDataGird = {
                 data: 'apps',
@@ -68,7 +72,7 @@ angular.module('trng.student').controller('studentClassController', [
                 enableHighlighting: true,
                 enableRowSelection: false
             };
-        };
+        }
 
         $scope.view = function(appToView) {
             var appId = appToView.getProperty("id");
