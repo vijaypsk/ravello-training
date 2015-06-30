@@ -5,7 +5,7 @@ var studentClassResolver = {
         '$q', 'StudentsService', 'student',
         function($q, StudentsService, student) {
             return student && student.userClass && student.userClass.courseId ?
-                StudentsService.getStudentCourse(student._id, student.userClass.courseId) :
+                StudentsService.getStudentCourseDetails(student._id, student.userClass.courseId) :
                 $q.reject("Could not find student or the course of the student's class");
         }
     ],

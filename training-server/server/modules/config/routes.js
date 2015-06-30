@@ -136,7 +136,7 @@ module.exports = function(app) {
     app.get('/rest/students/:studentId/course/:courseId',
 //        passport.authenticate('basic', authConfig),
 //        authorization.isAuthorized(['STUDENT']),
-        studentController.getStudentCourse);
+        studentController.getStudentCourseDetails);
 
     // App route.
     app.post('/rest/applications',

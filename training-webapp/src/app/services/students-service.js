@@ -37,8 +37,8 @@ angular.module('trng.services').factory('StudentsService', [
                 )
             },
 
-            getStudentCourse: function(studentId, courseId) {
-                return StudentsProxy.getStudentCourse(studentId, courseId).then(
+            getStudentCourseDetails: function(studentId, courseId) {
+                return StudentsProxy.getStudentCourseDetails(studentId, courseId).then(
                     function(result) {
                         return CoursesTrans.dtoToEntity(result.data);
                     }

@@ -128,7 +128,7 @@ exports.getAppVms = function(request, response, next) {
     ).catch(next);
 };
 
-exports.getStudentCourse = function(request, response, next) {
+exports.getStudentCourseDetails = function(request, response, next) {
 	var userId = request.params.studentId;
     var courseId = request.params.courseId;
 
@@ -140,22 +140,10 @@ exports.getStudentCourse = function(request, response, next) {
                 return;
             }
 
-            var classData = classesTrans.entityToDto(classEntity);
-
-			var ravelloUsername = classData.ravelloCredentials.username;
-			var ravelloPassword = classData.ravelloCredentials.password;
-
 			return coursesDal.getCourse(courseId).then(
                 function(courseEntity) {
                     var course = coursesTrans.entityToDto(courseEntity);
-                    return q.all(_.map(course.blueprints, function(bp) {
-                        return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword);
-                    })).then(
-                        function(bpResults) {
-                            course.blueprints = coursesService.assignBlueprintsToCourse(course, bpResults);
-                            response.json(course);
-                        }
-                    );
+                    response.json(course);
                 }
             );
         }
