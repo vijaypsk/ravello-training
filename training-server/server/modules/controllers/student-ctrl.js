@@ -60,14 +60,25 @@ exports.getStudentClassApps = function(request, response, next) {
             return coursesDal.getCourse(classEntity.courseId).then(
                 function(course) {
                     return q.all(_.map(studentData.apps, function(app) {
-                        return appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword);
+                        return appsService.getApp(app.ravelloId, ravelloUsername, ravelloPassword).catch(
+                            function() {
+                                // In case student couldn't get one of his apps - we don't want to cancel the
+                                // whole flow. We saw issues where because of data corruption, student had
+                                // several apps, some deleted already, and he couldn't login..
+                                // TODO: add log
+                                return false;
+                            }
+                        );
                     })).then(
                         function(appsResults) {
                             var appViewObjects = [];
 
                             _.forEach(appsResults, function(appResult) {
-                                var appViewObject = appsTrans.ravelloObjectToStudentDto(course, appResult.body);
-                                appViewObjects.push(appViewObject);
+                                if (appResult) {
+                                    var appViewObject = appsTrans.ravelloObjectToStudentDto(course,
+                                        appResult.body);
+                                    appViewObjects.push(appViewObject);
+                                }
                             });
 
                             response.json(appViewObjects);
