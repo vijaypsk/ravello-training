@@ -20,7 +20,7 @@ angular.module('trng.student').controller('studentClassController', [
         };
 
         function initDescription() {
-            var courseDescription = course.description ? description : '';
+            var courseDescription = course.description ? course.description : '';
             var classDescription = $scope.student.userClass.description ?
                 $scope.student.userClass.description : '';
             $scope.description = courseDescription + ' ' + classDescription;
