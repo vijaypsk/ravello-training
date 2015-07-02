@@ -128,10 +128,9 @@ var matchCourseWithBlueprints = function(course, ravelloUsername, ravelloPasswor
         return blueprintsService.getBlueprintById(bp.id, ravelloUsername, ravelloPassword).catch(
             function(rejection) {
                 if (rejection.status === 404 || rejection.status === 401) {
-                    // If we fail to get a specific blueprint, we don't want to hold the trainer
-                    // work. So we just skip them.
-                    // So do nothing.
-                    // TODO: log
+                    // If we fail to get a specific blueprint, we don't want to hold the trainer's work. So we just skip them. So do nothing.
+                    // Notice that the promise is not rejected, and has no return value, so the following 'then' should make sure there really is a BP.
+                    logger.warn({error: rejection}, 'Notice! Could not get blueprint %s from Ravello', bp.id);
                 } else {
                     return q.reject(rejection);
                 }
