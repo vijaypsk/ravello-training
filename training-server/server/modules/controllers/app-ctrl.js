@@ -386,14 +386,7 @@ function determineAppAutoStop(app, defaultAutoStop) {
 		if (app.deployment.expirationTime && app.deployment.expirationTime > Date.now()) {
 			autoStop = (app.deployment.expirationTime - Date.now()) / 1000;
 		} else {
-			// Otherwise, it means there was no explicit expiration.
-			// If the app was stopped manually, though it has no expiration - it means its expiration is in fact Never.
-			// If the app was stopped automatically - it means it in fact expired, and new (default) expiration should be set.
-			if (!app.deployment.expirationType || app.deployment.expirationType === 'STOPPED_BY_USER') {
-				autoStop = -1;
-			} else {
-				autoStop = defaultAutoStop;
-			}
+			autoStop = defaultAutoStop;
 		}
 	}
 
