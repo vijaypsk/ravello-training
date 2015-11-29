@@ -68,10 +68,10 @@ def get_class_and_course():
 def transform_bp(bp, base_bp_permissions):
 	return {
 		 'bpId': int(bp['id']),
-		 'startVms': base_bp_permissions['startVms'],
-		 'stopVms': base_bp_permissions['stopVms'],
-		 'restartVms': base_bp_permissions['restartVms'],
-		 'console': base_bp_permissions['console']
+		 'startVms': base_bp_permissions['startVms'].lower() == 'true',
+		 'stopVms': base_bp_permissions['stopVms'].lower() == 'true',
+		 'restartVms': base_bp_permissions['restartVms'].lower() == 'true',
+		 'console': base_bp_permissions['console'].lower() == 'true'
 	}
 
 def create_student_from_row(student_row, the_class, the_course):
