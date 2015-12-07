@@ -15,5 +15,9 @@ exports.entityToDto = function(studentEntity, classEntity) {
     dto.blueprintPermissions = studentDto.blueprintPermissions;
     dto.userClass = classDto;
 
+    if (dto.userClass.ravelloCredentials) {
+        dto.userClass.ravelloCredentials = _.omit(dto.userClass.ravelloCredentials, 'password');
+    }
+
     return dto;
 };
