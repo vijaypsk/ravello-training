@@ -14,6 +14,10 @@ angular.module('trng.services').factory('ClassesService', [
 
         var cachedClasses = null;
 
+        var invalidateCache = function() {
+            cachedClasses = null;
+        };
+
 		function updateClassInCache(theClass) {
 			var persistedEntity = ClassesTrans.dtoToEntity(theClass);
 
@@ -293,11 +297,22 @@ angular.module('trng.services').factory('ClassesService', [
             // The same goes for deleting an app of course.
 
 			createAppForStudents: function(classId, appsData) {
-				return AppsService.createApps(classId, appsData);
+				return AppsService.createApps(classId, appsData).then(
+                    function(result) {
+                        // It's crucial to invalidate the cache, because changes might have been made to the
+                        invalidateCache();
+                        return result;
+                    }
+                );
 			},
 
             deleteAppForStudents: function(classId, appsData) {
-                return AppsService.deleteApps(classId, appsData);
+                return AppsService.deleteApps(classId, appsData).then(
+                    function(result) {
+                        invalidateCache();
+                        return result;
+                    }
+                );
             },
 
             exportAppsToCsv: function(classId, appIds) {
