@@ -56,7 +56,7 @@ exports.createApps = function(request, response, next) {
 
 			return classesDal.getClass(requestData.classId).then(
 				function(classEntity) {
-					var classData = classesTrans.entityToDto(classEntity);
+					var classData = classEntity.toJSON();
 
 					var studentsMap = _.indexBy(classData.students, function(student) {
 						return student.user._id;
@@ -306,8 +306,8 @@ exports.batchVmsActions = function(request, response, next) {
 
 			var classData = classesTrans.entityToDto(classEntity);
 
-			var ravelloUsername = classData.ravelloCredentials.username;
-			var ravelloPassword = classData.ravelloCredentials.password;
+			var ravelloUsername = classEntity.ravelloCredentials.username;
+			var ravelloPassword = classEntity.ravelloCredentials.password;
 
 			return appsService.getAppDeployment(appId, ravelloUsername, ravelloPassword).then(
 				function(result) {
@@ -348,7 +348,7 @@ exports.vmVnc = function(request, response, next) {
 				return;
 			}
 
-			var classData = classesTrans.entityToDto(classEntity);
+			var classData = classEntity.toJSON();
 
             var ravelloUsername = classData.ravelloCredentials.username;
             var ravelloPassword = classData.ravelloCredentials.password;

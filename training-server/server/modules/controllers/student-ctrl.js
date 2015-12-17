@@ -51,7 +51,7 @@ exports.getStudentClassApps = function(request, response, next) {
                 return;
             }
 
-            var classData = classesTrans.entityToDto(classEntity);
+            var classData = classEntity.toJSON();
             var studentData = classEntity.findStudentByUserId(userId);
 
             var ravelloUsername = classData.ravelloCredentials.username;
@@ -102,7 +102,7 @@ exports.getAppVms = function(request, response, next) {
                 return;
             }
 
-            var classData = classesTrans.entityToDto(classEntity);
+            var classData = classEntity.toJSON();
 
             var ravelloUsername = classData.ravelloCredentials.username;
             var ravelloPassword = classData.ravelloCredentials.password;
