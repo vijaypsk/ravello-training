@@ -54,8 +54,8 @@ angular.module('trng.student').controller('studentVmDetailsController', [
             dns.servicesViewModel = [];
 
             _.forEach(dns.services, function(service) {
-                var ports = service.port.split(',');
-                var externalPorts = service.externalPort.split(',');
+                var ports = service.port ? service.port.split(',') : [''];
+                var externalPorts = service.externalPort ? service.externalPort.split(',') : [''];
 
                 _.forEach(ports, function(port, index) {
                     dns.servicesViewModel.push({

@@ -17,7 +17,7 @@
             <h5 style="font-weight: bold">Available Services:</h5>
             <ul>
                 <li ng-repeat="service in dns.servicesViewModel">
-					<label class="text-uppercase">{{service.name}}</label> (Port {{service.externalPort}})
+					<label class="text-uppercase">{{service.name}}</label> (Port: {{service.externalPort ? service.externalPort : 'Any'}})
 					<a href="{{getServiceGoLink(dns, service)}}" target="_blank" class="go-link" ng-if="showServiceGoLink(service)">Go!</a>
 				</li>
             </ul>
