@@ -7,7 +7,7 @@ exports.baseUrl = '/services';
 exports.dbUsername = 'training';
 exports.dbPassword = 'training';
 
-exports.defaultAutoStopSeconds = 7200;
+exports.defaultAutoStopSeconds = -1;
 
 exports.dateFormat = 'dd.MM.yyyy hh:mm:ss tt';
 

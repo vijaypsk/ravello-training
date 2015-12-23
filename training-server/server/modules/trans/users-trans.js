@@ -27,9 +27,5 @@ exports.entityToDto = function(entity) {
     dto = _.omit(dto, 'password');
     dto.fullName = entity.fullName;
 
-    if (dto.ravelloCredentials) {
-        dto.ravelloCredentials = _.omit(dto.ravelloCredentials, 'password');
-    }
-
     return dto;
 };
