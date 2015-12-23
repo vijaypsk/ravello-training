@@ -14,5 +14,9 @@ exports.entityToDto = function(entityDocument) {
         matchingstudentDto.user = usersTrans.entityToDto(studentDocument.user);
     });
 
+    if (dto.ravelloCredentials) {
+        dto.ravelloCredentials = _.omit(dto.ravelloCredentials, 'password');
+    }
+
     return dto;
 };

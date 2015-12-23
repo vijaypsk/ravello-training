@@ -225,6 +225,7 @@ exports.createClass = function(request, response, next) {
         }
     ).then(
         function() {
+            classData.ravelloCredentials.password = request.user.ravelloCredentials.password;
             return classesDal.createClass(classData).then(
                 function(result) {
                     var dto = classesTrans.entityToDto(result);
@@ -287,6 +288,11 @@ exports.updateClass = function(request, response, next) {
                         }
                     ).then(
                         function() {
+                            if (!classData.ravelloCredentials.overrideTrainerCredentials) {
+                                classData.ravelloCredentials.username = request.user.ravelloCredentials.username;
+                                classData.ravelloCredentials.password = request.user.ravelloCredentials.password;
+                            }
+
                             // And at last, actually update the class.
                             return classesDal.updateClass(classId, classData).then(
                                 function () {
