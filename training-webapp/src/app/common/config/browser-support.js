@@ -2,7 +2,7 @@
 
 angular.module('trng.config').constant('SupportedBrowserVersions', {
 	MinVersions: {
-		IE: 10
+		IE: 11
 	}
 });
 
