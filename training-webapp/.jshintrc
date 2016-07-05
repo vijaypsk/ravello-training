@@ -23,6 +23,7 @@
     "CloudSummaryEntity" : false,
     "CloudDetailsEntity" : false,
     "RmxSummaryEntity" : false,
-    "RmxDetailsEntity" : false
+    "RmxDetailsEntity" : false,
+    "_": false
   }
 }
