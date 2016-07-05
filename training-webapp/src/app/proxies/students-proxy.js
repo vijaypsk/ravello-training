@@ -20,7 +20,8 @@ angular.module('trng.proxies').factory('StudentsProxy', [
             },
 
             getStudentClassApps: function(studentId, classId) {
-                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps');
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' +
+                    studentId + '/class/' + classId + '/apps');
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
@@ -31,7 +32,8 @@ angular.module('trng.proxies').factory('StudentsProxy', [
                     track = true;
                 }
 
-                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' + studentId + '/class/' + classId + '/apps/' + appId);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' +
+                    studentId + '/class/' + classId + '/apps/' + appId);
 
                 if (track) {
                     TrainingMainTracker.addPromise(promise);
@@ -41,7 +43,8 @@ angular.module('trng.proxies').factory('StudentsProxy', [
             },
 
             getStudentCourseDetails: function(studentId, courseId) {
-                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' + studentId + '/course/' + courseId);
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/students/' +
+                    studentId + '/course/' + courseId);
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             }

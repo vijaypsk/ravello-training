@@ -11,4 +11,5 @@ angular.module('trng.services').factory('AdminService', [
         };
 		
 		return service;
-}]);
+	}
+]);

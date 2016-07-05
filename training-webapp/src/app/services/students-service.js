@@ -26,7 +26,7 @@ angular.module('trng.services').factory('StudentsService', [
 
                         return entities;
                     }
-                )
+                );
             },
 
             getStudentClassSingleApp: function(studentId, classId, appId, track) {
@@ -34,7 +34,7 @@ angular.module('trng.services').factory('StudentsService', [
                     function(result) {
                         return AppsTrans.dtoToEntity(result.data);
                     }
-                )
+                );
             },
 
             getStudentCourseDetails: function(studentId, courseId) {

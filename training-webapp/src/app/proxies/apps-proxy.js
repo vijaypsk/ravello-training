@@ -52,19 +52,22 @@ angular.module('trng.proxies').factory('AppsProxy', [
             },
 
 			startBatchApps: function(classId, apps) {
-				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/action/start', {classId: classId, apps: apps});
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/action/start',
+					{classId: classId, apps: apps});
 				TrainingMainTracker.addPromise(promise);
 				return promise;
 			},
 
 			stopBatchApps: function(classId, apps) {
-				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/action/stop', {classId: classId, apps: apps});
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/action/stop',
+					{classId: classId, apps: apps});
 				TrainingMainTracker.addPromise(promise);
 				return promise;
 			},
 
             autoStopBatchApps: function(apps, autoStopMinutes) {
-                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/autostop', {apps: apps, autoStopMinutes: autoStopMinutes});
+                var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/autostop',
+					{apps: apps, autoStopMinutes: autoStopMinutes});
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
@@ -100,7 +103,8 @@ angular.module('trng.proxies').factory('AppsProxy', [
             },
 
             consoleVm: function(appId, vmId) {
-                var promise = $http.get(CommonConstants.baseUrl + '/rest/applications/' + appId + '/vms/' + vmId + "/vncUrl");
+                var promise = $http.get(CommonConstants.baseUrl +
+					'/rest/applications/' + appId + '/vms/' + vmId + '/vncUrl');
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             }

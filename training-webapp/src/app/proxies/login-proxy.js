@@ -8,7 +8,7 @@ angular.module('trng.proxies').factory('LoginProxy', [
     function($http, $base64, CommonConstants, TrainingMainTracker) {
         var service = {
             login: function(username, password) {
-                var auth = "Basic " + $base64.encode(username + ":" + password);
+                var auth = 'Basic ' + $base64.encode(username + ':' + password);
 
                 $http.defaults.headers.common.Authorization = auth;
 
