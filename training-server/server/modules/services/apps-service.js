@@ -120,7 +120,8 @@ exports.publishApp = function(appId, publishDetails, username, password) {
     var deferred = q.defer();
 
     var dto = {
-        optimizationLevel: publishDetails.method || properties.defaultOptimizationLevel
+        optimizationLevel: publishDetails.method || properties.defaultOptimizationLevel,
+        startAllVms: publishDetails.startAfterPublish
     };
 
 	if (dto.optimizationLevel === 'PERFORMANCE_OPTIMIZED') {

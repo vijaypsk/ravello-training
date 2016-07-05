@@ -1,0 +1,25 @@
+<div>
+    <h3>Publish Application</h3>
+    <br>
+    <div ng-repeat="method in viewModel.groupedApps">
+        These applications will be published {{method.publishedMethod}}:
+        <ul>
+            <li ng-repeat="app in method.apps">
+                {{app.appName}}
+            </li>
+        </ul>
+    </div>
+    <br>
+    <div class="form-group">
+        <input id="publishAndStartInput" type="checkbox" ng-model="viewModel.startAfterPublish" autofocus>
+        <label for="publishAndStartInput">Start application after publish</label>
+    </div>
+    <div class="row btns-ok-cancel">
+        <button ng-click="ok()"class="btn btn-success btn-sm">
+            <i class="fa fa-check"></i> OK
+        </button>
+        <button ng-click="cancel()"class="btn btn-danger btn-sm">
+            <i class="fa fa-times"></i> Cancel
+        </button>
+    </div>
+</div>

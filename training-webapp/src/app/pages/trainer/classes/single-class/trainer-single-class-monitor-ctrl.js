@@ -185,33 +185,14 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 				});
 			}
 
-			function createDialogMessage() {
-				var message = '';
-
-				var appsByPublishDetails = _.groupBy(appsData, function(app) {
-					return app.publishDetails.method === 'PERFORMANCE_OPTIMIZED' ?
-						app.publishDetails.cloud + ' / ' + app.publishDetails.region :
-						'';
-				});
-
-				_.forOwn(appsByPublishDetails, function(apps, publishString) {
-					var baseMessage = publishString ?
-						'These applications will be published on ' + publishString :
-						'These applications will be published as Cost-optimized';
-
-					var appsNamesString = _.pluck(apps, 'appName').join('<br>');
-
-					message += baseMessage + ':<br>' + appsNamesString + '<br><br>';
-				});
-
-				return message.replace(/<br><br>$/, '');
-			}
-
 			var appsData = createAppsData();
 
-			var dialog = $dialogs.confirm('Create applications', createDialogMessage());
-			dialog.result.then(
-				function() {
+			var modalInstance = $dialogs.create('app/pages/trainer/classes/single-class/trainer-publish-dialog.html', 'trainerPublishController', appsData);
+			return modalInstance.result.then(
+				function(startAfterPublish) {
+					_.forEach(appsData, function(app) {
+						app.publishDetails.startAfterPublish = startAfterPublish;
+					});
 					return ClassesService.createAppForStudents($scope.currentClass.id, appsData).then(fetchClassApps);
 				}
 			);
