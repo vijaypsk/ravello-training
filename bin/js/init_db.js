@@ -8,9 +8,9 @@ var adminUser = {
     role : "ADMIN"
 };
 
-db.trainingclasses.remove();
-db.trainingcourses.remove();
-db.users.remove();
+db.trainingclasses.remove({ });
+db.trainingcourses.remove({ });
+db.users.remove({ });
 
 db.users.save(adminUser);
 
