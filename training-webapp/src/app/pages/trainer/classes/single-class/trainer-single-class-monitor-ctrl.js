@@ -155,7 +155,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		};
 
 		$scope.refreshState = function(track) {
-			return fetchClassApps(track);
+			return createFetchFunc(track)();
 		};
 
 		$scope.createApps = function() {
@@ -193,7 +193,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 					_.forEach(appsData, function(app) {
 						app.publishDetails.startAfterPublish = startAfterPublish;
 					});
-					return ClassesService.createAppForStudents($scope.currentClass.id, appsData).then(fetchClassApps);
+					return ClassesService.createAppForStudents($scope.currentClass.id, appsData).then(showErrors).then(createFetchFunc());
 				}
 			);
 		};
@@ -204,7 +204,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 				return dialog.result.then(
 					function() {
 						var appsData = prepareAppsForDelete();
-						return ClassesService.deleteAppForStudents($scope.currentClass.id, appsData).then(fetchClassApps);
+						return ClassesService.deleteAppForStudents($scope.currentClass.id, appsData).then(createFetchFunc());
 					}
 				);
 			}
@@ -239,7 +239,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			return modalInstance.result.then(
 				function(autoStopMinutes) {
 					var appsForAction = prepareAppsForAction();
-					return AppsService.autoStopBatchApps(appsForAction, autoStopMinutes).then(fetchClassApps);
+					return AppsService.autoStopBatchApps(appsForAction, autoStopMinutes).then(createFetchFunc());
 				}
 			);
 		};
@@ -302,20 +302,32 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
 		/* --- Private functions --- */
 
-        function fetchClassApps(track) {
-			return ClassesService.getClassById($scope.currentClass.id, track).then(
-				function (theClass) {
-					$scope.currentClass = _.cloneDeep(theClass);
-					return ClassesService.getClassApps($scope.currentClass.id, track).then(
-						function(results) {
-							classApps = results;
-							$scope.viewModel.apps = [];
-							$scope.matchApps();
-						}
-					);
-				}
-			);
-        }
+		function showErrors(response) {
+			if (response.data && response.data.errors) {
+				var msg = _.reduce(response.data.errors, function(msg, error) {
+					return msg + error.appName + ': ' + error.errorMsg + '<br>';
+				}, '');
+				$dialogs.error('Error', msg, response.data.errors);
+			}
+			return response.data;
+		}
+
+		function createFetchFunc(track) {
+			return function() {
+				return ClassesService.getClassById($scope.currentClass.id, track).then(
+					function (theClass) {
+						$scope.currentClass = _.cloneDeep(theClass);
+						return ClassesService.getClassApps($scope.currentClass.id, track).then(
+							function(results) {
+								classApps = results;
+								$scope.viewModel.apps = [];
+								$scope.matchApps();
+							}
+						);
+					}
+				);
+			}
+		}
 
 		function getSelectedApps() {
 			return _.filter($scope.viewModel.apps, function(app) {

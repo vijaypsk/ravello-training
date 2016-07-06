@@ -28,6 +28,7 @@ exports.createApps = function(request, response, next) {
 	var ravelloPassword = user.ravelloCredentials.password;
 
 	var requestData = request.body;
+	var errors = [];
 
 	// First create all of the apps.
 	q.all(_.map(requestData.apps, function(appDto) {
@@ -43,6 +44,11 @@ exports.createApps = function(request, response, next) {
 			function(error) {
 				// Don't fail the whole call if one app wasn't created.
 				logger.warn({reason: error}, 'Could not create App [%s] for user ID [%s]', appDto.name, appDto.userId);
+				var appError = {
+					appName: appDto.name,
+					errorMsg: getErrorMsg(error)
+				};
+				errors.push(appError);
 				return {
 					originalDto: appDto,
 					appData: null
@@ -78,7 +84,11 @@ exports.createApps = function(request, response, next) {
 								function(result) {
 									// The response to the client returns now, before starting to publish the apps against Ravello.
 									var dto = classesTrans.entityToDto(result);
-									response.send(dto);
+									var res = {
+										class: dto,
+										errors: errors
+									};
+									response.send(res);
 								}
 							);
 						}
@@ -94,6 +104,14 @@ exports.createApps = function(request, response, next) {
 			);
 		}
 	).catch(next);
+
+	function getErrorMsg(error) {
+		if (error.message) {
+			return error.message;
+		} else {
+			return '';
+		}
+	}
 
 	function publishAppsInChunks(appsToPublish) {
 		function publishChunk() {
