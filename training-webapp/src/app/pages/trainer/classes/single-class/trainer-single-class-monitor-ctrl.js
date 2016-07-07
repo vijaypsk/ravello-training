@@ -180,7 +180,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 						appDescription: appDesc,
 						userId: app.student.user.id,
 						blueprintId: app.blueprint.id,
-						publishDetails: app.publishDetails
+						publishDetails: app.publishDetails,
+						bucketId: $scope.currentClass.bucketId
 					};
 				});
 			}
@@ -303,7 +304,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		/* --- Private functions --- */
 
 		function showErrors(response) {
-			if (response.data && response.data.errors) {
+			if (response.data && response.data.errors && response.data.errors.l) {
 				var msg = _.reduce(response.data.errors, function(msg, error) {
 					return msg + error.appName + ': ' + error.errorMsg + '<br>';
 				}, '');

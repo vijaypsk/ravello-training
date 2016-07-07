@@ -27,5 +27,16 @@ var singleClassResolver = {
                 }
             );
         }
+    ],
+
+    buckets: [
+        'BucketsService',
+        function (BucketsService) {
+            return BucketsService.getAllBuckets().then(
+                function (buckets) {
+                    return _.cloneDeep(buckets);
+                }
+            );
+        }
     ]
 };

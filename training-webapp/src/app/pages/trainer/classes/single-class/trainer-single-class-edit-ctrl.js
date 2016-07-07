@@ -15,21 +15,47 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
     'DateUtil',
     'currentClass',
     'courses',
+	'buckets',
     function ($scope, $rootScope, $state, $stateParams, $log, $window, $dialogs, StatesNames, ClassesService, LoginModel,
-              DateUtil, currentClass, courses) {
+              DateUtil, currentClass, courses, buckets) {
 
         $scope.init = function () {
             $scope.apps = [];
             $scope.courses = courses;
-
+			$scope.buckets = buckets;
             $scope.initAbstract();
-            $scope.initClass();
-            $scope.initDates();
-            $scope.initStudentsDataGrid();
+			$scope.initClass();
+			$scope.initDates();
+			$scope.initStudentsDataGrid();
 			$scope.initPublishDetailsOptions();
-        };
+			initCostBuckets();
+		};
 
-        $scope.initAbstract = function() {
+		function initCostBuckets() {
+			$scope.viewModel = {
+				selectedCostBucket: getInitalSelectedCostBucket()
+			};
+			$scope.isCostBucketsOpen = isCostBucketsOpen();
+		}
+
+		function getInitalSelectedCostBucket() {
+			if ($scope.buckets.length === 1) {
+				return $scope.buckets[0];
+			}
+			if (currentClass.bucketId) {
+				return  _.find($scope.buckets, { id: currentClass.bucketId});
+			}
+			return {};
+		}
+
+		function isCostBucketsOpen() {
+			if ($scope.currentClass.bucketId) {
+				return false;
+			}
+			return $scope.buckets.length > 1;
+		}
+
+		$scope.initAbstract = function() {
             $scope.abstract = {};
         };
 
@@ -137,6 +163,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
                     }
                 }
             });
+
+			$scope.$watch('viewModel.selectedCostBucket', function(newVal, oldVal) {
+				if (newVal !== oldVal) {
+					$scope.currentClass.bucketId = newVal.id;
+				}
+			});
         };
 
         $scope.initDates = function() {

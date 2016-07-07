@@ -93,6 +93,16 @@
 		</accordion-group>
 	</accordion>
 
+	<br>
+
+	<accordion>
+		<accordion-group class="accordionGroup" heading="Cost Buckets" is-open="isCostBucketsOpen">
+			<label for="costBucketSelect">Cost bucket:</label>
+			<select id="costBucketSelect" class="form-control" ng-options="b as b.name for b in buckets"
+				ng-model="viewModel.selectedCostBucket"></select>
+		</accordion-group>
+	</accordion>
+
     <div id="classStudentsDiv" class="form-box class-students-div">
         <span class="block-title">Students</span>
 

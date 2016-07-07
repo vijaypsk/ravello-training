@@ -8,6 +8,7 @@ var TrainingClassSchema = mongoose.Schema({
     description: String,
     courseId: String,
     active: Boolean,
+    bucketId: String,
     ravelloCredentials: {
         username: String,
         password: String,

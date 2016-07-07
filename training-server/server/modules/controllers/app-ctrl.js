@@ -32,7 +32,7 @@ exports.createApps = function(request, response, next) {
 
 	// First create all of the apps.
 	q.all(_.map(requestData.apps, function(appDto) {
-		return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, ravelloUsername, ravelloPassword).then(
+		return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, appDto.bucketId, ravelloUsername, ravelloPassword).then(
 			function(createAppResult) {
 				var appData = appsTrans.ravelloObjectToTrainerDto(createAppResult.body);
 				return {

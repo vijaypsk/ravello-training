@@ -80,14 +80,17 @@ exports.getAppDeployment = function(appId, username, password) {
     return deferred.promise;
 };
 
-exports.createApp = function(name, description, bpId, username, password) {
+exports.createApp = function(name, description, bpId, bucketId, username, password) {
     var deferred = q.defer();
 
     var dto = {
         name: name,
         description: description,
         baseBlueprintId: bpId,
-        design: {}
+        design: {},
+        costBucket: {
+            id: bucketId
+        }
     };
 
     request.

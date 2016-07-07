@@ -14,7 +14,8 @@ angular.module('trng.proxies').factory('AppsProxy', [
 						name: appData.appName,
 						description: appData.appDescription,
 						baseBlueprintId: appData.blueprintId,
-						publishDetails: appData.publishDetails
+						publishDetails: appData.publishDetails,
+						bucketId: appData.bucketId
 					};
 				});
 
