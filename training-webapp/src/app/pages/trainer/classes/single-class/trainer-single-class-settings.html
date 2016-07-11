@@ -76,12 +76,15 @@
 					</div>
 					<div class="form-group" ng-if="isCloudVisible(bpPublishDetails)">
 						<label for="cloudSelect">Cloud:</label>
-						<select id="cloudSelect" class="form-control" ng-options="c.value as c.name for c in clouds"
+						<select id="cloudSelect" class="form-control"
+								ng-options="c.value as c.name for c in bpIdToClouds[bpPublishDetails.bpId]"
 								ng-model="bpPublishDetails.cloud" ng-change="cloudChanged(bpPublishDetails)"></select>
 					</div>
 					<div class="form-group" ng-if="isRegionVisible(bpPublishDetails)">
 						<label for="regionSelect">Region:</label>
-						<select id="regionSelect" class="form-control" ng-options="r.value as r.name for r in regions[bpPublishDetails.cloud]"
+						<select id="regionSelect" class="form-control"
+								ng-options="r.value as r.name for r in
+									bpIdToRegions[bpPublishDetails.bpId][bpPublishDetails.cloud]"
 								ng-model="bpPublishDetails.region"></select>
 					</div>
 					<div class="form-group">

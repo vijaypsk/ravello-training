@@ -19,7 +19,14 @@ angular.module('trng.services').factory('BlueprintsService', [
                     });
 					return entities;
 				});
-            }
+            },
+
+			getPublishLocations: function(bpId) {
+				var promise = BlueprintsProxy.getPublishLocations(bpId);
+				return promise.then(function(result) {
+					return result.data;
+				});
+			}
 		};
 		
 		return service;

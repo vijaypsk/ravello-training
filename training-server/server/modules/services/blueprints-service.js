@@ -33,3 +33,17 @@ exports.getBlueprintById = function(bpId, username, password) {
 
     return deferred.promise;
 };
+
+exports.getPublishLocations = function(bpId, username, password) {
+    var deferred = q.defer();
+
+    request.
+        get(properties.ravelloUrl + properties.baseUrl + '/blueprints/' + bpId + '/publishLocations').
+        set('Content-Length', 0).
+        set('X-LongToString', true).
+        accept('application/json').
+        auth(username, password).
+        end(serviceResultHandler.handleSuperagentError(deferred));
+
+    return deferred.promise;
+};

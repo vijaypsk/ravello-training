@@ -11,6 +11,12 @@ angular.module('trng.proxies').factory('BlueprintsProxy', [
                 var promise = $http.get(CommonConstants.baseUrl + '/rest/blueprints');
                 TrainingMainTracker.addPromise(promise);
                 return promise;
+            },
+
+            getPublishLocations: function(bpId) {
+                var promise = $http.get(CommonConstants.baseUrl + '/rest/blueprints/' + bpId +'/publishLocations');
+                TrainingMainTracker.addPromise(promise);
+                return promise;
             }
         };
     }

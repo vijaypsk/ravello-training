@@ -7,11 +7,19 @@ var logger = require('../config/logger');
 var blueprintsService = require('../services/blueprints-service');
 var blueprintsTrans = require('../trans/blueprints-trans');
 
-exports.getBlueprints = function(request, response, next) {
+function getRavelloUsername(request) {
     var user = request.user;
+    return  user.ravelloCredentials ? user.ravelloCredentials.username : '';
+}
 
-    var ravelloUsername = user.ravelloCredentials ? user.ravelloCredentials.username : '';
-    var ravelloPassword = user.ravelloCredentials ? user.ravelloCredentials.password : '';
+function getRavelloPassword(request) {
+    var user = request.user;
+    return user.ravelloCredentials ? user.ravelloCredentials.password : '';
+}
+
+exports.getBlueprints = function(request, response, next) {
+    var ravelloUsername = getRavelloUsername(request);
+    var ravelloPassword = getRavelloPassword(request);
 
     blueprintsService.getBlueprints(ravelloUsername, ravelloPassword).then(
         function(result) {
@@ -26,6 +34,19 @@ exports.getBlueprints = function(request, response, next) {
 
                 response.json(dtos);
             }
+        }
+    ).catch(next);
+};
+
+exports.getPublishLocations = function(request, response, next) {
+    var ravelloUsername = getRavelloUsername(request);
+    var ravelloPassword = getRavelloPassword(request);
+
+    var bpId = request.params.bpId;
+
+    return blueprintsService.getPublishLocations(bpId, ravelloUsername, ravelloPassword).then(
+        function(result) {
+            response.json(result.body);
         }
     ).catch(next);
 };

@@ -126,6 +126,10 @@ module.exports = function(app) {
         passport.authenticate('basic', authConfig),
         authorization.isAuthorized(['TRAINER']),
         blueprintsController.getBlueprints);
+    app.get('/rest/blueprints/:bpId/publishLocations',
+        passport.authenticate('basic', authConfig),
+        authorization.isAuthorized(['TRAINER']),
+        blueprintsController.getPublishLocations);
 
     // Student route.
     app.get('/rest/students/:studentId',
