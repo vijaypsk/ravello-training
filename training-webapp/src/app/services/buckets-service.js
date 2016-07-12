@@ -5,7 +5,8 @@ angular.module('trng.services').factory('BucketsService', [
 	'$q',
 	'CommonConstants',
 	'BucketsProxy',
-	function($rootScope, $q, CommonConstants, BucketsProxy) {
+	'BucketsTransformer',
+	function($rootScope, $q, CommonConstants, BucketsProxy, BucketsTransformer) {
 
 		var cachedBuckets = null;
 
@@ -18,7 +19,11 @@ angular.module('trng.services').factory('BucketsService', [
 
 				return BucketsProxy.getAllBuckets().then(
 					function(result) {
-						cachedBuckets = result.data;
+						cachedBuckets = [];
+						_.forEach(result.data, function(dto) {
+							var bucket = BucketsTransformer.dtoToEntity(dto);
+							cachedBuckets.push(bucket);
+						});
 						return cachedBuckets;
 					}
 				);
