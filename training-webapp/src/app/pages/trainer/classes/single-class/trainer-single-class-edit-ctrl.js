@@ -46,7 +46,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 			if (currentClass.bucketId) {
 				return  _.find($scope.buckets, { id: currentClass.bucketId});
 			}
-			return {};
+			return null;
 		}
 
 		function isCostBucketsOpen() {
