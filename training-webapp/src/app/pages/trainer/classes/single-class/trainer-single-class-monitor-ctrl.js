@@ -304,7 +304,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		/* --- Private functions --- */
 
 		function showErrors(response) {
-			if (response.data && response.data.errors && response.data.errors.l) {
+			if (response.data && response.data.errors && response.data.errors.length > 0) {
 				var msg = _.reduce(response.data.errors, function(msg, error) {
 					return msg + error.appName + ': ' + error.errorMsg + '<br>';
 				}, '');
