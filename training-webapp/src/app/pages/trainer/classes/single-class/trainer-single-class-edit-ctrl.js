@@ -72,52 +72,59 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 				}
 			];
 
-			$scope.bpIdToClouds = {};
-			$scope.bpIdToRegions = {};
 			fetchBpsCloudsAndRegions();
 		};
 
 
 		function fetchBpsCloudsAndRegions() {
+			$scope.bpIdToLocations = {};
 			var bpPublishDetailsList = $scope.currentClass.bpPublishDetailsList;
 			_.forEach(bpPublishDetailsList, function(bpPublishDetails) {
 				var bpId = bpPublishDetails.bpId;
 				BlueprintsService.getPublishLocations(bpId).then(function (locations) {
-					var clouds = [];
-					var regions = {};
+					var bpLocations = [];
 					_.forEach(locations, function(location) {
-						var cloud = {
-							name: location.cloudDisplayName,
-							value: location.cloudName
+						var bpLocation = {
+							cloudDisplayName: location.cloudDisplayName,
+							cloud: location.cloudName,
+							region: location.regionName,
+							locationDisplayName: location.cloudDisplayName + ' / ' + location.regionName
 						};
-						if (!_.find(clouds, { value: location.cloudName })) {
-							clouds.push(cloud);
-						}
-						var region = {
-							name: location.regionName,
-							value: location.regionName
-						};
-						if (!regions[cloud.value]) {
-							regions[cloud.value] = [];
-						}
-						regions[cloud.value].push(region);
+						bpLocations.push(bpLocation);
 					});
-					$scope.bpIdToClouds[bpId] = clouds;
-					$scope.bpIdToRegions[bpId] = regions;
+					$scope.bpIdToLocations[bpId] = bpLocations;
+					setSelectedLocations(bpPublishDetails);
 				});
 			});
 		}
 
-		$scope.isCloudVisible = function(bpPublishDetails) {
+		$scope.getLocations = function(bpId) {
+			return $scope.bpIdToLocations[bpId];
+		};
+
+		function setSelectedLocations(bpPublishDetails) {
+			var bpId = bpPublishDetails.bpId;
+			if (bpPublishDetails.cloud && bpPublishDetails.region) {
+				var bpLocations = $scope.bpIdToLocations[bpId];
+				_.forEach(bpLocations, function(bpLocation) {
+					if (bpLocation.cloud === bpPublishDetails.cloud &&
+						bpLocation.region === bpPublishDetails.region) {
+						bpPublishDetails.location = bpLocation;
+					}
+				});
+			}
+			if (!bpPublishDetails.location) {
+				bpPublishDetails.location = $scope.bpIdToLocations[bpId][0];
+			}
+		}
+
+		$scope.isLocationVisible = function(bpPublishDetails) {
 			return bpPublishDetails && bpPublishDetails.method !== 'COST_OPTIMIZED';
 		};
 
-		$scope.isRegionVisible = function(bpPublishDetails) {
-			return bpPublishDetails && bpPublishDetails.method !== 'COST_OPTIMIZED';
-		};
-
-		$scope.cloudChanged = function(bpPublishDetails) {
-			bpPublishDetails.region = $scope.bpIdToRegions[bpPublishDetails.bpId][bpPublishDetails.cloud][0].value;
+		$scope.locationChanged = function(bpPublishDetails) {
+			bpPublishDetails.cloud = bpPublishDetails.location.cloud;
+			bpPublishDetails.region = bpPublishDetails.location.region;
 		};
 
 		$scope.initClass = function() {
