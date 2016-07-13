@@ -40,11 +40,11 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 		}
 
 		function getInitalSelectedCostBucket() {
-			if ($scope.buckets.length === 1) {
-				return $scope.buckets[0];
-			}
 			if (currentClass.bucketId) {
 				return  _.find($scope.buckets, { id: currentClass.bucketId});
+			}
+			if ($scope.buckets.length === 1) {
+				return $scope.buckets[0];
 			}
 			return null;
 		}
