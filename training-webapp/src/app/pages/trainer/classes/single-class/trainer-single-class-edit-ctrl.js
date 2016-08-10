@@ -239,6 +239,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 		$scope.addToEdit = function() {
 			currentClass = ClassesService.createEmptyClass(currentClass.course);
 			$scope.currentClass = currentClass;
+			fetchBpsCloudsAndRegions();
+
 			$state.go(StatesNames.trainer.training.singleClass.editClass.name);
 		};
 
