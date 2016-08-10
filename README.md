@@ -110,6 +110,38 @@ Where <username> and <password> are the ones determined previously.
 
 This will create the basic 'admin' user, with which you could create the other application users, and then start using its full functionality.
 
+Note: if you have a fresh installation of mongoDB, you need at least to create the "training" DB and the default "training" user:
+1. Make sure the mongodb is running (you may need to use sudo): 
+```
+mongod
+```
+
+2. Enter to the mongo command line utility: 
+```
+mongo
+```
+
+3. Create the training DB:
+```
+use training
+```
+
+
+4. You'll be switched to the training DB. Now, add a dummy document to the training DB so it will be saved:
+```
+db.temp.save( {test:"data"} )
+```
+
+5. Add the training user to the training DB:
+```
+db.createUser({user:"training", pwd:"training", roles:[{role:"root",db:"admin"}]})
+```
+
+6. Exit the mongo command line utility:
+```
+exit
+```
+
 #### Enable remote access for MongoDB
 
 It might be helpful to open the MongoDB for remote access, to ease later support.
