@@ -83,15 +83,15 @@ angular.module('trng.services').factory('CoursesService', [
             },
 
             delete: function(entity) {
-                var dto = CoursesTrans.entityToDto(entity);
-                return CoursesProxy.delete(dto).then(
-                    function() {
+				var dto = CoursesTrans.entityToDto(entity);
+				return CoursesProxy.delete(dto).then(
+					function() {
 						if (cachedCourses) {
 							_.remove(cachedCourses, {id: entity.id});
 						}
 					}
-                );
-            },
+				);
+			},
 
             deleteById: function(entityId) {
                 return CoursesProxy.deleteById(entityId).then(
