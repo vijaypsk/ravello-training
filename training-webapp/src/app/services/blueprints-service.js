@@ -24,7 +24,11 @@ angular.module('trng.services').factory('BlueprintsService', [
 			getPublishLocations: function(bpId) {
 				var promise = BlueprintsProxy.getPublishLocations(bpId);
 				return promise.then(function(result) {
-					return result.data;
+					var locations = _.filter(result.data, function(location) {
+						return !location.deprecated;
+					});
+
+					return locations;
 				});
 			}
 		};
