@@ -314,10 +314,18 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		}
 
 		function createFetchFunc(track) {
+
 			return function() {
 				return ClassesService.getClassById($scope.currentClass.id, track).then(
 					function (theClass) {
+						
+						// Bug fix: the bpPublishDetails we receive on the currentClass injected to this ctrl,
+						// contains relevant publishLocation data. 
+						// We need to preserve this data wen replacing currentClass.
+						var  bpPublishDetailsList = _.cloneDeep($scope.currentClass.bpPublishDetailsList);
 						$scope.currentClass = _.cloneDeep(theClass);
+						$scope.currentClass.bpPublishDetailsList = bpPublishDetailsList;
+
 						return ClassesService.getClassApps($scope.currentClass.id, track).then(
 							function(results) {
 								classApps = results;

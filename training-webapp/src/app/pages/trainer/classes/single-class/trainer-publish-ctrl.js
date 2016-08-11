@@ -10,7 +10,7 @@ angular.module('trng.trainer.training.classes').controller('trainerPublishContro
 			};
 			var groupedAppsByPublishMethod = _.groupBy(data, function(app) {
 				if (app.publishDetails.method === 'PERFORMANCE_OPTIMIZED') {
-					return 'on ' + app.publishDetails.cloud + ' / ' + app.publishDetails.region;
+					return 'on ' + app.publishDetails.location.locationDisplayName;
 				} else {
 					return "as Cost-optimized";
 				}

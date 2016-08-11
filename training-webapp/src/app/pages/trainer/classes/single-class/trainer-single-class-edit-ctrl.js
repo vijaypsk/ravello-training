@@ -85,10 +85,9 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 					var bpLocations = [];
 					_.forEach(locations, function(location) {
 						var bpLocation = {
-							cloudDisplayName: location.cloudDisplayName,
 							cloud: location.cloudName,
 							region: location.regionName,
-							locationDisplayName: location.cloudDisplayName + ' / ' + location.regionName
+							locationDisplayName: location.regionDisplayName
 						};
 						bpLocations.push(bpLocation);
 					});
