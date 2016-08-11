@@ -7,8 +7,6 @@ angular.module('trng.config').constant('CommonConstants', {
 	maximumActiveDialogs: 1,
 
 	defaultPublishMethod: 'COST_OPTIMIZED',
-	defaultCloud: 'AMAZON',
-	defaultRegion: 'Virginia',
 	defaultAutoStopMinutes: 120,
 
 	courseChangedEvent: 'COURSE_CHANGED',

@@ -113,11 +113,9 @@ angular.module('trng.services').factory('ClassesService', [
 						bpPublishDetails = {
 							bpId: bp.id,
 							method: CommonConstants.defaultPublishMethod,
-							cloud: CommonConstants.defaultCloud,
-							region: CommonConstants.defaultRegion,
 							autoStop: CommonConstants.defaultAutoStopMinutes
-
 						};
+						
 						theClass.bpPublishDetailsList.push(bpPublishDetails);
 					}
 					bpPublishDetails.bpName = bp.name;

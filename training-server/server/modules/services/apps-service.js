@@ -123,13 +123,13 @@ exports.publishApp = function(appId, publishDetails, username, password) {
     var deferred = q.defer();
 
     var dto = {
-        optimizationLevel: publishDetails.method || properties.defaultOptimizationLevel,
+        optimizationLevel: publishDetails.method || 'COST_OPTIMIZED',
         startAllVms: publishDetails.startAfterPublish
     };
 
 	if (dto.optimizationLevel === 'PERFORMANCE_OPTIMIZED') {
-		dto.preferredCloud = publishDetails.cloud || properties.defaultCloud;
-		dto.preferredRegion = publishDetails.region || properties.defaultRegion;
+		dto.preferredCloud = publishDetails.cloud;
+		dto.preferredRegion = publishDetails.region;
 	}
 
     request.
