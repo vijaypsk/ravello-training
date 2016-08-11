@@ -20,12 +20,13 @@ angular.module('trng.services').factory('ClassesService', [
 
 		function updateClassInCache(theClass) {
 			var persistedEntity = ClassesTrans.dtoToEntity(theClass);
-
-			cachedClasses && _.forEach(cachedClasses, function(currentClass, classIndex) {
-				if (currentClass.id == persistedEntity.id) {
-					cachedClasses[classIndex] = persistedEntity;
-				}
-			});
+			if (cachedClasses) {
+				_.forEach(cachedClasses, function(currentClass, classIndex) {
+					if (currentClass.id === persistedEntity.id) {
+						cachedClasses[classIndex] = persistedEntity;
+					}
+				});
+			}
 
 			return persistedEntity;
 		}
@@ -129,7 +130,7 @@ angular.module('trng.services').factory('ClassesService', [
 		};
 
         // This is the way for services to communicate with one another.
-        $rootScope.$on(CommonConstants.courseChangedEvent, function(event, course) {
+        $rootScope.$on(CommonConstants.courseChangedEvent, function() {
             // The classes cache should invalidated, when there's a change in a course that might affect the classes.
             cachedClasses = null;
         });
@@ -176,7 +177,7 @@ angular.module('trng.services').factory('ClassesService', [
 								}
 								_.forEach(studentDto.apps, function(appDto) {
 									var app = _.find(student.apps, function(currentApp) {
-										return currentApp.ravelloId == appDto.ravelloId;
+										return currentApp.ravelloId === appDto.ravelloId;
 									});
 									if (!app) {
 										app = {};
@@ -214,7 +215,10 @@ angular.module('trng.services').factory('ClassesService', [
                 return ClassesProxy.add(dto).then(
                     function(result) {
                         var persistedClassEntity = ClassesTrans.dtoToEntity(result.data);
-                        cachedClasses && cachedClasses.push(persistedClassEntity);
+						if (cachedClasses) {
+							cachedClasses.push(persistedClassEntity);
+						}
+						
                         return getCourseForClass(persistedClassEntity);
                     });
             },
@@ -233,7 +237,10 @@ angular.module('trng.services').factory('ClassesService', [
                 var dto = ClassesTrans.entityToDto(entity);
                 return ClassesProxy.delete(dto).then(
                     function(result) {
-                        cachedClasses && _.remove(cachedClasses, {id: entity.id});
+						if (cachedClasses) {
+							_.remove(cachedClasses, {id: entity.id});
+						}
+                        
                         return result;
                     }
                 );
@@ -242,7 +249,10 @@ angular.module('trng.services').factory('ClassesService', [
             deleteById: function(entityId) {
                 return ClassesProxy.deleteById(entityId).then(
                     function(result) {
-                        cachedClasses && _.remove(cachedClasses, {id: entityId});
+						if (cachedClasses) {
+							_.remove(cachedClasses, {id: entityId});
+						}
+						
                         return result;
                     }
                 );
@@ -257,7 +267,10 @@ angular.module('trng.services').factory('ClassesService', [
                             var persistedDto = result.data;
                             entity.id = persistedDto.id;
                             var persistedEntity = ClassesTrans.dtoToEntity(persistedDto);
-                            cachedClasses && cachedClasses.push(persistedEntity);
+							if (cachedClasses) {
+								cachedClasses.push(persistedEntity);
+							}
+							
 							return getCourseForClass(persistedEntity);
                         }
                     );

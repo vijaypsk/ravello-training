@@ -18,12 +18,14 @@ angular.module('trng.services').factory('CoursesService', [
 
 		function updateCourseInCache(course) {
 			var persistedEntity = CoursesTrans.dtoToEntity(course);
-
-			cachedCourses && _.forEach(cachedCourses, function(currentCourse, courseIndex) {
-				if (currentCourse.id == persistedEntity.id) {
-					cachedCourses[courseIndex] = persistedEntity;
-				}
-			});
+			
+			if (cachedCourses) {
+				_.forEach(cachedCourses, function(currentCourse, courseIndex) {
+					if (currentCourse.id === persistedEntity.id) {
+						cachedCourses[courseIndex] = persistedEntity;
+					}
+				});
+			}
 
 			return persistedEntity;
 		}
@@ -62,7 +64,10 @@ angular.module('trng.services').factory('CoursesService', [
                 return CoursesProxy.add(dto).then(
                     function(result) {
                         var persistedEntity = CoursesTrans.dtoToEntity(result.data);
-                        cachedCourses && cachedCourses.push(persistedEntity);
+						if (cachedCourses) {
+							cachedCourses.push(persistedEntity);
+						}
+						
                         return persistedEntity;
                     }
                 );
@@ -80,16 +85,20 @@ angular.module('trng.services').factory('CoursesService', [
             delete: function(entity) {
                 var dto = CoursesTrans.entityToDto(entity);
                 return CoursesProxy.delete(dto).then(
-                    function(result) {
-                        cachedCourses && _.remove(cachedCourses, {id: entity.id});
-                    }
+                    function() {
+						if (cachedCourses) {
+							_.remove(cachedCourses, {id: entity.id});
+						}
+					}
                 );
             },
 
             deleteById: function(entityId) {
                 return CoursesProxy.deleteById(entityId).then(
-                    function(result) {
-                        cachedCourses && _.remove(cachedCourses, {id: entityId});
+                    function() {
+						if (cachedCourses) {
+							_.remove(cachedCourses, {id: entityId});
+						}
                     }
                 );
             },
@@ -104,7 +113,10 @@ angular.module('trng.services').factory('CoursesService', [
                             entity.id = persistedDto.id;
 
                             var persistedEntity = CoursesTrans.dtoToEntity(persistedDto);
-                            cachedCourses && cachedCourses.push(persistedEntity);
+							if (cachedCourses) {
+								cachedCourses.push(persistedEntity);
+							}
+							
                             return persistedEntity;
                         }
                     );

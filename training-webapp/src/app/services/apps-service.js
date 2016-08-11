@@ -2,8 +2,7 @@
 
 angular.module('trng.services').factory('AppsService', [
 	'AppsProxy',
-	'AppsTransformer',
-	function(AppsProxy, AppsTrans) {
+	function(AppsProxy) {
 
 		var service = {
 			createApps: function(classId, appsData) {

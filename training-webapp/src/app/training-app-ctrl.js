@@ -15,7 +15,7 @@ angular.module('trng.app').controller('MainController', [
                 userAuthData.hasOwnProperty('password')) {
 
                 LoginModel.login(userAuthData.username, userAuthData.password).catch(
-                    function(error) {
+                    function() {
                         $state.go(StatesNames.login.name);
                     }
                 );
@@ -26,7 +26,7 @@ angular.module('trng.app').controller('MainController', [
 
         $scope.logout = function() {
             var dialog = $dialogs.confirm('Confirm logout', 'Are you sure you want to logout?');
-            dialog.result.then(function(result) {
+            dialog.result.then(function() {
                 $cookieStore.remove('userAuthData');
                 $state.go(StatesNames.login.name);
             });
