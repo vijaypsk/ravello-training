@@ -77,7 +77,7 @@
 					<div class="form-group" ng-if="isLocationVisible(bpPublishDetails)">
 						<label for="locationSelect">Location:</label>
 						<select id="locationSelect" class="form-control"
-								ng-options="l as l.locationDisplayName for l in getLocations(bpPublishDetails.bpId)"
+								ng-options="l as l.region for l in getLocations(bpPublishDetails.bpId)"
 								ng-model="bpPublishDetails.location"
 								ng-change="locationChanged(bpPublishDetails)"></select>
 					</div>

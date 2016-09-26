@@ -78,21 +78,19 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 
 		function fetchBpsCloudsAndRegions() {
 			$scope.bpIdToLocations = {};
-			var bpPublishDetailsList = $scope.currentClass.bpPublishDetailsList;
-			_.forEach(bpPublishDetailsList, function(bpPublishDetails) {
-				var bpId = bpPublishDetails.bpId;
+			_.forEach($scope.currentClass.course.blueprints, function(blueprint) {
+				var bpId = blueprint.id;
 				BlueprintsService.getPublishLocations(bpId).then(function (locations) {
 					var bpLocations = [];
 					_.forEach(locations, function(location) {
 						var bpLocation = {
-							cloud: location.cloudName,
 							region: location.regionName,
 							locationDisplayName: location.regionDisplayName
 						};
 						bpLocations.push(bpLocation);
 					});
 					$scope.bpIdToLocations[bpId] = bpLocations;
-					setSelectedLocations(bpPublishDetails);
+					setSelectedLocations(bpId, bpLocations);
 				});
 			});
 		}
@@ -101,19 +99,15 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 			return $scope.bpIdToLocations[bpId];
 		};
 
-		function setSelectedLocations(bpPublishDetails) {
-			var bpId = bpPublishDetails.bpId;
-			if (bpPublishDetails.cloud && bpPublishDetails.region) {
-				var bpLocations = $scope.bpIdToLocations[bpId];
-				_.forEach(bpLocations, function(bpLocation) {
-					if (bpLocation.cloud === bpPublishDetails.cloud &&
-						bpLocation.region === bpPublishDetails.region) {
-						bpPublishDetails.location = bpLocation;
-					}
-				});
-			}
-			if (!bpPublishDetails.location) {
-				bpPublishDetails.location = $scope.bpIdToLocations[bpId][0];
+		function setSelectedLocations(bpId, bpLocations) {
+			var bpPublishDetailsList = $scope.currentClass.bpPublishDetailsList;
+			var bpPublishDetails = _.find(bpPublishDetailsList, { bpId: bpId });
+			if (bpPublishDetails) {
+				if (bpPublishDetails.region) {
+					bpPublishDetails.location = _.find(bpLocations, { region: bpPublishDetails.region });
+				} else {
+					bpPublishDetails.location = bpLocations[0];
+				}
 			}
 		}
 
@@ -122,7 +116,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 		};
 
 		$scope.locationChanged = function(bpPublishDetails) {
-			bpPublishDetails.cloud = bpPublishDetails.location.cloud;
 			bpPublishDetails.region = bpPublishDetails.location.region;
 		};
 
@@ -155,6 +148,12 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 			$scope.$watch('viewModel.selectedCostBucket', function(newVal, oldVal) {
 				if (newVal !== oldVal) {
 					$scope.currentClass.bucketId = newVal.id;
+				}
+			});
+
+			$scope.$watch('currentClass.bpPublishDetailsList', function(newVal, oldVal) {
+				if (newVal !== oldVal) {
+					fetchBpsCloudsAndRegions();
 				}
 			});
 		};

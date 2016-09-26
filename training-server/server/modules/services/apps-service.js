@@ -128,7 +128,6 @@ exports.publishApp = function(appId, publishDetails, username, password) {
     };
 
 	if (dto.optimizationLevel === 'PERFORMANCE_OPTIMIZED') {
-		dto.preferredCloud = publishDetails.cloud;
 		dto.preferredRegion = publishDetails.region;
 	}
 
