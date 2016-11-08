@@ -33,8 +33,8 @@ angular.module('trng.services').factory('TrainersService', [
             },
 
             deleteTrainer: function(trainerId) {
-                return TrainersProxy.delete(trainerId).then(function(result) {
-                    return TrainersTrans.dtoToEntity(result.data);
+                return TrainersProxy.delete(trainerId).then(function() {
+                    return null;
                 });
             },
 

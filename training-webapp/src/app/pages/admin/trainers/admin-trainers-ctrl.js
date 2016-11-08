@@ -63,11 +63,17 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
             $state.go(StatesNames.admin.singleTrainer.name, {trainerId: trainerId});
         };
 
+        function removeTrainerFromGrid(trainersToRemove) {
+            _.remove($scope.trainers, function(trainer) {
+                return _.some(trainersToRemove, { id: trainer.id});
+            });
+        };
+
         $scope.deleteTrainer = function(trainerToDelete) {
             var dialog = $dialogs.confirm("Delete trainer", "Are you sure you want to delete the trainer?");
             return dialog.result.then(function(result) {
                 var trainerId = trainerToDelete.getProperty('id');
-                return TrainersService.deleteTrainer(trainerId);
+                return TrainersService.deleteTrainer(trainerId).then(removeTrainerFromGrid([trainerToDelete]));
             });
         };
 
@@ -76,7 +82,7 @@ angular.module('trng.admin.trainers').controller('adminTrainersController', [
             return dialog.result.then(function(result) {
                 return _.map($scope.selectedTrainers, function(trainer) {
                     return TrainersService.deleteTrainer(trainer.id);
-                });
+                }).then(removeTrainerFromGrid($scope.selectedTrainers));
             });
         };
 
