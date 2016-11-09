@@ -28,7 +28,12 @@ angular.module('trng.trainer.training.courses').controller('trainerAddBlueprints
             $scope.datagridBlueprints = _.clone(allBlueprintsCopy);
 
             $scope.courseBlueprints = _.map(courseBlueprints, function (selectedBp) {
-				return _.find($scope.datagridBlueprints, {id: selectedBp.id});
+				var bp = _.find($scope.datagridBlueprints, {id: selectedBp.id});
+				// handle a case where the blueprint got deleted from ravello and we can't find it
+				if (bp === undefined) {
+					bp = { id: selectedBp.id };
+				}
+				return bp;
             });
         };
 
