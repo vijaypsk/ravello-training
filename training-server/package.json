@@ -13,7 +13,7 @@
     "q": "~1.0.1",
     "passport": "~0.2.0",
     "passport-http": "~0.2.2",
-    "mongoose": "~3.8.9",
+    "mongoose": "~4.7.3",
     "mongoose-q": "0.0.10",
     "randy": "~1.4.3",
     "superagent": "0.18.0",
