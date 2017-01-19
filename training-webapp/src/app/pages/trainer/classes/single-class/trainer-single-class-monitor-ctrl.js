@@ -158,6 +158,52 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			return createFetchFunc(track)();
 		};
 
+
+		$scope.scheduleApps = function() {
+			function createAppsData() {
+				var onlyAppsToCreate = _.filter(getSelectedApps(), function(app) {
+					return !app.creationTime;
+				});
+
+				return _.map(onlyAppsToCreate, function(app) {
+					var appName =
+						$scope.currentClass.name + '##' +
+							app.blueprint.name + '##' +
+							app.student.user.username;
+
+					var appDesc =
+						'App for student ' + app.student.user.username +
+							' from BP ' + app.blueprint.name +
+							' for class ' + $scope.currentClass.name;
+
+					return {
+						appName: appName,
+						appDescription: appDesc,
+						userId: app.student.user.id,
+						blueprintId: app.blueprint.id,
+						publishDetails: app.publishDetails,
+						bucketId: $scope.currentClass.bucketId
+					};
+				});
+			}
+
+			var appsData = createAppsData();
+
+			var modalInstance = $dialogs.create('app/pages/trainer/classes/single-class/trainer-schedule-dialog.html', 'trainerScheduleController', appsData);
+			return modalInstance.result.then(
+				function(sch) {
+					
+					appsData.sch = sch;
+					console.log('Schedule ',appsData);
+					//_.forEach(appsData, function(app) {
+						//app.publishDetails.startAfterPublish = startAfterPublish;
+					//});
+					return ClassesService.scheduleAppForStudents($scope.currentClass.id, appsData).then(showErrors).then(createFetchFunc());
+				}
+			);
+		};
+
+
 		$scope.createApps = function() {
 			function createAppsData() {
 				var onlyAppsToCreate = _.filter(getSelectedApps(), function(app) {
@@ -243,6 +289,10 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 					return AppsService.autoStopBatchApps(appsForAction, autoStopMinutes).then(createFetchFunc());
 				}
 			);
+		};
+
+		$scope.isScheduleDisabled = function() {
+            return $scope.viewModel.selectedApps.length <= 0;
 		};
 
 		$scope.isCreateDisabled = function() {

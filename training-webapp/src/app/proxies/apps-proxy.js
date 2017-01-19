@@ -29,6 +29,29 @@ angular.module('trng.proxies').factory('AppsProxy', [
 				return promise;
 			},
 
+			scheduleApps: function(classId, appsData) {
+				var appsDtos = _.map(appsData, function(appData) {
+					return {
+						userId: appData.userId,
+						name: appData.appName,
+						description: appData.appDescription,
+						baseBlueprintId: appData.blueprintId,
+						publishDetails: appData.publishDetails,
+						bucketId: appData.bucketId,
+                        schedule: appsData.sch  //Note to read from appsData not from appData
+					};
+				});
+
+				var dto = {
+					classId: classId,
+					apps: appsDtos
+				};
+                console.log(dto); 
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/schedule', dto);
+				TrainingMainTracker.addPromise(promise);
+				return promise;
+			},
+
             deleteApps: function(classId, appsData) {
                 var dto = {
                     classId: classId,

@@ -1,0 +1,57 @@
+<div>
+    <h3>Schedule Application</h3>
+    <br>
+    <div ng-repeat="method in viewModel.groupedApps">
+        These applications will be Scheduled {{method.publishedMethod}}:
+        <ul>
+            <li ng-repeat="app in method.apps">
+                {{app.appName}}
+            </li>
+        </ul>
+    </div>
+    <br>
+    <div class="form-group">
+        <input id="publishAndStartInput" type="checkbox" ng-model="viewModel.startAfterPublish" autofocus>
+        <label for="publishAndStartInput">Start application after publish</label>
+    </div>
+    <div >
+
+      <div class="form-group row">
+        <div class="col-md-6" >
+          <p class="input-group row">
+            <label for="sch_start_s">Start:</label>
+            <span class="input-group-btn" id="sch_start_s" >
+                <input type="text" id="sch_start" name="sch_start" class="form-control"  datepicker-popup="{{format}}" ng-model="startD.value" is-open="startd.opened" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true"
+                close-text="Close" />
+                <button type="button" class="btn btn-default" ng-click="open1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                <timepicker ng-model="startD.value" hour-step="1" minute-step="15" show-meridian="true">
+                </timepicker>
+              </span>
+          </p>
+        </div>
+
+      </div>
+      <div class="form-group row">
+         <div class="col-md-6" >
+          <p class="input-group row">
+            <label for="sch_end_e">End:</label>
+             <span class="input-group-btn" id="sch_start_e" >
+                <input type="text" id="sch_end" name="sch_end" class="form-control"  datepicker-popup="{{format}}"  ng-model="endD.value" is-open="endd.opened" min="startD.value" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true"
+                close-text="Close" />
+                <button type="button" class="btn btn-default" ng-click="open2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                <timepicker ng-model="endD.value" hour-step="1" minute-step="15" show-meridian="true">
+             </timepicker>
+             </span>
+          </p>
+        </div>
+      </div>
+    </div><!-- ng-controller -->
+    <div class="row btns-ok-cancel">
+        <button ng-click="ok()"class="btn btn-success btn-sm">
+            <i class="fa fa-check"></i> OK
+        </button>
+        <button ng-click="cancel()"class="btn btn-danger btn-sm">
+            <i class="fa fa-times"></i> Cancel
+        </button>
+    </div>
+</div>

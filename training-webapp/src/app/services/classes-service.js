@@ -318,6 +318,17 @@ angular.module('trng.services').factory('ClassesService', [
                 );
 			},
 
+			scheduleAppForStudents: function(classId, appsData) {
+				return AppsService.scheduleApps(classId, appsData).then(
+                    function(result) {
+                        // It's crucial to invalidate the cache, because changes might have been made to the class in the server,
+                        // which are not reflected in the cache.
+                        invalidateCache();
+                        return result;
+                    }
+                );
+			},
+
             deleteAppForStudents: function(classId, appsData) {
                 return AppsService.deleteApps(classId, appsData).then(
                     function(result) {

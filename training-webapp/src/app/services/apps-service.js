@@ -9,6 +9,10 @@ angular.module('trng.services').factory('AppsService', [
 				return AppsProxy.createApps(classId, appsData);
 			},
 
+			scheduleApps: function(classId, appsData) {
+				return AppsProxy.scheduleApps(classId, appsData);
+			},
+
             deleteApps: function(classId, appsData) {
                 return AppsProxy.deleteApps(classId, appsData);
             },

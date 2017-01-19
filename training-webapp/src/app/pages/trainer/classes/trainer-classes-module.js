@@ -3,6 +3,7 @@
 (function (angular) {
     angular.module('trng.trainer.training.classes', [
         'ngGrid',
+        'ngAnimate',
         'ui.bootstrap',
         'trng.config',
         'trng.services',
