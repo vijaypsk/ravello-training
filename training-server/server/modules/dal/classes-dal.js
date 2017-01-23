@@ -85,6 +85,54 @@ exports.updateStudentApp = function(classId, userId, appId) {
     );
 };
 
+exports.scheduleStudentApp = function(classId, scheduledAppsData) {
+    return TrainingClass.findById(classId).execQ().then(
+        function(classEntity) {
+            //console.log('scheduledAppsData is ',scheduledAppsData);
+             
+            _.forEach(scheduledAppsData, function(scheduledApp) {
+						    var sch = scheduledApp.schedule;
+                            var student = _.find(classEntity.students, function(currentStudent) {
+                                return currentStudent.user == scheduledApp.userId;
+                            });
+                            //console.log('student is ',student);
+                            student.scheduledApps.push({startTime: sch.startTime,endTime:sch.endTime});
+                            var classData = classEntity.toJSON();
+                            classData = _.omit(classData, '_id');
+                            console.log("Before updating - ",classData);
+                            TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true});
+                            console.log("After updating schedule");
+            });
+        }
+    );
+};
+
+exports.unscheduleStudentApp = function(classId, unscheduledAppsData) {
+    return TrainingClass.findById(classId).execQ().then(
+        function(classEntity) {
+           
+            _.forEach(unscheduledAppsData, function(scheduledApp) {
+                            var student = _.find(classEntity.students, function(currentStudent) {
+                                return currentStudent.user == scheduledApp.userId;
+                            });
+                            console.log('student is ',student);
+                            student.scheduledApps=[];
+                            var classData = classEntity.toJSON();
+                            classData = _.omit(classData, '_id');
+                            console.log("Before updating - ",classData);
+                            TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true});
+                            console.log("After updating schedule");
+            });
+            
+            // return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(
+            //     function(result) {
+			// 		return TrainingClass.findById(classId).execQ();
+            //     }
+            // ).catch(errorHandler.handleMongoError(400, 'Could not update class ' + classId + ' for user ' + userId + ' with app ' + appId));
+        }
+    );
+};
+
 exports.deleteStudentsApps = function(classId, appsData) {
     return TrainingClass.findById(classId).execQ().then(
         function(classEntity) {

@@ -13,6 +13,7 @@ var logger = require('./server/modules/config/logger');
 var config = require('./server/modules/config/config');
 var routes = require('./server/modules/config/routes');
 var errorHandler = require('./server/modules/utils/error-handler');
+var appScheduler = require('./server/modules/utils/app-scheduler');
 
 function main() {
 	init();
@@ -22,6 +23,8 @@ function main() {
 	} else {
 		runCluster();
 	}
+	console.log('main');
+	appScheduler.initialize(appScheduler.processScheduledApps);
 }
 
 function init() {
@@ -34,6 +37,7 @@ function run() {
 	config(app);
 	routes(app);
 	errorHandler.initErrorsMiddleware(app);
+    
 
 	app.listen(app.get('port'));
 }

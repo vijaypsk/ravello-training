@@ -39,6 +39,12 @@ var TrainingClassSchema = mongoose.Schema({
                 {
                     ravelloId: String
                 }
+            ],
+            scheduledApps: [
+                {
+                    startTime: Date,
+                    endTime: Date
+                }
             ]
         }
     ]

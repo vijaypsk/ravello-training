@@ -11,7 +11,7 @@ exports.defaultAutoStopSeconds = 7200;
 
 exports.dateFormat = 'dd.MM.yyyy hh:mm:ss tt';
 
-exports.numOfWorkers = 4;
+exports.numOfWorkers = 1;
 
 // The number of applications to create in every batch.
 exports.publishAppsChunkSize = 30;

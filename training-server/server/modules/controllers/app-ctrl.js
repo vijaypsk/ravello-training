@@ -2,9 +2,6 @@
 
 var _ = require('lodash');
 var q = require('q');
-var Agenda = require('agenda');
-var moment = require('moment-timezone');
-var mongoose = require('mongoose-q')(require('mongoose'));
 
 var properties = require('../config/properties');
 var logger = require('../config/logger');
@@ -32,7 +29,7 @@ exports.createApps = function(request, response, next) {
 
 	var requestData = request.body;
 	var errors = [];
-
+    
 	// First create all of the apps.
 	q.all(_.map(requestData.apps, function(appDto) {
 		return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, appDto.bucketId, ravelloUsername, ravelloPassword).then(
@@ -62,7 +59,7 @@ exports.createApps = function(request, response, next) {
 		function(createAppResults) {
 			// Now that all apps are finished (whether successfully or not) we can update the class, to maintain synchronization between Ravello and TP.
 			var appsToPublish = [];
-
+            
 			return classesDal.getClass(requestData.classId).then(
 				function(classEntity) {
 					var classData = classEntity.toJSON();
@@ -76,6 +73,8 @@ exports.createApps = function(request, response, next) {
 						if (createAppResult.appData) {
 							var student = studentsMap[createAppResult.originalDto.userId];
 							student && student.apps.push({ravelloId: createAppResult.appData.ravelloId});
+							student.scheduledApps=[];
+							console.log('createAppResult ',student);
 
 							appsToPublish.push(createAppResult);
 						}
@@ -191,116 +190,51 @@ exports.scheduleApps = function(request, response, next) {
 
 	var requestData = request.body;
 	var errors = [];
-
-	// First create all of the apps.
+    var scheduledAppsData = [];
+	// First schedule all of the apps.
 	q.all(_.map(requestData.apps, function(appDto) {
-		
-		var agenda = new Agenda();
-		agenda.mongo(mongoose.connection.collection('scheduledjobs').conn.db, 'scheduledjobs', function (err) {
-			console.error('Error ',err);
-		});
-		//console.log('About to schedule ',appDto);
-		function zonalTimeInSec (ipdate, timezone){
-			var result = moment.tz(ipdate,timezone).format('X');
-			//console.log('Date is ',ipdate,' Timezone is ',timezone,' Result is ',result);
-			return result;
-		};
-        
-		var startTimeInSec = zonalTimeInSec(appDto.schedule.startTime,'UTC');
-		var currentTimeInSec = zonalTimeInSec(new Date(),'UTC');
-		var timeDiff = startTimeInSec - currentTimeInSec;
-		
-
-        var jobName = 'create app in '+timeDiff+' seconds';
-		console.log('jobName is ',jobName);
-		agenda.define(jobName, function(job, done) {
-  			console.log(job.attrs.data.appData.name,' is getting created soon');
-			console.log(job.attrs.data.appData);
-			job.remove(function(err) {
-  				  if(!err) console.log("Successfully removed job from collection");
-			});
-  			done();
-		});
-
-		agenda.on('ready', function() {
-			    console.log('inside ready ',timeDiff);
-				agenda.schedule('in '+timeDiff+' seconds', jobName, {appData: appDto});
-				agenda.start();
-		});
-
-
-		// return appsService.createApp(appDto.name, appDto.description, appDto.baseBlueprintId, appDto.bucketId, ravelloUsername, ravelloPassword).then(
-		// 	function(createAppResult) {
-		// 		var appData = appsTrans.ravelloObjectToTrainerDto(createAppResult.body);
-		// 		return {
-		// 			originalDto: appDto,
-		// 			appData: appData
-		// 		};
-		// 	}
-		// ).catch(
-		// 	function(error) {
-		// 		// Don't fail the whole call if one app wasn't created.
-		// 		logger.warn({reason: error}, 'Could not create App [%s] for user ID [%s]', appDto.name, appDto.userId);
-		// 		var appError = {
-		// 			appName: appDto.name,
-		// 			errorMsg: getErrorMsg(error)
-		// 		};
-		// 		errors.push(appError);
-		// 		return {
-		// 			originalDto: appDto,
-		// 			appData: null
-		// 		};
-		// 	}
-		// );
+		//appsService.scheduleApp(appDto);
+		scheduledAppsData.push(appDto);
 	})).then(
-		console.log("After scheduling...")
-		// function(createAppResults) {
-		// 	// Now that all apps are finished (whether successfully or not) we can update the class, to maintain synchronization between Ravello and TP.
-		// 	var appsToPublish = [];
+		function(){
+			
 
-		// 	return classesDal.getClass(requestData.classId).then(
-		// 		function(classEntity) {
-		// 			var classData = classEntity.toJSON();
+			// Now that all apps are finished (whether successfully or not) we can update the class, to maintain synchronization between Ravello and TP.
+			var appsSchedule = [];
 
-		// 			var studentsMap = _.indexBy(classData.students, function(student) {
-		// 				return student.user._id;
-		// 			});
+			return classesDal.getClass(requestData.classId).then(
+				function(classEntity) {
+					var classData = classEntity.toJSON();
 
-		// 			// Only the apps that were created successfully will be saved in the class, and will be later published.
-		// 			_.forEach(createAppResults, function(createAppResult) {
-		// 				if (createAppResult.appData) {
-		// 					var student = studentsMap[createAppResult.originalDto.userId];
-		// 					student && student.apps.push({ravelloId: createAppResult.appData.ravelloId});
+					
 
-		// 					appsToPublish.push(createAppResult);
-		// 				}
-		// 			});
+					
 
-		// 			return classesDal.updateClass(requestData.classId, classData).then(
-		// 				function() {
-		// 					return classesDal.getClass(requestData.classId).then(
-		// 						function(result) {
-		// 							// The response to the client returns now, before starting to publish the apps against Ravello.
-		// 							var dto = classesTrans.entityToDto(result);
-		// 							var res = {
-		// 								class: dto,
-		// 								errors: errors
-		// 							};
-		// 							response.send(res);
-		// 						}
-		// 					);
-		// 				}
-		// 			);
-		// 		}
-		// 	).then(
-		// 		function() {
-		// 			// Publishing the apps happens in the background, after the response returns.
-		// 			// We do it in chunks, because there are time-based limits when working against the clouds,
-		// 			// and we don't want to meet them, so we don't perform too many actions simultaneously.
-		// 			publishAppsInChunks(appsToPublish);
-		// 		}
-		// 	);
-		//}
+					// Only the apps that were scheduled successfully will be marked as scheduled, and will be later started.
+					classesDal.scheduleStudentApp(requestData.classId,scheduledAppsData);
+					
+					console.log("After scheduling...",appsSchedule);
+					return classesDal.updateClass(requestData.classId, classData).then(
+						function() {
+							return classesDal.getClass(requestData.classId).then(
+								function(result) {
+									// The response to the client returns now, before starting to publish the apps against Ravello.
+									var dto = classesTrans.entityToDto(result);
+									var res = {
+										class: dto,
+										errors: errors
+									};
+									response.send(res);
+								}
+							);
+						}
+					);
+				}
+			);
+
+
+			//response.send(scheduledAppsData);
+		}
 	).catch(next);
 
 	function getErrorMsg(error) {
@@ -315,6 +249,73 @@ exports.scheduleApps = function(request, response, next) {
 
 	
 };
+
+exports.unscheduleApps = function(request, response, next) {
+	var user = request.user;
+
+	if (!user.ravelloCredentials) {
+		next(errorHandler.createError(401, 'You are not authorized to perform this action. Verify your Ravello credentials.'));
+		return;
+	}
+
+	var ravelloUsername = user.ravelloCredentials.username;
+	var ravelloPassword = user.ravelloCredentials.password;
+
+	var requestData = request.body;
+	var errors = [];
+    var scheduledAppsData = [];
+	// First schedule all of the apps.
+	q.all(_.map(requestData.apps, function(appDto) {
+		//appsService.scheduleApp(appDto);
+		scheduledAppsData.push(appDto);
+	})).then(
+		function(){
+			
+			// Now that all apps are finished (whether successfully or not) we can update the class, to maintain synchronization between Ravello and TP.
+			var appsSchedule = [];
+
+			return classesDal.getClass(requestData.classId).then(
+				function(classEntity) {
+					var classData = classEntity.toJSON();
+                     //console.log("Before un scheduling...",scheduledAppsData);
+					classesDal.unscheduleStudentApp(requestData.classId,scheduledAppsData);
+					console.log("After un scheduling...",appsSchedule);
+					return classesDal.updateClass(requestData.classId, classData).then(
+						function() {
+							return classesDal.getClass(requestData.classId).then(
+								function(result) {
+									// The response to the client returns now, before starting to publish the apps against Ravello.
+									var dto = classesTrans.entityToDto(result);
+									var res = {
+										class: dto,
+										errors: errors
+									};
+									response.send(res);
+								}
+							);
+						}
+					);
+				}
+			);
+
+
+			//response.send(scheduledAppsData);
+		}
+	).catch(next);
+
+	function getErrorMsg(error) {
+		if (error.message) {
+			return error.message;
+		} else {
+			return '';
+		}
+	}
+
+	
+
+	
+};
+
 
 exports.deleteApps = function(request, response, next) {
 	var user = request.user;

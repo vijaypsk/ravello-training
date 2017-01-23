@@ -158,6 +158,10 @@ module.exports = function(app) {
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['TRAINER']),
         appController.scheduleApps);
+    app.post('/rest/applications/unschedule',
+        passport.authenticate('basic', {session: false}),
+        authorization.isAuthorized(['TRAINER']),
+        appController.unscheduleApps);
     app.post('/rest/applications/delete',
         passport.authenticate('basic', {session: false}),
         authorization.isAuthorized(['TRAINER']),

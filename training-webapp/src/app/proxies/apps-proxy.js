@@ -46,11 +46,34 @@ angular.module('trng.proxies').factory('AppsProxy', [
 					classId: classId,
 					apps: appsDtos
 				};
-                console.log(dto); 
+                
 				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/schedule', dto);
-				TrainingMainTracker.addPromise(promise);
+                TrainingMainTracker.addPromise(promise);
 				return promise;
 			},
+
+            unscheduleApps: function(classId, appsData) {
+				var appsDtos = _.map(appsData, function(appData) {
+					return {
+						userId: appData.userId,
+						name: appData.appName,
+						description: appData.appDescription,
+						baseBlueprintId: appData.blueprintId,
+						publishDetails: appData.publishDetails,
+						bucketId: appData.bucketId,
+					};
+				});
+
+				var dto = {
+					classId: classId,
+					apps: appsDtos
+				};
+                
+				var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/unschedule', dto);
+                TrainingMainTracker.addPromise(promise);
+				return promise;
+			},
+
 
             deleteApps: function(classId, appsData) {
                 var dto = {
@@ -59,6 +82,7 @@ angular.module('trng.proxies').factory('AppsProxy', [
                 };
 
                 var promise = $http.post(CommonConstants.baseUrl + '/rest/applications/delete', dto);
+                console.log(promise); 
                 TrainingMainTracker.addPromise(promise);
                 return promise;
             },
