@@ -73,8 +73,8 @@ exports.createApps = function(request, response, next) {
 						if (createAppResult.appData) {
 							var student = studentsMap[createAppResult.originalDto.userId];
 							student && student.apps.push({ravelloId: createAppResult.appData.ravelloId});
-							student.scheduledApps=[];
-							console.log('createAppResult ',student);
+							if(student.scheduledApps.length>0)
+								student.scheduledApps[0].startTime=null;
 
 							appsToPublish.push(createAppResult);
 						}
@@ -205,15 +205,9 @@ exports.scheduleApps = function(request, response, next) {
 			return classesDal.getClass(requestData.classId).then(
 				function(classEntity) {
 					var classData = classEntity.toJSON();
-
-					
-
-					
-
 					// Only the apps that were scheduled successfully will be marked as scheduled, and will be later started.
 					classesDal.scheduleStudentApp(requestData.classId,scheduledAppsData);
 					
-					console.log("After scheduling...",appsSchedule);
 					return classesDal.updateClass(requestData.classId, classData).then(
 						function() {
 							return classesDal.getClass(requestData.classId).then(
@@ -279,7 +273,6 @@ exports.unscheduleApps = function(request, response, next) {
 					var classData = classEntity.toJSON();
                      //console.log("Before un scheduling...",scheduledAppsData);
 					classesDal.unscheduleStudentApp(requestData.classId,scheduledAppsData);
-					console.log("After un scheduling...",appsSchedule);
 					return classesDal.updateClass(requestData.classId, classData).then(
 						function() {
 							return classesDal.getClass(requestData.classId).then(
@@ -332,7 +325,6 @@ exports.deleteApps = function(request, response, next) {
 	var ravelloPassword = user.ravelloCredentials.password;
 
 	var deletedAppsData = [];
-
 	q.all(_.map(appsToDelete, function(appData) {
 		return appsService.deleteApp(appData.ravelloId, ravelloUsername, ravelloPassword).then(
 			function(result) {

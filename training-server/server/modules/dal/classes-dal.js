@@ -99,9 +99,7 @@ exports.scheduleStudentApp = function(classId, scheduledAppsData) {
                             student.scheduledApps.push({startTime: sch.startTime,endTime:sch.endTime});
                             var classData = classEntity.toJSON();
                             classData = _.omit(classData, '_id');
-                            console.log("Before updating - ",classData);
                             TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true});
-                            console.log("After updating schedule");
             });
         }
     );
@@ -115,20 +113,11 @@ exports.unscheduleStudentApp = function(classId, unscheduledAppsData) {
                             var student = _.find(classEntity.students, function(currentStudent) {
                                 return currentStudent.user == scheduledApp.userId;
                             });
-                            console.log('student is ',student);
                             student.scheduledApps=[];
                             var classData = classEntity.toJSON();
                             classData = _.omit(classData, '_id');
-                            console.log("Before updating - ",classData);
                             TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true});
-                            console.log("After updating schedule");
             });
-            
-            // return TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true}).then(
-            //     function(result) {
-			// 		return TrainingClass.findById(classId).execQ();
-            //     }
-            // ).catch(errorHandler.handleMongoError(400, 'Could not update class ' + classId + ' for user ' + userId + ' with app ' + appId));
         }
     );
 };
@@ -138,12 +127,12 @@ exports.deleteStudentsApps = function(classId, appsData) {
         function(classEntity) {
             _.forEach(appsData, function(appData) {
                 var student = _.find(classEntity.students, function(currentStudent) {
-                    return currentStudent.user == appData.userId;
+                    return _.isEqual(currentStudent.user,appData.userId);
                 });
-
                 _.remove(student.apps, function(app) {
                     return app.ravelloId === appData.ravelloId;
                 });
+                student.scheduledApps=[];
             });
 
             var classData = classEntity.toJSON();
@@ -156,6 +145,7 @@ exports.deleteStudentsApps = function(classId, appsData) {
         }
     );
 };
+
 
 exports.deleteClass = function(classId) {
     return TrainingClass.findByIdAndRemove(classId).populate('students.user').execQ().catch(

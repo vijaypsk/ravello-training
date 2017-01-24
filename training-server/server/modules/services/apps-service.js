@@ -160,7 +160,6 @@
             accept('application/json').
             auth(username, password).
             end(errorHandler.handleSuperagentError(deferred));
-    console.log('deleteApp ',deferred.promise);
         return deferred.promise;
     };
 
