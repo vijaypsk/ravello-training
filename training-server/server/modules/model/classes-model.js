@@ -43,7 +43,8 @@ var TrainingClassSchema = mongoose.Schema({
             scheduledApps: [
                 {
                     startTime: Date,
-                    endTime: Date
+                    endTime: Date,
+                    timeZone: String
                 }
             ]
         }

@@ -1,3 +1,4 @@
+
 <div>
     <h3>Schedule Application</h3>
     <br>
@@ -9,45 +10,63 @@
             </li>
         </ul>
     </div>
-   
-    <div >
-
-      <div class="form-group row">
-        <div class="col-md-6" >
-          <p class="input-group row">
-            <label for="sch_start_s">Start:</label>
-            <span class="input-group-btn" id="sch_start_s" >
-                <input type="text" id="sch_start" name="sch_start" class="form-control"  datepicker-popup="{{format}}" ng-model="startD.value" is-open="startd.opened" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true"
+    <div class="col-xs-12" style="height:20px;"></div>
+    <form name="schForm">
+    <div>
+        <div class="form-group row">
+          <label class="col-xs-2" for="sch-timezones">Timezone:</label>
+          <div class="col-xs-8">
+              <select  id="sch-timezones" name="sch-timezones" ng-model="timezone.value"  ng-change="timezoneChange()" class="form-control" required></select>
+          </div>
+          <br/><br/>
+         
+      </div>
+       
+        <div class="form-group row">
+            <div class="col-md-6">
+                <p class="input-group row">
+                    <label for="sch_start_s">Start:</label>
+                    <span class="input-group-btn" id="sch_start_s">
+                <input type="text" id="sch_start" name="sch_start" class="form-control"  datepicker-popup="{{format}}" required ng-model="startD.value" is-open="startd.opened" min="initDate" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true"
                 close-text="Close" />
                 <button type="button" class="btn btn-default" ng-click="open1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                 <timepicker ng-model="startD.value" hour-step="1" minute-step="15" show-meridian="true">
                 </timepicker>
               </span>
-          </p>
-        </div>
+                </p>
+            </div>
 
-      </div>
-      <div class="form-group row">
-         <div class="col-md-6" >
-          <p class="input-group row">
-            <label for="sch_end_e">End:</label>
-             <span class="input-group-btn" id="sch_start_e" >
-                <input type="text" id="sch_end" name="sch_end" class="form-control"  datepicker-popup="{{format}}"  ng-model="endD.value" is-open="endd.opened" min="startD.value" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true"
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <p class="input-group row">
+                    <label for="sch_end_e">End:</label>
+                    <span class="input-group-btn" id="sch_start_e">
+                <input type="text" id="sch_end" name="sch_end" class="form-control"  datepicker-popup="{{format}}"  required ng-model="endD.value" is-open="endd.opened" min="startD.value" max-date="'2050-06-22'" datepicker-options="endDateOptions" date-disabled="disabled(date, mode)" ng-required="true"
                 close-text="Close" />
                 <button type="button" class="btn btn-default" ng-click="open2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                 <timepicker ng-model="endD.value" hour-step="1" minute-step="15" show-meridian="true">
              </timepicker>
              </span>
-          </p>
+                </p>
+            </div>
         </div>
-      </div>
-    </div><!-- ng-controller -->
+    </div>
+    <!-- ng-controller -->
     <div class="row btns-ok-cancel">
-        <button ng-click="ok()"class="btn btn-success btn-sm">
+        <button ng-click="ok()" ng-model="schbutton" ng-disabled="!(startD.value && endD.value && (startD.value < endD.value) && timezone.value)" class="btn btn-success btn-sm">
             <i class="fa fa-check"></i> OK
         </button>
-        <button ng-click="cancel()"class="btn btn-danger btn-sm">
+        <button ng-click="cancel()" class="btn btn-danger btn-sm">
             <i class="fa fa-times"></i> Cancel
         </button>
     </div>
+    </form>
 </div>
+<script>
+   //$('select').timezones();
+    $(document).ready(function() {
+       $('select').timezones();
+     });
+    //$("sch-timezones").val('America/Los_Angeles'); 
+</script>

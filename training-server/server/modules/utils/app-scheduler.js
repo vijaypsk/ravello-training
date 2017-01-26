@@ -49,7 +49,7 @@ exports.processScheduledApps = function () {
                     q.all(_.map(currentClass.students, function (student) {
                         if (student.scheduledApps.length > 0
                             && student.scheduledApps[0].startTime
-                            && readyForCreation(student.scheduledApps[0].startTime)) {
+                            && readyForCreation(student.scheduledApps[0].startTime,student.scheduledApps[0].timeZone)) {
 
                             return q.all(_.map(currentClass.bpPublishDetailsList, function (pubDtl) {
                                 return blueprintsService.getBlueprintById(pubDtl.bpId, currentClass.ravelloCredentials.username, currentClass.ravelloCredentials.password)
@@ -160,9 +160,10 @@ exports.processScheduledApps = function () {
         }
     );
 
-    function readyForCreation(schStartTime) {
-        var currentTimeInSec = zonalTimeInSec(new Date(), 'UTC');
-        var startTime = zonalTimeInSec(schStartTime, 'UTC');
+    function readyForCreation(schStartTime,tz) {
+        var currentTimeInSec = zonalTimeInSec(new Date(), tz);
+        var startTime = zonalTimeInSec(convertUTCToZonalTime(schStartTime, tz),tz);
+        //console.log('readyForCreation startTime ',startTime,' currentTimeInSec ',currentTimeInSec);
         //if the startTime is less than or equal to 15 min, then application is ready to Start
         var readyFlag = false;
         if (startTime - currentTimeInSec < 900) {
@@ -173,6 +174,18 @@ exports.processScheduledApps = function () {
         }
         return readyFlag;
     }
+
+
+    function convertUTCToZonalTime (time, zone) {
+			var format = 'YYYY/MM/DD HH:mm:ss ZZ';
+			// console.log("Local timezone offset ",time.getTimezoneOffset());
+			// console.log("Offset for zone ",zone," is ",moment.tz(time,zone).zone());
+			//console.log('time is ',time,' type is ',typeof(time));
+            var hroffset = ((-1 * moment.tz(time,zone).utcOffset()) - time.getTimezoneOffset())/60;
+            var result = moment.tz(time,zone).add(hroffset,'hours').toDate();
+            //console.log('convertUTCToZonalTime result is ',result);
+            return result;
+		}
 
     function readyForDeletion(schEndTime) {
         var currentTimeInSec = zonalTimeInSec(new Date(), 'UTC');

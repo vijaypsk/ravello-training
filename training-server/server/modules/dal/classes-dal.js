@@ -96,7 +96,7 @@ exports.scheduleStudentApp = function(classId, scheduledAppsData) {
                                 return currentStudent.user == scheduledApp.userId;
                             });
                             //console.log('student is ',student);
-                            student.scheduledApps.push({startTime: sch.startTime,endTime:sch.endTime});
+                            student.scheduledApps.push({startTime: sch.startTime,endTime:sch.endTime,timeZone:sch.timeZone});
                             var classData = classEntity.toJSON();
                             classData = _.omit(classData, '_id');
                             TrainingClass.updateQ({_id: new ObjectId(classEntity.id)}, classData, {upsert: true});

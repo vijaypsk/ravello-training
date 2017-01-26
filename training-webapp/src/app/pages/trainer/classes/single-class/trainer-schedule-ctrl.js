@@ -23,8 +23,24 @@ angular.module('trng.trainer.training.classes').controller('trainerScheduleContr
 			});
 		}
 
+		
+		$scope.timezoneChange = function () {
+    	}
+
+		$scope.toTimeZone= function (time, zone) {
+			var format = 'YYYY/MM/DD HH:mm:ss ZZ';
+			// console.log("Local timezone offset ",time.getTimezoneOffset());
+			// console.log("Offset for zone ",zone," is ",moment.tz(time,zone).zone());
+			//console.log('time is ',time,' type is ',typeof(time));
+			var hroffset = (moment.tz(time,zone).zone() - time.getTimezoneOffset())/60;
+			return moment.tz(time,zone).add(hroffset,'hours').toDate();
+		}
+
+		$scope.timezone = {value:null};
+
 		$scope.ok = function () {
-			let sch = {startTime:$scope.startD.value,endTime:$scope.endD.value};
+			let sch = {startTime:$scope.startD.value,endTime:$scope.endD.value,timeZone:$scope.timezone.value};
+
 			$modalInstance.close(sch);
 		};
 
@@ -35,10 +51,29 @@ angular.module('trng.trainer.training.classes').controller('trainerScheduleContr
 		init();
 
 
+		Date.prototype.addHours= function(h){
+			this.setHours(this.getHours()+h);
+			return this;
+		}
 
+		$scope.initDate = new Date();
+		$scope.initEndDate = function(){
+			var res = $scope.startD.value.addHours(1);
+			console.log('res ',res);
+			return res;
+		}
 		$scope.today = function () {
-			$scope.startD = {value:new Date()};
-			$scope.endD = {value:new Date()};
+			$scope.startD = {value:roundMinutes($scope.initDate)};
+			//$scope.startD = {value:roundMinutes(new Date(1485451000000))};
+			$scope.endD = {value:roundMinutes($scope.initEndDate())};
+
+			function roundMinutes(date) {
+				// var minIncr = Math.round(date.getMinutes()/60);
+				// if(minIncr==0)minIncr=1;
+				date.setHours(date.getHours() + 1);
+				date.setMinutes(0);
+				return date;
+			}
 		};
 		$scope.today();
 
@@ -52,8 +87,6 @@ angular.module('trng.trainer.training.classes').controller('trainerScheduleContr
 		$scope.$watch("startD.value", function(newValue, oldValue) {
             //update end date value if start date is set to greater than end date
 			if(newValue>$scope.endD.value){
-    		// console.log("Old Value : ", oldValue);
-			// console.log("New Value : ", newValue);
 				$scope.endD.value=newValue;
 			}
 		});
@@ -65,13 +98,24 @@ angular.module('trng.trainer.training.classes').controller('trainerScheduleContr
 			mode = data.mode;
 			return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 		}
+
+		
 		$scope.dateOptions = {
 			customClass: $scope.getDayClass,
 			dateDisabled: disabled,
-			minDate: new Date(),
+			minDate:$scope.initDate,
+			timezone: $scope.timezone.value,
 			showWeeks: true
 		};
-
+      
+		$scope.endDateOptions = {
+			customClass: $scope.getDayClass,
+			dateDisabled: disabled,
+			minDate:  $scope.initEndDate(),
+			timezone: $scope.timezone.value,
+			showWeeks: true
+		};
+		
 		
 		$scope.open1 = function ($event) {
 			$event.preventDefault();
@@ -82,7 +126,6 @@ angular.module('trng.trainer.training.classes').controller('trainerScheduleContr
 			 	$event.preventDefault();
     			$event.stopPropagation();
 				$scope.endd.opened = true;
-				console.log($scope.endD.value)
 		};
 
 		$scope.formats = ['dd-MMMM-yyyy hh:mm:ss', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];

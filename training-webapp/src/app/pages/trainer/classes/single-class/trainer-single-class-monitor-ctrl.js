@@ -192,9 +192,9 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			var modalInstance = $dialogs.create('app/pages/trainer/classes/single-class/trainer-schedule-dialog.html', 'trainerScheduleController', appsData);
 			return modalInstance.result.then(
 				function(sch) {
-					
+					console.log('Schedule 0',sch);
 					appsData.sch = sch;
-					console.log('Schedule ',appsData);
+					console.log('Schedule 1',appsData);
 					//_.forEach(appsData, function(app) {
 						//app.publishDetails.startAfterPublish = startAfterPublish;
 					//});
