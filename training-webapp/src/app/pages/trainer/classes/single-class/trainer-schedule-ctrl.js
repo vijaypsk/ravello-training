@@ -59,7 +59,7 @@ angular.module('trng.trainer.training.classes').controller('trainerScheduleContr
 		$scope.initDate = new Date();
 		$scope.initEndDate = function(){
 			var res = $scope.startD.value.addHours(1);
-			console.log('res ',res);
+			//console.log('res ',res);
 			return res;
 		}
 		$scope.today = function () {

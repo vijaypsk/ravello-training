@@ -31,7 +31,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
             $scope.initDates();
             $scope.initAppsDataGrid();
 			$scope.initAutoRefresh();
-			console.log($scope.viewModel.apps)
         };
 
         $scope.initData = function() {
@@ -136,7 +135,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
 		$scope.initAutoRefresh = function() {
 			$scope.shouldAutoRefresh = true;
-			//$scope.autoRefresh();
+			$scope.autoRefresh();
 
 			$scope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
 				if (fromState && fromState.name === StatesNames.trainer.training.singleClass.monitorClass.name) {
@@ -192,9 +191,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 			var modalInstance = $dialogs.create('app/pages/trainer/classes/single-class/trainer-schedule-dialog.html', 'trainerScheduleController', appsData);
 			return modalInstance.result.then(
 				function(sch) {
-					console.log('Schedule 0',sch);
 					appsData.sch = sch;
-					console.log('Schedule 1',appsData);
 					//_.forEach(appsData, function(app) {
 						//app.publishDetails.startAfterPublish = startAfterPublish;
 					//});
@@ -233,7 +230,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
 			var appsData = createAppsData();
             
-			console.log(appsData);
+			//console.log(appsData);
 			
 			return ClassesService.unscheduleAppForStudents($scope.currentClass.id, appsData).then(showErrors).then(createFetchFunc());
 				
@@ -414,8 +411,6 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
 						return ClassesService.getClassApps($scope.currentClass.id, track).then(
 							function(results) {
-            //console.log("Inside createFetchFunc ",results.currentClass.students[0].apps[]);
-			//console.log("Inside createFetchFunc ",$scope.currentClass.id);
 								classApps = results;
 								$scope.viewModel.apps = [];
 								$scope.matchApps();
@@ -433,7 +428,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 		}
 
 		function determineAppStatus(app) {
-			console.log('app is ',app.student.scheduledApps);
+			//console.log('app is ',app.student.scheduledApps);
 
 			if (!app.ravelloId) {
 				app.status = '-';
