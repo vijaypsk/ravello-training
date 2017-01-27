@@ -161,8 +161,9 @@ exports.processScheduledApps = function () {
     );
 
     function readyForCreation(schStartTime,tz) {
+        tz='UTC';
         var currentTimeInSec = zonalTimeInSec(new Date(), tz);
-        var startTime = zonalTimeInSec(convertUTCToZonalTime(schStartTime, tz),tz);
+        var startTime = zonalTimeInSec(schStartTime,tz);
         //console.log('readyForCreation startTime ',startTime,' currentTimeInSec ',currentTimeInSec);
         //if the startTime is less than or equal to 15 min, then application is ready to Start
         var readyFlag = false;

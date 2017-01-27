@@ -25,6 +25,8 @@ angular.module('trng.trainer.training.classes').controller('trainerScheduleContr
 
 		
 		$scope.timezoneChange = function () {
+			//console.log('startD ',$scope.toTimeZone($scope.startD.value,$scope.timezone.value));
+			//console.log('endD ',$scope.toTimeZone($scope.endD.value,$scope.timezone.value));
     	}
 
 		$scope.toTimeZone= function (time, zone) {
@@ -39,7 +41,11 @@ angular.module('trng.trainer.training.classes').controller('trainerScheduleContr
 		$scope.timezone = {value:null};
 
 		$scope.ok = function () {
-			let sch = {startTime:$scope.startD.value,endTime:$scope.endD.value,timeZone:$scope.timezone.value};
+			let sch = {
+				       startTime:$scope.toTimeZone($scope.startD.value,$scope.timezone.value),
+				       endTime:$scope.toTimeZone($scope.endD.value,$scope.timezone.value),
+					   timeZone:$scope.timezone.value
+					};
 
 			$modalInstance.close(sch);
 		};
