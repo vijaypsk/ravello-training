@@ -11,13 +11,15 @@
 				</div>
 				<div class="col-md-6">
 					<label class="col-sm-3 control-label">Course:</label>
-					<div class="col-sm-9"><div class="form-control mock-disabled-input">{{currentClass.course.name}}</div></div>
+					<div class="col-sm-9">
+						<div class="form-control mock-disabled-input">{{currentClass.course.name}}</div>
+					</div>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-md-6">
-					<label for="descriptionInput"  class="col-sm-3 control-label">Description:</label>
+					<label for="descriptionInput" class="col-sm-3 control-label">Description:</label>
 					<div class="col-sm-9">
 						<input id="descriptionInput" type="text" class="form-control" ng-model="currentClass.description">
 					</div>
@@ -26,89 +28,139 @@
 		</div>
 	</div>
 
-    <accordion close-others="oneAtATime">
-        <accordion-group class="accordionGroup" heading="Ravello Credentials" is-open="isRavelloCredentials">
-			<div class="row">
-				<div class="col-md-12 override-ravello-credentials-div">
-					<div class="form-group">
-						<input id="overrideRavelloCredentialsInput" type="checkbox" ng-model="currentClass.ravelloCredentials.overrideTrainerCredentials">
-						<label for="overrideRavelloCredentialsInput" class="control-label">Override the Ravello Credentials for the students?</label>
-					</div>
+	<accordion close-others="oneAtATime">
+		<accordion-group class="accordionGroup" heading="Scheduling" is-open="isScheduling">
+			<form name="schForm">
+				<div>
+					<div class="form-group row">
+						<div class="col-md-6" >
+							
+							<span class="input-group-btn" style="width:75%;"  id="sch_start_s">
+								<label class="col-sm-3 control-label" for="sch_start_s">Start:</label>
+								<p class="input-group row">
+								<input type="text" id="sch_start" name="sch_start" class="form-control" datepicker-popup="{{format}}" required ng-model="startD.value"
+									is-open="startd.opened" min="initDate" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+									ng-required="true" close-text="Close" />
+								<button type="button" class="btn btn-default" ng-click="open1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								<timepicker ng-model="startD.value" hour-step="1" minute-step="15" show-meridian="true">
+								</timepicker>
+								</p> 
+							</span>
+						</div>
+
+						<div class="col-md-6">
+							<span class="input-group-btn" style="width:75%;"  id="sch_end_e">
+								<label for="sch_end_e" class="col-sm-3 control-label">End:</label>
+								<p class="input-group row">
+								<input type="text" id="sch_end" name="sch_end" class="form-control" datepicker-popup="{{format}}" required ng-model="endD.value"
+									is-open="endd.opened" min="startD.value" max-date="'2050-06-22'" datepicker-options="endDateOptions" date-disabled="disabled(date, mode)"
+									ng-required="true" close-text="Close" />
+								<button type="button" class="btn btn-default" ng-click="open2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								<timepicker ng-model="endD.value" hour-step="1" minute-step="15" show-meridian="true">
+								</timepicker>
+								</p>
+							</span>
+						</div>
 				</div>
-			</div>
-			<br/>
-			<div class="row">
-				<div class="col-md-6">
-					<div class="form-group">
-						<label for="rav-email"  class="col-sm-3 control-label">Email:</label>
+				<div class="form-group row">
+					<div class="col-md-6">
+						<label for="sch-timezones" class="col-sm-3 control-label">Timezone:</label>
 						<div class="col-sm-9">
-							<input id="rav-email" type="text" class="form-control"
-								   ng-model="currentClass.ravelloCredentials.username" ng-disabled="!currentClass.ravelloCredentials.overrideTrainerCredentials">
+							<select id="sch-timezones" name="sch-timezones" ng-model="timezone.value" ng-change="timezoneChange()" class="form-control"
+								required></select>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<label for="rav-password"  class="col-sm-3 control-label">Password:</label>
-						<div class="col-sm-9">
-							<input id="rav-password" type="password" class="form-control"
-								   ng-model="currentClass.ravelloCredentials.password"  ng-disabled="!currentClass.ravelloCredentials.overrideTrainerCredentials">
-						</div>
+			</div>
+			<div class="col-xs-12" style="height:60px;"></div>
+		</form>
+		</div>
+		</accordion-group>
+		</accordion>
+
+<br>
+<accordion close-others="oneAtATime">
+	<accordion-group class="accordionGroup" heading="Ravello Credentials" is-open="isRavelloCredentials">
+		<div class="row">
+			<div class="col-md-12 override-ravello-credentials-div">
+				<div class="form-group">
+					<input id="overrideRavelloCredentialsInput" type="checkbox" ng-model="currentClass.ravelloCredentials.overrideTrainerCredentials">
+					<label for="overrideRavelloCredentialsInput" class="control-label">Override the Ravello Credentials for the students?</label>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="rav-email" class="col-sm-3 control-label">Email:</label>
+					<div class="col-sm-9">
+						<input id="rav-email" type="text" class="form-control" ng-model="currentClass.ravelloCredentials.username" ng-disabled="!currentClass.ravelloCredentials.overrideTrainerCredentials">
 					</div>
 				</div>
 			</div>
-        </accordion-group>
-    </accordion>
-
-	<br>
-
-	<accordion>
-		<accordion-group class="accordionGroup" heading="Applications Publish" is-open="isApplicationsPublish">
-			<div ng-form="publishDetailsForm" class="form-inline">
-				<div ng-repeat="bpPublishDetails in currentClass.bpPublishDetailsList" class="bp-publish-details">
-					<div class="publish-details-bp-name row">
-						<span>{{bpPublishDetails.bpName}}</span>
-					</div>
-					<div class="form-group">
-						<label for="publishMethodSelect">Optimized for:</label>
-						<select id="publishMethodSelect" class="form-control" ng-options="m.value as m.name for m in publishMethods"
-								ng-model="bpPublishDetails.method"></select>
-					</div>
-					<div class="form-group" ng-if="isLocationVisible(bpPublishDetails)">
-						<label for="locationSelect">Location:</label>
-						<select id="locationSelect" class="form-control"
-								ng-options="l as l.locationDisplayName for l in getLocations(bpPublishDetails.bpId)"
-								ng-model="bpPublishDetails.location"
-								ng-change="locationChanged(bpPublishDetails)"></select>
-					</div>
-					<div class="form-group">
-						<label for="autoStopInput">Auto-stop minutes (-1 for Never):</label>
-						<input id="autoStopInput" type="number" class="form-control" ng-model="bpPublishDetails.autoStop">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="rav-password" class="col-sm-3 control-label">Password:</label>
+					<div class="col-sm-9">
+						<input id="rav-password" type="password" class="form-control" ng-model="currentClass.ravelloCredentials.password" ng-disabled="!currentClass.ravelloCredentials.overrideTrainerCredentials">
 					</div>
 				</div>
 			</div>
-		</accordion-group>
-	</accordion>
+		</div>
+	</accordion-group>
+</accordion>
 
-	<br>
+<br>
 
-	<accordion>
-		<accordion-group class="accordionGroup" heading="Cost Buckets" is-open="isCostBucketsOpen">
-			<label for="costBucketSelect">Cost bucket:</label>
-			<select id="costBucketSelect" class="form-control" ng-options="b as b.name for b in buckets"
-				ng-model="viewModel.selectedCostBucket"></select>
-		</accordion-group>
-	</accordion>
+<accordion>
+	<accordion-group class="accordionGroup" heading="Applications Publish" is-open="isApplicationsPublish">
+		<div ng-form="publishDetailsForm" class="form-inline">
+			<div ng-repeat="bpPublishDetails in currentClass.bpPublishDetailsList" class="bp-publish-details">
+				<div class="publish-details-bp-name row">
+					<span>{{bpPublishDetails.bpName}}</span>
+				</div>
+				<div class="form-group">
+					<label for="publishMethodSelect">Optimized for:</label>
+					<select id="publishMethodSelect" class="form-control" ng-options="m.value as m.name for m in publishMethods" ng-model="bpPublishDetails.method"></select>
+				</div>
+				<div class="form-group" ng-if="isLocationVisible(bpPublishDetails)">
+					<label for="locationSelect">Location:</label>
+					<select id="locationSelect" class="form-control" ng-options="l as l.locationDisplayName for l in getLocations(bpPublishDetails.bpId)"
+						ng-model="bpPublishDetails.location" ng-change="locationChanged(bpPublishDetails)"></select>
+				</div>
+				<div class="form-group">
+					<label for="autoStopInput">Auto-stop minutes (-1 for Never):</label>
+					<input id="autoStopInput" type="number" class="form-control" ng-model="bpPublishDetails.autoStop">
+				</div>
+			</div>
+		</div>
+	</accordion-group>
+</accordion>
 
-    <div id="classStudentsDiv" class="form-box class-students-div">
-        <span class="block-title">Students</span>
+<br>
 
-        <button id="addStudentBtn" class="btn btn-default" ng-click="addStudent()">
+<accordion>
+	<accordion-group class="accordionGroup" heading="Cost Buckets" is-open="isCostBucketsOpen">
+		<label for="costBucketSelect">Cost bucket:</label>
+		<select id="costBucketSelect" class="form-control" ng-options="b as b.name for b in buckets" ng-model="viewModel.selectedCostBucket"></select>
+	</accordion-group>
+</accordion>
+
+<div id="classStudentsDiv" class="form-box class-students-div">
+	<span class="block-title">Students</span>
+
+	<button id="addStudentBtn" class="btn btn-default" ng-click="addStudent()">
             <i class="fa fa-plus"></i> Add
         </button>
 
-        <div id="studentsDataGridDiv" class="grid-table">
-            <div id="studentsDataGrid" class="students-data-grid" ng-grid="studentsDataGrid"></div>
-        </div>
-    </div>
+	<div id="studentsDataGridDiv" class="grid-table">
+		<div id="studentsDataGrid" class="students-data-grid" ng-grid="studentsDataGrid"></div>
+	</div>
 </div>
+</div>
+<script>
+	$(document).ready(function () {
+		$('select').timezones();
+	});
+</script>

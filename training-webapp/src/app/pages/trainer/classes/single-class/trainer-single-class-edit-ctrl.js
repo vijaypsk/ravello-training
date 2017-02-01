@@ -135,6 +135,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 			}
 
 			$scope.isRavelloCredentials = false;
+			$scope.isScheduling = false;
 
 			$scope.$watch('currentClass.ravelloCredentials.overrideTrainerCredentials', function(newVal, oldVal) {
 				if (newVal !== oldVal) {
@@ -162,6 +163,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 			$scope.dateFormat = DateUtil.angular.dateFormat;
 			$scope.timeFormat = DateUtil.angular.timeFormat;
 			$scope.dateTimeFormat = DateUtil.angular.dateTimeFormat;
+			$scope.initSchedule();
 		};
 
 		$scope.initStudentsColumns = function () {
@@ -259,6 +261,195 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 			var title = $scope.currentClass.name || 'New class';
 			title += $scope.abstract.getStudentName ? ' > ' + $scope.abstract.getStudentName() : '';
 			return title;
+		};
+
+		
+
+		$scope.timezoneChange = function () {
+			//console.log('startD ',$scope.toTimeZone($scope.startD.value,$scope.timezone.value));
+			//console.log('endD ',$scope.toTimeZone($scope.endD.value,$scope.timezone.value));
+    	}
+
+		$scope.toTimeZone= function (time, zone) {
+			//console.log("time is ",time,' zone is ',zone);
+			if(time && zone){
+				var format = 'YYYY/MM/DD HH:mm:ss ZZ';
+				var hroffset = (moment.tz(time,zone).zone() - time.getTimezoneOffset())/60;
+				return moment.tz(time,zone).add(hroffset,'hours').toDate();
+			}
+		}
+
+		$scope.displayTime= function (time, zone) {
+			//console.log("time is ",time,' zone is ',zone);
+			if(time && zone){
+				var format = 'YYYY/MM/DD HH:mm:ss ZZ';
+				var hroffset = (moment.tz(time,zone).zone() - time.getTimezoneOffset())/60;
+				return moment.tz(time,zone).subtract(hroffset,'hours').toDate();
+			}
+		}
+
+		$scope.timezone = {value:null};
+
+		Date.prototype.addHours= function(h){
+			this.setHours(this.getHours()+h);
+			return this;
+		}
+
+		$scope.initDate = new Date();
+		$scope.initEndDate = function(){
+			var res = $scope.startD.value.addHours(1);
+			//console.log('res ',res);
+			return res;
+		}
+		$scope.today = function () {
+			$scope.startD = {value:roundMinutes($scope.initDate)};
+			//$scope.startD = {value:roundMinutes(new Date(1485451000000))};
+			$scope.endD = {value:roundMinutes($scope.initEndDate())};
+
+			function roundMinutes(date) {
+				// var minIncr = Math.round(date.getMinutes()/60);
+				// if(minIncr==0)minIncr=1;
+				date.setHours(date.getHours() + 1);
+				date.setMinutes(0);
+				return date;
+			}
+		};
+		$scope.today();
+
+
+		$scope.clear = function () {
+			$scope.startD = null;
+			$scope.endD = null;
+		};
+
+
+		$scope.setClassSchedule=function(){
+			
+		  let sch = {
+				       startTime:$scope.toTimeZone($scope.startD.value,$scope.timezone.value),
+				       endTime:$scope.toTimeZone($scope.endD.value,$scope.timezone.value),
+					   timeZone:$scope.timezone.value
+					};
+			$scope.currentClass.schedule = sch;		
+             //reset any scheduled apps  
+			 _.forEach($scope.currentClass.students, function(student) {
+                            student.scheduledApps.length=0
+            });
+		};
+
+		
+
+
+		$scope.initSchedule = function () {
+			
+			if ($scope.currentClass && $scope.currentClass.schedule) {
+				var currSchedule = $scope.currentClass.schedule;
+				$scope.startD.value = $scope.displayTime(new Date(currSchedule.startTime),currSchedule.timeZone);
+				$scope.endD.value = $scope.displayTime(new Date(currSchedule.endTime),currSchedule.timeZone);
+				$scope.timezone.value = currSchedule.timeZone;
+			}
+			$scope.$watch("startD.value", function (newValue, oldValue) {
+				//update end date value if start date is set to greater than end date
+				if (newValue > $scope.endD.value) {
+					$scope.endD.value = newValue;
+				}
+				$scope.setClassSchedule();
+			});
+
+			$scope.$watch("endD.value", function (newValue, oldValue) {
+				//update end date value if start date is set to greater than end date
+				if (newValue < $scope.startD.value) {
+					$scope.startD.value = newValue;
+				}
+				$scope.setClassSchedule();
+			});
+
+			$scope.$watch("timezone.value", function (newValue, oldValue) {
+				$scope.setClassSchedule();
+			});
+		}
+
+		
+
+
+		// Disable weekend selection
+		function disabled(data) {
+			var date = data.date,
+			mode = data.mode;
+			return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+		}
+
+		
+		$scope.dateOptions = {
+			customClass: $scope.getDayClass,
+			dateDisabled: disabled,
+			minDate:$scope.initDate,
+			timezone: $scope.timezone.value,
+			showWeeks: true
+		};
+      
+		$scope.endDateOptions = {
+			customClass: $scope.getDayClass,
+			dateDisabled: disabled,
+			minDate:  $scope.initEndDate(),
+			timezone: $scope.timezone.value,
+			showWeeks: true
+		};
+		
+		
+		$scope.open1 = function ($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+			$scope.startd.opened = true;
+		};
+		$scope.open2 = function ($event) {
+			 	$event.preventDefault();
+    			$event.stopPropagation();
+				$scope.endd.opened = true;
+		};
+
+		$scope.formats = ['dd-MMMM-yyyy hh:mm:ss', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+		$scope.format = $scope.formats[0];
+
+		
+		$scope.startd = {
+			opened: false
+		};
+		$scope.endd = {
+			opened: false
+		};
+
+
+		var tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		var afterTomorrow = new Date();
+		afterTomorrow.setDate(tomorrow.getDate() + 2);
+		$scope.events =
+			[
+				{
+					date: tomorrow,
+					status: 'full'
+				},
+				{
+					date: afterTomorrow,
+					status: 'partially'
+				}
+			];
+
+		$scope.getDayClass = function (date, mode) {
+			if (mode === 'day') {
+				var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+				for (var i = 0; i < $scope.events.length; i++) {
+					var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+					if (dayToCheck === currentDay) {
+						return $scope.events[i].status;
+					}
+				}
+			}
+
+			return '';
 		};
 
 		$scope.init();

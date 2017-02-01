@@ -109,14 +109,50 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 				{
 					field: 'expirationTime',
 					displayName: 'Auto-stop',
-					width: '100px',
+					width: '90px',
 					cellTemplate:
 						'<div class="ngCellText" ng-class="col.colIndex()">' +
 							'<span ng-cell-text>{{getAppExpirationTime(row.entity)}}</span>' +
 						'</div>'
-				}
+				},
+				{
+                    field: 'startTime',
+                    displayName: 'Scheduled Start Time',
+                    cellTemplate:
+						'<div class="ngCellText" ng-class="col.colIndex()">' +
+							'<span ng-cell-text>{{displayTime(row.entity,"startTime")}}</span>' +
+						'</div>',
+					width: '120px'
+				},
+				{
+                    field: 'endTime',
+                    displayName: 'Scheduled End Time',
+                    cellTemplate:
+						'<div class="ngCellText" ng-class="col.colIndex()">' +
+							'<span ng-cell-text>{{displayTime(row.entity,"endTime")}}</span>' +
+						'</div>',
+					width: '120px'
+				},
+				{
+                    field: 'student.scheduledApps[0].timeZone',
+                    displayName: 'TimeZone'
+                }
             ];
         };
+
+
+		$scope.displayTime= function (app,datefieldname) {
+			if(app.student.scheduledApps.length>0){
+				var time = new Date(app.student.scheduledApps[0][datefieldname]);
+				var zone = app.student.scheduledApps[0]['timeZone'];
+				if(time && zone){
+					var format = 'YYYY/MM/DD HH:mm';
+					var hroffset = (moment.tz(time,zone).zone() - time.getTimezoneOffset())/60;
+					return moment.tz(time,zone).format(format);
+				}
+
+			}
+		}
 
         $scope.initAppsDataGrid = function() {
             $scope.initAppsColumns();
@@ -188,16 +224,17 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 
 			var appsData = createAppsData();
 
-			var modalInstance = $dialogs.create('app/pages/trainer/classes/single-class/trainer-schedule-dialog.html', 'trainerScheduleController', appsData);
-			return modalInstance.result.then(
-				function(sch) {
-					appsData.sch = sch;
-					//_.forEach(appsData, function(app) {
-						//app.publishDetails.startAfterPublish = startAfterPublish;
-					//});
-					return ClassesService.scheduleAppForStudents($scope.currentClass.id, appsData).then(showErrors).then(createFetchFunc());
-				}
-			);
+			// var modalInstance = $dialogs.create('app/pages/trainer/classes/single-class/trainer-schedule-dialog.html', 'trainerScheduleController', appsData);
+			// return modalInstance.result.then(
+			// 	function(sch) {
+			// 		appsData.sch = sch;
+			// 		//_.forEach(appsData, function(app) {
+			// 			//app.publishDetails.startAfterPublish = startAfterPublish;
+			// 		//});
+			// 		return ClassesService.scheduleAppForStudents($scope.currentClass.id, appsData).then(showErrors).then(createFetchFunc());
+			// 	}
+			// );
+			return ClassesService.scheduleAppForStudents($scope.currentClass.id, appsData).then(showErrors).then(createFetchFunc());
 		};
 
 		$scope.unscheduleApps = function() {

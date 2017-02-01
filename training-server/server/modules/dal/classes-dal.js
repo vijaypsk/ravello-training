@@ -51,7 +51,7 @@ exports.getClassByCourseId = function(courseId) {
 
 exports.createClass = function(classData) {
     var newClass = new TrainingClass(classData);
-
+    console.log('new class ',newClass);
     return newClass.saveQ().then(
         function(entity) {
             return entity.populateQ('students.user');
@@ -91,7 +91,8 @@ exports.scheduleStudentApp = function(classId, scheduledAppsData) {
             //console.log('scheduledAppsData is ',scheduledAppsData);
              
             _.forEach(scheduledAppsData, function(scheduledApp) {
-						    var sch = scheduledApp.schedule;
+						    var sch = classEntity.schedule;
+                            console.log('sch...',sch);
                             var student = _.find(classEntity.students, function(currentStudent) {
                                 return currentStudent.user == scheduledApp.userId;
                             });

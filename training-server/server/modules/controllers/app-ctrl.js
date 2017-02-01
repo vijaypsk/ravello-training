@@ -225,9 +225,6 @@ exports.scheduleApps = function(request, response, next) {
 					);
 				}
 			);
-
-
-			//response.send(scheduledAppsData);
 		}
 	).catch(next);
 

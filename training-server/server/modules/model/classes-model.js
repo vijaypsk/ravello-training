@@ -14,6 +14,11 @@ var TrainingClassSchema = mongoose.Schema({
         password: String,
         overrideTrainerCredentials: Boolean
     },
+    schedule:{
+                    startTime: Date,
+                    endTime: Date,
+                    timeZone: String
+    },
 	bpPublishDetailsList: [
 		{
 			bpId: String,
