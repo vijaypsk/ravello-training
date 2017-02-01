@@ -9,12 +9,15 @@ angular.module('trng.student').controller('studentClassController', [
     'student',
     'course',
     'apps',
-    function($log, $scope, $state, StatesNames, AppsService, student, course, apps) {
+    'CommonConstants',
+    function($log, $scope, $state, StatesNames, AppsService, student, course, apps,CommonConstants) {
         $scope.init = function() {
             $scope.name = student.firstName + ' ' + student.surname;
             $scope.student = student;
             $scope.apps = apps;
-
+            $scope.portal_header_title=CommonConstants.PORTAL_HEADER_TITLE;
+            $scope.portal_header_title_logo=CommonConstants.PORTAL_HEADER_TITLE_LOGO;
+            
             initDescription();
             initAppsDataGrid();
         };

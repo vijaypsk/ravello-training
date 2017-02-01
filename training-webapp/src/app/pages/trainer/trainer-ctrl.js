@@ -5,10 +5,13 @@ angular.module('trng.trainer').controller('TrainerController', [
     '$rootScope',
     '$state',
     'StatesNames',
-    function($scope, $rootScope, $state, StatesNames) {
+    'CommonConstants',
+    function($scope, $rootScope, $state, StatesNames,CommonConstants) {
         $scope.init = function() {
             $state.go(StatesNames.trainer.training.name);
         };
+        $scope.portal_header_title=CommonConstants.PORTAL_HEADER_TITLE;
+         $scope.portal_header_title_logo=CommonConstants.PORTAL_HEADER_TITLE_LOGO;
 
         $scope.navigateToClasses = function() {
             $state.go(StatesNames.trainer.training.classes.name);

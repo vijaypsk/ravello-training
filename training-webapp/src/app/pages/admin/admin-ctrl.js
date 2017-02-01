@@ -6,11 +6,14 @@ angular.module('trng.admin').controller('AdminController', [
     '$state',
     'LoginModel',
     'StatesNames',
-    function($rootScope, $scope, $state, LoginModel, StatesNames) {
+    'CommonConstants',
+    function($rootScope, $scope, $state, LoginModel, StatesNames,CommonConstants) {
         $scope.init = function() {
             $state.go(StatesNames.admin.trainers.name);
         };
-
+        $scope.portal_header_title=CommonConstants.PORTAL_HEADER_TITLE;
+        $scope.portal_header_title_logo=CommonConstants.PORTAL_HEADER_TITLE_LOGO;
+        
         $scope.handleRole = function() {
             $rootScope.$on('$stateChangeStart',
                 function(event, toState, toParams, fromState, fromParams){

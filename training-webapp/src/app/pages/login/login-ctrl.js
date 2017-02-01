@@ -4,10 +4,13 @@ angular.module('trng.login').controller('loginController', [
     '$scope',
     '$timeout',
     'LoginModel',
-    function($scope, $timeout, LoginModel) {
+    'CommonConstants',
+    function($scope, $timeout, LoginModel,CommonConstants) {
         $scope.init = function() {
             $scope.loginErrorMessages = [];
             $scope.initAutofillHandlers();
+            $scope.portal_header_title=CommonConstants.PORTAL_HEADER_TITLE;
+            $scope.portal_header_title_logo=CommonConstants.PORTAL_HEADER_TITLE_LOGO;
         };
 
         $scope.initAutofillHandlers = function() {
