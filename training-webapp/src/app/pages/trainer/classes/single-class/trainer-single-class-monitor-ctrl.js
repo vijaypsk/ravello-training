@@ -146,7 +146,7 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassMo
 				var time = new Date(app.student.scheduledApps[0][datefieldname]);
 				var zone = app.student.scheduledApps[0]['timeZone'];
 				if(time && zone){
-					var format = 'YYYY/MM/DD HH:mm';
+					var format = 'YYYY/MM/DD hh:mm A';
 					var hroffset = (moment.tz(time,zone).zone() - time.getTimezoneOffset())/60;
 					return moment.tz(time,zone).format(format);
 				}
