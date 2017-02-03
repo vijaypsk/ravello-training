@@ -11,8 +11,8 @@
 SCRIPT=$HOME/code/ravello-training/bin/start_static_server.sh
 RUNAS=ravello
 
-PIDFILE=/var/run/ravello-training-portal.pid
-LOGFILE=/var/log/ravello-training-portal.log
+PIDFILE=/var/run/portal-static-server.pid
+LOGFILE=/var/log/portal-static-server.log
 
 start() {
   if [ -f /var/run/$PIDNAME ] && kill -0 $(cat /var/run/$PIDNAME); then
