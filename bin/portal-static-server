@@ -8,11 +8,11 @@
 # Description:       Service to start portal application
 ### END INIT INFO
 
-SCRIPT=$HOME/code/ravello-training/bin/start_static_server.sh
+SCRIPT=/home/ravello/code/ravello-training/bin/start_static_server.sh
 RUNAS=ravello
 
 PIDFILE=/var/run/portal-static-server.pid
-LOGFILE=/var/log/portal-static-server.log
+LOGFILE=/home/ravello/code/ravello-training/portal-static-server.log
 
 start() {
   if [ -f /var/run/$PIDNAME ] && kill -0 $(cat /var/run/$PIDNAME); then

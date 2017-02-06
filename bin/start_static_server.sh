@@ -1,6 +1,6 @@
 #!/bin/bash
-
+source ~/.profile
 cd $RAVELLO_TRAINING_HOME
 cd ./training-webapp
-grunt serve
+exec grunt serve
 
