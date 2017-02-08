@@ -19,4 +19,6 @@ angular.module('trng.config').constant('CommonConstants', {
 	//Replace below logo URL.  To read image from images folder use '../images/default_logo.png'.  
 	//Image dimensions for logo should be 35x#35
 	PORTAL_HEADER_TITLE_LOGO: 'http://lorempixel.com/35/35/nature/', 
+	PORTAL_HEADER_POWEREDBY_SMALL_TEXT: 'paloalto networks',
+	PORTAL_HEADER_POWEREDBY_SMALL_LOGO: 'http://lorempixel.com/35/35/nature/'
 });

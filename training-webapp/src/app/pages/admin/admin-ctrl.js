@@ -13,6 +13,8 @@ angular.module('trng.admin').controller('AdminController', [
         };
         $scope.portal_header_title=CommonConstants.PORTAL_HEADER_TITLE;
         $scope.portal_header_title_logo=CommonConstants.PORTAL_HEADER_TITLE_LOGO;
+        $scope.portal_header_poweredby_small_logo=CommonConstants.PORTAL_HEADER_POWEREDBY_SMALL_LOGO;
+        $scope.portal_header_poweredby_small_text=CommonConstants.PORTAL_HEADER_POWEREDBY_SMALL_TEXT;
         
         $scope.handleRole = function() {
             $rootScope.$on('$stateChangeStart',

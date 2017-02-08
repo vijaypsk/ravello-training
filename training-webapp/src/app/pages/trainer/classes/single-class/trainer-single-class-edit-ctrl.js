@@ -408,8 +408,8 @@ angular.module('trng.trainer.training.classes').controller('trainerSingleClassEd
 				$scope.endd.opened = true;
 		};
 
-		$scope.formats = ['dd-MMMM-yyyy hh:mm:ss', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-		$scope.format = $scope.formats[0];
+		$scope.formats = ['dd-MMMM-yyyy hh:mm:ss','yyyy/MM/dd hh:mm a', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+		$scope.format = $scope.formats[1];
 
 		
 		$scope.startd = {

@@ -197,7 +197,7 @@ h3.panel-title {
     padding: 15px;
 }
 .ravello-logo{
-    background: transparent url(../images/ravello-logo-small.png) no-repeat center left scroll;
+    /*background: transparent url(../images/ravello-logo-small.png) no-repeat center left scroll;*/
     padding-left:20px;
     background-size: contain;
 }
